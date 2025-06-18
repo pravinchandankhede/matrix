@@ -1,1 +1,3 @@
-# matrix
+# Matrix
+
+This repo provides a Agentic AI Framework 

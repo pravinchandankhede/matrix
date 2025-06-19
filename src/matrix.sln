@@ -5,18 +5,48 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{B08CF980-4634-4FEE-9895-D468AAD24B5F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Connectors", "Connectors", "{0448B7D2-20A8-4A0C-A017-B1998296F0B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IngestionLayer", "IngestionLayer", "{C2E82185-C33E-4EEA-B136-1C2D2DF0A14A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tooling", "Tooling", "{095FCE4D-582D-4354-B88F-6448A0A15631}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataEngine", "DataEngine", "{55A371C6-8305-4C98-A9BA-40C2C8720F87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataIntegration", "Framework\DataIntegration\DataIntegration\DataIntegration.csproj", "{5F33994C-65EA-4AFC-99FE-CE75077AEF5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7AC72097-0753-4884-A76F-D7FBD80CC165}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B08CF980-4634-4FEE-9895-D468AAD24B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B08CF980-4634-4FEE-9895-D468AAD24B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B08CF980-4634-4FEE-9895-D468AAD24B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B08CF980-4634-4FEE-9895-D468AAD24B5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F33994C-65EA-4AFC-99FE-CE75077AEF5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F33994C-65EA-4AFC-99FE-CE75077AEF5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F33994C-65EA-4AFC-99FE-CE75077AEF5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F33994C-65EA-4AFC-99FE-CE75077AEF5F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C2E82185-C33E-4EEA-B136-1C2D2DF0A14A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{095FCE4D-582D-4354-B88F-6448A0A15631} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{55A371C6-8305-4C98-A9BA-40C2C8720F87} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{5F33994C-65EA-4AFC-99FE-CE75077AEF5F} = {55A371C6-8305-4C98-A9BA-40C2C8720F87}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBEFC3B0-6208-481B-B6D6-154F640C6615}
 	EndGlobalSection
 EndGlobal

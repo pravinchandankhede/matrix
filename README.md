@@ -3,25 +3,27 @@
 This repo provides a Agentic AI Framework 
 
 
-Processes -> Behaviour -> Persona
-
-Data
+# This is main title
 
 ```mermaid
-%%{init: {'theme': 'default'}}%%
-flowchart TD
-    subgraph Layer1[Layer 1]
-        A[Block 1]
-        B[Block 2]
-        C[Block 3]
-    end
+graph TD
+  %% Layer 1 Subgraph
+  subgraph Layer1[Layer 1]
+    A1[Block A]
+    B1[Block B]
+    C1[Block C]
+  end
 
-    subgraph Layer2[Layer 2]
-        D[Block 4]
-        E[Block 5]
-    end
+  %% Layer 2 Subgraph
+  subgraph Layer2[Data Layer]
+    A2[Ingestion]
+    B2[Vectorization]
+    C2[Vector]
+  end
 
-    A --> D
-    A --> B
-    C --> E
+  %% Connections between layers
+  
+  B1 --> B2
+  C1 --> C2
+  A1 --> Layer2
 ```

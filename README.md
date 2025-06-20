@@ -7,23 +7,39 @@ This repo provides a Agentic AI Framework
 
 ```mermaid
 graph TD
-  %% Layer 1 Subgraph
-  subgraph Layer1[Layer 1]
-    A1[Block A]
-    B1[Block B]
-    C1[Block C]
-  end
+Â  %% Layer 1 Subgraph
+Â  subgraph Layer1[Layer 1]
+Â Â Â  A1[Block A]
+Â Â Â  B1[Block B]
+Â Â Â  C1[Block C]
+Â  end
 
-  %% Layer 2 Subgraph
-  subgraph Layer2[Data Layer]
-    A2[Ingestion]
-    B2[Vectorization]
-    C2[Vector]
-  end
+Â  %% Layer 2 Subgraph
+Â  subgraph Layer2[Data Layer]
+Â Â Â  A2[Ingestion]
+Â Â Â  B2[Vectorization]
+Â Â Â  C2[Vector]
+Â  end
 
-  %% Connections between layers
-  
-  B1 --> B2
-  C1 --> C2
+Â  %% Connections between layers
+Â  
+Â  B1 --> B2
+Â  C1 --> C2
   A1 --> Layer2
 ```
+
+## Components of Agentic AI Framework
+
+- Task Management Tools
+- Decision and Reasoning Tools
+- Monitoring and Incident Tool Integration
+- Security Tool Integration
+- Compliance Tool Integration
+- Content Generation
+- Customer Interaction
+- Resource Management in Cloud
+- DevOps Automation
+- Monitoring & Alerting
+- Customer Personalization
+- Predictive Maintenance
+- Enterprise Data Integration

@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ingestion.Models\Ingestion.Models.csproj" />
+    <ProjectReference Include="..\..\Ingestion.Interfaces\Ingestion.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

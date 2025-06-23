@@ -42,6 +42,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging.Connectos.AzureSe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Connectors", "Connectors", "{DE13FBCF-8C00-496B-BF8D-2B9846E51401}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Connectors", "Connectors", "{F87E8344-3488-47F0-893F-04F655F412F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ingestion.Connectors.AzureSearch", "Framework\IngestionLayer\Connectors\Ingestion.Connectors.AzureSearch\Ingestion.Connectors.AzureSearch.csproj", "{ACC3FC42-1AFA-48A7-8CC8-6DE5484BBC10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +92,10 @@ Global
 		{1D676764-7924-4BB5-99B6-2A9C1B6A5EF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D676764-7924-4BB5-99B6-2A9C1B6A5EF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D676764-7924-4BB5-99B6-2A9C1B6A5EF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACC3FC42-1AFA-48A7-8CC8-6DE5484BBC10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC3FC42-1AFA-48A7-8CC8-6DE5484BBC10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACC3FC42-1AFA-48A7-8CC8-6DE5484BBC10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACC3FC42-1AFA-48A7-8CC8-6DE5484BBC10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +115,8 @@ Global
 		{671C4BDA-5083-493A-9CF6-777EF729F358} = {8125436F-065B-44B8-B26A-B3ABCAA62D38}
 		{1D676764-7924-4BB5-99B6-2A9C1B6A5EF6} = {DE13FBCF-8C00-496B-BF8D-2B9846E51401}
 		{DE13FBCF-8C00-496B-BF8D-2B9846E51401} = {8125436F-065B-44B8-B26A-B3ABCAA62D38}
+		{F87E8344-3488-47F0-893F-04F655F412F1} = {C2E82185-C33E-4EEA-B136-1C2D2DF0A14A}
+		{ACC3FC42-1AFA-48A7-8CC8-6DE5484BBC10} = {F87E8344-3488-47F0-893F-04F655F412F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EBEFC3B0-6208-481B-B6D6-154F640C6615}

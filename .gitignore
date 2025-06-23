@@ -55,3 +55,4 @@ nunit-*.xml
 
 /.vs
 /src/.vs/matrix
+/src/.vs/ProjectEvaluation

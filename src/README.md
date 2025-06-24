@@ -6,39 +6,49 @@ This repository contains a modular .NET 8 solution for data ingestion, messaging
 
 ## Solution Structure
 
-Framework/  
-│  
-├── DataIntegration/  
-│   └── DataIntegration/  
-│       └── DataIntegration.csproj  
-│  
-├── IngestionLayer/  
-│   ├── Ingestion.Chunking/  
-│   │   └── Ingestion.Chunking.csproj  
-│   ├── Ingestion.Configuration/  
-│   │   └── Ingestion.Configuration.csproj  
-│   ├── Ingestion.Interfaces/  
-│   │   └── Ingestion.Interfaces.csproj  
-│   ├── Ingestion.Models/  
-│   │   └── Ingestion.Models.csproj  
-│   └── Connectors/  
-│       └── Ingestion.Connectors.AzureSearch/  
-│           └── Ingestion.Connectors.AzureSearch.csproj  
-│  
-└── Messaging/  
-    ├── Messaging.Engine/  
-    │   └── Messaging.Engine.csproj  
-    ├── Messaging.Interfaces/  
-    │   └── Messaging.Interfaces.csproj  
-    ├── Messaging.Models/  
-    │   └── Messaging.Models.csproj  
-    └── Messaging.Connectors/  
-        └── Messaging.Connectos.AzureServiceBus/  
-            └── Messaging.Connectos.AzureServiceBus.csproj  
-
+Client/
+│   └── Client.csproj
+│
+Framework/
+│
+├── DataIntegration/
+│   └── DataIntegration/
+│       └── DataIntegration.csproj
+│
+├── IngestionLayer/
+│   ├── Ingestion.Chunking/
+│   │   └── Ingestion.Chunking.csproj
+│   ├── Ingestion.Configuration/
+│   │   └── Ingestion.Configuration.csproj
+│   ├── Ingestion.Interfaces/
+│   │   └── Ingestion.Interfaces.csproj
+│   ├── Ingestion.Models/
+│   │   └── Ingestion.Models.csproj
+│   └── Connectors/
+│       └── Ingestion.Connectors.AzureSearch/
+│           └── Ingestion.Connectors.AzureSearch.csproj
+│
+└── Messaging/
+    ├── Messaging.Engine/
+    │   └── Messaging.Engine.csproj
+    ├── Messaging.Interfaces/
+    │   └── Messaging.Interfaces.csproj
+    ├── Messaging.Models/
+    │   └── Messaging.Models.csproj
+    └── Messaging.Connectors/
+        └── Messaging.Connectos.AzureServiceBus/
+            └── Messaging.Connectos.AzureServiceBus.csproj
 ---
 
 ## Project Details
+
+### Client
+
+- **Path:** `Client/`
+- **Purpose:** Provides a client application or entry point for interacting with the solution.
+- **Target Framework:** .NET 8
+
+---
 
 ### DataIntegration
 
@@ -94,7 +104,7 @@ Framework/
 
 #### Messaging.Interfaces
 
-- **Path:** `Framework/Messaging/Messaging,Interfaces/`
+- **Path:** `Framework/Messaging/Messaging.Interfaces/`
 - **Purpose:** Defines interfaces and contracts for messaging components.
 - **Target Framework:** .NET 8
 - **References:** `Messaging.Models`
@@ -118,8 +128,7 @@ Framework/
 
 1. **Requirements:** [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 2. **Restore dependencies:**  dotnet restore3. **Build the solution:**  dotnet build4. **Run a project:**  
-   Navigate to the desired project directory and use `dotnet run`.
-
+   Navigate to the desired project directory and use:dotnet run
 ---
 
 ## Notes

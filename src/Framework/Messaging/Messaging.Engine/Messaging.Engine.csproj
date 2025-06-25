@@ -8,4 +8,8 @@
     <RootNamespace>Matrix.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="MessagingEngine.csproj" />
+  </ItemGroup>
+
 </Project>

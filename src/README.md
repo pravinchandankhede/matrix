@@ -6,45 +6,45 @@ This repository contains a modular .NET 8 solution for data ingestion, messaging
 
 ## Solution Structure
 src/
-├── Client/
-│   └── Client.csproj
-│
-└── Framework/
-    ├── DataIntegration/
-    │   └── DataIntegration/
-    │       └── DataIntegration.csproj
-    │
-    ├── IngestionLayer/
-    │   ├── Ingestion.Chunking/
-    │   │   └── Ingestion.Chunking.csproj
-    │   ├── Ingestion.Configuration/
-    │   │   └── Ingestion.Configuration.csproj
-    │   ├── Ingestion.Interfaces/
-    │   │   └── Ingestion.Interfaces.csproj
-    │   ├── Ingestion.Models/
-    │   │   └── Ingestion.Models.csproj
-    │   └── Connectors/
-    │       └── Ingestion.Connectors.AzureSearch/
-    │           └── Ingestion.Connectors.AzureSearch.csproj
-    │
-    ├── AgenticLayer/
-    │   ├── AgenticLayer.BaseAgent/
-    │   │   └── AgenticLayer.BaseAgent.csproj
-    │   ├── AgenticLayer.Builders/
-    │   │   └── AgenticLayer.Builders.csproj
-    │   └── AgenticLayer.Interfaces/
-    │       └── AgenticLayer.Interfaces.csproj
-    │
-    └── Messaging/
-        ├── Messaging.Engine/
-        │   └── Messaging.Engine.csproj
-        ├── Messaging.Interfaces/
-        │   └── Messaging.Interfaces.csproj
-        ├── Messaging.Models/
-        │   └── Messaging.Models.csproj
-        └── Messaging.Connectors/
-            └── Messaging.Connectos.AzureServiceBus/
-                └── Messaging.Connectos.AzureServiceBus.csproj
+  Client/
+    Client.csproj
+
+  Framework/
+    DataIntegration/
+      DataIntegration/
+        DataIntegration.csproj
+
+    IngestionLayer/
+      Ingestion.Chunking/
+        Ingestion.Chunking.csproj
+      Ingestion.Configuration/
+        Ingestion.Configuration.csproj
+      Ingestion.Interfaces/
+        Ingestion.Interfaces.csproj
+      Ingestion.Models/
+        Ingestion.Models.csproj
+      Connectors/
+        Ingestion.Connectors.AzureSearch/
+          Ingestion.Connectors.AzureSearch.csproj
+
+    AgenticLayer/
+      AgenticLayer.BaseAgent/
+        AgenticLayer.BaseAgent.csproj
+      AgenticLayer.Builders/
+        AgenticLayer.Builders.csproj
+      AgenticLayer.Interfaces/
+        AgenticLayer.Interfaces.csproj
+
+    Messaging/
+      Messaging.Engine/
+        Messaging.Engine.csproj
+      Messaging.Interfaces/
+        Messaging.Interfaces.csproj
+      Messaging.Models/
+        Messaging.Models.csproj
+      Messaging.Connectors/
+        Messaging.Connectos.AzureServiceBus/
+          Messaging.Connectos.AzureServiceBus.csproj
 ---
 
 ## Project Details

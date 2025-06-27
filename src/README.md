@@ -5,7 +5,7 @@ This repository contains a modular .NET 8 solution for data ingestion, messaging
 ---
 
 ## Solution Structure
-
+```
 src/
 ├── Client/
 │   └── Client.csproj
@@ -46,6 +46,7 @@ src/
         └── Messaging.Connectors/
             └── Messaging.Connectos.AzureServiceBus/
                 └── Messaging.Connectos.AzureServiceBus.csproj
+```
 ---
 
 ## Project Details

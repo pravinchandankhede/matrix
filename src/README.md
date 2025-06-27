@@ -1,6 +1,6 @@
 ﻿# Matrix Solution Overview
 
-This repository contains a modular .NET 8 solution for data ingestion, messaging, and integration. The solution is organized into several projects, each with a clear responsibility and well-defined dependencies.
+This repository contains a modular .NET 8 solution for data ingestion, messaging, agentic, and integration. The solution is organized into several projects, each with a clear responsibility and well-defined dependencies.
 
 ---
 
@@ -26,6 +26,14 @@ src/
     │   └── Connectors/
     │       └── Ingestion.Connectors.AzureSearch/
     │           └── Ingestion.Connectors.AzureSearch.csproj
+    │
+    ├── AgenticLayer/
+    │   ├── AgenticLayer.BaseAgent/
+    │   │   └── AgenticLayer.BaseAgent.csproj
+    │   ├── AgenticLayer.Builders/
+    │   │   └── AgenticLayer.Builders.csproj
+    │   └── AgenticLayer.Interfaces/
+    │       └── AgenticLayer.Interfaces.csproj
     │
     └── Messaging/
         ├── Messaging.Engine/
@@ -93,6 +101,28 @@ src/
 
 ---
 
+### AgenticLayer
+
+#### AgenticLayer.BaseAgent
+
+- **Path:** `src/Framework/AgenticLayer/AgenticLayer.BaseAgent/`
+- **Purpose:** Provides base classes and core logic for agent implementations.
+- **Target Framework:** .NET 8
+
+#### AgenticLayer.Builders
+
+- **Path:** `src/Framework/AgenticLayer/AgenticLayer.Builders/`
+- **Purpose:** Contains builder classes for constructing and configuring agents.
+- **Target Framework:** .NET 8
+
+#### AgenticLayer.Interfaces
+
+- **Path:** `src/Framework/AgenticLayer/AgenticLayer.Interfaces/`
+- **Purpose:** Defines interfaces and contracts for agentic components.
+- **Target Framework:** .NET 8
+
+---
+
 ### Messaging
 
 #### Messaging.Engine
@@ -126,8 +156,11 @@ src/
 ## Build & Run
 
 1. **Requirements:** [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-2. **Restore dependencies:**dotnet restore3. **Build the solution:**dotnet build4. **Run a project:**
-   Navigate to the desired project directory and use:dotnet run
+2. **Restore dependencies:** `dotnet restore`
+3. **Build the solution:** `dotnet build`
+4. **Run a project:**
+   Navigate to the desired project directory and use: `dotnet run`
+
 ---
 
 ## Notes

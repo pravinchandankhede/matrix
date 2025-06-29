@@ -3,9 +3,9 @@
 using Matrix.AgenticLayer.Builders;
 using Matrix.AgenticLayer.Interfaces;
 
-internal class AgentFactory
+public class AgentFactory
 {
-    internal static IAgentBuilder CreateBuilder()
+    public static IAgentBuilder CreateBuilder()
     {
         return new AgentBuilder();
     }

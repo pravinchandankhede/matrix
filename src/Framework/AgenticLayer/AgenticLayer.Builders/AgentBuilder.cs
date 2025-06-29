@@ -20,4 +20,9 @@ public class AgentBuilder : IAgentBuilder
 
         return this;
     }
+
+    public IAgentApp Build()
+    {
+        throw new NotImplementedException();
+    }
 }

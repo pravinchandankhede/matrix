@@ -1,6 +1,9 @@
 ﻿namespace Matrix.AgenticLayer.Interfaces;
 
+using Matrix.AgenticLayer.AgentModels;
+
 public interface IAgentBuilder
 {
-    void ConfigureAgent(String agentName, String agentType);
+    IAgentBuilder ConfigureAgent(String agentName, String agentType);
+    IAgentBuilder ConfigureTextEmbeddingModel(String modelName, AIModel aIModel);
 }

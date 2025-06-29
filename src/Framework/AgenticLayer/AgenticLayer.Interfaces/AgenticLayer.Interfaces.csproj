@@ -8,4 +8,8 @@
     <RootNamespace>Matrix.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AgenticLayer.AgentModels\AgenticLayer.AgentModels.csproj" />
+  </ItemGroup>
+
 </Project>

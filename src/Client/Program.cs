@@ -25,7 +25,10 @@ public static class Program
 
         IAgentApp agent = builder.Build();
 
-        var response = agent.GetChatResponse("who are you");
+        var response = agent.GetChatResponseAsync(new AgentRequest
+        {
+            Query = "who are you"
+        });
 
         Console.WriteLine($"Response {response}");
     }

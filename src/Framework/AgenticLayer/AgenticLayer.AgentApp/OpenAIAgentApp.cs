@@ -6,11 +6,21 @@
 //  THIS CODE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 // ------------------------------------------------------------------------------
 
-namespace Matrix.AgenticLayer.Interfaces;
+namespace Matrix.AgenticLayer.AgentApp;
 
 using Matrix.AgenticLayer.AgentModels;
+using System;
 
-public interface IAgentApp
+internal class OpenAIAgentApp : AgentApp
 {
-    AgentResponse GetChatResponseAsync(AgentRequest request);
+    public OpenAIAgentApp(String agentName, String agentType)
+        : base(agentName, agentType)
+    {
+    }
+
+    public override AgentResponse GetChatResponseAsync(AgentRequest request)
+    {
+        // TODO: Implement actual logic
+        return new AgentResponse { Response = $"[OpenAI] {request.Query}", IsComplete = true };
+    }
 }

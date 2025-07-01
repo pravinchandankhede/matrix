@@ -1,4 +1,12 @@
-﻿using Matrix.AgenticLayer.AgentModels;
+﻿// ------------------------------------------------------------------------------
+//  Author: Pravin Chandankhede
+//  Copyright (c) 2025 Pravin Chandankhede
+//  This file is part of the Matrix project.
+//  Licensed under the MIT License. See LICENSE file in the project root for details.
+//  THIS CODE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+// ------------------------------------------------------------------------------
+
+using Matrix.AgenticLayer.AgentModels;
 using Matrix.AgenticLayer.BaseAgent;
 using Matrix.AgenticLayer.Interfaces;
 
@@ -6,9 +14,6 @@ public static class Program
 {
     public static void Main(String[] args)
     {
-        // This is the entry point of the application.
-        // You can add your application logic here.
-
         var builder = AgentFactory.CreateBuilder()
             .ConfigureAgent("ExampleAgent", "TypeA")
             .ConfigureTextEmbeddingModel("ExampleModel", new AIModel

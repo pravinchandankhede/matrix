@@ -8,6 +8,7 @@
 
 namespace Matrix.AgenticLayer.Builders;
 
+using Matrix.AgenticLayer.AgentApp;
 using Matrix.AgenticLayer.AgentModels;
 using Matrix.AgenticLayer.Interfaces;
 
@@ -15,6 +16,8 @@ public class AgentBuilder : IAgentBuilder
 {
     public String? AgentName { get; private set; }
     public String? AgentType { get; private set; }
+
+    public IAgentApp? AgentApp { get; set; } = null;
 
     public IAgentBuilder ConfigureTextEmbeddingModel(String modelName, AIModel aIModel)
     {
@@ -25,6 +28,8 @@ public class AgentBuilder : IAgentBuilder
     {
         AgentName = agentName;
         AgentType = agentType;
+
+        this.AgentApp = AgentAppFactory.CreateAgentApp(agentName, agentType);
 
         return this;
     }

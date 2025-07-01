@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AgenticLayer.AgentApp\AgenticLayer.AgentApp.csproj" />
     <ProjectReference Include="..\AgenticLayer.Interfaces\AgenticLayer.Interfaces.csproj" />
   </ItemGroup>
 

@@ -61,6 +61,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgenticLayer.AgentModels", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgenticLayer.AgentApp", "Framework\AgenticLayer\AgenticLayer.AgentApp\AgenticLayer.AgentApp.csproj", "{EE5BA281-2101-4062-888A-8A4AFC3F6521}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgenticLayer.DataLayer", "Framework\AgenticLayer\AgenticLayer.DataLayer\AgenticLayer.DataLayer.csproj", "{1BDA8F17-2A20-4492-87F4-5A3B9412CC80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +137,10 @@ Global
 		{EE5BA281-2101-4062-888A-8A4AFC3F6521}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE5BA281-2101-4062-888A-8A4AFC3F6521}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE5BA281-2101-4062-888A-8A4AFC3F6521}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BDA8F17-2A20-4492-87F4-5A3B9412CC80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BDA8F17-2A20-4492-87F4-5A3B9412CC80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BDA8F17-2A20-4492-87F4-5A3B9412CC80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BDA8F17-2A20-4492-87F4-5A3B9412CC80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +169,7 @@ Global
 		{AD0F3D1F-C86C-45C5-B62F-7FF362A848D0} = {9E4139E0-9DC5-462C-B0DA-0C7BFBF68EAA}
 		{7B638DED-4072-4B27-AD2F-B7DCFB17B2D2} = {9E4139E0-9DC5-462C-B0DA-0C7BFBF68EAA}
 		{EE5BA281-2101-4062-888A-8A4AFC3F6521} = {9E4139E0-9DC5-462C-B0DA-0C7BFBF68EAA}
+		{1BDA8F17-2A20-4492-87F4-5A3B9412CC80} = {9E4139E0-9DC5-462C-B0DA-0C7BFBF68EAA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EBEFC3B0-6208-481B-B6D6-154F640C6615}

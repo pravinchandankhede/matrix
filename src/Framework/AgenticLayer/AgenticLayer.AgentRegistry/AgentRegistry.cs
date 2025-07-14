@@ -8,8 +8,8 @@
 
 namespace Matrix.AgenticLayer.AgentRegistry;
 
-using System.Collections.Concurrent;
 using Matrix.AgenticLayer.AgentModels;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 /// <summary>
@@ -17,14 +17,14 @@ using System.Collections.Generic;
 /// </summary>
 public class AgentRegistry
 {
-    private readonly ConcurrentDictionary<string, Agent> _agents = new();
+    private readonly ConcurrentDictionary<String, Agent> _agents = new();
 
     /// <summary>
     /// Registers a new agent in the registry.
     /// </summary>
     /// <param name="agent">The agent to register.</param>
     /// <returns>True if the agent was added; false if an agent with the same name already exists.</returns>
-    public bool RegisterAgent(Agent agent)
+    public Boolean RegisterAgent(Agent agent)
     {
         return _agents.TryAdd(agent.Name, agent);
     }
@@ -34,7 +34,7 @@ public class AgentRegistry
     /// </summary>
     /// <param name="agent">The agent with updated information.</param>
     /// <returns>True if the agent was updated.</returns>
-    public bool UpdateAgent(Agent agent)
+    public Boolean UpdateAgent(Agent agent)
     {
         _agents[agent.Name] = agent;
         return true;
@@ -45,9 +45,9 @@ public class AgentRegistry
     /// </summary>
     /// <param name="name">The name of the agent.</param>
     /// <returns>The agent if found; otherwise, null.</returns>
-    public Agent? GetAgent(string name)
+    public Agent? GetAgent(String name)
     {
-        _agents.TryGetValue(name, out var agent);
+        _agents.TryGetValue(name, out Agent? agent);
         return agent;
     }
 
@@ -62,7 +62,7 @@ public class AgentRegistry
     /// </summary>
     /// <param name="name">The name of the agent to remove.</param>
     /// <returns>True if the agent was removed; otherwise, false.</returns>
-    public bool RemoveAgent(string name)
+    public Boolean RemoveAgent(String name)
     {
         return _agents.TryRemove(name, out _);
     }

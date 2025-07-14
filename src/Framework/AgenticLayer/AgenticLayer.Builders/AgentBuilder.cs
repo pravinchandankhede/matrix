@@ -38,4 +38,9 @@ public class AgentBuilder : IAgentBuilder
     {
         throw new NotImplementedException();
     }
+
+    public IAgentBuilder ConfigureTransformationModel(String modelName, AIModel aIModel)
+    {
+        throw new NotImplementedException();
+    }
 }

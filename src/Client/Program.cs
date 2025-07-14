@@ -26,6 +26,17 @@ public static class Program
                 ModelEndpoint = "https://api.example.com/embedding",
                 ModelApiKey = "your-api-key",
                 ModelRegion = "us-west-1"
+            })
+            .ConfigureTransformationModel("ModelName", new AIModel
+            {
+                ModelName = "GPT Transform Model",
+                ModelType = "GPT",
+                ModelVersion = "1.0",
+                ModelDescription = "An example transformation model.",
+                ModelProvider = "ExampleProvider",
+                ModelEndpoint = "https://api.example.com/transform",
+                ModelApiKey = "your-api",
+                ModelRegion = "us-west-1"
             });
 
         IAgentApp agent = builder.Build();

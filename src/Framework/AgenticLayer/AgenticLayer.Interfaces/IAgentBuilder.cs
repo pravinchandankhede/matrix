@@ -15,4 +15,5 @@ public interface IAgentBuilder
     IAgentApp Build();
     IAgentBuilder ConfigureAgent(String agentName, String agentType);
     IAgentBuilder ConfigureTextEmbeddingModel(String modelName, AIModel aIModel);
+    IAgentBuilder ConfigureTransformationModel(String modelName, AIModel aIModel);
 }

@@ -1,0 +1,48 @@
+[
+    {
+        "AgentName": "Invoice",
+        "AgentDescription": "An agent that processes invoices and manages billing tasks.",
+        "AgentType": "Billing",
+        "AgentCapabilities": [
+            "Invoice processing",
+            "Billing management",
+            "Payment tracking"
+        ],
+        "AgentStatus": "Active",
+        "AgentVersion": "1.0.0",
+        "AgentCreatedDate": "2023-10-01T12:00:00Z",
+        "AgentLastUpdatedDate": "2023-10-15T12:00:00Z",
+        "AgentConfiguration": {
+            "MaxRetries": 3,
+            "TimeoutSeconds": 30,
+            "LogLevel": "Info"
+        },
+        "AgentDependencies": [
+            "DatabaseService",
+            "NotificationService"
+        ]
+    },
+    {
+        "AgentName": "CustomerSupport",
+        "AgentDescription": "An agent that handles customer support queries and issues.",
+        "AgentType": "Support",
+        "AgentCapabilities": [
+            "Query handling",
+            "Issue resolution",
+            "Feedback collection"
+        ],
+        "AgentStatus": "Active",
+        "AgentVersion": "1.0.0",
+        "AgentCreatedDate": "2023-10-05T12:00:00Z",
+        "AgentLastUpdatedDate": "2023-10-20T12:00:00Z",
+        "AgentConfiguration": {
+            "MaxRetries": 5,
+            "TimeoutSeconds": 45,
+            "LogLevel": "Debug"
+        },
+        "AgentDependencies": [
+            "CRMService",
+            "KnowledgeBaseService"
+        ]
+    }
+]

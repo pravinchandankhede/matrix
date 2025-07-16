@@ -1,8 +1,8 @@
-﻿namespace AgenticLayer.DataLayer;
+﻿namespace Matrix.AgenticLayer.DataLayer;
 
 using Matrix.AgenticLayer.AgentModels;
 
-internal class AgentRepository : IAgentRepository
+public class AgentRepository : IAgentRepository
 {
     readonly List<Agent> agentList = [];
 

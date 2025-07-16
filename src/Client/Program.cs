@@ -7,6 +7,7 @@
 // ------------------------------------------------------------------------------
 
 using Matrix.AgenticLayer.AgentModels;
+using Matrix.AgenticLayer.AgentRegistry;
 using Matrix.AgenticLayer.BaseAgent;
 using Matrix.AgenticLayer.Interfaces;
 
@@ -15,7 +16,7 @@ public static class Program
     public static void Main(String[] args)
     {
         var builder = AgentFactory.CreateBuilder()
-            .ConfigureAgent("ExampleAgent", "TypeA")
+            .ConfigureAgent("ExampleAgent", "SemanticKernel")
             .ConfigureTextEmbeddingModel("ExampleModel", new AIModel
             {
                 ModelName = "ExampleModel",
@@ -47,5 +48,9 @@ public static class Program
         });
 
         Console.WriteLine($"Response {response}");
+
+        AgentRegistry agentRegistry = new AgentRegistry();
+        agentRegistry.GetAllAgents().ToList().ForEach(m =>
+        Console.WriteLine(m.Name));
     }
 }

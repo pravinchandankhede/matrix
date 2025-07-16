@@ -1,6 +1,6 @@
 [
     {
-        "AgentName": "Invoice",
+        "Name": "Invoice",
         "AgentDescription": "An agent that processes invoices and manages billing tasks.",
         "AgentType": "Billing",
         "AgentCapabilities": [
@@ -23,7 +23,7 @@
         ]
     },
     {
-        "AgentName": "CustomerSupport",
+        "Name": "CustomerSupport",
         "AgentDescription": "An agent that handles customer support queries and issues.",
         "AgentType": "Support",
         "AgentCapabilities": [

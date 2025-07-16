@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AgenticLayer.AgentModels\AgenticLayer.AgentModels.csproj" />
+    <ProjectReference Include="..\AgenticLayer.DataLayer\AgenticLayer.DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

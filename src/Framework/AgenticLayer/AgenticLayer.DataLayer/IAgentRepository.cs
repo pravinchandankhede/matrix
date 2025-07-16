@@ -1,4 +1,4 @@
-﻿namespace AgenticLayer.DataLayer;
+﻿namespace Matrix.AgenticLayer.DataLayer;
 
 using Matrix.AgenticLayer.AgentModels;
 using System;

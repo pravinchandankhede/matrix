@@ -21,7 +21,8 @@ public class AgentBuilder : IAgentBuilder
 
     public IAgentBuilder ConfigureTextEmbeddingModel(String modelName, AIModel aIModel)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
+        return this;
     }
 
     public IAgentBuilder ConfigureAgent(String agentName, String agentType)
@@ -36,11 +37,13 @@ public class AgentBuilder : IAgentBuilder
 
     public IAgentApp Build()
     {
-        throw new NotImplementedException();
+        return this.AgentApp!;
+        //throw new NotImplementedException();
     }
 
     public IAgentBuilder ConfigureTransformationModel(String modelName, AIModel aIModel)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
+        return this;
     }
 }

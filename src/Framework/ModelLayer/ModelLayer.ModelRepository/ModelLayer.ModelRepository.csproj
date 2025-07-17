@@ -8,8 +8,4 @@
     <RootNamespace>Matrix.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ModelLayer.DataModels\ModelLayer.DataModels.csproj" />
-  </ItemGroup>
-
 </Project>

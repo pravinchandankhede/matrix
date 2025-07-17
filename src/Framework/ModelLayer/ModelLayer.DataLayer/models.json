@@ -1,0 +1,35 @@
+[
+    {
+        "Name": "GPT3",
+        "Type": "Chat",
+        "Version": "3",
+        "Description": "Chat model",
+        "Provider": "OpenAI",
+        "Endpoint": "https://api.openai.com/v1/chat/completions",
+        "ApiKey": "your-api-key-here",
+        "Region": "us-west-2",
+        "IsEnabled": true
+    },
+    {
+        "Name": "GPT4",
+        "Type": "Chat",
+        "Version": "4",
+        "Description": "Advanced chat model",
+        "Provider": "OpenAI",
+        "Endpoint": "https://api.openai.com/v1/chat/completions",
+        "ApiKey": "your-api-key-here",
+        "Region": "us-west-2",
+        "IsEnabled": true
+    },
+    {
+        "Name": "BERT",
+        "Type": "Text",
+        "Version": "1.0",
+        "Description": "Text processing model",
+        "Provider": "Google AI",
+        "Endpoint": "https://api.google.com/v1/text/bert",
+        "ApiKey": "your-api-key-here",
+        "Region": "us-central1",
+        "IsEnabled": false
+    }
+]

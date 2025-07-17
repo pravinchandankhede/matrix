@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ModelLayer\ModelLayer.DataModels\ModelLayer.DataModels.csproj" />
     <ProjectReference Include="..\AgenticLayer.AgentModels\AgenticLayer.AgentModels.csproj" />
   </ItemGroup>
 

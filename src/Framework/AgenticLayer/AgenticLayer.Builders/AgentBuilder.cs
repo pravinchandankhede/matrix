@@ -9,8 +9,8 @@
 namespace Matrix.AgenticLayer.Builders;
 
 using Matrix.AgenticLayer.AgentApp;
-using Matrix.AgenticLayer.AgentModels;
 using Matrix.AgenticLayer.Interfaces;
+using Matrix.ModelLayer.DataModels;
 
 public class AgentBuilder : IAgentBuilder
 {
@@ -19,7 +19,7 @@ public class AgentBuilder : IAgentBuilder
 
     public IAgentApp? AgentApp { get; set; } = null;
 
-    public IAgentBuilder ConfigureTextEmbeddingModel(String modelName, AIModel aIModel)
+    public IAgentBuilder ConfigureTextEmbeddingModel(String modelName, Model model)
     {
         //throw new NotImplementedException();
         return this;
@@ -41,7 +41,7 @@ public class AgentBuilder : IAgentBuilder
         //throw new NotImplementedException();
     }
 
-    public IAgentBuilder ConfigureTransformationModel(String modelName, AIModel aIModel)
+    public IAgentBuilder ConfigureTransformationModel(String modelName, Model model)
     {
         //throw new NotImplementedException();
         return this;

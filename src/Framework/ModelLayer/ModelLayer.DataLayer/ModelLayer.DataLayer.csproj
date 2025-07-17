@@ -12,4 +12,10 @@
     <ProjectReference Include="..\ModelLayer.DataModels\ModelLayer.DataModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="models.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

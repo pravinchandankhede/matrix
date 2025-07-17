@@ -6,17 +6,17 @@
 //  THIS CODE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 // ------------------------------------------------------------------------------
 
-namespace Matrix.AgenticLayer.AgentModels;
+namespace Matrix.ModelLayer.DataModels;
 
-public class AIModel
+public class Model
 {
-    public String? ModelName { get; set; }
-    public String? ModelType { get; set; }
-    public String? ModelVersion { get; set; }
-    public String? ModelDescription { get; set; }
-    public String? ModelProvider { get; set; }
-    public String? ModelEndpoint { get; set; }
-    public String? ModelApiKey { get; set; }
-    public String? ModelRegion { get; set; }
+    public required String Name { get; set; }
+    public String? Type { get; set; }
+    public String? Version { get; set; }
+    public String? Description { get; set; }
+    public String? Provider { get; set; }
+    public String? Endpoint { get; set; }
+    public String? ApiKey { get; set; }
+    public String? Region { get; set; }
     public Boolean IsEnabled { get; set; } = true;
 }

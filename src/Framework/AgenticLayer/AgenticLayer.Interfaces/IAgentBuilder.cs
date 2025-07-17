@@ -8,12 +8,12 @@
 
 namespace Matrix.AgenticLayer.Interfaces;
 
-using Matrix.AgenticLayer.AgentModels;
+using Matrix.ModelLayer.DataModels;
 
 public interface IAgentBuilder
 {
     IAgentApp Build();
     IAgentBuilder ConfigureAgent(String agentName, String agentType);
-    IAgentBuilder ConfigureTextEmbeddingModel(String modelName, AIModel aIModel);
-    IAgentBuilder ConfigureTransformationModel(String modelName, AIModel aIModel);
+    IAgentBuilder ConfigureTextEmbeddingModel(String modelName, Model model);
+    IAgentBuilder ConfigureTransformationModel(String modelName, Model model);
 }

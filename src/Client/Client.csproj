@@ -11,6 +11,7 @@
     <ProjectReference Include="..\Framework\AgenticLayer\AgenticLayer.AgentRegistry\AgenticLayer.AgentRegistry.csproj" />
     <ProjectReference Include="..\Framework\AgenticLayer\AgenticLayer.BaseAgent\AgenticLayer.BaseAgent.csproj" />
     <ProjectReference Include="..\Framework\AgenticLayer\AgenticLayer.Interfaces\AgenticLayer.Interfaces.csproj" />
+    <ProjectReference Include="..\Framework\ModelLayer\ModelLayer.DataLayer\ModelLayer.DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

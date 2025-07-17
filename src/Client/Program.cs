@@ -10,6 +10,8 @@ using Matrix.AgenticLayer.AgentModels;
 using Matrix.AgenticLayer.AgentRegistry;
 using Matrix.AgenticLayer.BaseAgent;
 using Matrix.AgenticLayer.Interfaces;
+using Matrix.ModelLayer.DataLayer;
+using Matrix.ModelLayer.DataModels;
 
 public static class Program
 {
@@ -17,27 +19,27 @@ public static class Program
     {
         var builder = AgentFactory.CreateBuilder()
             .ConfigureAgent("ExampleAgent", "SemanticKernel")
-            .ConfigureTextEmbeddingModel("ExampleModel", new AIModel
+            .ConfigureTextEmbeddingModel("ExampleModel", new Model
             {
-                ModelName = "ExampleModel",
-                ModelType = "TextEmbedding",
-                ModelVersion = "1.0",
-                ModelDescription = "An example text embedding model.",
-                ModelProvider = "ExampleProvider",
-                ModelEndpoint = "https://api.example.com/embedding",
-                ModelApiKey = "your-api-key",
-                ModelRegion = "us-west-1"
+                Name = "ExampleModel",
+                Type = "TextEmbedding",
+                Version = "1.0",
+                Description = "An example text embedding model.",
+                Provider = "ExampleProvider",
+                Endpoint = "https://api.example.com/embedding",
+                ApiKey = "your-api-key",
+                Region = "us-west-1"
             })
-            .ConfigureTransformationModel("ModelName", new AIModel
+            .ConfigureTransformationModel("ModelName", new Model
             {
-                ModelName = "GPT Transform Model",
-                ModelType = "GPT",
-                ModelVersion = "1.0",
-                ModelDescription = "An example transformation model.",
-                ModelProvider = "ExampleProvider",
-                ModelEndpoint = "https://api.example.com/transform",
-                ModelApiKey = "your-api",
-                ModelRegion = "us-west-1"
+                Name = "GPT Transform Model",
+                Type = "GPT",
+                Version = "1.0",
+                Description = "An example transformation model.",
+                Provider = "ExampleProvider",
+                Endpoint = "https://api.example.com/transform",
+                ApiKey = "your-api",
+                Region = "us-west-1"
             });
 
         IAgentApp agent = builder.Build();
@@ -52,5 +54,10 @@ public static class Program
         AgentRegistry agentRegistry = new AgentRegistry();
         agentRegistry.GetAllAgents().ToList().ForEach(m =>
         Console.WriteLine(m.Name));
+
+        ModelRepository modelRepository = new ModelRepository();
+        modelRepository.GetAllModels().ToList().ForEach(m => {
+            Console.WriteLine(m.Name);
+        });
     }
 }

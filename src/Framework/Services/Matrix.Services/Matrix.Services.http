@@ -1,6 +1,0 @@
-@Matrix.Services_HostAddress = http://localhost:5248
-
-GET {{Matrix.Services_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

@@ -1,0 +1,44 @@
+<div class="model-list-container">
+    <div class="toolbar">
+        <button (click)="addModel()">Add Model</button>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name...">
+        <button (click)="onSearch()">Search</button>
+        <select #filterSelect (change)="onFilterChange(filterSelect.value)">
+            <option value="">All</option>
+            <option value="true">Enabled</option>
+            <option value="false">Disabled</option>
+        </select>
+        <button (click)="onSearch()">Filter</button>
+    </div>
+    <table class="model-grid">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Version</th>
+                <th>Description</th>
+                <th>Provider</th>
+                <th>Endpoint</th>
+                <th>Region</th>
+                <th>Enabled</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of filteredModels">
+                <td>{{ model.name }}</td>
+                <td>{{ model.type }}</td>
+                <td>{{ model.version }}</td>
+                <td>{{ model.description }}</td>
+                <td>{{ model.provider }}</td>
+                <td>{{ model.endpoint }}</td>
+                <td>{{ model.region }}</td>
+                <td>{{ model.isEnabled ? 'Yes' : 'No' }}</td>
+                <td>
+                    <button (click)="editModel(model)">Edit</button>
+                    <button (click)="deleteModel(model)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

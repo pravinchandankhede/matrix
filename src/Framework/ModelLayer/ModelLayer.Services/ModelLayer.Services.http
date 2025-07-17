@@ -1,0 +1,6 @@
+@ModelLayer.Services_HostAddress = http://localhost:5145
+
+GET {{ModelLayer.Services_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

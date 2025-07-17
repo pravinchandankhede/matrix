@@ -57,3 +57,7 @@ nunit-*.xml
 /src/.vs/matrix
 /src/.vs/ProjectEvaluation
 /src/.vs/CopilotSnapshots/
+/src/Framework/AgenticLayer/AgenticLayer.Services/AgenticLayer.Services.csproj.user
+/src/Framework/ModelLayer/ModelLayer.Services/ModelLayer.Services.csproj.user
+/src/Framework/Services/Matrix.ServiceGateway/Matrix.ServiceGateway.csproj.user
+/src/Framework/Services/Matrix.Services/Matrix.Services.csproj.user

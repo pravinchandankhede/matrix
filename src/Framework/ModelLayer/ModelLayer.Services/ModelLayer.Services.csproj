@@ -7,7 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\ModelLayer.DataLayer\models.json" Link="models.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ModelLayer.DataLayer\ModelLayer.DataLayer.csproj" />
+    <ProjectReference Include="..\ModelLayer.DataModels\ModelLayer.DataModels.csproj" />
   </ItemGroup>
 
 </Project>

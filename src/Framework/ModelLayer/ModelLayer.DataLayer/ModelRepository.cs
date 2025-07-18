@@ -9,7 +9,8 @@ public class ModelRepository : IModelRepository
 
     public ModelRepository()
     {
-    var models = File.ReadAllText("models.json");
+        var directory = AppDomain.CurrentDomain.BaseDirectory;
+        var models = File.ReadAllText(Path.Join(directory,"models.json"));
         // Assuming models.json contains a JSON array of Model objects
         modelList = System.Text.Json.JsonSerializer.Deserialize<List<Model>>(models) ?? new List<Model>();
     }

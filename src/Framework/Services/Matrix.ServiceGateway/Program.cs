@@ -14,6 +14,23 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        // Read allowed origins from configuration
+        String[]? allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<String[]>();
+        const String CorsPolicyName = "AppCorsPolicy";
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: CorsPolicyName,
+                policy =>
+                {
+                    if (allowedOrigins != null && allowedOrigins.Length > 0)
+                    {
+                        policy.WithOrigins(allowedOrigins)
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    }
+                });
+        });
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -24,12 +41,9 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
-
+        app.UseCors(CorsPolicyName);
+        app.UseAuthorization();        
         app.MapControllers();
-
         app.Run();
     }
 }

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ModelService } from '../../../services/model-service';
-import { Observable } from 'rxjs';
 import { Model } from '../../../datamodels/model';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-model-list',
     standalone: false,
     templateUrl: './model-list.component.html',
-    styleUrl: './model-list.component.css'
+    styleUrls: ['./model-list.component.css']
 })
 export class ModelListComponent implements OnInit {
     models: Model[] = [];
@@ -36,25 +36,47 @@ export class ModelListComponent implements OnInit {
         });
     }
 
+    /**
+     * Returns a CSS class for the status badge based on model enabled state.
+     */
+    getStatusBadgeClass(model: Model): string {
+        return model.isEnabled ? 'enabled' : 'disabled';
+    }
+
+    /**
+     * Handles search input and applies filter.
+     */
     onSearch(): void {
         this.applyFilter();
     }
 
+    /**
+     * Handles filter dropdown change and applies filter.
+     */
     onFilterChange(value: string): void {
-        if (value === '') this.filterEnabled = null;
-        else this.filterEnabled = value === 'true';
+        this.filterEnabled = value === '' ? null : value === 'true';
         this.applyFilter();
     }
 
+    /**
+     * Navigates to the add model form (implement navigation logic here).
+     */
     addModel(): void {
-        // Implement navigation to add model form
+        // TODO: Implement navigation to add model form using Angular Router
     }
 
+    /**
+     * Navigates to the edit model form (implement navigation logic here).
+     */
     editModel(model: Model): void {
-        // Implement navigation to edit model form
+        // TODO: Implement navigation to edit model form using Angular Router
     }
 
+    /**
+     * Deletes a model after confirmation, then reloads the list.
+     */
     deleteModel(model: Model): void {
+        // TODO: Replace confirm with a modern dialog for better UX
         if (confirm(`Are you sure you want to delete model '${model.name}'?`)) {
             this.modelService.deleteModel((model as any).id).subscribe(() => this.loadModels());
         }

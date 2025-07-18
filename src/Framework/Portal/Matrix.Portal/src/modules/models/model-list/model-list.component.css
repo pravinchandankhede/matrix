@@ -1,0 +1,138 @@
+/* Modern Bootstrap-based styles for model list */
+.model-list-container.modern {
+    padding: 2rem 1rem;
+}
+
+.modern-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 1rem 1.5rem;
+}
+
+.add-btn {
+    gap: 0.5rem;
+}
+
+.search-filter-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.75rem;
+}
+
+    .search-box input {
+        border: none;
+        background: transparent;
+        outline: none;
+        margin-left: 0.5rem;
+    }
+
+select {
+    min-width: 120px;
+}
+
+.model-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.model-card {
+    border-radius: 1rem;
+    padding: 1.5rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s;
+}
+
+    .model-card:hover {
+        box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    }
+
+.model-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.model-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.status-badge.enabled {
+    color: #fff;
+    background: #198754;
+    border-radius: 0.5rem;
+    padding: 0.25em 0.75em;
+    font-size: 0.95em;
+}
+
+.status-badge.disabled {
+    color: #fff;
+    background: #6c757d;
+    border-radius: 0.5rem;
+    padding: 0.25em 0.75em;
+    font-size: 0.95em;
+}
+
+.model-card-body {
+    margin-bottom: 1rem;
+}
+
+.model-info-row {
+    margin-bottom: 0.25rem;
+    font-size: 0.98rem;
+}
+
+.label {
+    font-weight: 500;
+    color: #555;
+    margin-right: 0.25rem;
+}
+
+.endpoint {
+    font-family: monospace;
+    color: #0d6efd;
+}
+
+.desc {
+    color: #666;
+}
+
+.model-card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-btn {
+    display: flex;
+    align-items: center;
+}
+
+.delete-btn {
+    display: flex;
+    align-items: center;
+}
+
+.material-icons {
+    font-size: 1.1em;
+    vertical-align: middle;
+}

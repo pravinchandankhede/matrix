@@ -1,4 +1,4 @@
-<div class="model-list-container">
+<!--<div class="model-list-container">
     <div class="toolbar">
         <button (click)="addModel()">Add Model</button>
         <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name...">
@@ -41,4 +41,49 @@
             </tr>
         </tbody>
     </table>
+</div>-->
+
+<div class="model-list-container modern">
+    <div class="toolbar modern-toolbar">
+        <button class="add-btn" (click)="addModel()">
+            <span class="material-icons">add_circle</span> Add Model
+        </button>
+        <div class="search-filter-group">
+            <div class="search-box">
+                <span class="material-icons">search</span>
+                <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name...">
+            </div>
+            <select #filterSelect (change)="onFilterChange(filterSelect.value)">
+                <option value="">All</option>
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+            </select>
+            <button class="filter-btn" (click)="onSearch()">
+                <span class="material-icons">filter_list</span> Filter
+            </button>
+        </div>
+    </div>
+    <div class="model-card-grid">
+        <div class="model-card" *ngFor="let model of filteredModels">
+            <div class="model-card-header">
+                <span class="model-name">{{ model.name }}</span>
+                <span class="status-badge" [ngClass]="model.isEnabled ? 'enabled' : 'disabled'">
+                    {{ model.isEnabled ? 'Enabled' : 'Disabled' }}
+                </span>
+            </div>
+            <div class="model-card-body">
+                <div class="model-info-row"><span class="label">Type:</span> {{ model.type }}</div>
+                <div class="model-info-row"><span class="label">Version:</span> {{ model.version }}</div>
+                <div class="model-info-row"><span class="label">Provider:</span> {{ model.provider }}</div>
+                <div class="model-info-row"><span class="label">Endpoint:</span> <span class="endpoint">{{ model.endpoint }}</span></div>
+                <div class="model-info-row"><span class="label">Region:</span> {{ model.region }}</div>
+                <div class="model-info-row"><span class="label">Description:</span> <span class="desc">{{ model.description }}</span></div>
+            </div>
+            <div class="model-card-actions">
+                <button class="edit-btn" (click)="editModel(model)"><span class="material-icons">edit</span></button>
+                <button class="delete-btn" (click)="deleteModel(model)"><span class="material-icons">delete</span></button>
+            </div>
+        </div>
+    </div>
 </div>
+

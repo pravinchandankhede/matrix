@@ -1,4 +1,5 @@
-<app-header></app-header>
+<app-header (profileClick)="onProfileClick()"></app-header>
+<app-profile [open]="profileOpen" [name]="userName" [email]="userEmail" [role]="userRole" (openChange)="profileOpen = $event"></app-profile>
 <main class="app-body container-fluid">
     <div class="hero-section">
         <h1>Welcome to the Agentic Platform</h1>

@@ -1,0 +1,11 @@
+<div class="profile-flyout" [class.open]="open">
+    <div class="profile-header">
+        <span class="profile-title">User Profile</span>
+        <button class="close-btn" (click)="close()">&times;</button>
+    </div>
+    <div class="profile-info">
+        <div class="profile-row"><span class="label">Name:</span> {{ name }}</div>
+        <div class="profile-row"><span class="label">Email:</span> {{ email }}</div>
+        <div class="profile-row"><span class="label">Role:</span> {{ role }}</div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+/* Flyout menu styles for profile */
+.profile-flyout {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 320px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -2px 0 16px rgba(0,0,0,0.12);
+    transition: right 0.3s cubic-bezier(.4,0,.2,1);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+}
+
+    .profile-flyout.open {
+        right: 0;
+    }
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.profile-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #0d6efd;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+    .close-btn:hover {
+        color: #0d6efd;
+    }
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.profile-row {
+    font-size: 1.08rem;
+    color: #333;
+}
+
+.label {
+    font-weight: 500;
+    color: #666;
+    margin-right: 0.5rem;
+}

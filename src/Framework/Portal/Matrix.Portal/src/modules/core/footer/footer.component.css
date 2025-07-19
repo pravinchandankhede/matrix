@@ -1,0 +1,10 @@
+/* Footer styles */
+.app-footer {
+    background: var(--footer-bg);
+    color: #888;
+    text-align: center;
+    padding: 1rem 0 0.5rem 0;
+    font-size: 0.98rem;
+    border-top: 1px solid #e5e5e5;
+    flex-shrink: 0;
+}

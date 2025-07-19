@@ -1,1 +1,41 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles and CSS variables */
+:root {
+    --primary: #0d6efd;
+    --secondary: #6610f2;
+    --header-bg: #fff;
+    --footer-bg: #f8f9fb;
+    --body-bg: #f8f9fb;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--body-bg);
+    color: #222;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Utility classes */
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.text-secondary {
+    color: var(--secondary) !important;
+}
+
+.bg-primary {
+    background: var(--primary) !important;
+    color: #fff !important;
+}
+
+.bg-secondary {
+    background: var(--secondary) !important;
+    color: #fff !important;
+}

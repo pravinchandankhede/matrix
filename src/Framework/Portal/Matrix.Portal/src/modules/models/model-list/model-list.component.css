@@ -1,4 +1,4 @@
-/* Modern Bootstrap-based styles for model list */
+/* Modern, clean styles for model list */
 .model-list-container.modern {
     padding: 2rem 1rem;
 }
@@ -122,12 +122,7 @@ select {
     gap: 0.5rem;
 }
 
-.edit-btn {
-    display: flex;
-    align-items: center;
-}
-
-.delete-btn {
+.edit-btn, .delete-btn {
     display: flex;
     align-items: center;
 }

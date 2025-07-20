@@ -1,14 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Agent } from '../../../datamodels/agent.model';
+import { AgentListService } from '../../../services/agent-list.service';
 
 @Component({
   selector: 'app-agent-list',
+  standalone: false,
   templateUrl: './agent-list.component.html',
   styleUrls: ['./agent-list.component.css']
 })
-export class AgentListComponent {
-  agents = [
-    { name: 'Agent Alpha', status: 'Running', type: 'LLM', description: 'Handles customer queries.' },
-    { name: 'Agent Beta', status: 'Idle', type: 'Data', description: 'Processes data streams.' },
-    { name: 'Agent Gamma', status: 'Running', type: 'RAG', description: 'Retrieves knowledge base info.' }
-  ];
+export class AgentListComponent implements OnInit {
+  agents: Agent[] = [];
+
+  constructor(private agentListService: AgentListService) {}
+
+  ngOnInit() {
+    this.agentListService.getAgents().subscribe(data => this.agents = data);
+  }
 }

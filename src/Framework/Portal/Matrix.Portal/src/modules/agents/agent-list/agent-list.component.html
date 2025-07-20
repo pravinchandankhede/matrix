@@ -1,0 +1,15 @@
+<div class="agent-list-container">
+  <h2>Current Agents</h2>
+  <div class="agent-card-grid">
+    <div class="agent-card" *ngFor="let agent of agents">
+      <div class="agent-card-header">
+        <span class="agent-name">{{ agent.name }}</span>
+        <span class="agent-status" [ngClass]="agent.status.toLowerCase()">{{ agent.status }}</span>
+      </div>
+      <div class="agent-card-body">
+        <div class="agent-info-row"><span class="label">Type:</span> {{ agent.type }}</div>
+        <div class="agent-info-row"><span class="label">Description:</span> {{ agent.description }}</div>
+      </div>
+    </div>
+  </div>
+</div>

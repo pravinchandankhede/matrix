@@ -4,10 +4,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ShellComponent } from './shell/shell.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+        AppComponent,
+        HeaderComponent,
+        FooterComponent,
+        ProfileComponent,
+        ShellComponent
   ],
   imports: [
     BrowserModule,

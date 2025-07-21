@@ -1,26 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { ShellComponent } from './shell/shell.component';
+import { HeaderComponent } from '../../app/header/header.component';
+import { FooterComponent } from '../../app/footer/footer.component';
+import { ShellComponent } from '../../app/shell/shell.component';
 import { CoreRoutingModule } from './core-routing.module';
 import { MatIconModule } from '@angular/material/icon';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from '../../app/profile/profile.component';
 
 @NgModule({
     declarations: [
-        HeaderComponent,
-        FooterComponent,
-        ShellComponent,
-        ProfileComponent
+        //HeaderComponent,
+        //FooterComponent,
+        //ShellComponent,
+        //ProfileComponent
     ],
     imports: [
         CommonModule,
         MatIconModule,
-        CoreRoutingModule
+        CoreRoutingModule,
     ],
     exports: [
-        ProfileComponent
+        //ProfileComponent,
+        //HeaderComponent,
+        //FooterComponent,
     ]
 })
 export class CoreModule { }

@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ShellComponent } from './shell/shell.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        loadChildren: () =>
-            import('../modules/core/core.module').then(m => m.CoreModule)
-    },
+    { path: '', component: ShellComponent },
     {
         path: 'models',
         loadChildren: () =>
             import('../modules/models/models.module').then(m => m.ModelsModule)
+    },
+    {
+        path: 'agents',
+        loadChildren: () =>
+            import('../modules/agents/agents.module').then(m => m.AgentsModule)
     },
     //{
     //    path: 'portfolio',

@@ -8,15 +8,15 @@ import { Component } from '@angular/core';
 })
 export class ShellComponent {
     profileOpen = false;
-    userName = 'John Doe';
-    userEmail = 'john.doe@example.com';
+    userName = 'Pravin C';
+    userEmail = 'pravinc@example.com';
     userRole = 'Administrator';
 
-    onProfileClick() {
-        this.profileOpen = true;
-    }
+    //onProfileClick() {
+    //    this.profileOpen = true;
+    //}
 
-    onProfileClose() {
-        this.profileOpen = false;
-    }
+    //onProfileClose() {
+    //    this.profileOpen = false;
+    //}
 }

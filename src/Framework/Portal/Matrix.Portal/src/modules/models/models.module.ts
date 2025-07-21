@@ -6,14 +6,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    ModelListComponent
-  ],
-  imports: [
-      CommonModule,
-      ReactiveFormsModule,
-      FormsModule,
-      ModelsRoutingModule
-  ]
+    declarations: [
+        ModelListComponent
+    ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        ModelsRoutingModule
+    ]
 })
 export class ModelsModule { }

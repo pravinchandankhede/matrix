@@ -8,6 +8,18 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
     title = 'Matrix.Portal';
+    profileOpen = false;
+    userName = 'Pravin C';
+    userEmail = 'pravinc@example.com';
+    userRole = 'Administrator';
 
-    currentYear = new Date().getFullYear();
+    currentYear = new Date().getFullYear();   
+
+    onProfileClick() {
+        this.profileOpen = true;
+    }
+
+    onProfileClose() {
+        this.profileOpen = false;
+    }
 }

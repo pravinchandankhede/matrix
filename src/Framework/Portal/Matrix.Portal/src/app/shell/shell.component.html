@@ -1,5 +1,5 @@
-<app-header (profileClick)="onProfileClick()"></app-header>
-<app-profile [open]="profileOpen" [name]="userName" [email]="userEmail" [role]="userRole" (openChange)="profileOpen = $event"></app-profile>
+<!--<app-header (profileClick)="onProfileClick()"></app-header>
+<app-profile [open]="profileOpen" [name]="userName" [email]="userEmail" [role]="userRole" (openChange)="profileOpen = $event"></app-profile>-->
 <main class="app-body container-fluid">
     <div class="hero-section">
         <h1>Welcome to the Agentic Platform</h1>
@@ -11,7 +11,7 @@
             <div class="feature-card-title">Current Agents</div>
             <div class="feature-card-count">8</div>
             <div class="feature-card-desc">Active agents running in your environment.</div>
-            <a href="#" class="feature-card-link text-primary">View Agents</a>
+            <a routerLink="/agents" class="feature-card-link text-primary">View Agents</a>
         </div>
         <div class="feature-card">
             <mat-icon>memory</mat-icon>
@@ -42,7 +42,6 @@
             <a href="#" class="feature-card-link text-primary">View Services</a>
         </div>
     </div>
-    <router-outlet></router-outlet>
-
+    <!--<router-outlet></router-outlet>-->
 </main>
-<app-footer></app-footer>
+<!--<app-footer></app-footer>-->

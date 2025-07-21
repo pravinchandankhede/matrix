@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Agent } from '../../../datamodels/agent.model';
-import { AgentListService } from '../../../services/agent-list.service';
+import { AgentService } from '../../../services/agent.service';
 
 @Component({
   selector: 'app-agent-list',
@@ -11,7 +11,7 @@ import { AgentListService } from '../../../services/agent-list.service';
 export class AgentListComponent implements OnInit {
   agents: Agent[] = [];
 
-  constructor(private agentListService: AgentListService) {}
+  constructor(private agentListService: AgentService) {}
 
   ngOnInit() {
     this.agentListService.getAgents().subscribe(data => this.agents = data);

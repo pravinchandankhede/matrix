@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Matrix.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>Matrix.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ModelLayer.DataLayer\ModelLayer.DataLayer.csproj" />
+    <ProjectReference Include="..\ModelLayer.DataModels\ModelLayer.DataModels.csproj" />
+    <ProjectReference Include="..\ModelLayer.Interfaces\ModelLayer.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

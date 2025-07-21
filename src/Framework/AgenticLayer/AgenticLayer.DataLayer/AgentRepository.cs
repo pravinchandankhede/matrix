@@ -8,7 +8,8 @@ public class AgentRepository : IAgentRepository
 
     public AgentRepository()
     {
-        var agents = File.ReadAllText("agents.json");
+        var directory = AppDomain.CurrentDomain.BaseDirectory;
+        var agents = File.ReadAllText(Path.Join(directory, "agents.json"));
         agentList = System.Text.Json.JsonSerializer.Deserialize<List<Agent>>(agents)!;
     }
 

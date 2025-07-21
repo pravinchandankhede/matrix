@@ -1,6 +1,8 @@
 
 namespace AgenticLayer.Services;
 
+using Matrix.AgenticLayer.DataLayer;
+
 public class Program
 {
     public static void Main(string[] args)
@@ -13,6 +15,8 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddScoped<IAgentRepository, AgentRepository>();
 
         var app = builder.Build();
 

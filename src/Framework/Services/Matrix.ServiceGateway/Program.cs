@@ -1,6 +1,9 @@
 
 namespace Matrix.ServiceGateway;
 
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
+
 public class Program
 {
     public static void Main(string[] args)
@@ -13,6 +16,11 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Configuration
+            .AddOcelot("ocelot.json", optional: false, reloadOnChange: true)
+            ;
+        builder.Services.AddOcelot(builder.Configuration);
 
         // Read allowed origins from configuration
         String[]? allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<String[]>();
@@ -40,10 +48,14 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
         app.UseCors(CorsPolicyName);
-        app.UseAuthorization();        
+        //app.UseAuthorization();        
         app.MapControllers();
+
+        // Use Ocelot middleware
+        app.UseOcelot().Wait();
+
         app.Run();
     }
 }

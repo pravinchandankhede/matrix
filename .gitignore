@@ -63,3 +63,4 @@ nunit-*.xml
 /src/Framework/Services/Matrix.Services/Matrix.Services.csproj.user
 /src/Framework/Portal/Matrix.Portal/.vscode
 /src/Framework/Portal/Matrix.Portal/package-lock.json
+/src/matrix.slnLaunch.user

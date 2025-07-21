@@ -1,0 +1,34 @@
+{
+	"GlobalConfiguration": {
+		"BaseUrl": "http://localhost:5003"		
+	},
+	"Routes": [
+		{
+			"DownstreamPathTemplate": "/api/agents/{everything}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7071
+				}
+			],
+			"UpstreamPathTemplate": "/agents/{everything}",
+			"UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+			"SwaggerKey": "AgentService"
+		},
+		{
+			"DownstreamPathTemplate": "/api/models/{everything}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7031
+				}
+			],
+			"UpstreamPathTemplate": "/models/{everything}",
+			"UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+			"SwaggerKey": "ProductService"
+		}
+	]
+
+}

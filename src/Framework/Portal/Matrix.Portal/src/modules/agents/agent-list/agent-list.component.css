@@ -1,52 +1,108 @@
 .agent-list-container {
-  padding: 2rem 0;
+    padding: 2rem 0;
 }
+
+    .agent-list-container h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0d6efd;
+        margin-bottom: 2rem;
+    }
+
 .agent-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
 }
+
 .agent-card {
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  transition: box-shadow 0.2s;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s;
 }
-.agent-card:hover {
-  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-}
+
+    .agent-card:hover {
+        box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    }
+
 .agent-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: .75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 }
+
 .agent-name {
-  font-size: 1.2rem;
-  font-weight: 600;
+    font-size: 1.25rem;
+    font-weight: 600;
 }
-.agent-status {
-  padding: 0.2rem 0.7rem;
-  border-radius: 1rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #fff;
+
+.agent-status-badge {
+    padding: 0.3rem 1rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    background: #6c757d;
 }
-.agent-status.running {
-  background: #28a745;
-}
-.agent-status.idle {
-  background: #ffc107;
-  color: #222;
-}
+
+    .agent-status-badge.active {
+        background: #28a745;
+    }
+
+    .agent-status-badge.inactive {
+        background: #dc3545;
+    }
+
+    .agent-status-badge.maintenance {
+        background: #ffc107;
+        color: #222;
+    }
+
 .agent-info-row {
-  margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
 }
+
+.date-row {
+    display: flex;
+    gap: 2rem;
+    margin-top: 0.5rem;
+}
+
 .label {
-  font-weight: 500;
-  color: #555;
-  margin-right: 0.5rem;
+    font-weight: 500;
+    color: #555;
+    margin-right: 0.5rem;
+}
+
+.feature-badge, .tool-badge {
+    background: #f0f4ff;
+    color: #0d6efd;
+    border-radius: 0.5rem;
+    padding: 0.2rem 0.7rem;
+    margin-right: 0.3rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.desc {
+    color: #666;
+}
+
+mat-icon {
+    font-size: 1.2rem;
+    vertical-align: middle;
+    color: #6610f2;
 }

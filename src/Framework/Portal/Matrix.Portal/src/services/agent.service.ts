@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Agent } from '../datamodels/agent.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class AgentService {
+    private apiUrl = 'https://localhost:7179/agents'; // Update with your actual API endpoint
+
+  constructor(private http: HttpClient) {}
+
   getAgents(): Observable<Agent[]> {
-    return of([
-      { name: 'Agent Alpha', status: 'Running', type: 'LLM', description: 'Handles customer queries.' },
-      { name: 'Agent Beta', status: 'Idle', type: 'Data', description: 'Processes data streams.' },
-      { name: 'Agent Gamma', status: 'Running', type: 'RAG', description: 'Retrieves knowledge base info.' }
-    ]);
+    return this.http.get<Agent[]>(this.apiUrl);
   }
 }

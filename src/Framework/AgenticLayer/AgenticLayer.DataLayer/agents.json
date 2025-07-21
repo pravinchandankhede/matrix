@@ -1,46 +1,46 @@
 [
     {
         "Name": "Invoice",
-        "AgentDescription": "An agent that processes invoices and manages billing tasks.",
-        "AgentType": "Billing",
-        "AgentCapabilities": [
+        "Description": "An agent that processes invoices and manages billing tasks.",
+        "Type": "Billing",
+        "Capabilities": [
             "Invoice processing",
             "Billing management",
             "Payment tracking"
         ],
-        "AgentStatus": "Active",
-        "AgentVersion": "1.0.0",
-        "AgentCreatedDate": "2023-10-01T12:00:00Z",
-        "AgentLastUpdatedDate": "2023-10-15T12:00:00Z",
-        "AgentConfiguration": {
+        "Status": "Active",
+        "Version": "1.0.0",
+        "CreatedDate": "2023-10-01T12:00:00Z",
+        "LastUpdatedDate": "2023-10-15T12:00:00Z",
+        "Configuration": {
             "MaxRetries": 3,
             "TimeoutSeconds": 30,
             "LogLevel": "Info"
         },
-        "AgentDependencies": [
+        "Dependencies": [
             "DatabaseService",
             "NotificationService"
         ]
     },
     {
         "Name": "CustomerSupport",
-        "AgentDescription": "An agent that handles customer support queries and issues.",
-        "AgentType": "Support",
-        "AgentCapabilities": [
+        "Description": "An agent that handles customer support queries and issues.",
+        "Type": "Support",
+        "Capabilities": [
             "Query handling",
             "Issue resolution",
             "Feedback collection"
         ],
-        "AgentStatus": "Active",
-        "AgentVersion": "1.0.0",
-        "AgentCreatedDate": "2023-10-05T12:00:00Z",
-        "AgentLastUpdatedDate": "2023-10-20T12:00:00Z",
-        "AgentConfiguration": {
+        "Status": "Active",
+        "Version": "1.0.0",
+        "CreatedDate": "2023-10-05T12:00:00Z",
+        "LastUpdatedDate": "2023-10-20T12:00:00Z",
+        "Configuration": {
             "MaxRetries": 5,
             "TimeoutSeconds": 45,
             "LogLevel": "Debug"
         },
-        "AgentDependencies": [
+        "Dependencies": [
             "CRMService",
             "KnowledgeBaseService"
         ]

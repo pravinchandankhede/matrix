@@ -46,8 +46,9 @@ select {
 
 .model-card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
     gap: 2rem;
+    /* Remove justify-items:center to keep left-aligned */
 }
 
 .model-card {
@@ -59,6 +60,9 @@ select {
     justify-content: space-between;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     transition: box-shadow 0.2s;
+    max-width: 500px;
+    width: 100%;
+    margin-left: 0;
 }
 
     .model-card:hover {
@@ -100,12 +104,16 @@ select {
 .model-info-row {
     margin-bottom: 0.25rem;
     font-size: 0.98rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 .label {
     font-weight: 500;
     color: #555;
     margin-right: 0.25rem;
+    flex-shrink: 0;
 }
 
 .endpoint {
@@ -115,6 +123,15 @@ select {
 
 .desc {
     color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: bottom;
+    cursor: pointer;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .model-card-actions {

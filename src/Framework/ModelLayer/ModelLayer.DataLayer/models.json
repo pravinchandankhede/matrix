@@ -3,7 +3,7 @@
         "Name": "GPT3",
         "Type": "Chat",
         "Version": "3",
-        "Description": "Chat model",
+        "Description": "Chat model to create chatbot type of applications. This can optionally use your own data and get personaized response.",
         "Provider": "OpenAI",
         "Endpoint": "https://api.openai.com/v1/chat/completions",
         "ApiKey": "your-api-key-here",

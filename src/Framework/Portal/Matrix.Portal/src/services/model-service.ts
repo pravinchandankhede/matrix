@@ -7,7 +7,7 @@ import { Model } from '../datamodels/model';
     providedIn: 'root'
 })
 export class ModelService {
-    private apiUrl = 'https://localhost:7031/api/Models'; // Adjust the base URL as needed
+    private apiUrl = 'https://localhost:7179/models';
 
     constructor(private http: HttpClient) { }
 

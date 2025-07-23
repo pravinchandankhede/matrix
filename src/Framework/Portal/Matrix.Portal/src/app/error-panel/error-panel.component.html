@@ -1,0 +1,19 @@
+<div *ngIf="isVisible()" class="error-panel" [class.minimized]="isMinimized()">
+    <div class="error-panel-header">
+        <span class="error-title">Errors</span>
+        <div class="error-panel-actions">
+            <button class="icon-btn" (click)="minimizePanel()" *ngIf="!isMinimized()" title="Minimize">&#8211;</button>
+            <button class="icon-btn" (click)="restorePanel()" *ngIf="isMinimized()" title="Restore">&#x25B2;</button>
+            <button class="icon-btn" (click)="closePanel()" title="Close">&times;</button>
+        </div>
+    </div>
+    <div class="error-list" *ngIf="!isMinimized()">
+        <div *ngFor="let error of errors()" class="error-item">
+            <span class="error-message">{{error.message}}</span>
+            <span class="error-source" *ngIf="error.source">({{error.source}})</span>
+            <button class="dismiss-btn" (click)="dismissError(error.id)" title="Dismiss">Dismiss</button>
+        </div>
+        <div *ngIf="errors().length === 0" class="no-errors">No errors</div>
+    </div>
+</div>
+<button *ngIf="!isVisible()" class="show-error-panel-btn" (click)="showPanel()">Show Errors</button>

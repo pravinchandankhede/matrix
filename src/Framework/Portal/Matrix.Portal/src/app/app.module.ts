@@ -9,6 +9,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ShellComponent } from './shell/shell.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { ErrorPanelComponent } from './error-panel/error-panel.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
         FooterComponent,
         ProfileComponent,
         ShellComponent,
-        BreadcrumbComponent
+        BreadcrumbComponent,
+        ErrorPanelComponent
   ],
   imports: [
     BrowserModule,

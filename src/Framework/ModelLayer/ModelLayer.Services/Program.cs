@@ -15,7 +15,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddScoped<IModelRepository, ModelRepository>();
+        builder.Services.AddSingleton<IModelRepository, ModelRepository>();
 
         // Read allowed origins from configuration
         String[]? allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<String[]>();

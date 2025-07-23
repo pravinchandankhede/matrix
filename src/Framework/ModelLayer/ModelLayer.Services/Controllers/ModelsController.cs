@@ -21,6 +21,24 @@ public class ModelsController : ControllerBase
         return _modelRepository.GetAllModels();
     }
 
+    [HttpPost]
+    public IActionResult AddModel([FromBody] Matrix.ModelLayer.DataModels.Model model)
+    {
+        if (model == null)
+            return BadRequest();
+
+        _modelRepository.AddModel(model);
+        return CreatedAtAction(nameof(Get), new { name = model.Name }, model);
+    }
+
+    //// GET api/<AgentsController>/5
+    [HttpGet("{id}")]
+    public IActionResult Get(Guid modelId)
+    {
+        var model = _modelRepository.GetModel(modelId.ToString());
+        return model != null ? Ok(model) : NotFound();
+    }
+
     //// GET api/<ModelsController>/5
     //[HttpGet("{id}")]
     //public string Get(int id)

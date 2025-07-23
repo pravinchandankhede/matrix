@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModelService } from '../../../services/model-service';
 import { Model } from '../../../datamodels/model';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-model-list',
@@ -14,11 +15,13 @@ export class ModelListComponent implements OnInit {
     filteredModels: Model[] = [];
     searchTerm: string = '';
     filterEnabled: boolean | null = null;
+    showHomeBreadcrumb = false;
 
-    constructor(private modelService: ModelService) { }
+    constructor(private modelService: ModelService, private router: Router) { }
 
     ngOnInit(): void {
         this.loadModels();
+        this.showHomeBreadcrumb = window.location.pathname !== '/';
     }
 
     loadModels(): void {

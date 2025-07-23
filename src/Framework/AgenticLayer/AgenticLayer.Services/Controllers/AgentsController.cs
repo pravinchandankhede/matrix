@@ -7,18 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 public class AgentsController : ControllerBase
 {
-    private readonly IAgentRepository _AgentRepository;
+    private readonly IAgentRepository _agentRepository;
 
     public AgentsController(IAgentRepository AgentRepository)
     {
-        _AgentRepository = AgentRepository;
+        _agentRepository = AgentRepository;
     }
 
     // GET: api/<AgentsController>
     [HttpGet]
     public IEnumerable<Matrix.AgenticLayer.AgentModels.Agent> Get()
     {
-        return _AgentRepository.GetAllAgents();
+        return _agentRepository.GetAllAgents();
     }
 
     [HttpPost]
@@ -27,7 +27,7 @@ public class AgentsController : ControllerBase
         if (agent == null)
             return BadRequest();
 
-        _AgentRepository.AddAgent(agent);
+        _agentRepository.AddAgent(agent);
         return CreatedAtAction(nameof(Get), new { name = agent.Name }, agent);
     }
 
@@ -35,7 +35,7 @@ public class AgentsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(Guid agentId)
     {
-        var agent = _AgentRepository.GetAgent(agentId.ToString());
+        var agent = _agentRepository.GetAgent(agentId.ToString());
         return agent != null ? Ok(agent) : NotFound();        
     }
 

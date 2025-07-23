@@ -1,8 +1,11 @@
 /* App root styles (extend as needed) */
 :host {
+    width: 100vw;
+    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    background: #ececec;
 }
 
 /* Clean, modern styles for shell layout and feature cards */
@@ -15,6 +18,8 @@
     align-items: stretch;
     justify-content: flex-start;
     background: #f8f9fb;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
 .hero-section {
@@ -100,3 +105,30 @@
         color: #6610f2;
         text-decoration: underline;
     }
+
+/* If breadcrumb has bottom margin, reduce it for tighter spacing */
+.modern-breadcrumb {
+    margin-bottom: 0.5rem;
+}
+
+.app-screen-wrapper {
+    width: 100vw;
+    min-height: 100vh;
+    height: 100vh;
+    padding: 5px;
+    background: #f8f9fb;
+    border-radius: 12px;
+    box-shadow: 0 2px 24px rgba(13,110,253,0.07);
+    margin: 0;
+    box-sizing: border-box;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 600px) {
+    .app-screen-wrapper {
+        padding: 3px;
+        border-radius: 6px;
+    }
+}

@@ -15,12 +15,14 @@ interface Breadcrumb {
 })
 export class BreadcrumbComponent {
     breadcrumbs: Breadcrumb[] = [];
+    showHomeBreadcrumb = false;
 
     constructor(private router: Router, private route: ActivatedRoute) {
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd)
         ).subscribe(() => {
             this.breadcrumbs = this.buildBreadcrumbs(this.route.root);
+            this.showHomeBreadcrumb = this.router.url !== '/';
         });
     }
 
@@ -45,4 +47,3 @@ export class BreadcrumbComponent {
         return str.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     }
 }
-

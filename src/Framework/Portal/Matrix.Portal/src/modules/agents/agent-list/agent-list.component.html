@@ -1,25 +1,27 @@
 <div class="agent-list-container">
-    <div class="agent-list-header">
-        <h2><mat-icon>smart_toy</mat-icon> Current Agents</h2>
-        <button class="add-agent-btn" routerLink="/agents/add">
-            <mat-icon>add_circle</mat-icon> Add Agent
-        </button>
-    </div>
-    <div class="toolbar modern-toolbar">
-        <div class="search-filter-group">
-            <div class="search-box">
-                <span class="material-icons">search</span>
-                <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name...">
-            </div>
-            <select #filterSelect (change)="onFilterChange(filterSelect.value)">
-                <option value="">All</option>
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-                <option value="Maintenance">Maintenance</option>
-            </select>
-            <button class="filter-btn" (click)="onSearch()">
-                <span class="material-icons">filter_list</span> Filter
+    <div class="section-wrapper modern-theme-bg">
+        <div class="agent-list-header">
+            <h2><mat-icon>smart_toy</mat-icon> Current Agents</h2>
+            <button class="add-agent-btn" routerLink="/agents/add">
+                <mat-icon>add_circle</mat-icon> Add Agent
             </button>
+        </div>
+        <div class="toolbar modern-toolbar">
+            <div class="search-filter-group">
+                <div class="search-box">
+                    <span class="material-icons">search</span>
+                    <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name...">
+                </div>
+                <select #filterSelect (change)="onFilterChange(filterSelect.value)">
+                    <option value="">All</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Maintenance">Maintenance</option>
+                </select>
+                <button class="filter-btn" (click)="onSearch()">
+                    <span class="material-icons">filter_list</span> Filter
+                </button>
+            </div>
         </div>
     </div>
     <ng-container *ngIf="filteredAgents.length > 0; else noAgents">

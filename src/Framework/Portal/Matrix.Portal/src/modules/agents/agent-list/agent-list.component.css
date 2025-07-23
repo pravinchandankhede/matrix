@@ -26,18 +26,20 @@
     }
 
 .agent-card {
-    background: #fff;
+    background: linear-gradient(135deg, #f0f4ff 0%, #f8f9fb 100%);
+    /* You can swap colors for a different accent, e.g., #f3f0ff for purple, #eafaf1 for green */
     border-radius: 1rem;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 12px rgba(13,110,253,0.06);
     padding: 2rem 1.5rem;
     display: flex;
     flex-direction: column;
     height: 100%;
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s, background 0.2s;
 }
 
     .agent-card:hover {
-        box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 24px rgba(13,110,253,0.12);
+        background: linear-gradient(135deg, #e3e9ff 0%, #f0f4ff 100%);
     }
 
 .agent-card-header {
@@ -144,7 +146,7 @@ mat-icon {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    margin-bottom: 0.7rem;
 }
 
 .add-agent-btn {
@@ -176,7 +178,7 @@ mat-icon {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
     background: #f8f9fa;
     border-radius: 0.75rem;
     padding: 1rem 2rem;
@@ -219,6 +221,12 @@ select {
     border: 1px solid #dee2e6;
     background: #fff;
     color: #212529;
+    height: 40px;
+    min-height: 40px;
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
 }
 
 .filter-btn {
@@ -229,12 +237,87 @@ select {
     color: #fff;
     border: none;
     border-radius: 0.5rem;
-    padding: 0.5rem 1.2rem;
+    padding: 0.7rem 1.5rem;
     font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
+    min-height: 40px;
+    height: 40px;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+    display: flex;
+    align-items: center;
 }
 
     .filter-btn:hover {
-        background: #0b5ed7;
+        background: #6610f2;
     }
+
+/* Ensure buttons and dropdown are exactly the same height */
+.add-agent-btn, .filter-btn, select {
+    height: 40px;
+    min-height: 40px;
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Reduce space between breadcrumb and section wrapper */
+.modern-breadcrumb {
+    margin-bottom: 0.5rem !important;
+}
+
+/* Make section wrapper more compact in height */
+.section-wrapper.modern-theme-bg {
+    padding: 0.4rem 0.7rem 0.3rem 0.7rem;
+    /* Remove any margin-top if present */
+    margin-top: 0 !important;
+}
+
+@media (max-width: 900px) {
+    .section-wrapper.modern-theme-bg {
+        padding: 0.2rem 0.3rem 0.1rem 0.3rem;
+    }
+}
+
+/* Modern theme wrapper for agents section */
+.section-wrapper.modern-theme-bg {
+    padding: 0.7rem 0.7rem 0.5rem 0.7rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 6px 32px rgba(13,110,253,0.08), 0 1.5px 8px rgba(102,16,242,0.07);
+    background: linear-gradient(135deg, rgba(13,110,253,0.12) 0%, rgba(102,16,242,0.10) 100%);
+    border: 1.5px solid rgba(102,16,242,0.13);
+    backdrop-filter: blur(4px);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+    .section-wrapper.modern-theme-bg::before {
+        content: "";
+        position: absolute;
+        top: -40px;
+        right: -40px;
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle, rgba(102,16,242,0.18) 0%, rgba(13,110,253,0.09) 80%, transparent 100%);
+        border-radius: 50%;
+        z-index: 0;
+    }
+
+    .section-wrapper.modern-theme-bg > * {
+        position: relative;
+        z-index: 1;
+    }
+
+/* Responsive for smaller screens */
+@media (max-width: 900px) {
+    .section-wrapper.modern-theme-bg {
+        padding: 0.5rem 0.3rem 0.3rem 0.3rem;
+    }
+}

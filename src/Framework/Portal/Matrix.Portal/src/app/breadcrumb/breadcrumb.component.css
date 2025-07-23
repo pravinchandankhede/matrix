@@ -39,3 +39,85 @@
     color: #212529;
     font-weight: 600;
 }
+
+/* Modern Breadcrumb Styles */
+.modern-breadcrumb {
+    background: none !important;
+    box-shadow: none !important;
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: 0.5rem;
+    backdrop-filter: none;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+}
+
+/* Pill-style minimalist breadcrumb */
+.breadcrumb-list {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.98rem;
+}
+
+.breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #0d6efd;
+    background: #f5f7fa;
+    border-radius: 1rem;
+    padding: 0.2rem 0.9rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s, text-decoration 0.2s;
+    vertical-align: middle;
+}
+
+    .breadcrumb-link:hover {
+        background: #e9ecef;
+        text-decoration: underline;
+    }
+
+.breadcrumb-separator {
+    color: #adb5bd;
+    font-size: 1.1rem;
+    margin: 0 0.2rem;
+}
+
+.breadcrumb-current {
+    color: #6610f2;
+    font-weight: 700;
+    background: #ede7f6;
+    border-radius: 1rem;
+    padding: 0.2rem 0.9rem;
+    box-shadow: 0 1px 6px rgba(102,16,242,0.09);
+}
+
+.breadcrumb-item.active .breadcrumb-current {
+    box-shadow: 0 1px 6px rgba(102,16,242,0.09);
+}
+
+.breadcrumb-icon {
+    font-size: 1.1rem;
+    color: #6610f2;
+    margin-right: 0.2rem;
+    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+}
+
+@media (max-width: 600px) {
+    .breadcrumb-list {
+        gap: 0.15rem;
+    }
+}

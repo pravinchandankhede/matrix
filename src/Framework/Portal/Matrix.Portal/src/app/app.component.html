@@ -1,5 +1,6 @@
 <app-header (profileClick)="onProfileClick()"></app-header>
 <app-profile [open]="profileOpen" [name]="userName" [email]="userEmail" [role]="userRole" (openChange)="profileOpen = $event"></app-profile>
+<app-breadcrumb></app-breadcrumb>
 <main class="app-body container-fluid">    
     <router-outlet></router-outlet>
 </main>

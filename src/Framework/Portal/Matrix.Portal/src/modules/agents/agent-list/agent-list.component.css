@@ -14,9 +14,16 @@
 
 .agent-card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
+    justify-items: stretch;
+    align-items: stretch;
 }
+
+    .agent-card-grid:has(.agent-card:nth-child(1):last-child),
+    .agent-card-grid:has(.agent-card:nth-child(2):last-child) {
+        justify-content: start;
+    }
 
 .agent-card {
     background: #fff;
@@ -25,6 +32,7 @@
     padding: 2rem 1.5rem;
     display: flex;
     flex-direction: column;
+    height: 100%;
     transition: box-shadow 0.2s;
 }
 
@@ -102,7 +110,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
+    max-width: 220px;
     display: inline-block;
     vertical-align: bottom;
     cursor: pointer;

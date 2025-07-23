@@ -1,6 +1,7 @@
 import { Component, Input, signal, OnInit } from '@angular/core';
 import { Agent } from '../../../datamodels/agent.model';
 import { AgentService } from '../../../services/agent.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-agent-detail',
@@ -12,7 +13,7 @@ export class AgentDetailComponent implements OnInit {
     @Input() agent: Agent | null = null;
     editMode = signal(true); // Start in edit mode for add screen
 
-    constructor(private agentService: AgentService) { }
+    constructor(private agentService: AgentService, private router: Router) { }
 
     ngOnInit() {
         if (!this.agent) {
@@ -40,8 +41,8 @@ export class AgentDetailComponent implements OnInit {
         if (this.agent) {
             this.agentService.addAgent(this.agent).subscribe({
                 next: (result) => {
-                    // Optionally show success message or navigate
                     alert('Agent added successfully!');
+                    this.router.navigate(['/agents']);
                 },
                 error: (err) => {
                     alert('Failed to add agent.');

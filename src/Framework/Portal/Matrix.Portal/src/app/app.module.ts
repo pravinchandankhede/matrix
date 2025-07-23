@@ -8,6 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ShellComponent } from './shell/shell.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ShellComponent } from './shell/shell.component';
         HeaderComponent,
         FooterComponent,
         ProfileComponent,
-        ShellComponent
+        ShellComponent,
+        BreadcrumbComponent
   ],
   imports: [
     BrowserModule,

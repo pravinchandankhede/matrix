@@ -5,16 +5,33 @@
             <mat-icon>add_circle</mat-icon> Add Agent
         </button>
     </div>
-    <ng-container *ngIf="agents.length > 0; else noAgents">
+    <div class="toolbar modern-toolbar">
+        <div class="search-filter-group">
+            <div class="search-box">
+                <span class="material-icons">search</span>
+                <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name...">
+            </div>
+            <select #filterSelect (change)="onFilterChange(filterSelect.value)">
+                <option value="">All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+                <option value="Maintenance">Maintenance</option>
+            </select>
+            <button class="filter-btn" (click)="onSearch()">
+                <span class="material-icons">filter_list</span> Filter
+            </button>
+        </div>
+    </div>
+    <ng-container *ngIf="filteredAgents.length > 0; else noAgents">
         <div class="agent-card-grid">
-            @for (agent of agents; track agent) {
+            @for (agent of filteredAgents; track agent) {
             <div class="agent-card">
                 <div class="agent-card-header">
                     <span class="agent-name">{{ agent.name }}</span>
                     <span class="agent-status-badge" [ngClass]="agent.status.toLowerCase()">{{ agent.status }}</span>
                 </div>
                 <div class="agent-card-body">
-                    <div class="agent-info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc">{{ agent.description }}</span></div>
+                    <div class="agent-info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="agent.description">{{ agent.description }}</span></div>
                     <div class="agent-info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ agent.type }}</div>
                     <div class="agent-info-row">
                         <mat-icon>star</mat-icon> <span class="label">Features:</span> @for (feat of agent.features; track feat) {
@@ -37,7 +54,8 @@
         </div>
     </ng-container>
     <ng-template #noAgents>
-        <div class="no-agents-message"></div>
-        <mat-icon>info</mat-icon> No agents found. Please add or configure agents to see them here.
+        <div class="no-agents-message">
+            <mat-icon>info</mat-icon> No agents found. Please add or configure agents to see them here.
+        </div>
     </ng-template>
 </div>

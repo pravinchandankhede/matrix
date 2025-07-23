@@ -99,6 +99,13 @@
 
 .desc {
     color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: bottom;
+    cursor: pointer;
 }
 
 mat-icon {
@@ -155,4 +162,71 @@ mat-icon {
     .add-agent-btn mat-icon {
         color: #fff;
         font-size: 1.3rem;
+    }
+
+.toolbar.modern-toolbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 0.75rem;
+    padding: 1rem 2rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.search-filter-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+    .search-box .material-icons {
+        font-size: 1.2rem;
+        color: #0d6efd;
+        margin-right: 0.5rem;
+    }
+
+    .search-box input[type="text"] {
+        border: none;
+        outline: none;
+        font-size: 1rem;
+        background: transparent;
+        width: 180px;
+    }
+
+select {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #dee2e6;
+    background: #fff;
+    color: #212529;
+}
+
+.filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+    .filter-btn:hover {
+        background: #0b5ed7;
     }

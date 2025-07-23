@@ -1,7 +1,7 @@
 [
     {
         "Name": "Invoice",
-        "Description": "An agent that processes invoices and manages billing tasks.",
+        "Description": "An agent that processes invoices and manages billing tasks. This can talk to multiple systems and get the relevant responses for you.",
         "Type": "Billing",
         "Capabilities": [
             "Invoice processing",

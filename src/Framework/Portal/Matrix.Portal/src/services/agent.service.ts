@@ -7,9 +7,13 @@ import { HttpClient } from '@angular/common/http';
 export class AgentService {
     private apiUrl = 'https://localhost:7179/agents'; // Update with your actual API endpoint
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
-  getAgents(): Observable<Agent[]> {
-    return this.http.get<Agent[]>(this.apiUrl);
-  }
+    getAgents(): Observable<Agent[]> {
+        return this.http.get<Agent[]>(this.apiUrl);
+    }
+
+    addAgent(agent: Agent): Observable<Agent> {
+        return this.http.post<Agent>(this.apiUrl, agent);
+    }
 }

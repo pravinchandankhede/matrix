@@ -21,12 +21,23 @@ public class AgentsController : ControllerBase
         return _AgentRepository.GetAllAgents();
     }
 
+    [HttpPost]
+    public IActionResult AddAgent([FromBody] Matrix.AgenticLayer.AgentModels.Agent agent)
+    {
+        if (agent == null)
+            return BadRequest();
+
+        _AgentRepository.AddAgent(agent);
+        return CreatedAtAction(nameof(Get), new { name = agent.Name }, agent);
+    }
+
     //// GET api/<AgentsController>/5
-    //[HttpGet("{id}")]
-    //public string Get(int id)
-    //{
-    //    return "value";
-    //}
+    [HttpGet("{id}")]
+    public IActionResult Get(Guid agentId)
+    {
+        var agent = _AgentRepository.GetAgent(agentId.ToString());
+        return agent != null ? Ok(agent) : NotFound();        
+    }
 
     //// POST api/<AgentsController>
     //[HttpPost]

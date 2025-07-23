@@ -1,5 +1,6 @@
 import { Component, Input, signal, OnInit } from '@angular/core';
 import { Agent } from '../../../datamodels/agent.model';
+import { AgentService } from '../../../services/agent.service';
 
 @Component({
     selector: 'app-agent-detail',
@@ -10,6 +11,8 @@ import { Agent } from '../../../datamodels/agent.model';
 export class AgentDetailComponent implements OnInit {
     @Input() agent: Agent | null = null;
     editMode = signal(true); // Start in edit mode for add screen
+
+    constructor(private agentService: AgentService) { }
 
     ngOnInit() {
         if (!this.agent) {
@@ -30,6 +33,20 @@ export class AgentDetailComponent implements OnInit {
     }
 
     toggleEdit() {
-        this.editMode.update(v => !v);
+        this.editMode.update((v: boolean) => !v);
+    }
+
+    onSave() {
+        if (this.agent) {
+            this.agentService.addAgent(this.agent).subscribe({
+                next: (result) => {
+                    // Optionally show success message or navigate
+                    alert('Agent added successfully!');
+                },
+                error: (err) => {
+                    alert('Failed to add agent.');
+                }
+            });
+        }
     }
 }

@@ -16,7 +16,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddScoped<IAgentRepository, AgentRepository>();
+        builder.Services.AddSingleton<IAgentRepository, AgentRepository>();
 
         var app = builder.Build();
 

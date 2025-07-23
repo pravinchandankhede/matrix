@@ -8,19 +8,19 @@
     <form *ngIf="editMode(); else viewMode" class="agent-detail-form">
         <div class="form-row">
             <label>Name:</label>
-            <input type="text" [(ngModel)]="agent.name" />
+            <input type="text" [(ngModel)]="agent.name" name="name" />
         </div>
         <div class="form-row">
             <label>Description:</label>
-            <textarea [(ngModel)]="agent.description"></textarea>
+            <textarea [(ngModel)]="agent.description" name="description"></textarea>
         </div>
         <div class="form-row">
             <label>Type:</label>
-            <input type="text" [(ngModel)]="agent.type" />
+            <input type="text" [(ngModel)]="agent.type" name="type" />
         </div>
         <div class="form-row">
             <label>Status:</label>
-            <select [(ngModel)]="agent.status">
+            <select [(ngModel)]="agent.status" name="status">
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
                 <option value="Maintenance">Maintenance</option>
@@ -28,18 +28,18 @@
         </div>
         <div class="form-row">
             <label>Version:</label>
-            <input type="text" [(ngModel)]="agent.version" />
+            <input type="text" [(ngModel)]="agent.version" name="version" />
         </div>
         <div class="form-row">
             <label>Features:</label>
-            <input type="text" [(ngModel)]="agent.features" placeholder="Comma separated" />
+            <input type="text" [(ngModel)]="agent.features" name="features" placeholder="Comma separated" />
         </div>
         <div class="form-row">
             <label>Integrated Tools:</label>
-            <input type="text" [(ngModel)]="agent.integratedTools" placeholder="Comma separated" />
+            <input type="text" [(ngModel)]="agent.integratedTools" name="integratedTools" placeholder="Comma separated" />
         </div>
         <div class="form-actions">
-            <button type="submit" class="save-btn">Save</button>
+            <button type="button" class="save-btn" (click)="onSave()">Save</button>
         </div>
     </form>
     <ng-template #viewMode>

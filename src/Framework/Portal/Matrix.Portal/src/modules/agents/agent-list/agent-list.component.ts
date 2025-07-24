@@ -28,9 +28,22 @@ export class AgentListComponent implements OnInit {
             },
             error: err => {
                 let message = 'Failed to load agents.';
-                if (err && err.status === 0) {
-                    message = 'Cannot connect to agent service. Please check your network or server.';
+                // Enhanced network error handling
+                if (err) {
+                    if (err.status === 0 || err.status === 502 || err.status === 503 || err.status === 504) {
+                        message = 'Cannot connect to agent service. Please check your network or server.';
+                    } else if (err.error && typeof err.error === 'string') {
+                        message = err.error;
+                    } else if (err.message) {
+                        message = err.message;
+                    }
                 }
+                // Optionally log the error for debugging
+                console.error('Agent list loading error:', err);
+                this.errorService.addError(message, 'Agent List');
+                this.errorService.addError(message, 'Agent List');
+                this.errorService.addError(message, 'Agent List');
+                this.errorService.addError(message, 'Agent List');
                 this.errorService.addError(message, 'Agent List');
             }
         });

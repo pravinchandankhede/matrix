@@ -1,17 +1,37 @@
 <div *ngIf="isVisible()" class="error-panel" [class.minimized]="isMinimized()">
-    <div class="error-panel-header">
+    <div class="error-panel-header"
+         (mousedown)="onDragStart($event)"
+         (document:mousemove)="onDrag($event)"
+         (document:mouseup)="onDragEnd()">
         <span class="error-title">Errors</span>
         <div class="error-panel-actions">
-            <button class="icon-btn" (click)="minimizePanel()" *ngIf="!isMinimized()" title="Minimize">&#8211;</button>
-            <button class="icon-btn" (click)="restorePanel()" *ngIf="isMinimized()" title="Restore">&#x25B2;</button>
-            <button class="icon-btn" (click)="closePanel()" title="Close">&times;</button>
+            <button class="icon-btn" (click)="minimizePanel()" *ngIf="!isMinimized()" title="Minimize">
+                <mat-icon>remove</mat-icon>
+            </button>
+            <button class="icon-btn" (click)="restorePanel()" *ngIf="isMinimized()" title="Restore">
+                <mat-icon>expand_less</mat-icon>
+            </button>
+            <button class="icon-btn" (click)="closePanel()" title="Close">
+                <mat-icon>close</mat-icon>
+            </button>
         </div>
     </div>
     <div class="error-list" *ngIf="!isMinimized()">
         <div *ngFor="let error of errors()" class="error-item">
+            <span class="error-icon" [ngClass]="{
+        'icon-error': error.errorType === 'error',
+        'icon-warning': error.errorType === 'warning',
+        'icon-info': error.errorType === 'info'
+      }">
+                <mat-icon *ngIf="error.errorType === 'error'">error</mat-icon>
+                <mat-icon *ngIf="error.errorType === 'warning'">warning</mat-icon>
+                <mat-icon *ngIf="error.errorType === 'info'">info</mat-icon>
+            </span>
             <span class="error-message">{{error.message}}</span>
             <span class="error-source" *ngIf="error.source">({{error.source}})</span>
-            <button class="dismiss-btn" (click)="dismissError(error.id)" title="Dismiss">Dismiss</button>
+            <button class="dismiss-btn icon-btn" (click)="dismissError(error.id)" title="Dismiss">
+                <mat-icon aria-label="Dismiss">close</mat-icon>
+            </button>
         </div>
         <div *ngIf="errors().length === 0" class="no-errors">No errors</div>
     </div>

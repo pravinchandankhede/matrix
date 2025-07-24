@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModelService } from '../../../services/model-service';
+import { ModelService } from '../../../services/model.service';
 import { Model } from '../../../datamodels/model';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';

@@ -1,6 +1,6 @@
 import { Component, Input, signal, OnInit } from '@angular/core';
 import { Model } from '../../../datamodels/model';
-import { ModelService } from '../../../services/model-service';
+import { ModelService } from '../../../services/model.service';
 import { Router } from '@angular/router';
 
 @Component({

@@ -85,6 +85,8 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Matrix.Portal", "Framework\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelLayer.Registry", "Framework\ModelLayer\ModelLayer.Registry\ModelLayer.Registry.csproj", "{E8077729-44C0-4C9E-97F6-5983F08337A1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataSources", "DataSources", "{999DF630-7A89-4771-BFD2-BD1BD056604B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -236,6 +238,7 @@ Global
 		{1129A78F-8B17-479C-9353-0D136E249047} = {94BF55AB-4A52-4810-8C00-FBD83CD5AF1B}
 		{F386876C-F5B3-189B-149A-2C7E2B72D4A3} = {5D0D2222-2365-4B95-B70D-81E2B7069FCC}
 		{E8077729-44C0-4C9E-97F6-5983F08337A1} = {761D6CBA-D6A7-413B-A64C-1771A8AA5C39}
+		{999DF630-7A89-4771-BFD2-BD1BD056604B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EBEFC3B0-6208-481B-B6D6-154F640C6615}

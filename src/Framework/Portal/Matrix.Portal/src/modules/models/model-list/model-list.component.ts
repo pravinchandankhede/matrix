@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModelService } from '../../../services/model.service';
 import { Model } from '../../../datamodels/model';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { BaseListComponent } from '../../../shared/base-list.component';
 
 @Component({
     selector: 'app-model-list',
@@ -10,78 +10,42 @@ import { Router } from '@angular/router';
     templateUrl: './model-list.component.html',
     styleUrls: ['./model-list.component.css']
 })
-export class ModelListComponent implements OnInit {
-    models: Model[] = [];
-    filteredModels: Model[] = [];
-    searchTerm: string = '';
+export class ModelListComponent extends BaseListComponent<Model> {
     filterEnabled: boolean | null = null;
     showHomeBreadcrumb = false;
 
-    constructor(private modelService: ModelService, private router: Router) { }
-
-    ngOnInit(): void {
-        this.loadModels();
-        this.showHomeBreadcrumb = window.location.pathname !== '/';
+    constructor(private modelService: ModelService, private router: Router) {
+        super();
     }
 
-    loadModels(): void {
-        this.modelService.getModels().subscribe(models => {
-            this.models = models;
+    fetchItems(): void {
+        this.modelService.getModels().subscribe((models: Model[]) => {
+            this.items = models;
             this.applyFilter();
         });
     }
 
-    applyFilter(): void {
-        this.filteredModels = this.models.filter(model => {
-            const matchesSearch = this.searchTerm === '' || model.name.toLowerCase().includes(this.searchTerm.toLowerCase());
-            const matchesEnabled = this.filterEnabled === null || model.isEnabled === this.filterEnabled;
-            return matchesSearch && matchesEnabled;
-        });
+    filterPredicate(model: Model): boolean {
+        const matchesSearch = this.searchTerm === '' || model.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+        const matchesEnabled = this.filterEnabled === null || model.isEnabled === this.filterEnabled;
+        return matchesSearch && matchesEnabled;
     }
 
-    /**
-     * Returns a CSS class for the status badge based on model enabled state.
-     */
-    getStatusBadgeClass(model: Model): string {
-        return model.isEnabled ? 'enabled' : 'disabled';
-    }
-
-    /**
-     * Handles search input and applies filter.
-     */
-    onSearch(): void {
-        this.applyFilter();
-    }
-
-    /**
-     * Handles filter dropdown change and applies filter.
-     */
-    onFilterChange(value: string): void {
+    override onFilterChange(value: string): void {
         this.filterEnabled = value === '' ? null : value === 'true';
         this.applyFilter();
     }
 
-    /**
-     * Navigates to the add model form (implement navigation logic here).
-     */
-    addModel(): void {
-        // TODO: Implement navigation to add model form using Angular Router
+    getStatusBadgeClass(model: Model): string {
+        return model.isEnabled ? 'enabled' : 'disabled';
     }
 
-    /**
-     * Navigates to the edit model form (implement navigation logic here).
-     */
-    editModel(model: Model): void {
-        // TODO: Implement navigation to edit model form using Angular Router
+    override ngOnInit(): void {
+        this.fetchItems();
+        this.showHomeBreadcrumb = window.location.pathname !== '/';
     }
 
-    /**
-     * Deletes a model after confirmation, then reloads the list.
-     */
-    deleteModel(model: Model): void {
-        // TODO: Replace confirm with a modern dialog for better UX
-        if (confirm(`Are you sure you want to delete model '${model.name}'?`)) {
-            this.modelService.deleteModel((model as any).id).subscribe(() => this.loadModels());
-        }
+    get filteredModels(): Model[] {
+        return this.filteredItems;
     }
 }

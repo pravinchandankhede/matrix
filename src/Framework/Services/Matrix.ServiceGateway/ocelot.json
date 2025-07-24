@@ -28,6 +28,19 @@
 			"UpstreamPathTemplate": "/models/{everything}",
 			"UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 			"SwaggerKey": "ModelService"
+		},
+		{
+			"DownstreamPathTemplate": "/api/datasources/{everything}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7252
+				}
+			],
+			"UpstreamPathTemplate": "/datasources/{everything}",
+			"UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+			"SwaggerKey": "DataSourceService"
 		}
 	],
 	"SwaggerEndPoints": [
@@ -48,6 +61,16 @@
 					"Name": "ModelService API",
 					"Version": "v1",
 					"Url": "https://localhost:7031/swagger/v1/swagger.json"
+				}
+			]
+		},
+		{
+			"Key": "DataSourceService",
+			"Config": [
+				{
+					"Name": "DataSource API",
+					"Version": "v1",
+					"Url": "https://localhost:7252/swagger/v1/swagger.json"
 				}
 			]
 		}

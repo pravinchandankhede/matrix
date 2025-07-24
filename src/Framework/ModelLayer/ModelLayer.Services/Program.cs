@@ -1,6 +1,8 @@
 namespace ModelLayer.Services;
 
 using Matrix.ModelLayer.DataLayer;
+using Matrix.ModelLayer.Interfaces;
+using System.Text.Json.Serialization;
 
 public class Program
 {
@@ -10,7 +12,12 @@ public class Program
 
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+             {
+                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+             });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

@@ -1,6 +1,7 @@
 ﻿namespace Matrix.ModelLayer.DataLayer;
 
 using Matrix.ModelLayer.DataModels;
+using Matrix.ModelLayer.Interfaces;
 using System.Collections.Generic;
 
 public class ModelRepository : IModelRepository

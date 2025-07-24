@@ -1,6 +1,6 @@
 ﻿namespace ModelLayer.Services.Controllers;
 
-using Matrix.ModelLayer.DataLayer;
+using Matrix.ModelLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]

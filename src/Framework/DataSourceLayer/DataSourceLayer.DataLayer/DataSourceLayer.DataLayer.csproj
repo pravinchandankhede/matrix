@@ -9,12 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModelLayer.DataModels\ModelLayer.DataModels.csproj" />
-    <ProjectReference Include="..\ModelLayer.Interfaces\ModelLayer.Interfaces.csproj" />
+    <ProjectReference Include="..\DataSourceLayer.Interfaces\DataSourceLayer.Interfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="models.json">
+    <None Update="datasources.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

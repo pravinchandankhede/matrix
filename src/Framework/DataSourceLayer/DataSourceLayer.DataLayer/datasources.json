@@ -1,0 +1,498 @@
+[
+    {
+        "DataSourceId": "a1a1a1a1-1111-1111-1111-111111111111",
+        "Name": "CustomerDB",
+        "Type": "Structured",
+        "SubType": "PostgreSQL",
+        "Description": "Customer database for CRM",
+        "Tags": [ "customer", "crm", "sql" ],
+        "Owner": "Data Engineering",
+        "CreatedAt": "2024-01-15T10:00:00Z",
+        "UpdatedAt": "2025-07-01T12:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "OAuth2",
+        "ConnectionDetails": {
+            "Host": "db.company.com",
+            "Port": 5432,
+            "DatabaseName": "customers",
+            "Schema": "public",
+            "TableList": [ "users", "orders" ],
+            "QueryTemplate": "SELECT * FROM users WHERE active = true"
+        }
+    },
+    {
+        "DataSourceId": "a1a1a1a1-1111-1111-1111-111111111112",
+        "Name": "FinanceDB",
+        "Type": "Structured",
+        "SubType": "MySQL",
+        "Description": "Finance records database",
+        "Tags": [ "finance", "mysql" ],
+        "Owner": "Finance Team",
+        "CreatedAt": "2023-03-10T09:00:00Z",
+        "UpdatedAt": "2025-06-10T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "BasicAuth",
+        "ConnectionDetails": {
+            "Host": "mysql.company.com",
+            "Port": 3306,
+            "DatabaseName": "finance",
+            "Schema": "main",
+            "TableList": [ "transactions", "accounts" ],
+            "QueryTemplate": "SELECT * FROM transactions"
+        }
+    },
+    {
+        "DataSourceId": "a1a1a1a1-1111-1111-1111-111111111113",
+        "Name": "HRDB",
+        "Type": "Structured",
+        "SubType": "SQLServer",
+        "Description": "HR employee database",
+        "Tags": [ "hr", "employees", "sqlserver" ],
+        "Owner": "HR Team",
+        "CreatedAt": "2022-05-01T14:00:00Z",
+        "UpdatedAt": "2025-05-15T16:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "Token",
+        "ConnectionDetails": {
+            "Host": "sqlserver.company.com",
+            "Port": 1433,
+            "DatabaseName": "hr",
+            "Schema": "dbo",
+            "TableList": [ "staff", "payroll" ],
+            "QueryTemplate": "SELECT * FROM staff"
+        }
+    },
+
+    {
+        "DataSourceId": "b2b2b2b2-2222-2222-2222-222222222221",
+        "Name": "EventLogs",
+        "Type": "SemiStructured",
+        "SubType": "MongoDB",
+        "Description": "Application event logs",
+        "Tags": [ "events", "logs", "nosql" ],
+        "Owner": "App Team",
+        "CreatedAt": "2023-11-10T09:30:00Z",
+        "UpdatedAt": "2025-06-20T08:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "APIKey",
+        "ConnectionDetails": {
+            "EndpointUrl": "mongodb://mongo.company.com:27017",
+            "CollectionName": "event_logs",
+            "QueryParameters": { "level": "error" },
+            "DataFormat": "JSON"
+        }
+    },
+    {
+        "DataSourceId": "b2b2b2b2-2222-2222-2222-222222222222",
+        "Name": "UserProfiles",
+        "Type": "SemiStructured",
+        "SubType": "CouchDB",
+        "Description": "User profile documents",
+        "Tags": [ "users", "profiles", "couchdb" ],
+        "Owner": "User Team",
+        "CreatedAt": "2022-08-15T11:00:00Z",
+        "UpdatedAt": "2025-07-10T09:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "OAuth2",
+        "ConnectionDetails": {
+            "EndpointUrl": "http://couchdb.company.com:5984",
+            "CollectionName": "profiles",
+            "QueryParameters": { "active": true },
+            "DataFormat": "JSON"
+        }
+    },
+    {
+        "DataSourceId": "b2b2b2b2-2222-2222-2222-222222222223",
+        "Name": "ConfigStore",
+        "Type": "SemiStructured",
+        "SubType": "DynamoDB",
+        "Description": "Configuration key-value store",
+        "Tags": [ "config", "dynamodb" ],
+        "Owner": "Infra Team",
+        "CreatedAt": "2021-12-01T08:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "Token",
+        "ConnectionDetails": {
+            "EndpointUrl": "https://dynamodb.company.com",
+            "CollectionName": "config",
+            "QueryParameters": { "env": "prod" },
+            "DataFormat": "JSON"
+        }
+    },
+
+    {
+        "DataSourceId": "c3c3c3c3-3333-3333-3333-333333333331",
+        "Name": "DocumentRepo",
+        "Type": "Unstructured",
+        "SubType": "AzureBlob",
+        "Description": "Repository for scanned documents",
+        "Tags": [ "documents", "scanned", "archive" ],
+        "Owner": "Records Team",
+        "CreatedAt": "2022-05-01T14:00:00Z",
+        "UpdatedAt": "2025-05-15T16:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "Token",
+        "ConnectionDetails": {
+            "StorageType": "AzureBlob",
+            "FilePathOrUrl": "https://blob.company.com/docs/",
+            "FileTypes": [ "pdf", "docx", "jpg" ],
+            "OCRRequired": true
+        }
+    },
+    {
+        "DataSourceId": "c3c3c3c3-3333-3333-3333-333333333332",
+        "Name": "FileArchive",
+        "Type": "Unstructured",
+        "SubType": "S3",
+        "Description": "S3 bucket for archived files",
+        "Tags": [ "archive", "s3", "files" ],
+        "Owner": "Archive Team",
+        "CreatedAt": "2023-02-10T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "APIKey",
+        "ConnectionDetails": {
+            "StorageType": "S3",
+            "FilePathOrUrl": "s3://archive-bucket/",
+            "FileTypes": [ "zip", "tar", "gz" ],
+            "OCRRequired": false
+        }
+    },
+    {
+        "DataSourceId": "c3c3c3c3-3333-3333-3333-333333333333",
+        "Name": "LegalDocs",
+        "Type": "Unstructured",
+        "SubType": "FileSystem",
+        "Description": "Legal document storage",
+        "Tags": [ "legal", "filesystem", "docs" ],
+        "Owner": "Legal Team",
+        "CreatedAt": "2022-09-01T09:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "None",
+        "ConnectionDetails": {
+            "StorageType": "FileSystem",
+            "FilePathOrUrl": "/mnt/legal/docs/",
+            "FileTypes": [ "pdf", "txt" ],
+            "OCRRequired": false
+        }
+    },
+
+    {
+        "DataSourceId": "d4d4d4d4-4444-4444-4444-444444444441",
+        "Name": "VideoLibrary",
+        "Type": "Multimedia",
+        "SubType": "Video",
+        "Description": "Corporate training videos",
+        "Tags": [ "video", "training", "media" ],
+        "Owner": "Learning Team",
+        "CreatedAt": "2023-04-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "APIKey",
+        "ConnectionDetails": {
+            "MediaType": "Video",
+            "TranscriptionEnabled": true,
+            "StorageLocation": "https://media.company.com/videos/",
+            "SupportedFormats": [ "mp4", "avi", "mov" ]
+        }
+    },
+    {
+        "DataSourceId": "d4d4d4d4-4444-4444-4444-444444444442",
+        "Name": "AudioArchive",
+        "Type": "Multimedia",
+        "SubType": "Audio",
+        "Description": "Archived audio recordings",
+        "Tags": [ "audio", "archive", "media" ],
+        "Owner": "Audio Team",
+        "CreatedAt": "2022-07-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "OAuth2",
+        "ConnectionDetails": {
+            "MediaType": "Audio",
+            "TranscriptionEnabled": false,
+            "StorageLocation": "https://media.company.com/audio/",
+            "SupportedFormats": [ "mp3", "wav" ]
+        }
+    },
+    {
+        "DataSourceId": "d4d4d4d4-4444-4444-4444-444444444443",
+        "Name": "ImageRepo",
+        "Type": "Multimedia",
+        "SubType": "Image",
+        "Description": "Image repository for marketing",
+        "Tags": [ "image", "marketing", "media" ],
+        "Owner": "Marketing Team",
+        "CreatedAt": "2023-01-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "Token",
+        "ConnectionDetails": {
+            "MediaType": "Image",
+            "TranscriptionEnabled": false,
+            "StorageLocation": "https://media.company.com/images/",
+            "SupportedFormats": [ "jpg", "png", "gif" ]
+        }
+    },
+
+    {
+        "DataSourceId": "e5e5e5e5-5555-5555-5555-555555555551",
+        "Name": "OrderStream",
+        "Type": "Streaming",
+        "SubType": "Kafka",
+        "Description": "Order events stream",
+        "Tags": [ "streaming", "orders", "kafka" ],
+        "Owner": "Realtime Team",
+        "CreatedAt": "2024-03-10T11:00:00Z",
+        "UpdatedAt": "2025-07-20T09:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "Token",
+        "ConnectionDetails": {
+            "BrokerUrl": "kafka.company.com:9092",
+            "TopicName": "order_events",
+            "ConsumerGroup": "order-consumers",
+            "MessageFormat": "JSON"
+        }
+    },
+    {
+        "DataSourceId": "e5e5e5e5-5555-5555-5555-555555555552",
+        "Name": "SensorStream",
+        "Type": "Streaming",
+        "SubType": "MQTT",
+        "Description": "IoT sensor data stream",
+        "Tags": [ "streaming", "iot", "mqtt" ],
+        "Owner": "IoT Team",
+        "CreatedAt": "2023-06-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "APIKey",
+        "ConnectionDetails": {
+            "BrokerUrl": "mqtt.company.com:1883",
+            "TopicName": "sensor_data",
+            "ConsumerGroup": "sensor-group",
+            "MessageFormat": "JSON"
+        }
+    },
+    {
+        "DataSourceId": "e5e5e5e5-5555-5555-5555-555555555553",
+        "Name": "LogStream",
+        "Type": "Streaming",
+        "SubType": "Kafka",
+        "Description": "Application log stream",
+        "Tags": [ "streaming", "logs", "kafka" ],
+        "Owner": "App Team",
+        "CreatedAt": "2022-10-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "OAuth2",
+        "ConnectionDetails": {
+            "BrokerUrl": "kafka.company.com:9092",
+            "TopicName": "app_logs",
+            "ConsumerGroup": "log-group",
+            "MessageFormat": "Avro"
+        }
+    },
+
+    {
+        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666661",
+        "Name": "WeatherAPI",
+        "Type": "External",
+        "SubType": "REST",
+        "Description": "Weather data from external API",
+        "Tags": [ "weather", "api", "external" ],
+        "Owner": "Weather Team",
+        "CreatedAt": "2023-05-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "APIKey",
+        "ConnectionDetails": {
+            "ApiEndpoint": "https://api.weather.com/v1/",
+            "HttpMethod": "GET",
+            "Headers": { "Authorization": "Bearer xyz" },
+            "QueryParams": { "location": "NYC" },
+            "RateLimitPerMinute": 60
+        }
+    },
+    {
+        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666662",
+        "Name": "PaymentAPI",
+        "Type": "External",
+        "SubType": "REST",
+        "Description": "Payment gateway API",
+        "Tags": [ "payment", "api", "external" ],
+        "Owner": "Finance Team",
+        "CreatedAt": "2022-11-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "OAuth2",
+        "ConnectionDetails": {
+            "ApiEndpoint": "https://api.payment.com/v2/",
+            "HttpMethod": "POST",
+            "Headers": { "Authorization": "Bearer abc" },
+            "QueryParams": { "currency": "USD" },
+            "RateLimitPerMinute": 120
+        }
+    },
+    {
+        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666663",
+        "Name": "StockAPI",
+        "Type": "External",
+        "SubType": "REST",
+        "Description": "Stock market data API",
+        "Tags": [ "stock", "api", "external" ],
+        "Owner": "Finance Team",
+        "CreatedAt": "2023-01-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "Token",
+        "ConnectionDetails": {
+            "ApiEndpoint": "https://api.stock.com/v1/",
+            "HttpMethod": "GET",
+            "Headers": { "Authorization": "Bearer def" },
+            "QueryParams": { "symbol": "AAPL" },
+            "RateLimitPerMinute": 30
+        }
+    },
+
+    {
+        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666664",
+        "Name": "ERPSystem",
+        "Type": "Proprietary",
+        "SubType": "SDK",
+        "Description": "ERP system integration",
+        "Tags": [ "erp", "sdk", "proprietary" ],
+        "Owner": "ERP Team",
+        "CreatedAt": "2022-03-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "APIKey",
+        "ConnectionDetails": {
+            "VendorName": "SAP",
+            "IntegrationType": "SDK",
+            "CustomParserRequired": true
+        }
+    },
+    {
+        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666664",
+        "Name": "HRSystem",
+        "Type": "Proprietary",
+        "SubType": "API",
+        "Description": "HR system integration",
+        "Tags": [ "hr", "api", "proprietary" ],
+        "Owner": "HR Team",
+        "CreatedAt": "2023-04-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadOnly",
+        "AuthenticationType": "OAuth2",
+        "ConnectionDetails": {
+            "VendorName": "Workday",
+            "IntegrationType": "API",
+            "CustomParserRequired": false
+        }
+    },
+    {
+        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666665",
+        "Name": "FinanceExport",
+        "Type": "Proprietary",
+        "SubType": "FileExport",
+        "Description": "Finance data export",
+        "Tags": [ "finance", "fileexport", "proprietary" ],
+        "Owner": "Finance Team",
+        "CreatedAt": "2022-07-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "Token",
+        "ConnectionDetails": {
+            "VendorName": "Oracle",
+            "IntegrationType": "FileExport",
+            "CustomParserRequired": false
+        }
+    },
+
+    {
+        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666634",
+        "Name": "ImageVectors",
+        "Type": "Vector",
+        "SubType": "Pinecone",
+        "Description": "Image embeddings for search",
+        "Tags": [ "images", "vector", "search" ],
+        "Owner": "ML Team",
+        "CreatedAt": "2024-06-01T13:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "APIKey",
+        "ConnectionDetails": {
+            "VectorDbType": "Pinecone",
+            "IndexName": "image-index",
+            "EmbeddingModel": "resnet50",
+            "Dimension": 512,
+            "DistanceMetric": "Cosine"
+        }
+    },
+    {
+        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666664",
+        "Name": "TextVectors",
+        "Type": "Vector",
+        "SubType": "FAISS",
+        "Description": "Text embeddings for NLP",
+        "Tags": [ "text", "vector", "nlp" ],
+        "Owner": "ML Team",
+        "CreatedAt": "2023-02-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "APIKey",
+        "ConnectionDetails": {
+            "VectorDbType": "FAISS",
+            "IndexName": "text-index",
+            "EmbeddingModel": "bert-base",
+            "Dimension": 768,
+            "DistanceMetric": "Euclidean"
+        }
+    },
+    {
+        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666664",
+        "Name": "ProductVectors",
+        "Type": "Vector",
+        "SubType": "Weaviate",
+        "Description": "Product feature vectors",
+        "Tags": [ "product", "vector", "features" ],
+        "Owner": "ML Team",
+        "CreatedAt": "2022-09-01T10:00:00Z",
+        "UpdatedAt": "2025-07-24T10:00:00Z",
+        "IsActive": true,
+        "AccessMode": "ReadWrite",
+        "AuthenticationType": "APIKey",
+        "ConnectionDetails": {
+            "VectorDbType": "Weaviate",
+            "IndexName": "product-index",
+            "EmbeddingModel": "custom-model",
+            "Dimension": 256,
+            "DistanceMetric": "DotProduct"
+        }
+    }
+]

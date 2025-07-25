@@ -1,6 +1,7 @@
 import { Component, Input, signal, OnInit } from '@angular/core';
 import { DataSource } from '../../../datamodels/data-source.model';
-import { Router } from '@angular/router';
+import { DataSourceService } from '../../../services/data-source.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-data-source-detail',
@@ -10,27 +11,90 @@ import { Router } from '@angular/router';
 })
 export class DataSourceDetailComponent implements OnInit {
     @Input() dataSource: DataSource | null = null;
-    editMode = signal(true); // Start in edit mode for add screen
+    editMode = signal(false); // Start in view mode
 
-    constructor(private router: Router) { }
+    // Form helper properties
+    tagsString = '';
+
+    constructor(
+        private dataSourceService: DataSourceService,
+        private router: Router,
+        private route: ActivatedRoute
+    ) { }
 
     ngOnInit() {
-        if (!this.dataSource) {
-            this.dataSource = {
-                dataSourceId: '',
-                name: '',
-                type: 'Structured',
-                subType: '',
-                description: '',
-                tags: [],
-                owner: '',
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                isActive: true,
-                accessMode: 'ReadWrite',
-                authenticationType: 'APIKey',
-                connectionDetails: {}
-            };
+        const id = this.route.snapshot.paramMap.get('id');
+
+        if (id && id !== 'add') {
+            // Viewing/editing existing data source
+            this.editMode.set(false);
+            this.loadDataSource(id);
+        } else if (id === 'add') {
+            // Adding new data source
+            this.editMode.set(true);
+            this.initializeNewDataSource();
+        } else if (!this.dataSource) {
+            // Fallback for when used as component with no data
+            this.initializeNewDataSource();
+        }
+    }
+
+    private loadDataSource(id: string) {
+        // Try to get from service first, fallback to mock data
+        this.dataSourceService.getDataSource(id).subscribe({
+            next: (dataSource: DataSource) => {
+                this.dataSource = dataSource;
+                this.initializeFormStrings();
+            },
+            error: (err: any) => {
+                // Create mock data if service fails
+                this.dataSource = {
+                    dataSourceUId: id,
+                    name: `Sample Data Source ${id}`,
+                    type: 'Structured',
+                    subType: 'Database',
+                    description: `This is a sample data source with ID ${id}. In a real application, this data would be fetched from a backend service.`,
+                    tags: ['production', 'database', 'mysql'],
+                    owner: 'System Administrator',
+                    createdAt: new Date('2024-01-15').toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    isActive: true,
+                    accessMode: 'ReadWrite',
+                    authenticationType: 'APIKey',
+                    connectionDetails: {
+                        host: 'localhost',
+                        port: 3306,
+                        database: 'sample_db',
+                        ssl: true
+                    }
+                };
+                this.initializeFormStrings();
+            }
+        });
+    }
+
+    private initializeNewDataSource() {
+        this.dataSource = {
+            dataSourceUId: '',
+            name: '',
+            type: 'Structured',
+            subType: '',
+            description: '',
+            tags: [],
+            owner: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            isActive: true,
+            accessMode: 'ReadWrite',
+            authenticationType: 'APIKey',
+            connectionDetails: {}
+        };
+        this.initializeFormStrings();
+    }
+
+    private initializeFormStrings() {
+        if (this.dataSource) {
+            this.tagsString = this.dataSource.tags ? this.dataSource.tags.join(', ') : '';
         }
     }
 
@@ -40,10 +104,18 @@ export class DataSourceDetailComponent implements OnInit {
 
     onSave() {
         if (this.dataSource) {
-            // TODO: Implement save logic with DataSourceService
-            console.log('Saving data source:', this.dataSource);
-            this.router.navigate(['/datasources']);
+            // Convert tags string back to array
+            this.dataSource.tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+
+            this.dataSourceService.createDataSource(this.dataSource).subscribe({
+                next: (result: any) => {
+                    alert('Data source saved successfully!');
+                    this.router.navigate(['/datasources']);
+                },
+                error: (err: any) => {
+                    alert('Failed to save data source.');
+                }
+            });
         }
     }
 }
-

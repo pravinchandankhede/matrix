@@ -31,9 +31,23 @@
                         <span class="status-badge" [ngClass]="ds.type.toLowerCase()">{{ ds.type }}</span>
                     </div>
                     <div class="card-body">
+                        <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Data Source UID:</span> <span class="uid">{{ ds.dataSourceUId }}</span></div>
                         <div class="info-row"><mat-icon>person</mat-icon> <span class="label">Owner:</span> <span>{{ ds.owner }}</span></div>
                         <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="ds.description">{{ ds.description }}</span></div>
                         <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ ds.type }}</div>
+                        <div class="info-row"><mat-icon>category</mat-icon> <span class="label">SubType:</span> {{ ds.subType }}</div>
+                        <div class="info-row">
+                            <mat-icon>label</mat-icon> <span class="label">Tags:</span>
+                            <div class="badge-container" *ngIf="ds.tags && ds.tags.length > 0">
+                                @for (tag of ds.tags.slice(0, 3); track tag) {
+                                <span class="tag-badge">{{ tag }}</span>
+                                }
+                                @if (ds.tags.length > 3) {
+                                <span class="more-badge">+{{ ds.tags.length - 3 }} more</span>
+                                }
+                            </div>
+                            <span *ngIf="!ds.tags || ds.tags.length === 0" class="no-tags">No tags</span>
+                        </div>
                         <div class="info-row">
                             <span class="label">Status:</span>
                             <span class="status-badge" [ngClass]="ds.isActive ? 'active' : 'inactive'">
@@ -42,7 +56,7 @@
                             </span>
                         </div>
                         <div class="info-row">
-                            <button mat-icon-button color="accent" (click)="onViewDetails(ds.dataSourceId)" title="View">
+                            <button mat-icon-button color="accent" (click)="onViewDetails(ds.dataSourceUId)" title="View">
                                 <mat-icon>visibility</mat-icon>
                             </button>
                         </div>

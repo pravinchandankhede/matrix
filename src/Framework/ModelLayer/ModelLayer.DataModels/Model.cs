@@ -10,6 +10,7 @@ namespace Matrix.ModelLayer.DataModels;
 
 public class Model
 {
+    public Guid ModelUId { get; set; }
     public required String Name { get; set; }
     public String? Type { get; set; }
     public String? Version { get; set; }

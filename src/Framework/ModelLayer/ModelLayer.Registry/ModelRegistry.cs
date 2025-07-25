@@ -11,6 +11,7 @@ namespace Matrix.ModelLayer.Registry;
 using Matrix.ModelLayer.DataModels;
 using System.Collections.Generic;
 using Matrix.ModelLayer.DataLayer;
+using Matrix.ModelLayer.Interfaces;
 
 /// <summary>
 /// A registry for managing Models in the ecosystem, allowing registration, update, retrieval, listing, and removal of Models.

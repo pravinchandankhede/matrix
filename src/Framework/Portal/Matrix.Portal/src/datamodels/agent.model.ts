@@ -1,4 +1,5 @@
 export interface Agent {
+    agentUId: string;
     name: string;
     description: string;
     type: string;

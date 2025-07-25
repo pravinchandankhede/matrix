@@ -31,7 +31,7 @@ public class DataSourceRepository : IDataSourceRepository
 
     public void DeleteDataSource(Guid id)
     {
-       _dataSourceList.RemoveAll(ds => ds.DataSourceId == id);
+       _dataSourceList.RemoveAll(ds => ds.DataSourceUId == id);
     }
 
     public IEnumerable<DataSource> GetAllDataSources()

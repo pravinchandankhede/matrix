@@ -1,4 +1,5 @@
 export interface Model {
+    modelUId: string;
     name: string;
     type?: string;
     version?: string;

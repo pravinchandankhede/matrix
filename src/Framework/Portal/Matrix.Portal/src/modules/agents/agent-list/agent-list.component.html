@@ -32,8 +32,20 @@
                         <span class="status-badge" [ngClass]="agent.status.toLowerCase()">{{ agent.status }}</span>
                     </div>
                     <div class="card-body">
+                        <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Agent UID:</span> <span class="uid">{{ agent.agentUId }}</span></div>
                         <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="agent.description">{{ agent.description }}</span></div>
                         <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ agent.type }}</div>
+                        <div class="info-row">
+                            <mat-icon>settings</mat-icon> <span class="label">Capabilities:</span>
+                            <div class="badge-container">
+                                @for (cap of agent.capabilities.slice(0, 3); track cap) {
+                                <span class="capability-badge">{{ cap }}</span>
+                                }
+                                @if (agent.capabilities.length > 3) {
+                                <span class="more-badge">+{{ agent.capabilities.length - 3 }} more</span>
+                                }
+                            </div>
+                        </div>
                         <div class="info-row">
                             <mat-icon>star</mat-icon> <span class="label">Features:</span> @for (feat of agent.features; track feat) {
                             <span class="feature-badge">{{ feat }}</span>

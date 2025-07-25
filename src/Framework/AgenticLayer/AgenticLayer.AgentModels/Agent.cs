@@ -18,7 +18,7 @@ public class Agent
     /// <summary>
     /// Gets or sets the unique identifier for the agent.
     /// </summary>
-    public Guid AgentId { get; set; }
+    public Guid AgentUId { get; set; }
 
     /// <summary>
     /// The unique name of the agent.

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-model-detail',
-    standalone : false,
+    standalone: false,
     templateUrl: './model-detail.component.html',
     styleUrls: ['./model-detail.component.css']
 })
@@ -18,6 +18,7 @@ export class ModelDetailComponent implements OnInit {
     ngOnInit() {
         if (!this.model) {
             this.model = {
+                modelUId: '',
                 name: '',
                 type: '',
                 version: '',
@@ -38,11 +39,11 @@ export class ModelDetailComponent implements OnInit {
     onSave() {
         if (this.model) {
             this.modelService.createModel(this.model).subscribe({
-                next: (result) => {
+                next: (result: any) => {
                     alert('Model saved successfully!');
                     this.router.navigate(['/models']);
                 },
-                error: (err) => {
+                error: (err: any) => {
                     alert('Failed to save model.');
                 }
             });

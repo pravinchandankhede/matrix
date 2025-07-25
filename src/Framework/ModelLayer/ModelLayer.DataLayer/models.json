@@ -1,5 +1,6 @@
 [
     {
+        "ModelUId": "12345678-1234-1234-1234-123456789012",
         "Name": "GPT3",
         "Type": "Chat",
         "Version": "3",
@@ -11,6 +12,7 @@
         "IsEnabled": true
     },
     {
+        "ModelUId": "23456789-2345-2345-2345-234567890123",
         "Name": "GPT4",
         "Type": "Chat",
         "Version": "4",
@@ -22,6 +24,7 @@
         "IsEnabled": true
     },
     {
+        "ModelUId": "34567890-3456-3456-3456-345678901234",
         "Name": "BERT",
         "Type": "Text",
         "Version": "1.0",

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class DataSource
 {
-    public required Guid DataSourceId { get; set; }
+    public required Guid DataSourceUId { get; set; }
     public required String Name { get; set; }
     public required DataSourceType Type { get; set; }
     public required String SubType { get; set; }

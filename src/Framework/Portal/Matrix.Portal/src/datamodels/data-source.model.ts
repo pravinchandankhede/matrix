@@ -1,5 +1,5 @@
 export interface DataSource {
-  dataSourceId: string;
+  dataSourceUId: string;
   name: string;
   type: DataSourceType;
   subType: string;

@@ -13,11 +13,17 @@ export class AgentDetailComponent implements OnInit {
     @Input() agent: Agent | null = null;
     editMode = signal(true); // Start in edit mode for add screen
 
+    // Form helper properties
+    capabilitiesString = '';
+    featuresString = '';
+    integratedToolsString = '';
+
     constructor(private agentService: AgentService, private router: Router) { }
 
     ngOnInit() {
         if (!this.agent) {
             this.agent = {
+                agentUId: '',
                 name: '',
                 description: '',
                 type: '',
@@ -31,6 +37,11 @@ export class AgentDetailComponent implements OnInit {
                 integratedTools: []
             };
         }
+
+        // Initialize string representations for form
+        this.capabilitiesString = this.agent.capabilities.join(', ');
+        this.featuresString = this.agent.features.join(', ');
+        this.integratedToolsString = this.agent.integratedTools.join(', ');
     }
 
     toggleEdit() {
@@ -39,12 +50,17 @@ export class AgentDetailComponent implements OnInit {
 
     onSave() {
         if (this.agent) {
+            // Convert string inputs back to arrays
+            this.agent.capabilities = this.capabilitiesString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            this.agent.features = this.featuresString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            this.agent.integratedTools = this.integratedToolsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+
             this.agentService.addAgent(this.agent).subscribe({
-                next: (result) => {
+                next: (result: any) => {
                     alert('Agent added successfully!');
                     this.router.navigate(['/agents']);
                 },
-                error: (err) => {
+                error: (err: any) => {
                     alert('Failed to add agent.');
                 }
             });

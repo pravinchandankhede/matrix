@@ -8,6 +8,10 @@
         </div>
         <form *ngIf="editMode(); else viewMode" class="detail-form">
             <div class="form-row">
+                <label>Data Source UID:</label>
+                <input type="text" [(ngModel)]="dataSource.dataSourceUId" name="dataSourceUId" />
+            </div>
+            <div class="form-row">
                 <label>Name:</label>
                 <input type="text" [(ngModel)]="dataSource.name" name="name" />
             </div>
@@ -31,6 +35,10 @@
             <div class="form-row">
                 <label>SubType:</label>
                 <input type="text" [(ngModel)]="dataSource.subType" name="subType" />
+            </div>
+            <div class="form-row">
+                <label>Tags:</label>
+                <input type="text" [(ngModel)]="tagsString" name="tags" placeholder="Comma separated tags" />
             </div>
             <div class="form-row">
                 <label>Owner:</label>
@@ -66,9 +74,17 @@
         </form>
         <ng-template #viewMode>
             <div class="detail-body">
+                <div class="detail-row"><mat-icon>fingerprint</mat-icon> <span class="label">Data Source UID:</span> {{ dataSource.dataSourceUId }}</div>
                 <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ dataSource.description }}</div>
                 <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ dataSource.type }}</div>
                 <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">SubType:</span> {{ dataSource.subType }}</div>
+                <div class="detail-row">
+                    <mat-icon>label</mat-icon> <span class="label">Tags:</span>
+                    <div class="badge-container" *ngIf="dataSource.tags && dataSource.tags.length > 0">
+                        <span *ngFor="let tag of dataSource.tags" class="tag-badge">{{ tag }}</span>
+                    </div>
+                    <span *ngIf="!dataSource.tags || dataSource.tags.length === 0">No tags</span>
+                </div>
                 <div class="detail-row"><mat-icon>person</mat-icon> <span class="label">Owner:</span> {{ dataSource.owner }}</div>
                 <div class="detail-row"><mat-icon>security</mat-icon> <span class="label">Access Mode:</span> {{ dataSource.accessMode }}</div>
                 <div class="detail-row"><mat-icon>vpn_key</mat-icon> <span class="label">Authentication:</span> {{ dataSource.authenticationType }}</div>

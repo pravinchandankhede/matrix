@@ -8,6 +8,10 @@
         </div>
         <form *ngIf="editMode(); else viewMode" class="detail-form">
             <div class="form-row">
+                <label>Model UID:</label>
+                <input type="text" [(ngModel)]="model.modelUId" name="modelUId" />
+            </div>
+            <div class="form-row">
                 <label>Name:</label>
                 <input type="text" [(ngModel)]="model.name" name="name" />
             </div>
@@ -52,6 +56,7 @@
         </form>
         <ng-template #viewMode>
             <div class="detail-body">
+                <div class="detail-row"><mat-icon>fingerprint</mat-icon> <span class="label">Model UID:</span> {{ model.modelUId }}</div>
                 <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ model.description }}</div>
                 <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ model.type }}</div>
                 <div class="detail-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ model.version }}</div>

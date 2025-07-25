@@ -365,6 +365,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    background: transparent;
 }
 
 .card-name {
@@ -428,7 +429,7 @@ body {
     gap: 0.25rem;
     margin-top: auto;
     padding-top: 1rem;
-    border-top: 1px solid #e9ecef;
+    /*border-top: 1px solid #e9ecef;*/
 }
 
     .date-row > div {

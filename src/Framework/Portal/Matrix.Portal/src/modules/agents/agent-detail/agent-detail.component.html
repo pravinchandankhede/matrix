@@ -1,56 +1,58 @@
 <div class="agent-detail-container" *ngIf="agent">
-    <div class="agent-detail-header">
-        <h2><mat-icon>smart_toy</mat-icon> {{ agent.name }}</h2>
-        <button class="edit-btn" (click)="toggleEdit()">
-            <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
-        </button>
+    <div class="section-wrapper modern-theme-bg">
+        <div class="agent-detail-header">
+            <h2><mat-icon>smart_toy</mat-icon> {{ agent.name || 'New Agent' }}</h2>
+            <button class="edit-btn" (click)="toggleEdit()">
+                <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
+            </button>
+        </div>
+        <form *ngIf="editMode(); else viewMode" class="agent-detail-form">
+            <div class="form-row">
+                <label>Name:</label>
+                <input type="text" [(ngModel)]="agent.name" name="name" />
+            </div>
+            <div class="form-row">
+                <label>Description:</label>
+                <textarea [(ngModel)]="agent.description" name="description"></textarea>
+            </div>
+            <div class="form-row">
+                <label>Type:</label>
+                <input type="text" [(ngModel)]="agent.type" name="type" />
+            </div>
+            <div class="form-row">
+                <label>Status:</label>
+                <select [(ngModel)]="agent.status" name="status">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Maintenance">Maintenance</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Version:</label>
+                <input type="text" [(ngModel)]="agent.version" name="version" />
+            </div>
+            <div class="form-row">
+                <label>Features:</label>
+                <input type="text" [(ngModel)]="agent.features" name="features" placeholder="Comma separated" />
+            </div>
+            <div class="form-row">
+                <label>Integrated Tools:</label>
+                <input type="text" [(ngModel)]="agent.integratedTools" name="integratedTools" placeholder="Comma separated" />
+            </div>
+            <div class="form-actions">
+                <button type="button" class="save-btn" (click)="onSave()">Save</button>
+            </div>
+        </form>
+        <ng-template #viewMode>
+            <div class="agent-detail-body">
+                <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ agent.description }}</div>
+                <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ agent.type }}</div>
+                <div class="detail-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ agent.version }}</div>
+                <div class="detail-row"><mat-icon>star</mat-icon> <span class="label">Features:</span> <span *ngFor="let feat of agent.features" class="feature-badge">{{ feat }}</span></div>
+                <div class="detail-row"><mat-icon>build</mat-icon> <span class="label">Integrated Tools:</span> <span *ngFor="let tool of agent.integratedTools" class="tool-badge">{{ tool }}</span></div>
+                <div class="detail-row"><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ agent.createdDate | date:'mediumDate' }}</div>
+                <div class="detail-row"><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ agent.lastUpdatedDate | date:'mediumDate' }}</div>
+            </div>
+        </ng-template>
     </div>
-    <form *ngIf="editMode(); else viewMode" class="agent-detail-form">
-        <div class="form-row">
-            <label>Name:</label>
-            <input type="text" [(ngModel)]="agent.name" name="name" />
-        </div>
-        <div class="form-row">
-            <label>Description:</label>
-            <textarea [(ngModel)]="agent.description" name="description"></textarea>
-        </div>
-        <div class="form-row">
-            <label>Type:</label>
-            <input type="text" [(ngModel)]="agent.type" name="type" />
-        </div>
-        <div class="form-row">
-            <label>Status:</label>
-            <select [(ngModel)]="agent.status" name="status">
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-                <option value="Maintenance">Maintenance</option>
-            </select>
-        </div>
-        <div class="form-row">
-            <label>Version:</label>
-            <input type="text" [(ngModel)]="agent.version" name="version" />
-        </div>
-        <div class="form-row">
-            <label>Features:</label>
-            <input type="text" [(ngModel)]="agent.features" name="features" placeholder="Comma separated" />
-        </div>
-        <div class="form-row">
-            <label>Integrated Tools:</label>
-            <input type="text" [(ngModel)]="agent.integratedTools" name="integratedTools" placeholder="Comma separated" />
-        </div>
-        <div class="form-actions">
-            <button type="button" class="save-btn" (click)="onSave()">Save</button>
-        </div>
-    </form>
-    <ng-template #viewMode>
-        <div class="agent-detail-body">
-            <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ agent.description }}</div>
-            <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ agent.type }}</div>
-            <div class="detail-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ agent.version }}</div>
-            <div class="detail-row"><mat-icon>star</mat-icon> <span class="label">Features:</span> <span *ngFor="let feat of agent.features" class="feature-badge">{{ feat }}</span></div>
-            <div class="detail-row"><mat-icon>build</mat-icon> <span class="label">Integrated Tools:</span> <span *ngFor="let tool of agent.integratedTools" class="tool-badge">{{ tool }}</span></div>
-            <div class="detail-row"><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ agent.createdDate | date:'mediumDate' }}</div>
-            <div class="detail-row"><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ agent.lastUpdatedDate | date:'mediumDate' }}</div>
-        </div>
-    </ng-template>
 </div>

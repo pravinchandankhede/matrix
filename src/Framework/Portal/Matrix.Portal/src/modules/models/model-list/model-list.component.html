@@ -22,33 +22,33 @@
                 </button>
             </div>
         </div>
-    </div>
-    <ng-container *ngIf="filteredModels.length > 0; else noModels">
-        <div class="model-card-grid">
-            @for (model of filteredModels; track model) {
-            <div class="model-card">
-                <div class="model-card-header">
-                    <span class="model-name">{{ model.name }}</span>
-                    <span class="model-status-badge" [ngClass]="model.isEnabled ? 'enabled' : 'disabled'">
-                        {{ model.isEnabled ? 'Enabled' : 'Disabled' }}
-                    </span>
+        <ng-container *ngIf="filteredModels.length > 0; else noModels">
+            <div class="model-card-grid">
+                @for (model of filteredModels; track model) {
+                <div class="model-card">
+                    <div class="model-card-header">
+                        <span class="model-name">{{ model.name }}</span>
+                        <span class="model-status-badge" [ngClass]="model.isEnabled ? 'enabled' : 'disabled'">
+                            {{ model.isEnabled ? 'Enabled' : 'Disabled' }}
+                        </span>
+                    </div>
+                    <div class="model-card-body">
+                        <div class="model-info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="model.description">{{ model.description }}</span></div>
+                        <div class="model-info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ model.type }}</div>
+                        <div class="model-info-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ model.version }}</div>
+                        <div class="model-info-row"><mat-icon>business</mat-icon> <span class="label">Provider:</span> {{ model.provider }}</div>
+                        <div class="model-info-row"><mat-icon>link</mat-icon> <span class="label">Endpoint:</span> <span class="endpoint">{{ model.endpoint }}</span></div>
+                        <div class="model-info-row"><mat-icon>vpn_key</mat-icon> <span class="label">API Key:</span> {{ model.apiKey }}</div>
+                        <div class="model-info-row"><mat-icon>public</mat-icon> <span class="label">Region:</span> {{ model.region }}</div>
+                    </div>
                 </div>
-                <div class="model-card-body">
-                    <div class="model-info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="model.description">{{ model.description }}</span></div>
-                    <div class="model-info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ model.type }}</div>
-                    <div class="model-info-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ model.version }}</div>
-                    <div class="model-info-row"><mat-icon>business</mat-icon> <span class="label">Provider:</span> {{ model.provider }}</div>
-                    <div class="model-info-row"><mat-icon>link</mat-icon> <span class="label">Endpoint:</span> <span class="endpoint">{{ model.endpoint }}</span></div>
-                    <div class="model-info-row"><mat-icon>vpn_key</mat-icon> <span class="label">API Key:</span> {{ model.apiKey }}</div>
-                    <div class="model-info-row"><mat-icon>public</mat-icon> <span class="label">Region:</span> {{ model.region }}</div>
-                </div>
+                }
             </div>
-            }
-        </div>
-    </ng-container>
-    <ng-template #noModels>
-        <div class="no-models-message">
-            <mat-icon>info</mat-icon> No models found. Please add or configure models to see them here.
-        </div>
-    </ng-template>
+        </ng-container>
+        <ng-template #noModels>
+            <div class="no-models-message">
+                <mat-icon>info</mat-icon> No models found. Please add or configure models to see them here.
+            </div>
+        </ng-template>
+    </div>
 </div>

@@ -1,0 +1,86 @@
+<div class="data-source-detail-container" *ngIf="dataSource">
+    <div class="section-wrapper modern-theme-bg">
+        <div class="data-source-detail-header">
+            <h2><mat-icon>storage</mat-icon> {{ dataSource.name || 'New Data Source' }}</h2>
+            <button class="edit-btn" (click)="toggleEdit()">
+                <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
+            </button>
+        </div>
+        <form *ngIf="editMode(); else viewMode" class="data-source-detail-form">
+            <div class="form-row">
+                <label>Name:</label>
+                <input type="text" [(ngModel)]="dataSource.name" name="name" />
+            </div>
+            <div class="form-row">
+                <label>Description:</label>
+                <textarea [(ngModel)]="dataSource.description" name="description"></textarea>
+            </div>
+            <div class="form-row">
+                <label>Type:</label>
+                <select [(ngModel)]="dataSource.type" name="type">
+                    <option value="Structured">Structured</option>
+                    <option value="SemiStructured">SemiStructured</option>
+                    <option value="Unstructured">Unstructured</option>
+                    <option value="Multimedia">Multimedia</option>
+                    <option value="Streaming">Streaming</option>
+                    <option value="External">External</option>
+                    <option value="Proprietary">Proprietary</option>
+                    <option value="Vector">Vector</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>SubType:</label>
+                <input type="text" [(ngModel)]="dataSource.subType" name="subType" />
+            </div>
+            <div class="form-row">
+                <label>Owner:</label>
+                <input type="text" [(ngModel)]="dataSource.owner" name="owner" />
+            </div>
+            <div class="form-row">
+                <label>Status:</label>
+                <select [(ngModel)]="dataSource.isActive" name="isActive">
+                    <option [value]="true">Active</option>
+                    <option [value]="false">Inactive</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Access Mode:</label>
+                <select [(ngModel)]="dataSource.accessMode" name="accessMode">
+                    <option value="ReadOnly">ReadOnly</option>
+                    <option value="ReadWrite">ReadWrite</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Authentication Type:</label>
+                <select [(ngModel)]="dataSource.authenticationType" name="authenticationType">
+                    <option value="APIKey">APIKey</option>
+                    <option value="OAuth2">OAuth2</option>
+                    <option value="BasicAuth">BasicAuth</option>
+                    <option value="Token">Token</option>
+                    <option value="None">None</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="save-btn" (click)="onSave()">Save</button>
+            </div>
+        </form>
+        <ng-template #viewMode>
+            <div class="data-source-detail-body">
+                <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ dataSource.description }}</div>
+                <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ dataSource.type }}</div>
+                <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">SubType:</span> {{ dataSource.subType }}</div>
+                <div class="detail-row"><mat-icon>person</mat-icon> <span class="label">Owner:</span> {{ dataSource.owner }}</div>
+                <div class="detail-row"><mat-icon>security</mat-icon> <span class="label">Access Mode:</span> {{ dataSource.accessMode }}</div>
+                <div class="detail-row"><mat-icon>vpn_key</mat-icon> <span class="label">Authentication:</span> {{ dataSource.authenticationType }}</div>
+                <div class="detail-row"><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ dataSource.createdAt | date:'mediumDate' }}</div>
+                <div class="detail-row"><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ dataSource.updatedAt | date:'mediumDate' }}</div>
+            </div>
+        </ng-template>
+    </div>
+</div>
+<!--<button mat-stroked-button color="warn" type="button" (click)="toggleEdit()">
+    <mat-icon>cancel</mat-icon> Cancel
+</button>
+    </div>
+  </form>
+</div>-->

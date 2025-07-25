@@ -1,67 +1,66 @@
 <div class="model-detail-container" *ngIf="model">
-    <div class="breadcrumb">
-        <a routerLink="/models">Models</a> / <span>{{ editMode() ? 'Add/Edit Model' : model.name }}</span>
+    <div class="section-wrapper modern-theme-bg">
+        <div class="model-detail-header">
+            <h2><mat-icon>view_list</mat-icon> {{ model.name || 'New Model' }}</h2>
+            <button class="edit-btn" (click)="toggleEdit()">
+                <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
+            </button>
+        </div>
+        <form *ngIf="editMode(); else viewMode" class="model-detail-form">
+            <div class="form-row">
+                <label>Name:</label>
+                <input type="text" [(ngModel)]="model.name" name="name" />
+            </div>
+            <div class="form-row">
+                <label>Description:</label>
+                <textarea [(ngModel)]="model.description" name="description"></textarea>
+            </div>
+            <div class="form-row">
+                <label>Type:</label>
+                <input type="text" [(ngModel)]="model.type" name="type" />
+            </div>
+            <div class="form-row">
+                <label>Version:</label>
+                <input type="text" [(ngModel)]="model.version" name="version" />
+            </div>
+            <div class="form-row">
+                <label>Provider:</label>
+                <input type="text" [(ngModel)]="model.provider" name="provider" />
+            </div>
+            <div class="form-row">
+                <label>Endpoint:</label>
+                <input type="text" [(ngModel)]="model.endpoint" name="endpoint" />
+            </div>
+            <div class="form-row">
+                <label>API Key:</label>
+                <input type="text" [(ngModel)]="model.apiKey" name="apiKey" />
+            </div>
+            <div class="form-row">
+                <label>Region:</label>
+                <input type="text" [(ngModel)]="model.region" name="region" />
+            </div>
+            <div class="form-row">
+                <label>Status:</label>
+                <select [(ngModel)]="model.isEnabled" name="isEnabled">
+                    <option [ngValue]="true">Enabled</option>
+                    <option [ngValue]="false">Disabled</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="save-btn" (click)="onSave()">Save</button>
+            </div>
+        </form>
+        <ng-template #viewMode>
+            <div class="model-detail-body">
+                <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ model.description }}</div>
+                <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ model.type }}</div>
+                <div class="detail-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ model.version }}</div>
+                <div class="detail-row"><mat-icon>business</mat-icon> <span class="label">Provider:</span> {{ model.provider }}</div>
+                <div class="detail-row"><mat-icon>link</mat-icon> <span class="label">Endpoint:</span> {{ model.endpoint }}</div>
+                <div class="detail-row"><mat-icon>vpn_key</mat-icon> <span class="label">API Key:</span> {{ model.apiKey }}</div>
+                <div class="detail-row"><mat-icon>public</mat-icon> <span class="label">Region:</span> {{ model.region }}</div>
+                <div class="detail-row"><mat-icon>check_circle</mat-icon> <span class="label">Status:</span> {{ model.isEnabled ? 'Enabled' : 'Disabled' }}</div>
+            </div>
+        </ng-template>
     </div>
-    <div class="model-detail-header">
-        <h2><mat-icon>view_list</mat-icon> {{ model.name }}</h2>
-        <button class="edit-btn" (click)="toggleEdit()">
-            <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
-        </button>
-    </div>
-    <form *ngIf="editMode(); else viewMode" class="model-detail-form">
-        <div class="form-row">
-            <label>Name:</label>
-            <input type="text" [(ngModel)]="model.name" name="name" />
-        </div>
-        <div class="form-row">
-            <label>Description:</label>
-            <textarea [(ngModel)]="model.description" name="description"></textarea>
-        </div>
-        <div class="form-row">
-            <label>Type:</label>
-            <input type="text" [(ngModel)]="model.type" name="type" />
-        </div>
-        <div class="form-row">
-            <label>Version:</label>
-            <input type="text" [(ngModel)]="model.version" name="version" />
-        </div>
-        <div class="form-row">
-            <label>Provider:</label>
-            <input type="text" [(ngModel)]="model.provider" name="provider" />
-        </div>
-        <div class="form-row">
-            <label>Endpoint:</label>
-            <input type="text" [(ngModel)]="model.endpoint" name="endpoint" />
-        </div>
-        <div class="form-row">
-            <label>API Key:</label>
-            <input type="text" [(ngModel)]="model.apiKey" name="apiKey" />
-        </div>
-        <div class="form-row">
-            <label>Region:</label>
-            <input type="text" [(ngModel)]="model.region" name="region" />
-        </div>
-        <div class="form-row">
-            <label>Status:</label>
-            <select [(ngModel)]="model.isEnabled" name="isEnabled">
-                <option [ngValue]="true">Enabled</option>
-                <option [ngValue]="false">Disabled</option>
-            </select>
-        </div>
-        <div class="form-actions">
-            <button type="button" class="save-btn" (click)="onSave()">Save</button>
-        </div>
-    </form>
-    <ng-template #viewMode>
-        <div class="model-detail-body">
-            <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ model.description }}</div>
-            <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ model.type }}</div>
-            <div class="detail-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ model.version }}</div>
-            <div class="detail-row"><mat-icon>business</mat-icon> <span class="label">Provider:</span> {{ model.provider }}</div>
-            <div class="detail-row"><mat-icon>link</mat-icon> <span class="label">Endpoint:</span> {{ model.endpoint }}</div>
-            <div class="detail-row"><mat-icon>vpn_key</mat-icon> <span class="label">API Key:</span> {{ model.apiKey }}</div>
-            <div class="detail-row"><mat-icon>public</mat-icon> <span class="label">Region:</span> {{ model.region }}</div>
-            <div class="detail-row"><mat-icon>check_circle</mat-icon> <span class="label">Status:</span> {{ model.isEnabled ? 'Enabled' : 'Disabled' }}</div>
-        </div>
-    </ng-template>
 </div>

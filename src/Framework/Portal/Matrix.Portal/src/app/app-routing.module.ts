@@ -14,12 +14,11 @@ const routes: Routes = [
         loadChildren: () =>
             import('../modules/agents/agents.module').then(m => m.AgentsModule)
     },
-    //{
-    //    path: 'portfolio',
-    //    loadChildren: () =>
-    //        import('../portfolio/portfolio.module').then(m => m.PortfolioModule)
-    //},
-    // Add similar lazy routes for mutual-fund, portfolio, reports if needed
+    {
+        path: 'datasources',
+        loadChildren: () =>
+            import('../modules/datasources/datasources.module').then(m => m.DataSourcesModule)
+    },
 ];
 
 @NgModule({

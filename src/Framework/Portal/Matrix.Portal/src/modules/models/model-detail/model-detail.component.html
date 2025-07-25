@@ -1,12 +1,12 @@
-<div class="model-detail-container" *ngIf="model">
+<div class="detail-container" *ngIf="model">
     <div class="section-wrapper modern-theme-bg">
-        <div class="model-detail-header">
+        <div class="detail-header">
             <h2><mat-icon>view_list</mat-icon> {{ model.name || 'New Model' }}</h2>
             <button class="edit-btn" (click)="toggleEdit()">
                 <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
             </button>
         </div>
-        <form *ngIf="editMode(); else viewMode" class="model-detail-form">
+        <form *ngIf="editMode(); else viewMode" class="detail-form">
             <div class="form-row">
                 <label>Name:</label>
                 <input type="text" [(ngModel)]="model.name" name="name" />
@@ -51,7 +51,7 @@
             </div>
         </form>
         <ng-template #viewMode>
-            <div class="model-detail-body">
+            <div class="detail-body">
                 <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ model.description }}</div>
                 <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ model.type }}</div>
                 <div class="detail-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ model.version }}</div>

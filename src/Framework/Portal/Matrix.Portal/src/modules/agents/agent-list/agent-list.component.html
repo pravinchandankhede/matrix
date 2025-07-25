@@ -1,8 +1,8 @@
-<div class="agent-list-container">
+<div class="list-container">
     <div class="section-wrapper modern-theme-bg">
-        <div class="agent-list-header">
+        <div class="list-header">
             <h2><mat-icon>smart_toy</mat-icon> Current Agents</h2>
-            <button class="add-agent-btn" routerLink="/agents/add">
+            <button class="add-btn" routerLink="/agents/add">
                 <mat-icon>add_circle</mat-icon> Add Agent
             </button>
         </div>
@@ -24,28 +24,28 @@
             </div>
         </div>
         <ng-container *ngIf="filteredAgents.length > 0; else noAgents">
-            <div class="agent-card-grid">
+            <div class="card-grid">
                 @for (agent of filteredAgents; track agent) {
-                <div class="agent-card">
-                    <div class="agent-card-header">
-                        <span class="agent-name">{{ agent.name }}</span>
-                        <span class="agent-status-badge" [ngClass]="agent.status.toLowerCase()">{{ agent.status }}</span>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-name">{{ agent.name }}</span>
+                        <span class="status-badge" [ngClass]="agent.status.toLowerCase()">{{ agent.status }}</span>
                     </div>
-                    <div class="agent-card-body">
-                        <div class="agent-info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="agent.description">{{ agent.description }}</span></div>
-                        <div class="agent-info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ agent.type }}</div>
-                        <div class="agent-info-row">
+                    <div class="card-body">
+                        <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="agent.description">{{ agent.description }}</span></div>
+                        <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ agent.type }}</div>
+                        <div class="info-row">
                             <mat-icon>star</mat-icon> <span class="label">Features:</span> @for (feat of agent.features; track feat) {
                             <span class="feature-badge">{{ feat }}</span>
                             }
                         </div>
-                        <div class="agent-info-row">
+                        <div class="info-row">
                             <mat-icon>build</mat-icon> <span class="label">Integrated Tools:</span> @for (tool of agent.integratedTools; track tool) {
                             <span class="tool-badge">{{ tool }}</span>
                             }
                         </div>
-                        <div class="agent-info-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ agent.version }}</div>
-                        <div class="agent-info-row date-row">
+                        <div class="info-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ agent.version }}</div>
+                        <div class="date-row">
                             <div><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ agent.createdDate | date:'mediumDate' }}</div>
                             <div><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ agent.lastUpdatedDate | date:'mediumDate' }}</div>
                         </div>
@@ -55,7 +55,7 @@
             </div>
         </ng-container>
         <ng-template #noAgents>
-            <div class="no-agents-message">
+            <div class="no-items-message">
                 <mat-icon>info</mat-icon> No agents found. Please add or configure agents to see them here.
             </div>
         </ng-template>

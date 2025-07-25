@@ -1,12 +1,12 @@
-<div class="data-source-detail-container" *ngIf="dataSource">
+<div class="detail-container" *ngIf="dataSource">
     <div class="section-wrapper modern-theme-bg">
-        <div class="data-source-detail-header">
+        <div class="detail-header">
             <h2><mat-icon>storage</mat-icon> {{ dataSource.name || 'New Data Source' }}</h2>
             <button class="edit-btn" (click)="toggleEdit()">
                 <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
             </button>
         </div>
-        <form *ngIf="editMode(); else viewMode" class="data-source-detail-form">
+        <form *ngIf="editMode(); else viewMode" class="detail-form">
             <div class="form-row">
                 <label>Name:</label>
                 <input type="text" [(ngModel)]="dataSource.name" name="name" />
@@ -65,7 +65,7 @@
             </div>
         </form>
         <ng-template #viewMode>
-            <div class="data-source-detail-body">
+            <div class="detail-body">
                 <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ dataSource.description }}</div>
                 <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ dataSource.type }}</div>
                 <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">SubType:</span> {{ dataSource.subType }}</div>
@@ -78,9 +78,3 @@
         </ng-template>
     </div>
 </div>
-<!--<button mat-stroked-button color="warn" type="button" (click)="toggleEdit()">
-    <mat-icon>cancel</mat-icon> Cancel
-</button>
-    </div>
-  </form>
-</div>-->

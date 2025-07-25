@@ -1,8 +1,8 @@
-<div class="data-source-list-container">
+<div class="list-container">
     <div class="section-wrapper modern-theme-bg">
-        <div class="data-source-list-header">
+        <div class="list-header">
             <h2><mat-icon>storage</mat-icon> Data Sources</h2>
-            <button class="add-data-source-btn" (click)="onAdd()">
+            <button class="add-btn" (click)="onAdd()">
                 <mat-icon>add_circle</mat-icon> Add Data Source
             </button>
         </div>
@@ -23,25 +23,25 @@
             </div>
         </div>
         <ng-container *ngIf="filteredDataSources.length > 0; else noDataSources">
-            <div class="data-source-card-grid">
+            <div class="card-grid">
                 @for (ds of filteredDataSources; track ds) {
-                <div class="data-source-card">
-                    <div class="data-source-card-header">
-                        <span class="data-source-name">{{ ds.name }}</span>
-                        <span class="data-source-type-badge" [ngClass]="ds.type.toLowerCase()">{{ ds.type }}</span>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-name">{{ ds.name }}</span>
+                        <span class="status-badge" [ngClass]="ds.type.toLowerCase()">{{ ds.type }}</span>
                     </div>
-                    <div class="data-source-card-body">
-                        <div class="data-source-info-row"><mat-icon>person</mat-icon> <span class="label">Owner:</span> <span>{{ ds.owner }}</span></div>
-                        <div class="data-source-info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="ds.description">{{ ds.description }}</span></div>
-                        <div class="data-source-info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ ds.type }}</div>
-                        <div class="data-source-info-row">
+                    <div class="card-body">
+                        <div class="info-row"><mat-icon>person</mat-icon> <span class="label">Owner:</span> <span>{{ ds.owner }}</span></div>
+                        <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="ds.description">{{ ds.description }}</span></div>
+                        <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ ds.type }}</div>
+                        <div class="info-row">
                             <span class="label">Status:</span>
-                            <span class="data-source-type-badge" [ngClass]="ds.isActive ? 'active' : 'inactive'">
+                            <span class="status-badge" [ngClass]="ds.isActive ? 'active' : 'inactive'">
                                 <mat-icon>{{ ds.isActive ? 'check_circle' : 'cancel' }}</mat-icon>
                                 {{ ds.isActive ? 'Active' : 'Inactive' }}
                             </span>
                         </div>
-                        <div class="data-source-info-row">
+                        <div class="info-row">
                             <button mat-icon-button color="accent" (click)="onViewDetails(ds.dataSourceId)" title="View">
                                 <mat-icon>visibility</mat-icon>
                             </button>
@@ -52,7 +52,7 @@
             </div>
         </ng-container>
         <ng-template #noDataSources>
-            <div class="no-data-sources-message">
+            <div class="no-items-message">
                 <mat-icon>info</mat-icon> No data sources found. Please add or configure data sources to see them here.
             </div>
         </ng-template>

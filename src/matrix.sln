@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSourceLayer.DataLayer",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSourceLayer.Services", "Framework\DataSourceLayer\DataSourceLayer.Services\DataSourceLayer.Services.csproj", "{76368E9A-EB9A-4475-8A82-9448B1B3B0E4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KnowledgeLayer", "KnowledgeLayer", "{DF137A28-849A-453A-874D-81A91E7EBED3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -267,6 +269,7 @@ Global
 		{A8166C2A-E7CF-46A4-BCAA-E547029C69B7} = {999DF630-7A89-4771-BFD2-BD1BD056604B}
 		{FECD16F9-0216-48A9-BCD2-14A6F67F8C74} = {999DF630-7A89-4771-BFD2-BD1BD056604B}
 		{76368E9A-EB9A-4475-8A82-9448B1B3B0E4} = {999DF630-7A89-4771-BFD2-BD1BD056604B}
+		{DF137A28-849A-453A-874D-81A91E7EBED3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EBEFC3B0-6208-481B-B6D6-154F640C6615}

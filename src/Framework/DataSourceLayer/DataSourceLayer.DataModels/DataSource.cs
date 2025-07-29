@@ -19,6 +19,7 @@ public class DataSource
     public required AuthenticationType AuthenticationType { get; set; }
     public Dictionary<String, Object> ConnectionDetails { get; set; } = new();
     public DataSourceAttributes? DataSourceAttributes { get; set; }
+    public Boolean IsCustom { get; set; }
 }
 
 // Enums and base class remain unchanged

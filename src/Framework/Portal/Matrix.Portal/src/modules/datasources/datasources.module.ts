@@ -6,11 +6,15 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { DataSourcesRoutingModule } from './datasources-routing.module';
+import { CollectionListComponent } from './collection-list/collection-list.component';
+import { CollectionDetailComponent } from './collection-detail/collection-detail.component';
 
 @NgModule({
     declarations: [
         DataSourceListComponent,
-        DataSourceDetailComponent
+        DataSourceDetailComponent,
+        CollectionListComponent,
+        CollectionDetailComponent
     ],
     imports: [
         CommonModule,

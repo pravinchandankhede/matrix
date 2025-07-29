@@ -1,0 +1,49 @@
+<div class="detail-container" *ngIf="chunk">
+    <div class="section-wrapper modern-theme-bg">
+        <div class="detail-header">
+            <h2><mat-icon>view_module</mat-icon> {{ chunk.text || 'New Chunk' }}</h2>
+            <button class="edit-btn" (click)="toggleEdit()">
+                <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
+            </button>
+        </div>
+        <form *ngIf="editMode(); else viewMode" class="detail-form">
+            <div class="form-row">
+                <label>Chunk ID:</label>
+                <input type="text" [(ngModel)]="chunk.chunkId" name="chunkId" />
+            </div>
+            <div class="form-row">
+                <label>Text:</label>
+                <input type="text" [(ngModel)]="chunk.text" name="text" />
+            </div>
+            <div class="form-row">
+                <label>Type:</label>
+                <input type="text" [(ngModel)]="chunk.type" name="type" />
+            </div>
+            <div class="form-row">
+                <label>Source:</label>
+                <input type="text" [(ngModel)]="chunk.chunkSource" name="chunkSource" />
+            </div>
+            <div class="form-row">
+                <label>Source ID:</label>
+                <input type="text" [(ngModel)]="chunk.chunkSourceId" name="chunkSourceId" />
+            </div>
+            <div class="form-row">
+                <label>Correlation UID:</label>
+                <input type="text" [(ngModel)]="chunk.correlationUId" name="correlationUId" />
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="save-btn">Save</button>
+            </div>
+        </form>
+        <ng-template #viewMode>
+            <div class="detail-view">
+                <div class="form-row"><label>Chunk ID:</label> {{ chunk.chunkId }}</div>
+                <div class="form-row"><label>Text:</label> {{ chunk.text }}</div>
+                <div class="form-row"><label>Type:</label> {{ chunk.type }}</div>
+                <div class="form-row"><label>Source:</label> {{ chunk.chunkSource }}</div>
+                <div class="form-row"><label>Source ID:</label> {{ chunk.chunkSourceId }}</div>
+                <div class="form-row"><label>Correlation UID:</label> {{ chunk.correlationUId }}</div>
+            </div>
+        </ng-template>
+    </div>
+</div>

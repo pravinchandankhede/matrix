@@ -1,6 +1,8 @@
 ﻿namespace Matrix.ChunkEngine.Interfaces;
 
+using Matrix.ChunkEngine.DataModels;
+
 public interface IChunkProcessor
 {    
-    IEnumerable<IChunk> GetChunks(IDocument document, IChunkStrategy chunkStrategy);
+    IEnumerable<Chunk> GetChunks(IDocument document, IChunkStrategy chunkStrategy);
 }

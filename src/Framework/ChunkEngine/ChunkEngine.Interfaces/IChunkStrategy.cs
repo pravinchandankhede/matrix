@@ -1,6 +1,8 @@
 ﻿namespace Matrix.ChunkEngine.Interfaces;
 
+using Matrix.ChunkEngine.DataModels;
+
 public interface IChunkStrategy
 {
-    IEnumerable<IChunk> ProcessDocument(IDocument document);
+    IEnumerable<Chunk> ProcessDocument(IDocument document);
 }

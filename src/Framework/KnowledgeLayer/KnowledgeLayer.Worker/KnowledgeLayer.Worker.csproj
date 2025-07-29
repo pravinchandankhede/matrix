@@ -8,8 +8,4 @@
     <RootNamespace>Matrix.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EmbeddingEngine.DataModels\EmbeddingEngine.DataModels.csproj" />
-  </ItemGroup>
-
 </Project>

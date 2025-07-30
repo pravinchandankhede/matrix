@@ -1,1 +1,47 @@
-<p>collection-detail works!</p>
+<div class="detail-container" *ngIf="collection">
+    <div class="section-wrapper modern-theme-bg">
+        <div class="detail-header">
+            <h2><mat-icon>collections_bookmark</mat-icon> {{ collection.name || 'New Collection' }}</h2>
+            <button class="edit-btn" (click)="toggleEdit()">
+                <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
+            </button>
+        </div>
+        <form *ngIf="editMode(); else viewMode" class="detail-form">
+            <div class="form-row">
+                <label>Collection UID:</label>
+                <input type="text" [(ngModel)]="collection.dataSourceCollectionUId" name="dataSourceCollectionUId" />
+            </div>
+            <div class="form-row">
+                <label>Name:</label>
+                <input type="text" [(ngModel)]="collection.name" name="name" />
+            </div>
+            <div class="form-row">
+                <label>Description:</label>
+                <textarea [(ngModel)]="collection.description" name="description"></textarea>
+            </div>
+            <div class="form-row">
+                <label>Custom:</label>
+                <select [(ngModel)]="collection.isCustom" name="isCustom">
+                    <option [value]="true">Yes</option>
+                    <option [value]="false">No</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="save-btn">Save</button>
+            </div>
+        </form>
+        <ng-template #viewMode>
+            <div class="detail-view">
+                <div class="form-row"><label>Collection UID:</label> {{ collection.dataSourceCollectionUId }}</div>
+                <div class="form-row"><label>Name:</label> {{ collection.name }}</div>
+                <div class="form-row"><label>Description:</label> {{ collection.description }}</div>
+                <div class="form-row"><label>Custom:</label> {{ collection.isCustom ? 'Yes' : 'No' }}</div>
+            </div>
+        </ng-template>
+        <div class="form-row">
+            <button class="nav-btn" (click)="goToDataSources()">
+                <mat-icon>storage</mat-icon> View Data Sources in this Collection
+            </button>
+        </div>
+    </div>
+</div>

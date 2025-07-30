@@ -15,7 +15,7 @@ const routes: Routes = [
             import('../modules/agents/agents.module').then(m => m.AgentsModule)
     },
     {
-        path: 'datasources',
+        path: 'collections',
         loadChildren: () =>
             import('../modules/datasources/datasources.module').then(m => m.DataSourcesModule)
     },

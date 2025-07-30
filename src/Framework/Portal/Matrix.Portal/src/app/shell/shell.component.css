@@ -37,6 +37,30 @@
     margin: 2rem 0;
 }
 
+@media (min-width: 1200px) {
+    .feature-cards-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 1199px) and (min-width: 900px) {
+    .feature-cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 899px) and (min-width: 600px) {
+    .feature-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 599px) {
+    .feature-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .feature-card {
     background: #fff;
     border-radius: 1rem;

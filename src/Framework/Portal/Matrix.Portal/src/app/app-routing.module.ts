@@ -20,6 +20,11 @@ const routes: Routes = [
             import('../modules/datasources/datasources.module').then(m => m.DataSourcesModule)
     },
     {
+        path: 'datasources',
+        loadChildren: () =>
+            import('../modules/datasources/datasources.module').then(m => m.DataSourcesModule)
+    },
+    {
         path: 'chunks',
         loadChildren: () =>
             import('../modules/chunks/chunks.module').then(m => m.ChunksModule)

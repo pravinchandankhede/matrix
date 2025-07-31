@@ -10,7 +10,7 @@ import { ErrorService } from '../../services/error.service';
 export class ErrorPanelComponent {
     errors;
     isVisible = signal(true);
-    isMinimized = signal(false);
+    isMinimized = signal(true);
 
     // Drag state
     dragging = false;

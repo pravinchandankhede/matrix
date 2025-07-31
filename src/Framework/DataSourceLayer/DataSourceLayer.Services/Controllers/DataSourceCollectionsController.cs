@@ -37,10 +37,10 @@ public class DataSourceCollectionsController : ControllerBase
 
     //// GET api/<AgentsController>/5
     [HttpGet("{id}")]
-    public IActionResult Get(Guid DataSourceCollectionId)
+    public IActionResult Get(Guid id)
     {
-        DataModels.DataSourceCollection DataSourceCollection = _DataSourceCollectionRepository.GetDataSourceCollectionById(DataSourceCollectionId);
-        return DataSourceCollection != null ? Ok(DataSourceCollection) : NotFound();
+        DataModels.DataSourceCollection dataSourceCollection = _DataSourceCollectionRepository.GetDataSourceCollectionById(id);
+        return dataSourceCollection != null ? Ok(dataSourceCollection) : NotFound();
     }
 
     //// POST api/<DataSourceCollectionsController>

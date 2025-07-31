@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 public class DataSourceCollectionRepository : IDataSourceCollectionRepository
 {
-    public List<DataSourceCollection> _DataSourceCollectionList { get; set; } = [];
+    public List<DataSourceCollection> _dataSourceCollectionList { get; set; } = [];
 
     public DataSourceCollectionRepository()
     {
@@ -21,27 +21,27 @@ public class DataSourceCollectionRepository : IDataSourceCollectionRepository
         };
         options.Converters.Add(new JsonStringEnumConverter());
 
-        _DataSourceCollectionList = System.Text.Json.JsonSerializer.Deserialize<List<DataSourceCollection>>(DataSourceCollections,options) ?? new List<DataSourceCollection>();
+        _dataSourceCollectionList = System.Text.Json.JsonSerializer.Deserialize<List<DataSourceCollection>>(DataSourceCollections,options) ?? new List<DataSourceCollection>();
     }
 
     public void AddDataSourceCollection(DataSourceCollection DataSourceCollection)
     {
-        _DataSourceCollectionList.Add(DataSourceCollection);
+        _dataSourceCollectionList.Add(DataSourceCollection);
     }
 
     public void DeleteDataSourceCollection(Guid id)
     {
-       _DataSourceCollectionList.RemoveAll(ds => ds.DataSourceCollectionUId == id);
+       _dataSourceCollectionList.RemoveAll(ds => ds.DataSourceCollectionUId == id);
     }
 
     public IEnumerable<DataSourceCollection> GetAllDataSourceCollections()
     {
-        return _DataSourceCollectionList;
+        return _dataSourceCollectionList;
     }
 
     public DataSourceCollection? GetDataSourceCollectionById(Guid id)
     {
-        throw new NotImplementedException();
+        return _dataSourceCollectionList.FirstOrDefault(ds => ds.DataSourceCollectionUId == id);
     }
 
     public void UpdateDataSourceCollection(DataSourceCollection DataSourceCollection)

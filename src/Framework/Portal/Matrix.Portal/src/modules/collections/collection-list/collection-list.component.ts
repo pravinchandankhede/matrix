@@ -22,26 +22,26 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
 
     fetchItems(): void {
         // TODO: Replace with actual service call when available
-         this.collectionService.getDataSourceCollections().subscribe({
-           next: (data: DataSourceCollection[]) => {
-             this.items = data;
-             this.applyFilter();
-             if (this.items.length === 0) {
-               this.errorService.addError('No collections found.', 'Collection List');
-             }
-           },
-           error: (err: any) => {
-             let message = 'Failed to load collections.';
-             if ([0, 502, 503, 504].includes(err.status)) {
-               message = 'Cannot connect to collection service. Please check your network or server.';
-             } else if (err.error && typeof err.error === 'string') {
-               message = err.error;
-             } else if (err.message) {
-               message = err.message;
-             }
-             this.errorService.addError(message, 'Collection List');
-           }
-         });
+        this.collectionService.getDataSourceCollections().subscribe({
+            next: (data: DataSourceCollection[]) => {
+                this.items = data;
+                this.applyFilter();
+                if (this.items.length === 0) {
+                    this.errorService.addError('No collections found.', 'Collection List');
+                }
+            },
+            error: (err: any) => {
+                let message = 'Failed to load collections.';
+                if ([0, 502, 503, 504].includes(err.status)) {
+                    message = 'Cannot connect to collection service. Please check your network or server.';
+                } else if (err.error && typeof err.error === 'string') {
+                    message = err.error;
+                } else if (err.message) {
+                    message = err.message;
+                }
+                this.errorService.addError(message, 'Collection List');
+            }
+        });
     }
 
     filterPredicate(collection: DataSourceCollection): boolean {
@@ -54,5 +54,13 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
 
     onSelect(collection: DataSourceCollection) {
         this.router.navigate(['collections', collection.dataSourceCollectionUId]);
+    }
+
+    onEdit(collection: DataSourceCollection) {
+        this.router.navigate(['collections', collection.dataSourceCollectionUId], { queryParams: { edit: 'true' } });
+    }
+
+    onView(collection: DataSourceCollection) {
+        this.router.navigate(['collections', collection.dataSourceCollectionUId], { queryParams: { edit: 'false' } });
     }
 }

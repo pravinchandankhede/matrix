@@ -20,11 +20,18 @@
         <ng-container *ngIf="filteredItems.length > 0; else noCollections">
             <div class="card-grid">
                 @for (col of filteredItems; track col) {
-                <div class="card" (click)="onSelect(col)">
+                <div class="card">
                     <div class="card-header">
                         <span class="card-name">{{ col.name }}</span>
+                        <span class="status-badge" [ngClass]="col.isCustom ? 'custom' : 'standard'">{{ col.isCustom ? 'Custom' : 'Standard' }}</span>
+                        <button class="edit-icon-btn" (click)="onEdit(col); $event.stopPropagation()" title="Edit">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button class="view-icon-btn" (click)="onView(col); $event.stopPropagation()" title="View">
+                            <mat-icon>visibility</mat-icon>
+                        </button>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" (click)="onSelect(col)">
                         <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Collection UID:</span> <span class="uid">{{ col.dataSourceCollectionUId }}</span></div>
                         <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="col.description">{{ col.description }}</span></div>
                         <div class="info-row"><mat-icon>date_range</mat-icon> <span class="label">Created:</span> {{ col.createdDate | date:'mediumDate' }}</div>

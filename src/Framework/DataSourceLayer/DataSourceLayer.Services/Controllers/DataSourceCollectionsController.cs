@@ -9,37 +9,37 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 public class DataSourceCollectionsController : ControllerBase
 {
-    private readonly IDataSourceCollectionRepository _DataSourceCollectionRepository;
+    private readonly IDataSourceCollectionRepository _dataSourceCollectionRepository;
 
     public DataSourceCollectionsController(IDataSourceCollectionRepository DataSourceCollectionRepository)
     {
-        _DataSourceCollectionRepository = DataSourceCollectionRepository;
+        _dataSourceCollectionRepository = DataSourceCollectionRepository;
     }
 
     // GET: api/<AgentsController>
     [HttpGet]
     public IEnumerable<Matrix.DataSourceLayer.DataModels.DataSourceCollection> Get()
     {
-        return _DataSourceCollectionRepository.GetAllDataSourceCollections();
+        return _dataSourceCollectionRepository.GetAllDataSourceCollections();
     }
 
     [HttpPost]
-    public IActionResult AddAgent([FromBody] Matrix.DataSourceLayer.DataModels.DataSourceCollection DataSourceCollection)
+    public IActionResult AddDataSourceCollection([FromBody] Matrix.DataSourceLayer.DataModels.DataSourceCollection dataSourceCollection)
     {
-        if (DataSourceCollection == null)
+        if (dataSourceCollection == null)
         {
             return BadRequest();
         }
 
-        _DataSourceCollectionRepository.AddDataSourceCollection(DataSourceCollection);
-        return CreatedAtAction(nameof(Get), new { name = DataSourceCollection.Name }, DataSourceCollection);
+        _dataSourceCollectionRepository.AddDataSourceCollection(dataSourceCollection);
+        return CreatedAtAction(nameof(Get), new { name = dataSourceCollection.Name }, dataSourceCollection);
     }
 
     //// GET api/<AgentsController>/5
     [HttpGet("{id}")]
     public IActionResult Get(Guid id)
     {
-        DataModels.DataSourceCollection dataSourceCollection = _DataSourceCollectionRepository.GetDataSourceCollectionById(id);
+        DataModels.DataSourceCollection dataSourceCollection = _dataSourceCollectionRepository.GetDataSourceCollectionById(id);
         return dataSourceCollection != null ? Ok(dataSourceCollection) : NotFound();
     }
 

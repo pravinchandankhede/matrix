@@ -17,7 +17,7 @@ const routes: Routes = [
     {
         path: 'collections',
         loadChildren: () =>
-            import('../modules/datasources/datasources.module').then(m => m.DataSourcesModule)
+            import('../modules/collections/collections.module').then(m => m.CollectionsModule)
     },
     {
         path: 'datasources',

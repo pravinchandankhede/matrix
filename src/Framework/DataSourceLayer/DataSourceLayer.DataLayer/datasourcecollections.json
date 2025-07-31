@@ -1,0 +1,182 @@
+[
+    {
+        "DataSourceCollectionUId": "b1a1e1c0-1111-4a1a-9a1a-111111111111",
+        "Name": "Customer Data Warehouse",
+        "Description": "Centralized structured data for all customer analytics.",
+        "CreatedDate": "2024-01-10T09:00:00Z",
+        "LastModifiedDate": "2025-07-01T12:00:00Z",
+        "IsCustom": false,
+        "DataSources": [
+            {
+                "DataSourceUId": "a1a1a1a1-1111-1111-1111-111111111111",
+                "Name": "CRM SQL Server",
+                "Type": "Structured",
+                "SubType": "SQLServer",
+                "Description": "Primary CRM database.",
+                "Tags": [ "customer", "crm", "sql" ],
+                "Owner": "alice@company.com",
+                "CreatedAt": "2023-12-01T08:00:00Z",
+                "UpdatedAt": "2025-06-01T10:00:00Z",
+                "IsActive": true,
+                "AccessMode": "ReadWrite",
+                "AuthenticationType": "BasicAuth",
+                "ConnectionDetails": {
+                    "Host": "crm-db.company.com",
+                    "Port": 1433,
+                    "DatabaseName": "CRM",
+                    "Schema": "dbo",
+                    "TableList": [ "Customers", "Contacts" ]
+                }
+            },
+            {
+                "DataSourceUId": "c3c3c3c3-3333-3333-3333-333333333331",
+                "Name": "Customer S3 Archive",
+                "Type": "Unstructured",
+                "SubType": "S3",
+                "Description": "Raw customer documents archive.",
+                "Tags": [ "archive", "s3", "unstructured" ],
+                "Owner": "bob@company.com",
+                "CreatedAt": "2024-02-15T10:00:00Z",
+                "IsActive": true,
+                "AccessMode": "ReadOnly",
+                "AuthenticationType": "APIKey",
+                "ConnectionDetails": {
+                    "StorageType": "S3",
+                    "FilePathOrUrl": "s3://company-customer-archive/",
+                    "FileTypes": [ "pdf", "docx", "jpg" ]
+                }
+            }
+        ]
+    },
+    {
+        "DataSourceCollectionUId": "b1a1e1c0-2222-4a1a-9a1a-222222222222",
+        "Name": "Marketing Analytics",
+        "Description": "Data sources for marketing campaign analysis.",
+        "CreatedDate": "2024-03-05T11:00:00Z",
+        "LastModifiedDate": "2025-07-10T15:00:00Z",
+        "IsCustom": true,
+        "DataSources": [
+            {
+                "DataSourceUId": "f6f6f6f6-6666-6666-6666-666666666661",
+                "Name": "Google Analytics API",
+                "Type": "External",
+                "SubType": "GoogleAnalytics",
+                "Description": "Web traffic and campaign data.",
+                "Tags": [ "web", "analytics", "google" ],
+                "Owner": "carol@company.com",
+                "CreatedAt": "2024-03-01T09:00:00Z",
+                "IsActive": true,
+                "AccessMode": "ReadOnly",
+                "AuthenticationType": "OAuth2",
+                "ConnectionDetails": {
+                    "ApiEndpoint": "https://analytics.googleapis.com/v3/data",
+                    "HttpMethod": "GET"
+                }
+            }
+        ]
+    },
+    {
+        "DataSourceCollectionUId": "b1a1e1c0-3333-4a1a-9a1a-333333333333",
+        "Name": "Product Feedback",
+        "Description": "Aggregated product feedback from multiple channels.",
+        "CreatedDate": "2024-05-20T14:00:00Z",
+        "LastModifiedDate": "2025-07-15T09:00:00Z",
+        "IsCustom": false,
+        "DataSources": [
+            {
+                "DataSourceUId": "b2b2b2b2-2222-2222-2222-222222222221",
+                "Name": "Feedback MongoDB",
+                "Type": "SemiStructured",
+                "SubType": "MongoDB",
+                "Description": "Customer feedback documents.",
+                "Tags": [ "feedback", "mongo", "semi-structured" ],
+                "Owner": "dave@company.com",
+                "CreatedAt": "2024-05-01T13:00:00Z",
+                "IsActive": true,
+                "AccessMode": "ReadWrite",
+                "AuthenticationType": "BasicAuth",
+                "ConnectionDetails": {
+                    "EndpointUrl": "mongodb://feedback-db.company.com:27017",
+                    "CollectionName": "feedback",
+                    "DataFormat": "JSON"
+                }
+            }
+        ]
+    },
+    {
+        "DataSourceCollectionUId": "b1a1e1c0-4444-4a1a-9a1a-444444444444",
+        "Name": "Media Streaming",
+        "Description": "Streaming and multimedia data sources.",
+        "CreatedDate": "2024-07-01T08:00:00Z",
+        "LastModifiedDate": "2025-07-20T10:00:00Z",
+        "IsCustom": true,
+        "DataSources": [
+            {
+                "DataSourceUId": "e5e5e5e5-5555-5555-5555-555555555551",
+                "Name": "Kafka Event Stream",
+                "Type": "Streaming",
+                "SubType": "Kafka",
+                "Description": "Real-time event stream.",
+                "Tags": [ "streaming", "kafka", "events" ],
+                "Owner": "eve@company.com",
+                "CreatedAt": "2024-07-01T08:00:00Z",
+                "IsActive": true,
+                "AccessMode": "ReadOnly",
+                "AuthenticationType": "Token",
+                "ConnectionDetails": {
+                    "BrokerUrl": "kafka://broker.company.com:9092",
+                    "TopicName": "events",
+                    "MessageFormat": "JSON"
+                }
+            },
+            {
+                "DataSourceUId": "d4d4d4d4-4444-4444-4444-444444444441",
+                "Name": "Product Videos",
+                "Type": "Multimedia",
+                "SubType": "Video",
+                "Description": "Product demo videos.",
+                "Tags": [ "video", "product", "media" ],
+                "Owner": "frank@company.com",
+                "CreatedAt": "2024-07-02T10:00:00Z",
+                "IsActive": false,
+                "AccessMode": "ReadOnly",
+                "AuthenticationType": "None",
+                "ConnectionDetails": {
+                    "MediaType": "Video",
+                    "StorageLocation": "media/videos/",
+                    "SupportedFormats": [ "mp4", "mov" ]
+                }
+            }
+        ]
+    },
+    {
+        "DataSourceCollectionUId": "b1a1e1c0-5555-4a1a-9a1a-555555555555",
+        "Name": "Vector Search Indexes",
+        "Description": "Collections of vector databases for semantic search.",
+        "CreatedDate": "2024-08-10T10:00:00Z",
+        "LastModifiedDate": "2025-07-25T11:00:00Z",
+        "IsCustom": false,
+        "DataSources": [
+            {
+                "DataSourceUId": "f6f6f6f6-6666-6666-6666-666666666634",
+                "Name": "Pinecone Vector DB",
+                "Type": "Vector",
+                "SubType": "Pinecone",
+                "Description": "Semantic search index.",
+                "Tags": [ "vector", "pinecone", "semantic" ],
+                "Owner": "grace@company.com",
+                "CreatedAt": "2024-08-01T09:00:00Z",
+                "IsActive": true,
+                "AccessMode": "ReadWrite",
+                "AuthenticationType": "APIKey",
+                "ConnectionDetails": {
+                    "VectorDbType": "Pinecone",
+                    "IndexName": "semantic-index",
+                    "EmbeddingModel": "openai-ada-002",
+                    "Dimension": 1536,
+                    "DistanceMetric": "Cosine"
+                }
+            }
+        ]
+    }
+]

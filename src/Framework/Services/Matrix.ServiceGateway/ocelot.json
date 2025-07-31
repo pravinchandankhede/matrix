@@ -41,6 +41,19 @@
 			"UpstreamPathTemplate": "/datasources/{everything}",
 			"UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 			"SwaggerKey": "DataSourceService"
+		},
+		{
+			"DownstreamPathTemplate": "/api/datasourcecollections/{everything}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7252
+				}
+			],
+			"UpstreamPathTemplate": "/datasourcecollections/{everything}",
+			"UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+			"SwaggerKey": "DataSourceService"
 		}
 	],
 	"SwaggerEndPoints": [

@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\DataSourceLayer.DataLayer\datasourcecollections.json" Link="datasourcecollections.json" />
     <Content Include="..\DataSourceLayer.DataLayer\datasources.json" Link="datasources.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

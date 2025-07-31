@@ -1,6 +1,6 @@
 [
     {
-        "DataSourceId": "a1a1a1a1-1111-1111-1111-111111111111",
+        "DataSourceUId": "a1a1a1a1-1111-1111-1111-111111111111",
         "Name": "CustomerDB",
         "Type": "Structured",
         "SubType": "PostgreSQL",
@@ -22,7 +22,7 @@
         }
     },
     {
-        "DataSourceId": "a1a1a1a1-1111-1111-1111-111111111112",
+        "DataSourceUId": "a1a1a1a1-1111-1111-1111-111111111112",
         "Name": "FinanceDB",
         "Type": "Structured",
         "SubType": "MySQL",
@@ -44,7 +44,7 @@
         }
     },
     {
-        "DataSourceId": "a1a1a1a1-1111-1111-1111-111111111113",
+        "DataSourceUId": "a1a1a1a1-1111-1111-1111-111111111113",
         "Name": "HRDB",
         "Type": "Structured",
         "SubType": "SQLServer",
@@ -67,7 +67,7 @@
     },
 
     {
-        "DataSourceId": "b2b2b2b2-2222-2222-2222-222222222221",
+        "DataSourceUId": "b2b2b2b2-2222-2222-2222-222222222221",
         "Name": "EventLogs",
         "Type": "SemiStructured",
         "SubType": "MongoDB",
@@ -87,7 +87,7 @@
         }
     },
     {
-        "DataSourceId": "b2b2b2b2-2222-2222-2222-222222222222",
+        "DataSourceUId": "b2b2b2b2-2222-2222-2222-222222222222",
         "Name": "UserProfiles",
         "Type": "SemiStructured",
         "SubType": "CouchDB",
@@ -107,7 +107,7 @@
         }
     },
     {
-        "DataSourceId": "b2b2b2b2-2222-2222-2222-222222222223",
+        "DataSourceUId": "b2b2b2b2-2222-2222-2222-222222222223",
         "Name": "ConfigStore",
         "Type": "SemiStructured",
         "SubType": "DynamoDB",
@@ -128,7 +128,7 @@
     },
 
     {
-        "DataSourceId": "c3c3c3c3-3333-3333-3333-333333333331",
+        "DataSourceUId": "c3c3c3c3-3333-3333-3333-333333333331",
         "Name": "DocumentRepo",
         "Type": "Unstructured",
         "SubType": "AzureBlob",
@@ -148,7 +148,7 @@
         }
     },
     {
-        "DataSourceId": "c3c3c3c3-3333-3333-3333-333333333332",
+        "DataSourceUId": "c3c3c3c3-3333-3333-3333-333333333332",
         "Name": "FileArchive",
         "Type": "Unstructured",
         "SubType": "S3",
@@ -168,7 +168,7 @@
         }
     },
     {
-        "DataSourceId": "c3c3c3c3-3333-3333-3333-333333333333",
+        "DataSourceUId": "c3c3c3c3-3333-3333-3333-333333333333",
         "Name": "LegalDocs",
         "Type": "Unstructured",
         "SubType": "FileSystem",
@@ -189,7 +189,7 @@
     },
 
     {
-        "DataSourceId": "d4d4d4d4-4444-4444-4444-444444444441",
+        "DataSourceUId": "d4d4d4d4-4444-4444-4444-444444444441",
         "Name": "VideoLibrary",
         "Type": "Multimedia",
         "SubType": "Video",
@@ -209,7 +209,7 @@
         }
     },
     {
-        "DataSourceId": "d4d4d4d4-4444-4444-4444-444444444442",
+        "DataSourceUId": "d4d4d4d4-4444-4444-4444-444444444442",
         "Name": "AudioArchive",
         "Type": "Multimedia",
         "SubType": "Audio",
@@ -229,7 +229,7 @@
         }
     },
     {
-        "DataSourceId": "d4d4d4d4-4444-4444-4444-444444444443",
+        "DataSourceUId": "d4d4d4d4-4444-4444-4444-444444444443",
         "Name": "ImageRepo",
         "Type": "Multimedia",
         "SubType": "Image",
@@ -250,7 +250,7 @@
     },
 
     {
-        "DataSourceId": "e5e5e5e5-5555-5555-5555-555555555551",
+        "DataSourceUId": "e5e5e5e5-5555-5555-5555-555555555551",
         "Name": "OrderStream",
         "Type": "Streaming",
         "SubType": "Kafka",
@@ -270,7 +270,7 @@
         }
     },
     {
-        "DataSourceId": "e5e5e5e5-5555-5555-5555-555555555552",
+        "DataSourceUId": "e5e5e5e5-5555-5555-5555-555555555552",
         "Name": "SensorStream",
         "Type": "Streaming",
         "SubType": "MQTT",
@@ -290,7 +290,7 @@
         }
     },
     {
-        "DataSourceId": "e5e5e5e5-5555-5555-5555-555555555553",
+        "DataSourceUId": "e5e5e5e5-5555-5555-5555-555555555553",
         "Name": "LogStream",
         "Type": "Streaming",
         "SubType": "Kafka",
@@ -311,7 +311,7 @@
     },
 
     {
-        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666661",
+        "DataSourceUId": "f6f6f6f6-6666-6666-6666-666666666661",
         "Name": "WeatherAPI",
         "Type": "External",
         "SubType": "REST",
@@ -332,7 +332,7 @@
         }
     },
     {
-        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666662",
+        "DataSourceUId": "f6f6f6f6-6666-6666-6666-666666666662",
         "Name": "PaymentAPI",
         "Type": "External",
         "SubType": "REST",
@@ -353,7 +353,7 @@
         }
     },
     {
-        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666663",
+        "DataSourceUId": "f6f6f6f6-6666-6666-6666-666666666663",
         "Name": "StockAPI",
         "Type": "External",
         "SubType": "REST",
@@ -375,7 +375,7 @@
     },
 
     {
-        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666664",
+        "DataSourceUId": "f6f6f6f6-6666-6666-6666-666666666664",
         "Name": "ERPSystem",
         "Type": "Proprietary",
         "SubType": "SDK",
@@ -394,7 +394,7 @@
         }
     },
     {
-        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666664",
+        "DataSourceUId": "f6f6f6f6-6666-6666-6666-666666666664",
         "Name": "HRSystem",
         "Type": "Proprietary",
         "SubType": "API",
@@ -413,7 +413,7 @@
         }
     },
     {
-        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666665",
+        "DataSourceUId": "f6f6f6f6-6666-6666-6666-666666666665",
         "Name": "FinanceExport",
         "Type": "Proprietary",
         "SubType": "FileExport",
@@ -433,7 +433,7 @@
     },
 
     {
-        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666634",
+        "DataSourceUId": "f6f6f6f6-6666-6666-6666-666666666634",
         "Name": "ImageVectors",
         "Type": "Vector",
         "SubType": "Pinecone",
@@ -454,7 +454,7 @@
         }
     },
     {
-        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666664",
+        "DataSourceUId": "f6f6f6f6-6666-6666-6666-666666666664",
         "Name": "TextVectors",
         "Type": "Vector",
         "SubType": "FAISS",
@@ -475,7 +475,7 @@
         }
     },
     {
-        "DataSourceId": "f6f6f6f6-6666-6666-6666-666666666664",
+        "DataSourceUId": "f6f6f6f6-6666-6666-6666-666666666664",
         "Name": "ProductVectors",
         "Type": "Vector",
         "SubType": "Weaviate",

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DataSourceCollection } from '../../../datamodels/data-source-collection.model';
 import { BaseListComponent } from '../../../shared/base-list.component';
 import { ErrorService } from '../../../services/error.service';
-// import { DataSourceCollectionService } from '../../../services/data-source-collection.service';
+import { DataSourceCollectionService } from '../../../services/data-source-collection.service';
 
 @Component({
     selector: 'app-collection-list',
@@ -15,33 +15,33 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
     constructor(
         private router: Router,
         private errorService: ErrorService,
-        // private collectionService: DataSourceCollectionService
+        private collectionService: DataSourceCollectionService
     ) {
         super();
     }
 
     fetchItems(): void {
         // TODO: Replace with actual service call when available
-        // this.collectionService.getCollections().subscribe({
-        //   next: (data: DataSourceCollection[]) => {
-        //     this.items = data;
-        //     this.applyFilter();
-        //     if (this.items.length === 0) {
-        //       this.errorService.addError('No collections found.', 'Collection List');
-        //     }
-        //   },
-        //   error: (err: any) => {
-        //     let message = 'Failed to load collections.';
-        //     if ([0, 502, 503, 504].includes(err.status)) {
-        //       message = 'Cannot connect to collection service. Please check your network or server.';
-        //     } else if (err.error && typeof err.error === 'string') {
-        //       message = err.error;
-        //     } else if (err.message) {
-        //       message = err.message;
-        //     }
-        //     this.errorService.addError(message, 'Collection List');
-        //   }
-        // });
+         this.collectionService.getDataSourceCollections().subscribe({
+           next: (data: DataSourceCollection[]) => {
+             this.items = data;
+             this.applyFilter();
+             if (this.items.length === 0) {
+               this.errorService.addError('No collections found.', 'Collection List');
+             }
+           },
+           error: (err: any) => {
+             let message = 'Failed to load collections.';
+             if ([0, 502, 503, 504].includes(err.status)) {
+               message = 'Cannot connect to collection service. Please check your network or server.';
+             } else if (err.error && typeof err.error === 'string') {
+               message = err.error;
+             } else if (err.message) {
+               message = err.message;
+             }
+             this.errorService.addError(message, 'Collection List');
+           }
+         });
     }
 
     filterPredicate(collection: DataSourceCollection): boolean {
@@ -49,10 +49,10 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
     }
 
     onAdd() {
-        this.router.navigate(['datasources/collections/add']);
+        this.router.navigate(['collections/add']);
     }
 
     onSelect(collection: DataSourceCollection) {
-        this.router.navigate(['datasources/collections', collection.dataSourceCollectionUId]);
+        this.router.navigate(['collections', collection.dataSourceCollectionUId]);
     }
 }

@@ -23,6 +23,8 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddSingleton<IDataSourceRepository, DataSourceRepository>();
+        builder.Services.AddSingleton<IDataSourceCollectionRepository, DataSourceCollectionRepository>();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

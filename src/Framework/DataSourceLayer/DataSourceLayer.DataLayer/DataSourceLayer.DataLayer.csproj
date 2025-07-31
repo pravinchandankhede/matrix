@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="datasourcecollections.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="datasources.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

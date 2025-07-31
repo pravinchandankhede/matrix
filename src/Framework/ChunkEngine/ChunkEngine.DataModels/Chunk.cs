@@ -1,7 +1,8 @@
 ﻿namespace Matrix.ChunkEngine.DataModels;
 
 public class Chunk
-{    
+{
+    public Guid ChunkUId { get; set; }
     public String ChunkId { get; set; }
     public String Text { get; set; }
     public String Type { get; set; }

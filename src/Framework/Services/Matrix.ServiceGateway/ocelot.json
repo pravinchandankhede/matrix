@@ -54,6 +54,19 @@
 			"UpstreamPathTemplate": "/datasourcecollections/{everything}",
 			"UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 			"SwaggerKey": "DataSourceService"
+		},
+		{
+			"DownstreamPathTemplate": "/api/chunks/{everything}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7076
+				}
+			],
+			"UpstreamPathTemplate": "/chunks/{everything}",
+			"UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+			"SwaggerKey": "ChunkService"
 		}
 	],
 	"SwaggerEndPoints": [
@@ -84,6 +97,16 @@
 					"Name": "DataSource API",
 					"Version": "v1",
 					"Url": "https://localhost:7252/swagger/v1/swagger.json"
+				}
+			]
+		},
+		{
+			"Key": "ChunkService",
+			"Config": [
+				{
+					"Name": "Chunk API",
+					"Version": "v1",
+					"Url": "https://localhost:7076/swagger/v1/swagger.json"
 				}
 			]
 		}

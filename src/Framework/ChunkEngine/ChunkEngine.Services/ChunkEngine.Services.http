@@ -1,0 +1,6 @@
+@ChunkEngine.Services_HostAddress = http://localhost:5248
+
+GET {{ChunkEngine.Services_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

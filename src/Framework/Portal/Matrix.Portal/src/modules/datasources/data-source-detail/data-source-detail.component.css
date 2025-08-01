@@ -1,4 +1,173 @@
-/* Data Source Detail Component Specific Styles */
-/* Component-specific styles only - common styles are in global styles.css */
+/* Azure Portal Blade Style Layout */
+.blade-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
 
-/* Any data source-specific styling can go here if needed */
+.blade {
+    background: #fff;
+    border-right: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+}
+
+.main-blade {
+    width: 400px;
+    min-width: 400px;
+    flex-shrink: 0;
+}
+
+.connection-blade {
+    width: 450px;
+    min-width: 450px;
+    flex-shrink: 0;
+    animation: slideInFromRight 0.3s ease-out;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.blade-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 16px 24px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .blade-header h2,
+    .blade-header h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+.blade-content {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.edit-btn {
+    background: none;
+    border: 1px solid #ccc;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+    .edit-btn:hover {
+        background: #f0f0f0;
+    }
+
+.detail-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+    .form-row label {
+        font-weight: 500;
+        color: #333;
+        font-size: 14px;
+    }
+
+    .form-row input,
+    .form-row textarea,
+    .form-row select {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .form-row textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+.form-actions {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.save-btn {
+    background: #0078d4;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+    .save-btn:hover {
+        background: #106ebe;
+    }
+
+.detail-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-row .label {
+        font-weight: 500;
+        color: #666;
+        min-width: 120px;
+    }
+
+.badge-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.tag-badge {
+    background: #e1f5fe;
+    color: #0277bd;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}

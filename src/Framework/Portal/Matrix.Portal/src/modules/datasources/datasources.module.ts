@@ -9,6 +9,9 @@ import { DataSourceDetailComponent } from './data-source-detail/data-source-deta
 import { StructuredConnectionDetailsComponent } from './structured-connection-details/structured-connection-details.component';
 import { VectorConnectionDetailsComponent } from './vector-connection-details/vector-connection-details.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
     declarations: [
@@ -24,7 +27,10 @@ import { MatSelectModule } from '@angular/material/select';
         MatIconModule,
         FormsModule,
         DataSourcesRoutingModule,
-        MatSelectModule
+        MatSelectModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule
     ]
 })
 export class DataSourcesModule { }

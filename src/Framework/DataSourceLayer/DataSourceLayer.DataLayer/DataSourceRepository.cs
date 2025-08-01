@@ -41,7 +41,7 @@ public class DataSourceRepository : IDataSourceRepository
 
     public DataSource? GetDataSourceById(Guid id)
     {
-        throw new NotImplementedException();
+        return _dataSourceList.Find(ds => ds.DataSourceUId == id);
     }
 
     public void UpdateDataSource(DataSource dataSource)

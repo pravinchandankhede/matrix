@@ -27,7 +27,7 @@ export class DataSourceDetailComponent implements OnInit {
 
         if (id && id !== 'add') {
             // Viewing/editing existing data source
-            this.editMode.set(false);
+            this.editMode.set(true);
             this.loadDataSource(id);
         } else if (id === 'add') {
             // Adding new data source

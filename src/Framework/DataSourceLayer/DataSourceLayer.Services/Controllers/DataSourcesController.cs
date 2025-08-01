@@ -37,9 +37,9 @@ public class DataSourcesController : ControllerBase
 
     //// GET api/<AgentsController>/5
     [HttpGet("{id}")]
-    public IActionResult Get(Guid dataSourceId)
+    public IActionResult Get(Guid id)
     {
-        DataModels.DataSource dataSource = _dataSourceRepository.GetDataSourceById(dataSourceId);
+        DataModels.DataSource dataSource = _dataSourceRepository.GetDataSourceById(id);
         return dataSource != null ? Ok(dataSource) : NotFound();
     }
 

@@ -1,0 +1,52 @@
+<div class="blade datasources-blade" *ngIf="isOpen && dataSources.length > 0">
+    <div class="blade-header">
+        <h3><mat-icon>storage</mat-icon> {{ title }}</h3>
+        <button type="button" class="close-btn" (click)="onClose()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="blade-content">
+        <div class="datasource-list">
+            <div *ngFor="let dataSource of dataSources" class="datasource-item">
+                <div class="datasource-info" (click)="onDataSourceClick(dataSource.dataSourceUId)">
+                    <mat-icon>storage</mat-icon>
+                    <div class="datasource-details">
+                        <span class="datasource-name">{{ dataSource.name || 'Unnamed Data Source' }}</span>
+                        <span class="datasource-type">{{ dataSource.type }}</span>
+                        <span class="datasource-description" *ngIf="dataSource.description">{{ dataSource.description }}</span>
+                    </div>
+                    <mat-icon class="chevron-icon">chevron_right</mat-icon>
+                </div>
+                <div class="datasource-actions">
+                    <button class="edit-btn" (click)="$event.stopPropagation(); dataSourceSelected.emit(dataSource.dataSourceUId)" title="Edit in Full Screen">
+                        <mat-icon>open_in_new</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty state -->
+        <div class="empty-state" *ngIf="dataSources.length === 0">
+            <mat-icon>storage</mat-icon>
+            <h4>No Data Sources</h4>
+            <p>This collection doesn't contain any data sources yet.</p>
+            <button class="add-btn" (click)="navigateToAllDataSources()">
+                <mat-icon>add</mat-icon> Browse Data Sources
+            </button>
+        </div>
+    </div>
+
+    <!-- Blade footer with action buttons (shown conditionally) -->
+    <div class="blade-footer" *ngIf="showSaveActions">
+        <div class="form-actions">
+            <button type="button" class="save-btn" (click)="onSave()">Save</button>
+            <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Data Source Detail Blade -->
+<app-data-source-detail-blade [dataSourceId]="selectedDataSourceId"
+                              [isOpen]="detailBladeOpen"
+                              (close)="onDetailBladeClose()">
+</app-data-source-detail-blade>

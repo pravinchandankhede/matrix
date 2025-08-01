@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CollectionListComponent } from './collection-list/collection-list.component';
 import { CollectionDetailComponent } from './collection-detail/collection-detail.component';
 import { CollectionsRoutingModule } from './collections-routing.module';
+import { DataSourcesModule } from '../datasources/datasources.module';
 
 @NgModule({
     declarations: [
@@ -14,7 +15,8 @@ import { CollectionsRoutingModule } from './collections-routing.module';
         CommonModule,
         MatIconModule,
         FormsModule,
-        CollectionsRoutingModule
+        CollectionsRoutingModule,
+        DataSourcesModule
     ]
 })
 export class CollectionsModule { }

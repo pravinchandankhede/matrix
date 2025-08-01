@@ -6,7 +6,7 @@
 //  THIS CODE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 // ------------------------------------------------------------------------------
 
-namespace Matrix.DataModels.Agents;
+namespace Matrix.Matrix.DataModels.Agents;
 
 using System.Collections.Generic;
 

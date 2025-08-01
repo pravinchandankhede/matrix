@@ -1,4 +1,4 @@
-﻿namespace Matrix.AgenticLayer.AgentModels;
+﻿namespace Matrix.Matrix.DataModels.Agents;
 
 public class AgentRequest
 {

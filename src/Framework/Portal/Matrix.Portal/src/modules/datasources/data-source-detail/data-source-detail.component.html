@@ -70,15 +70,19 @@
                         <option value="None">None</option>
                     </select>
                 </div>
-                <div class="form-actions">
-                    <button type="button" class="save-btn" (click)="onSave()">Save</button>
-                </div>
+                <!-- Remove form-actions from here -->
             </form>
             <ng-template #viewMode>
                 <div class="detail-body">
                     <div class="detail-row"><mat-icon>fingerprint</mat-icon> <span class="label">Data Source UID:</span> {{ dataSource.dataSourceUId }}</div>
                     <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ dataSource.description }}</div>
-                    <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ dataSource.type }}</div>
+                    <div class="detail-row"
+                         [class.clickable]="hasConnectionDetails()"
+                         (click)="onTypeClick()">
+                        <mat-icon>category</mat-icon>
+                        <span class="label">Type:</span> {{ dataSource.type }}
+                        <mat-icon *ngIf="hasConnectionDetails()" class="chevron-icon">chevron_right</mat-icon>
+                    </div>
                     <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">SubType:</span> {{ dataSource.subType }}</div>
                     <div class="detail-row">
                         <mat-icon>label</mat-icon> <span class="label">Tags:</span>
@@ -95,10 +99,18 @@
                 </div>
             </ng-template>
         </div>
+
+        <!-- Main blade footer with action buttons - hidden when connection blade is open -->
+        <div class="blade-footer" *ngIf="editMode() && !hasConnectionDetails()">
+            <div class="form-actions">
+                <button type="button" class="save-btn" (click)="onSave()">Save</button>
+                <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <!-- Connection Details Blade (opens to the right) -->
-    <div class="blade connection-blade" *ngIf="editMode()">
+    <div class="blade connection-blade" *ngIf="editMode() && hasConnectionDetails()">
         <div class="blade-header">
             <h3><mat-icon>settings</mat-icon> Connection Details</h3>
         </div>
@@ -106,6 +118,31 @@
             <ng-container [ngSwitch]="dataSource.type">
                 <app-structured-connection-details *ngSwitchCase="'Structured'" [dataSource]="dataSource" mode="edit"></app-structured-connection-details>
                 <app-vector-connection-details *ngSwitchCase="'Vector'" [dataSource]="dataSource" mode="edit"></app-vector-connection-details>
+                <!-- Add more cases for other types as needed -->
+            </ng-container>
+        </div>
+
+        <!-- Connection blade footer with action buttons -->
+        <div class="blade-footer">
+            <div class="form-actions">
+                <button type="button" class="save-btn" (click)="onSave()">Save</button>
+                <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Mode Connection Details Blade -->
+    <div class="blade connection-blade" *ngIf="!editMode() && viewModeBlade() && hasConnectionDetails()">
+        <div class="blade-header">
+            <h3><mat-icon>settings</mat-icon> Connection Details</h3>
+            <button type="button" class="close-btn" (click)="onCloseViewModeBlade()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <div class="blade-content">
+            <ng-container [ngSwitch]="dataSource.type">
+                <app-structured-connection-details *ngSwitchCase="'Structured'" [dataSource]="dataSource" mode="view"></app-structured-connection-details>
+                <app-vector-connection-details *ngSwitchCase="'Vector'" [dataSource]="dataSource" mode="view"></app-vector-connection-details>
                 <!-- Add more cases for other types as needed -->
             </ng-container>
         </div>

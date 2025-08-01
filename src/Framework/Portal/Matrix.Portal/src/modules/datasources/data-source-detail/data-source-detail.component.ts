@@ -12,6 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class DataSourceDetailComponent implements OnInit {
     @Input() dataSource: DataSource | null = null;
     editMode = signal(false); // Start in view mode
+    viewModeBlade = signal(false); // Track if view mode blade is open
 
     // Form helper properties
     tagsString = '';
@@ -26,8 +27,8 @@ export class DataSourceDetailComponent implements OnInit {
         const id = this.route.snapshot.paramMap.get('id');
 
         if (id && id !== 'add') {
-            // Viewing/editing existing data source
-            this.editMode.set(true);
+            // Viewing existing data source - start in view mode
+            this.editMode.set(false);
             this.loadDataSource(id);
         } else if (id === 'add') {
             // Adding new data source
@@ -117,5 +118,25 @@ export class DataSourceDetailComponent implements OnInit {
                 }
             });
         }
+    }
+
+    onCancel() {
+        this.router.navigate(['/datasources']);
+    }
+
+    hasConnectionDetails(): boolean {
+        return this.dataSource?.type === 'Structured' || this.dataSource?.type === 'Vector';
+    }
+
+    onTypeClick() {
+        console.log('Type clicked - editMode:', this.editMode(), 'hasConnectionDetails:', this.hasConnectionDetails());
+        if (!this.editMode() && this.hasConnectionDetails()) {
+            console.log('Opening view mode blade');
+            this.viewModeBlade.set(true);
+        }
+    }
+
+    onCloseViewModeBlade() {
+        this.viewModeBlade.set(false);
     }
 }

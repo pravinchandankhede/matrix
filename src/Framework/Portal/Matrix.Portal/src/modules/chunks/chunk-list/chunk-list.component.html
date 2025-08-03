@@ -2,7 +2,7 @@
     <div class="section-wrapper modern-theme-bg">
         <div class="list-header">
             <h2><mat-icon>view_module</mat-icon> Current Chunks</h2>
-            <button class="add-btn" routerLink="/chunks/add">
+            <button class="add-btn" (click)="onAdd()">
                 <mat-icon>add_circle</mat-icon> Add Chunk
             </button>
         </div>
@@ -10,7 +10,7 @@
             <div class="search-filter-group">
                 <div class="search-box">
                     <span class="material-icons">search</span>
-                    <input type="text" [(ngModel)]="searchTerm" placeholder="Search by text...">
+                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search by text...">
                 </div>
                 <select #filterSelect (change)="onFilterChange(filterSelect.value)">
                     <option value="">All Types</option>
@@ -23,15 +23,23 @@
                 </button>
             </div>
         </div>
-        <ng-container *ngIf="filteredItems.length > 0; else noChunks">
+        <ng-container *ngIf="filteredChunks.length > 0; else noChunks">
             <div class="card-grid">
-                @for (chunk of filteredItems; track chunk) {
+                @for (chunk of filteredChunks; track chunk) {
                 <div class="card">
                     <div class="card-header">
                         <span class="card-name">{{ chunk.text }}</span>
-                        <span class="status-badge" [ngClass]="chunk.type.toLowerCase()">{{ chunk.type }}</span>
+                        <div class="card-actions">
+                            <span class="status-badge" [ngClass]="chunk.type.toLowerCase()">{{ chunk.type }}</span>
+                            <button class="edit-icon-btn" (click)="onEdit(chunk); $event.stopPropagation()" title="Edit">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button class="view-icon-btn" (click)="onView(chunk); $event.stopPropagation()" title="View">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" (click)="onSelect(chunk)">
                         <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Chunk ID:</span> <span class="uid">{{ chunk.chunkId }}</span></div>
                         <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Source:</span> <span class="desc" [title]="chunk.chunkSource">{{ chunk.chunkSource }}</span></div>
                         <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Source ID:</span> {{ chunk.chunkSourceId }}</div>
@@ -42,7 +50,9 @@
             </div>
         </ng-container>
         <ng-template #noChunks>
-            <div class="empty-message">No chunks found.</div>
+            <div class="no-items-message">
+                <mat-icon>info</mat-icon> No chunks found. Please add or configure chunks to see them here.
+            </div>
         </ng-template>
     </div>
 </div>

@@ -70,6 +70,18 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
         this.router.navigate(['/datasources/add']);
     }
 
+    onEdit(dataSource: DataSource): void {
+        this.router.navigate(['/datasources', dataSource.dataSourceUId], { queryParams: { edit: 'true' } });
+    }
+
+    onView(dataSource: DataSource): void {
+        this.router.navigate(['/datasources', dataSource.dataSourceUId], { queryParams: { edit: 'false' } });
+    }
+
+    onSelect(dataSource: DataSource): void {
+        this.router.navigate(['/datasources', dataSource.dataSourceUId]);
+    }
+
     onViewDetails(id: string): void {
         this.router.navigate(['/datasources', id]);
     }

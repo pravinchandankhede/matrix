@@ -10,26 +10,28 @@
             <div class="search-filter-group">
                 <div class="search-box">
                     <span class="material-icons">search</span>
-                    <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name...">
+                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search by name...">
                 </div>
                 <button class="filter-btn" (click)="onSearch()">
                     <span class="material-icons">filter_list</span> Filter
                 </button>
             </div>
         </div>
-        <ng-container *ngIf="filteredItems.length > 0; else noCollections">
+        <ng-container *ngIf="filteredCollections.length > 0; else noCollections">
             <div class="card-grid">
-                @for (col of filteredItems; track col) {
+                @for (col of filteredCollections; track col) {
                 <div class="card">
                     <div class="card-header">
                         <span class="card-name">{{ col.name }}</span>
-                        <span class="status-badge" [ngClass]="col.isCustom ? 'custom' : 'standard'">{{ col.isCustom ? 'Custom' : 'Standard' }}</span>
-                        <button class="edit-icon-btn" (click)="onEdit(col); $event.stopPropagation()" title="Edit">
-                            <mat-icon>edit</mat-icon>
-                        </button>
-                        <button class="view-icon-btn" (click)="onView(col); $event.stopPropagation()" title="View">
-                            <mat-icon>visibility</mat-icon>
-                        </button>
+                        <div class="card-actions">
+                            <span class="status-badge" [ngClass]="col.isCustom ? 'custom' : 'standard'">{{ col.isCustom ? 'Custom' : 'Standard' }}</span>
+                            <button class="edit-icon-btn" (click)="onEdit(col); $event.stopPropagation()" title="Edit">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button class="view-icon-btn" (click)="onView(col); $event.stopPropagation()" title="View">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body" (click)="onSelect(col)">
                         <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Collection UID:</span> <span class="uid">{{ col.dataSourceCollectionUId }}</span></div>
@@ -44,7 +46,9 @@
             </div>
         </ng-container>
         <ng-template #noCollections>
-            <div class="empty-message">No collections found.</div>
+            <div class="no-items-message">
+                <mat-icon>info</mat-icon> No collections found. Please add or configure collections to see them here.
+            </div>
         </ng-template>
     </div>
 </div>

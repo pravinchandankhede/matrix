@@ -65,4 +65,20 @@ export class ModelListComponent extends BaseListComponent<Model> {
     get filteredModels(): Model[] {
         return this.filteredItems;
     }
+
+    onAdd(): void {
+        this.router.navigate(['/models/add']);
+    }
+
+    onEdit(model: Model): void {
+        this.router.navigate(['/models', model.modelUId], { queryParams: { edit: 'true' } });
+    }
+
+    onView(model: Model): void {
+        this.router.navigate(['/models', model.modelUId], { queryParams: { edit: 'false' } });
+    }
+
+    onSelect(model: Model): void {
+        this.router.navigate(['/models', model.modelUId]);
+    }
 }

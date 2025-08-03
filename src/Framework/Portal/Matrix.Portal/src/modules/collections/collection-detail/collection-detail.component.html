@@ -1,87 +1,98 @@
-<div class="blade-container" *ngIf="collection">
-    <!-- Main Collection Blade -->
-    <div class="blade main-blade">
-        <div class="blade-header">
-            <h2><mat-icon>collections_bookmark</mat-icon> {{ collection.name || 'New Collection' }}</h2>
-            <button class="edit-btn" (click)="toggleEdit()">
-                <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
-            </button>
+<div class="detail-container" *ngIf="collection">
+  <div class="detail-header">
+    <h2><mat-icon>collections_bookmark</mat-icon> {{ collection.name || 'New Collection' }}</h2>
+    <button class="edit-btn" (click)="toggleEdit()">
+      <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
+    </button>
+  </div>
+  
+  <div class="detail-content">
+    <form *ngIf="editMode(); else viewMode" class="detail-form">
+      <div class="form-row">
+        <label>Collection UID:</label>
+        <input type="text" [(ngModel)]="collection.dataSourceCollectionUId" name="dataSourceCollectionUId" />
+      </div>
+      <div class="form-row">
+        <label>Name:</label>
+        <input type="text" [(ngModel)]="collection.name" name="name" />
+      </div>
+      <div class="form-row">
+        <label>Description:</label>
+        <textarea [(ngModel)]="collection.description" name="description" rows="3"></textarea>
+      </div>
+      <div class="form-row">
+        <label>Custom:</label>
+        <select [(ngModel)]="collection.isCustom" name="isCustom">
+          <option [value]="true">Yes</option>
+          <option [value]="false">No</option>
+        </select>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="btn-primary" (click)="onSave()">
+          <mat-icon>save</mat-icon> Save
+        </button>
+        <button type="button" class="btn-secondary" (click)="onCancel()">
+          <mat-icon>cancel</mat-icon> Cancel
+        </button>
+      </div>
+    </form>
+    
+    <ng-template #viewMode>
+      <div class="view-content">
+        <div class="info-section">
+          <h3>Collection Information</h3>
+          <div class="info-row">
+            <label>Collection UID:</label>
+            <span class="uid">{{ collection.dataSourceCollectionUId }}</span>
+          </div>
+          <div class="info-row">
+            <label>Name:</label>
+            <span>{{ collection.name }}</span>
+          </div>
+          <div class="info-row" *ngIf="collection.description">
+            <label>Description:</label>
+            <span>{{ collection.description }}</span>
+          </div>
+          <div class="info-row">
+            <label>Custom:</label>
+            <span class="status" [class.active]="collection.isCustom" [class.inactive]="!collection.isCustom">
+              {{ collection.isCustom ? 'Yes' : 'No' }}
+            </span>
+          </div>
+          <div class="info-row" (click)="onDataSourcesClick()" [class.clickable]="hasDataSources()">
+            <label>Data Sources:</label>
+            <span>{{ collection.dataSources.length || 0 }} data sources</span>
+            <mat-icon *ngIf="hasDataSources()" class="chevron">chevron_right</mat-icon>
+          </div>
+          <div class="info-row">
+            <label>Created:</label>
+            <span>{{ collection.createdDate | date:'medium' }}</span>
+          </div>
+          <div class="info-row" *ngIf="collection.lastModifiedDate">
+            <label>Last Modified:</label>
+            <span>{{ collection.lastModifiedDate | date:'medium' }}</span>
+          </div>
         </div>
-        <div class="blade-content">
-            <form *ngIf="editMode(); else viewMode" class="detail-form">
-                <div class="form-row">
-                    <label>Collection UID:</label>
-                    <input type="text" [(ngModel)]="collection.dataSourceCollectionUId" name="dataSourceCollectionUId" />
-                </div>
-                <div class="form-row">
-                    <label>Name:</label>
-                    <input type="text" [(ngModel)]="collection.name" name="name" />
-                </div>
-                <div class="form-row">
-                    <label>Description:</label>
-                    <textarea [(ngModel)]="collection.description" name="description"></textarea>
-                </div>
-                <div class="form-row">
-                    <label>Custom:</label>
-                    <select [(ngModel)]="collection.isCustom" name="isCustom">
-                        <option [value]="true">Yes</option>
-                        <option [value]="false">No</option>
-                    </select>
-                </div>
-            </form>
-            <ng-template #viewMode>
-                <div class="detail-body">
-                    <div class="detail-row"><mat-icon>fingerprint</mat-icon> <span class="label">Collection UID:</span> {{ collection.dataSourceCollectionUId }}</div>
-                    <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ collection.description }}</div>
-                    <div class="detail-row"><mat-icon>toggle_on</mat-icon> <span class="label">Custom:</span> {{ collection.isCustom ? 'Yes' : 'No' }}</div>
-                    <div class="detail-row"
-                         [class.clickable]="hasDataSources()"
-                         (click)="onDataSourcesClick()">
-                        <mat-icon>storage</mat-icon>
-                        <span class="label">Data Sources:</span> {{ collection.dataSources.length || 0 }} data sources
-                        <mat-icon *ngIf="hasDataSources()" class="chevron-icon">chevron_right</mat-icon>
-                    </div>
-                    <div class="detail-row"><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ collection.createdDate | date:'mediumDate' }}</div>
-                    <div class="detail-row"><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Modified:</span> {{ collection.lastModifiedDate | date:'mediumDate' }}</div>
-                </div>
-            </ng-template>
-        </div>
-
-        <!-- Main blade footer with action buttons -->
-        <div class="blade-footer" *ngIf="editMode()">
-            <div class="form-actions">
-                <button type="button" class="save-btn" (click)="onSave()">Save</button>
-                <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+        
+        <!-- Data Sources Section -->
+        <div class="info-section" *ngIf="hasDataSources()">
+          <h3>Data Sources ({{ collection.dataSources.length }})</h3>
+          <div class="data-sources-list">
+            <div class="data-source-item" *ngFor="let dataSource of collection.dataSources" (click)="onDataSourceSelected(dataSource.dataSourceUId)">
+              <div class="data-source-header">
+                <mat-icon>storage</mat-icon>
+                <span class="data-source-name">{{ dataSource.name }}</span>
+                <span class="data-source-type">{{ dataSource.type }}</span>
+                <mat-icon class="chevron">chevron_right</mat-icon>
+              </div>
+              <div class="data-source-description" *ngIf="dataSource.description">
+                {{ dataSource.description }}
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-
-    <!-- Data Sources Blade (opens to the right) - Edit Mode -->
-    <app-data-source-blade *ngIf="editMode() && hasDataSources()"
-                           [dataSources]="collection.dataSources"
-                           [isOpen]="true"
-                           [showSaveActions]="true"
-                           [title]="'Data Sources (' + collection.dataSources.length + ')'"
-                           (close)="onCloseDataSourcesBlade()"
-                           (save)="onDataSourcesBladeSave()"
-                           (cancel)="onDataSourcesBladeCancel()"
-                           (dataSourceSelected)="onDataSourceSelected($event)">
-    </app-data-source-blade>
-
-    <!-- Data Sources Blade (opens to the right) - View Mode -->
-    <app-data-source-blade *ngIf="!editMode() && dataSourcesBlade() && hasDataSources()"
-                           [dataSources]="collection.dataSources"
-                           [isOpen]="true"
-                           [showSaveActions]="false"
-                           [title]="'Data Sources (' + collection.dataSources.length + ')'"
-                           (close)="onCloseDataSourcesBlade()"
-                           (dataSourceSelected)="onDataSourceSelected($event)">
-    </app-data-source-blade>
-
-    <!-- Data Source Detail Blade (opens to the right of Data Sources Blade) -->
-    <app-data-source-detail-blade *ngIf="dataSourceDetailBladeOpen && selectedDataSourceId"
-                                  [dataSourceId]="selectedDataSourceId"
-                                  [isOpen]="true"
-                                  (close)="onCloseDataSourceDetailBlade()">
-    </app-data-source-detail-blade>
+      </div>
+    </ng-template>
+  </div>
 </div>

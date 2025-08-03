@@ -2,7 +2,7 @@
     <div class="section-wrapper modern-theme-bg">
         <div class="list-header">
             <h2><mat-icon>smart_toy</mat-icon> Current Agents</h2>
-            <button class="add-btn" routerLink="/agents/add">
+            <button class="add-btn" (click)="onAdd()">
                 <mat-icon>add_circle</mat-icon> Add Agent
             </button>
         </div>
@@ -10,7 +10,7 @@
             <div class="search-filter-group">
                 <div class="search-box">
                     <span class="material-icons">search</span>
-                    <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name...">
+                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search by name...">
                 </div>
                 <select #filterSelect (change)="onFilterChange(filterSelect.value)">
                     <option value="">All</option>
@@ -29,9 +29,17 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="card-name">{{ agent.name }}</span>
-                        <span class="status-badge" [ngClass]="agent.status.toLowerCase()">{{ agent.status }}</span>
+                        <div class="card-actions">
+                            <span class="status-badge" [ngClass]="agent.status.toLowerCase()">{{ agent.status }}</span>
+                            <button class="edit-icon-btn" (click)="onEdit(agent); $event.stopPropagation()" title="Edit">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button class="view-icon-btn" (click)="onView(agent); $event.stopPropagation()" title="View">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" (click)="onSelect(agent)">
                         <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Agent UID:</span> <span class="uid">{{ agent.agentUId }}</span></div>
                         <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="agent.description">{{ agent.description }}</span></div>
                         <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ agent.type }}</div>

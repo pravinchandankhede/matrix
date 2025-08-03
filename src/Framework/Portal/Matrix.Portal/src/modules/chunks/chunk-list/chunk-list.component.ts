@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Chunk } from '../../../datamodels/chunk.model';
 import { ChunkService } from '../../../services/chunk.service';
 import { ErrorService } from '../../../services/error.service';
@@ -13,7 +14,11 @@ import { BaseListComponent } from '../../../shared/base-list.component';
 export class ChunkListComponent extends BaseListComponent<Chunk> {
     selectedType: string = '';
 
-    constructor(private chunkListService: ChunkService, private errorService: ErrorService) {
+    constructor(
+        private router: Router,
+        private chunkListService: ChunkService,
+        private errorService: ErrorService
+    ) {
         super();
     }
 
@@ -47,5 +52,30 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
         const matchesText = chunk.text.toLowerCase().includes(this.searchTerm.toLowerCase());
         const matchesType = this.selectedType ? chunk.type === this.selectedType : true;
         return matchesText && matchesType;
+    }
+
+    override onFilterChange(type: string): void {
+        this.selectedType = type;
+        this.applyFilter();
+    }
+
+    get filteredChunks(): Chunk[] {
+        return this.filteredItems;
+    }
+
+    onAdd(): void {
+        this.router.navigate(['/chunks/add']);
+    }
+
+    onEdit(chunk: Chunk): void {
+        this.router.navigate(['/chunks', chunk.chunkId], { queryParams: { edit: 'true' } });
+    }
+
+    onView(chunk: Chunk): void {
+        this.router.navigate(['/chunks', chunk.chunkId], { queryParams: { edit: 'false' } });
+    }
+
+    onSelect(chunk: Chunk): void {
+        this.router.navigate(['/chunks', chunk.chunkId]);
     }
 }

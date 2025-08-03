@@ -10,6 +10,8 @@ import { DataSource, VectorConnectionDetails } from '../../../datamodels/data-so
 })
 export class VectorConnectionDetailsComponent implements OnInit {
     @Input() dataSource!: DataSource;
+    @Input() connectionDetails?: VectorConnectionDetails;
+    @Input() readonly: boolean = false;
     @Input() mode: 'add' | 'edit' | 'view' = 'view';
     @Output() save = new EventEmitter<VectorConnectionDetails>();
     @Output() cancel = new EventEmitter<void>();
@@ -18,7 +20,8 @@ export class VectorConnectionDetailsComponent implements OnInit {
     constructor(private fb: FormBuilder) { }
 
     ngOnInit() {
-        const details = this.dataSource?.connectionDetails as VectorConnectionDetails;
+        // Use connectionDetails input if provided, otherwise fallback to dataSource.connectionDetails
+        const details = this.connectionDetails || (this.dataSource?.connectionDetails as VectorConnectionDetails);
         this.form = this.fb.group({
             vectorDbType: [details?.vectorDbType || ''],
             indexName: [details?.indexName || ''],
@@ -26,7 +29,7 @@ export class VectorConnectionDetailsComponent implements OnInit {
             dimension: [details?.dimension || ''],
             distanceMetric: [details?.distanceMetric || '']
         });
-        if (this.mode === 'view') {
+        if (this.mode === 'view' || this.readonly) {
             this.form.disable();
         }
     }

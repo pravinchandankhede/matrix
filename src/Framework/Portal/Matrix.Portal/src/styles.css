@@ -368,6 +368,53 @@ body {
     background: transparent;
 }
 
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.edit-icon-btn,
+.view-icon-btn {
+    background: rgba(13, 110, 253, 0.1);
+    border: 1px solid rgba(13, 110, 253, 0.2);
+    color: #0d6efd;
+    padding: 0.4rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    min-width: 32px;
+    min-height: 32px;
+}
+
+    .edit-icon-btn:hover {
+        background: rgba(13, 110, 253, 0.15);
+        border-color: rgba(13, 110, 253, 0.3);
+        transform: translateY(-1px);
+    }
+
+.view-icon-btn {
+    background: rgba(102, 16, 242, 0.1);
+    border-color: rgba(102, 16, 242, 0.2);
+    color: #6610f2;
+}
+
+    .view-icon-btn:hover {
+        background: rgba(102, 16, 242, 0.15);
+        border-color: rgba(102, 16, 242, 0.3);
+        transform: translateY(-1px);
+    }
+
+    .edit-icon-btn mat-icon,
+    .view-icon-btn mat-icon {
+        font-size: 1.1rem;
+        width: 18px;
+        height: 18px;
+    }
+
 .card-name {
     font-size: 1.25rem;
     font-weight: 600;
@@ -506,6 +553,71 @@ body {
     .status-badge.vector {
         background: #198754;
     }
+
+    .status-badge.custom {
+        background: #6610f2;
+    }
+
+    .status-badge.standard {
+        background: #6c757d;
+    }
+
+    .status-badge.typea {
+        background: #28a745;
+    }
+
+    .status-badge.typeb {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .status-badge.typec {
+        background: #dc3545;
+    }
+
+.capability-badge, .tag-badge {
+    background: #e3f2fd;
+    color: #1976d2;
+    border-radius: 0.4rem;
+    padding: 0.2rem 0.6rem;
+    margin-right: 0.3rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.more-badge {
+    background: #f5f5f5;
+    color: #666;
+    border-radius: 0.4rem;
+    padding: 0.2rem 0.6rem;
+    margin-right: 0.3rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.badge-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.no-tags {
+    color: #999;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.uid {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: #666;
+    background: #f8f9fa;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.25rem;
+}
 
 .no-items-message {
     text-align: center;

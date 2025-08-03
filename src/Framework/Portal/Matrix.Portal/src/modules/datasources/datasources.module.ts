@@ -8,8 +8,6 @@ import { DataSourcesRoutingModule } from './datasources-routing.module';
 import { DataSourceDetailComponent } from './data-source-detail/data-source-detail.component';
 import { StructuredConnectionDetailsComponent } from './structured-connection-details/structured-connection-details.component';
 import { VectorConnectionDetailsComponent } from './vector-connection-details/vector-connection-details.component';
-import { DataSourceBladeComponent } from './data-source-blade/data-source-blade.component';
-import { DataSourceDetailBladeComponent } from './data-source-detail-blade/data-source-detail-blade.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,9 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
         DataSourceListComponent,
         DataSourceDetailComponent,
         StructuredConnectionDetailsComponent,
-        VectorConnectionDetailsComponent,
-        DataSourceBladeComponent,
-        DataSourceDetailBladeComponent
+        VectorConnectionDetailsComponent
     ],
     imports: [
         CommonModule,
@@ -35,10 +31,6 @@ import { MatButtonModule } from '@angular/material/button';
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule
-    ],
-    exports: [
-        DataSourceBladeComponent,
-        DataSourceDetailBladeComponent
     ]
 })
 export class DataSourcesModule { }

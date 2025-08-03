@@ -1,150 +1,167 @@
-<div class="blade-container" *ngIf="dataSource">
-  <!-- Main Data Source Blade -->
-  <div class="blade main-blade">
-    <div class="blade-header">
-      <h2><mat-icon>storage</mat-icon> {{ dataSource.name || 'New Data Source' }}</h2>
-      <button class="edit-btn" (click)="toggleEdit()">
-        <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
-      </button>
-    </div>
-    <div class="blade-content">
-      <form *ngIf="editMode(); else viewMode" class="detail-form">
-        <div class="form-row">
-          <label>Data Source UID:</label>
-          <input type="text" [(ngModel)]="dataSource.dataSourceUId" name="dataSourceUId" />
-        </div>
-        <div class="form-row">
-          <label>Name:</label>
-          <input type="text" [(ngModel)]="dataSource.name" name="name" />
-        </div>
-        <div class="form-row">
-          <label>Description:</label>
-          <textarea [(ngModel)]="dataSource.description" name="description"></textarea>
-        </div>
-        <div class="form-row">
-          <label>Type:</label>
-          <select [(ngModel)]="dataSource.type" name="type">
-            <option value="Structured">Structured</option>
-            <option value="SemiStructured">SemiStructured</option>
-            <option value="Unstructured">Unstructured</option>
-            <option value="Multimedia">Multimedia</option>
-            <option value="Streaming">Streaming</option>
-            <option value="External">External</option>
-            <option value="Proprietary">Proprietary</option>
-            <option value="Vector">Vector</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label>SubType:</label>
-          <input type="text" [(ngModel)]="dataSource.subType" name="subType" />
-        </div>
-        <div class="form-row">
-          <label>Tags:</label>
-          <input type="text" [(ngModel)]="tagsString" name="tags" placeholder="Comma separated tags" />
-        </div>
-        <div class="form-row">
-          <label>Owner:</label>
-          <input type="text" [(ngModel)]="dataSource.owner" name="owner" />
-        </div>
-        <div class="form-row">
-          <label>Status:</label>
-          <select [(ngModel)]="dataSource.isActive" name="isActive">
-            <option [value]="true">Active</option>
-            <option [value]="false">Inactive</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label>Access Mode:</label>
-          <select [(ngModel)]="dataSource.accessMode" name="accessMode">
-            <option value="ReadOnly">ReadOnly</option>
-            <option value="ReadWrite">ReadWrite</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label>Authentication Type:</label>
-          <select [(ngModel)]="dataSource.authenticationType" name="authenticationType">
-            <option value="APIKey">APIKey</option>
-            <option value="OAuth2">OAuth2</option>
-            <option value="BasicAuth">BasicAuth</option>
-            <option value="Token">Token</option>
-            <option value="None">None</option>
-          </select>
-        </div>
-        <!-- Remove form-actions from here -->
-      </form>
-      <ng-template #viewMode>
-        <div class="detail-body">
-          <div class="detail-row"><mat-icon>fingerprint</mat-icon> <span class="label">Data Source UID:</span> {{ dataSource.dataSourceUId }}</div>
-          <div class="detail-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> {{ dataSource.description }}</div>
-          <div class="detail-row" 
-               [class.clickable]="hasConnectionDetails()" 
-               (click)="onTypeClick()">
-            <mat-icon>category</mat-icon> 
-            <span class="label">Type:</span> {{ dataSource.type }}
-            <mat-icon *ngIf="hasConnectionDetails()" class="chevron-icon">chevron_right</mat-icon>
+<div class="detail-container" *ngIf="dataSource">
+  <div class="detail-header">
+    <h2><mat-icon>storage</mat-icon> {{ dataSource.name || 'New Data Source' }}</h2>
+    <button class="edit-btn" (click)="toggleEdit()">
+      <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
+    </button>
+  </div>
+  
+  <div class="detail-content">
+    <form *ngIf="editMode(); else viewMode" class="detail-form">
+      <div class="form-row">
+        <label>Data Source UID:</label>
+        <input type="text" [(ngModel)]="dataSource.dataSourceUId" name="dataSourceUId" />
+      </div>
+      <div class="form-row">
+        <label>Name:</label>
+        <input type="text" [(ngModel)]="dataSource.name" name="name" />
+      </div>
+      <div class="form-row">
+        <label>Type:</label>
+        <select [(ngModel)]="dataSource.type" name="type">
+          <option value="Structured">Structured</option>
+          <option value="SemiStructured">Semi-Structured</option>
+          <option value="Unstructured">Unstructured</option>
+          <option value="Multimedia">Multimedia</option>
+          <option value="Streaming">Streaming</option>
+          <option value="External">External</option>
+          <option value="Proprietary">Proprietary</option>
+          <option value="Vector">Vector</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Sub Type:</label>
+        <input type="text" [(ngModel)]="dataSource.subType" name="subType" />
+      </div>
+      <div class="form-row">
+        <label>Description:</label>
+        <textarea [(ngModel)]="dataSource.description" name="description" rows="3"></textarea>
+      </div>
+      <div class="form-row">
+        <label>Tags:</label>
+        <input type="text" [(ngModel)]="tagsString" name="tags" placeholder="Comma-separated tags" />
+      </div>
+      <div class="form-row">
+        <label>Owner:</label>
+        <input type="text" [(ngModel)]="dataSource.owner" name="owner" />
+      </div>
+      <div class="form-row">
+        <label>Access Mode:</label>
+        <select [(ngModel)]="dataSource.accessMode" name="accessMode">
+          <option value="ReadOnly">Read Only</option>
+          <option value="ReadWrite">Read Write</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Authentication Type:</label>
+        <select [(ngModel)]="dataSource.authenticationType" name="authenticationType">
+          <option value="None">None</option>
+          <option value="APIKey">API Key</option>
+          <option value="OAuth2">OAuth2</option>
+          <option value="BasicAuth">Basic Auth</option>
+          <option value="Token">Token</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>
+          <input type="checkbox" [(ngModel)]="dataSource.isActive" name="isActive" />
+          Active
+        </label>
+      </div>
+      
+      <!-- Connection Details -->
+      <div class="connection-details" *ngIf="hasConnectionDetails()">
+        <h3>Connection Details</h3>
+        <app-structured-connection-details 
+          *ngIf="dataSource.type === 'Structured'" 
+          [connectionDetails]="dataSource.connectionDetails">
+        </app-structured-connection-details>
+        <app-vector-connection-details 
+          *ngIf="dataSource.type === 'Vector'" 
+          [connectionDetails]="dataSource.connectionDetails">
+        </app-vector-connection-details>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="btn-primary" (click)="onSave()">
+          <mat-icon>save</mat-icon> Save
+        </button>
+        <button type="button" class="btn-secondary" (click)="onCancel()">
+          <mat-icon>cancel</mat-icon> Cancel
+        </button>
+      </div>
+    </form>
+    
+    <ng-template #viewMode>
+      <div class="view-content">
+        <div class="info-section">
+          <h3>Basic Information</h3>
+          <div class="info-row">
+            <label>Data Source UID:</label>
+            <span class="uid">{{ dataSource.dataSourceUId }}</span>
           </div>
-          <div class="detail-row"><mat-icon>category</mat-icon> <span class="label">SubType:</span> {{ dataSource.subType }}</div>
-          <div class="detail-row">
-            <mat-icon>label</mat-icon> <span class="label">Tags:</span>
-            <div class="badge-container" *ngIf="dataSource.tags && dataSource.tags.length > 0">
-              <span *ngFor="let tag of dataSource.tags" class="tag-badge">{{ tag }}</span>
+          <div class="info-row">
+            <label>Name:</label>
+            <span>{{ dataSource.name }}</span>
+          </div>
+          <div class="info-row" (click)="onTypeClick()" [class.clickable]="hasConnectionDetails()">
+            <label>Type:</label>
+            <span>{{ dataSource.type }} - {{ dataSource.subType }}</span>
+            <mat-icon *ngIf="hasConnectionDetails()" class="chevron">chevron_right</mat-icon>
+          </div>
+          <div class="info-row" *ngIf="dataSource.description">
+            <label>Description:</label>
+            <span>{{ dataSource.description }}</span>
+          </div>
+          <div class="info-row" *ngIf="dataSource.tags && dataSource.tags.length > 0">
+            <label>Tags:</label>
+            <div class="tags">
+              <span class="tag" *ngFor="let tag of dataSource.tags">{{ tag }}</span>
             </div>
-            <span *ngIf="!dataSource.tags || dataSource.tags.length === 0">No tags</span>
           </div>
-          <div class="detail-row"><mat-icon>person</mat-icon> <span class="label">Owner:</span> {{ dataSource.owner }}</div>
-          <div class="detail-row"><mat-icon>security</mat-icon> <span class="label">Access Mode:</span> {{ dataSource.accessMode }}</div>
-          <div class="detail-row"><mat-icon>vpn_key</mat-icon> <span class="label">Authentication:</span> {{ dataSource.authenticationType }}</div>
-          <div class="detail-row"><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ dataSource.createdAt | date:'mediumDate' }}</div>
-          <div class="detail-row"><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ dataSource.updatedAt | date:'mediumDate' }}</div>
+          <div class="info-row">
+            <label>Owner:</label>
+            <span>{{ dataSource.owner }}</span>
+          </div>
+          <div class="info-row">
+            <label>Access Mode:</label>
+            <span>{{ dataSource.accessMode }}</span>
+          </div>
+          <div class="info-row">
+            <label>Authentication:</label>
+            <span>{{ dataSource.authenticationType }}</span>
+          </div>
+          <div class="info-row">
+            <label>Status:</label>
+            <span class="status" [class.active]="dataSource.isActive" [class.inactive]="!dataSource.isActive">
+              {{ dataSource.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+          <div class="info-row">
+            <label>Created:</label>
+            <span>{{ dataSource.createdAt | date:'medium' }}</span>
+          </div>
+          <div class="info-row" *ngIf="dataSource.updatedAt">
+            <label>Updated:</label>
+            <span>{{ dataSource.updatedAt | date:'medium' }}</span>
+          </div>
         </div>
-      </ng-template>
-    </div>
-    
-    <!-- Main blade footer with action buttons - hidden when connection blade is open -->
-    <div class="blade-footer" *ngIf="editMode() && !hasConnectionDetails()">
-      <div class="form-actions">
-        <button type="button" class="save-btn" (click)="onSave()">Save</button>
-        <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+        
+        <!-- Connection Details in View Mode -->
+        <div class="info-section" *ngIf="hasConnectionDetails()">
+          <h3>Connection Details</h3>
+          <app-structured-connection-details 
+            *ngIf="dataSource.type === 'Structured'" 
+            [connectionDetails]="dataSource.connectionDetails"
+            [readonly]="true">
+          </app-structured-connection-details>
+          <app-vector-connection-details 
+            *ngIf="dataSource.type === 'Vector'" 
+            [connectionDetails]="dataSource.connectionDetails"
+            [readonly]="true">
+          </app-vector-connection-details>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Connection Details Blade (opens to the right) -->
-  <div class="blade connection-blade" *ngIf="editMode() && hasConnectionDetails()">
-    <div class="blade-header">
-      <h3><mat-icon>settings</mat-icon> Connection Details</h3>
-    </div>
-    <div class="blade-content">
-      <ng-container [ngSwitch]="dataSource.type">
-        <app-structured-connection-details *ngSwitchCase="'Structured'" [dataSource]="dataSource" mode="edit"></app-structured-connection-details>
-        <app-vector-connection-details *ngSwitchCase="'Vector'" [dataSource]="dataSource" mode="edit"></app-vector-connection-details>
-        <!-- Add more cases for other types as needed -->
-      </ng-container>
-    </div>
-    
-    <!-- Connection blade footer with action buttons -->
-    <div class="blade-footer">
-      <div class="form-actions">
-        <button type="button" class="save-btn" (click)="onSave()">Save</button>
-        <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- View Mode Connection Details Blade -->
-  <div class="blade connection-blade" *ngIf="!editMode() && viewModeBlade() && hasConnectionDetails()">
-    <div class="blade-header">
-      <h3><mat-icon>settings</mat-icon> Connection Details</h3>
-      <button type="button" class="close-btn" (click)="onCloseViewModeBlade()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-    <div class="blade-content">
-      <ng-container [ngSwitch]="dataSource.type">
-        <app-structured-connection-details *ngSwitchCase="'Structured'" [dataSource]="dataSource" mode="view"></app-structured-connection-details>
-        <app-vector-connection-details *ngSwitchCase="'Vector'" [dataSource]="dataSource" mode="view"></app-vector-connection-details>
-        <!-- Add more cases for other types as needed -->
-      </ng-container>
-    </div>
+    </ng-template>
   </div>
 </div>

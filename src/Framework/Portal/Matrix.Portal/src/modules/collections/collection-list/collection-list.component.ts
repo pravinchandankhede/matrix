@@ -48,19 +48,23 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
         return collection.name.toLowerCase().includes(this.searchTerm.toLowerCase());
     }
 
-    onAdd() {
-        this.router.navigate(['collections/add']);
+    get filteredCollections(): DataSourceCollection[] {
+        return this.filteredItems;
     }
 
-    onSelect(collection: DataSourceCollection) {
-        this.router.navigate(['collections', collection.dataSourceCollectionUId]);
+    onAdd(): void {
+        this.router.navigate(['/collections/add']);
     }
 
-    onEdit(collection: DataSourceCollection) {
-        this.router.navigate(['collections', collection.dataSourceCollectionUId], { queryParams: { edit: 'true' } });
+    onSelect(collection: DataSourceCollection): void {
+        this.router.navigate(['/collections', collection.dataSourceCollectionUId]);
     }
 
-    onView(collection: DataSourceCollection) {
-        this.router.navigate(['collections', collection.dataSourceCollectionUId], { queryParams: { edit: 'false' } });
+    onEdit(collection: DataSourceCollection): void {
+        this.router.navigate(['/collections', collection.dataSourceCollectionUId], { queryParams: { edit: 'true' } });
+    }
+
+    onView(collection: DataSourceCollection): void {
+        this.router.navigate(['/collections', collection.dataSourceCollectionUId], { queryParams: { edit: 'false' } });
     }
 }

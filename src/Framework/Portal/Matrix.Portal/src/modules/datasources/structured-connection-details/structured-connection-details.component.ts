@@ -10,6 +10,8 @@ import { DataSource, StructuredConnectionDetails } from '../../../datamodels/dat
 })
 export class StructuredConnectionDetailsComponent implements OnInit {
     @Input() dataSource!: DataSource;
+    @Input() connectionDetails?: StructuredConnectionDetails;
+    @Input() readonly: boolean = false;
     @Input() mode: 'add' | 'edit' | 'view' = 'view';
     @Output() save = new EventEmitter<StructuredConnectionDetails>();
     @Output() cancel = new EventEmitter<void>();
@@ -18,7 +20,8 @@ export class StructuredConnectionDetailsComponent implements OnInit {
     constructor(private fb: FormBuilder) { }
 
     ngOnInit() {
-        const details = this.dataSource?.connectionDetails as StructuredConnectionDetails;
+        // Use connectionDetails input if provided, otherwise fallback to dataSource.connectionDetails
+        const details = this.connectionDetails || (this.dataSource?.connectionDetails as StructuredConnectionDetails);
         this.form = this.fb.group({
             host: [details?.host || ''],
             port: [details?.port || ''],
@@ -27,7 +30,7 @@ export class StructuredConnectionDetailsComponent implements OnInit {
             tableList: [details?.tableList?.join(', ') || ''],
             queryTemplate: [details?.queryTemplate || '']
         });
-        if (this.mode === 'view') {
+        if (this.mode === 'view' || this.readonly) {
             this.form.disable();
         }
     }

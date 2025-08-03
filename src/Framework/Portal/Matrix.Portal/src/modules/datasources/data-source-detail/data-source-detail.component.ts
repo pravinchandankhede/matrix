@@ -12,7 +12,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class DataSourceDetailComponent implements OnInit {
     @Input() dataSource: DataSource | null = null;
     editMode = signal(false); // Start in view mode
-    viewModeBlade = signal(false); // Track if view mode blade is open
 
     // Form helper properties
     tagsString = '';
@@ -130,13 +129,10 @@ export class DataSourceDetailComponent implements OnInit {
 
     onTypeClick() {
         console.log('Type clicked - editMode:', this.editMode(), 'hasConnectionDetails:', this.hasConnectionDetails());
+        // Navigate to connection details page or open dialog
         if (!this.editMode() && this.hasConnectionDetails()) {
-            console.log('Opening view mode blade');
-            this.viewModeBlade.set(true);
+            console.log('Navigate to connection details');
+            // Add navigation logic here if needed
         }
-    }
-
-    onCloseViewModeBlade() {
-        this.viewModeBlade.set(false);
     }
 }

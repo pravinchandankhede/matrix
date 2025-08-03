@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Agent } from '../../../datamodels/agent.model';
 import { AgentService } from '../../../services/agent.service';
 import { ErrorService } from '../../../services/error.service';
@@ -13,7 +14,11 @@ import { BaseListComponent } from '../../../shared/base-list.component';
 export class AgentListComponent extends BaseListComponent<Agent> {
     selectedStatus: string = '';
 
-    constructor(private agentListService: AgentService, private errorService: ErrorService) {
+    constructor(
+        private router: Router,
+        private agentListService: AgentService,
+        private errorService: ErrorService
+    ) {
         super();
     }
 
@@ -56,5 +61,21 @@ export class AgentListComponent extends BaseListComponent<Agent> {
 
     get filteredAgents(): Agent[] {
         return this.filteredItems;
+    }
+
+    onAdd(): void {
+        this.router.navigate(['/agents/add']);
+    }
+
+    onEdit(agent: Agent): void {
+        this.router.navigate(['/agents', agent.agentUId], { queryParams: { edit: 'true' } });
+    }
+
+    onView(agent: Agent): void {
+        this.router.navigate(['/agents', agent.agentUId], { queryParams: { edit: 'false' } });
+    }
+
+    onSelect(agent: Agent): void {
+        this.router.navigate(['/agents', agent.agentUId]);
     }
 }

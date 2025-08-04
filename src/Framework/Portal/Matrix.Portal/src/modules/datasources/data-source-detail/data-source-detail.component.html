@@ -54,56 +54,60 @@
                     <!-- General Section -->
                     <div class="content-section" *ngIf="activeSection === 'general'">
                         <h3>General Information</h3>
-                        <div class="form-row">
-                            <label>Data Source UID:</label>
-                            <input type="text" [(ngModel)]="dataSource.dataSourceUId" name="dataSourceUId" />
-                        </div>
-                        <div class="form-row">
-                            <label>Name:</label>
-                            <input type="text" [(ngModel)]="dataSource.name" name="name" />
-                        </div>
-                        <div class="form-row">
-                            <label>Description:</label>
-                            <textarea [(ngModel)]="dataSource.description" name="description" rows="3"></textarea>
-                        </div>
-                        <div class="form-row">
-                            <label>Owner:</label>
-                            <input type="text" [(ngModel)]="dataSource.owner" name="owner" />
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label>Data Source UID:</label>
+                                <input type="text" [(ngModel)]="dataSource.dataSourceUId" name="dataSourceUId" />
+                            </div>
+                            <div class="form-row">
+                                <label>Name:</label>
+                                <input type="text" [(ngModel)]="dataSource.name" name="name" />
+                            </div>
+                            <div class="form-row full-width">
+                                <label>Description:</label>
+                                <textarea [(ngModel)]="dataSource.description" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <label>Owner:</label>
+                                <input type="text" [(ngModel)]="dataSource.owner" name="owner" />
+                            </div>
                         </div>
                     </div>
 
                     <!-- Configuration Section -->
                     <div class="content-section" *ngIf="activeSection === 'configuration'">
                         <h3>Configuration</h3>
-                        <div class="form-row">
-                            <label>Type:</label>
-                            <select [(ngModel)]="dataSource.type" name="type">
-                                <option value="Structured">Structured</option>
-                                <option value="SemiStructured">Semi-Structured</option>
-                                <option value="Unstructured">Unstructured</option>
-                                <option value="Multimedia">Multimedia</option>
-                                <option value="Streaming">Streaming</option>
-                                <option value="External">External</option>
-                                <option value="Proprietary">Proprietary</option>
-                                <option value="Vector">Vector</option>
-                            </select>
-                        </div>
-                        <div class="form-row">
-                            <label>Sub Type:</label>
-                            <input type="text" [(ngModel)]="dataSource.subType" name="subType" />
-                        </div>
-                        <div class="form-row">
-                            <label>Access Mode:</label>
-                            <select [(ngModel)]="dataSource.accessMode" name="accessMode">
-                                <option value="ReadOnly">Read Only</option>
-                                <option value="ReadWrite">Read Write</option>
-                            </select>
-                        </div>
-                        <div class="form-row">
-                            <label>
-                                <input type="checkbox" [(ngModel)]="dataSource.isActive" name="isActive" />
-                                Active
-                            </label>
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label>Type:</label>
+                                <select [(ngModel)]="dataSource.type" name="type">
+                                    <option value="Structured">Structured</option>
+                                    <option value="SemiStructured">Semi-Structured</option>
+                                    <option value="Unstructured">Unstructured</option>
+                                    <option value="Multimedia">Multimedia</option>
+                                    <option value="Streaming">Streaming</option>
+                                    <option value="External">External</option>
+                                    <option value="Proprietary">Proprietary</option>
+                                    <option value="Vector">Vector</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label>Sub Type:</label>
+                                <input type="text" [(ngModel)]="dataSource.subType" name="subType" />
+                            </div>
+                            <div class="form-row">
+                                <label>Access Mode:</label>
+                                <select [(ngModel)]="dataSource.accessMode" name="accessMode">
+                                    <option value="ReadOnly">Read Only</option>
+                                    <option value="ReadWrite">Read Write</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label>
+                                    <input type="checkbox" [(ngModel)]="dataSource.isActive" name="isActive" />
+                                    Active
+                                </label>
+                            </div>
                         </div>
                     </div>
 
@@ -121,24 +125,28 @@
                     <!-- Security Section -->
                     <div class="content-section" *ngIf="activeSection === 'security'">
                         <h3>Security Settings</h3>
-                        <div class="form-row">
-                            <label>Authentication Type:</label>
-                            <select [(ngModel)]="dataSource.authenticationType" name="authenticationType">
-                                <option value="None">None</option>
-                                <option value="APIKey">API Key</option>
-                                <option value="OAuth2">OAuth2</option>
-                                <option value="BasicAuth">Basic Auth</option>
-                                <option value="Token">Token</option>
-                            </select>
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label>Authentication Type:</label>
+                                <select [(ngModel)]="dataSource.authenticationType" name="authenticationType">
+                                    <option value="None">None</option>
+                                    <option value="APIKey">API Key</option>
+                                    <option value="OAuth2">OAuth2</option>
+                                    <option value="BasicAuth">Basic Auth</option>
+                                    <option value="Token">Token</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Metadata Section -->
                     <div class="content-section" *ngIf="activeSection === 'metadata'">
                         <h3>Metadata</h3>
-                        <div class="form-row">
-                            <label>Tags:</label>
-                            <input type="text" [(ngModel)]="tagsString" name="tags" placeholder="Comma-separated tags" />
+                        <div class="form-grid">
+                            <div class="form-row full-width">
+                                <label>Tags:</label>
+                                <input type="text" [(ngModel)]="tagsString" name="tags" placeholder="Comma-separated tags" />
+                            </div>
                         </div>
                     </div>
 
@@ -157,48 +165,52 @@
                     <!-- General Section -->
                     <div class="content-section" *ngIf="activeSection === 'general'">
                         <h3>General Information</h3>
-                        <div class="info-row">
-                            <label>Data Source UID:</label>
-                            <span class="uid">{{ dataSource.dataSourceUId }}</span>
-                        </div>
-                        <div class="info-row">
-                            <label>Name:</label>
-                            <span>{{ dataSource.name }}</span>
-                        </div>
-                        <div class="info-row" *ngIf="dataSource.description">
-                            <label>Description:</label>
-                            <span>{{ dataSource.description }}</span>
-                        </div>
-                        <div class="info-row">
-                            <label>Owner:</label>
-                            <span>{{ dataSource.owner }}</span>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <label>Data Source UID:</label>
+                                <span class="uid">{{ dataSource.dataSourceUId }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Name:</label>
+                                <span>{{ dataSource.name }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="dataSource.description">
+                                <label>Description:</label>
+                                <span>{{ dataSource.description }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Owner:</label>
+                                <span>{{ dataSource.owner }}</span>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Configuration Section -->
                     <div class="content-section" *ngIf="activeSection === 'configuration'">
                         <h3>Configuration</h3>
-                        <div class="info-row">
-                            <label>Type:</label>
-                            <span>{{ dataSource.type }} - {{ dataSource.subType }}</span>
-                        </div>
-                        <div class="info-row">
-                            <label>Access Mode:</label>
-                            <span>{{ dataSource.accessMode }}</span>
-                        </div>
-                        <div class="info-row">
-                            <label>Status:</label>
-                            <span class="status" [class.active]="dataSource.isActive" [class.inactive]="!dataSource.isActive">
-                                {{ dataSource.isActive ? 'Active' : 'Inactive' }}
-                            </span>
-                        </div>
-                        <div class="info-row">
-                            <label>Created:</label>
-                            <span>{{ dataSource.createdAt | date:'medium' }}</span>
-                        </div>
-                        <div class="info-row" *ngIf="dataSource.updatedAt">
-                            <label>Updated:</label>
-                            <span>{{ dataSource.updatedAt | date:'medium' }}</span>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <label>Type:</label>
+                                <span>{{ dataSource.type }} - {{ dataSource.subType }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Access Mode:</label>
+                                <span>{{ dataSource.accessMode }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Status:</label>
+                                <span class="status" [class.active]="dataSource.isActive" [class.inactive]="!dataSource.isActive">
+                                    {{ dataSource.isActive ? 'Active' : 'Inactive' }}
+                                </span>
+                            </div>
+                            <div class="info-row">
+                                <label>Created:</label>
+                                <span>{{ dataSource.createdAt | date:'medium' }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="dataSource.updatedAt">
+                                <label>Updated:</label>
+                                <span>{{ dataSource.updatedAt | date:'medium' }}</span>
+                            </div>
                         </div>
                     </div>
 
@@ -218,19 +230,23 @@
                     <!-- Security Section -->
                     <div class="content-section" *ngIf="activeSection === 'security'">
                         <h3>Security Settings</h3>
-                        <div class="info-row">
-                            <label>Authentication:</label>
-                            <span>{{ dataSource.authenticationType }}</span>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <label>Authentication:</label>
+                                <span>{{ dataSource.authenticationType }}</span>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Metadata Section -->
                     <div class="content-section" *ngIf="activeSection === 'metadata'">
                         <h3>Metadata</h3>
-                        <div class="info-row" *ngIf="dataSource.tags && dataSource.tags.length > 0">
-                            <label>Tags:</label>
-                            <div class="tags">
-                                <span class="tag" *ngFor="let tag of dataSource.tags">{{ tag }}</span>
+                        <div class="info-grid">
+                            <div class="info-row" *ngIf="dataSource.tags && dataSource.tags.length > 0">
+                                <label>Tags:</label>
+                                <div class="tags">
+                                    <span class="tag" *ngFor="let tag of dataSource.tags">{{ tag }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>

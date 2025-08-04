@@ -1,1 +1,3 @@
-/* Styles moved to data-source-detail.common.css */
+/* Component-specific styles (if any) - most styles now in global styles.css */
+
+/* This component uses global .connection-detail-form, .connection-form-row, and related classes */

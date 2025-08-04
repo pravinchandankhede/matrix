@@ -13,6 +13,9 @@ export class DataSourceDetailComponent implements OnInit {
     @Input() dataSource: DataSource | null = null;
     editMode = signal(false); // Start in view mode
 
+    // Navigation for two-pane layout
+    activeSection: string = 'general';
+
     // Form helper properties
     tagsString = '';
 
@@ -134,5 +137,9 @@ export class DataSourceDetailComponent implements OnInit {
             console.log('Navigate to connection details');
             // Add navigation logic here if needed
         }
+    }
+
+    setActiveSection(section: string): void {
+        this.activeSection = section;
     }
 }

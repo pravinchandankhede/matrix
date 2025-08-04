@@ -372,7 +372,7 @@
 
 .uid {
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-    background: #f1f5f9;
+    /*background: #f1f5f9;*/
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 0.8rem;

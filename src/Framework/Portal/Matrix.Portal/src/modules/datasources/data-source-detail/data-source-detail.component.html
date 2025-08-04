@@ -115,10 +115,12 @@
                     <div class="content-section" *ngIf="activeSection === 'connection' && hasConnectionDetails()">
                         <h3>Connection Details</h3>
                         <app-structured-connection-details *ngIf="dataSource.type === 'Structured'"
-                                                           [connectionDetails]="dataSource.connectionDetails">
+                                                           [connectionDetails]="dataSource.connectionDetails"
+                                                           [mode]="'edit'">
                         </app-structured-connection-details>
                         <app-vector-connection-details *ngIf="dataSource.type === 'Vector'"
-                                                       [connectionDetails]="dataSource.connectionDetails">
+                                                       [connectionDetails]="dataSource.connectionDetails"
+                                                       [mode]="'edit'">
                         </app-vector-connection-details>
                     </div>
 
@@ -219,11 +221,11 @@
                         <h3>Connection Details</h3>
                         <app-structured-connection-details *ngIf="dataSource.type === 'Structured'"
                                                            [connectionDetails]="dataSource.connectionDetails"
-                                                           [readonly]="true">
+                                                           [mode]="'view'">
                         </app-structured-connection-details>
                         <app-vector-connection-details *ngIf="dataSource.type === 'Vector'"
                                                        [connectionDetails]="dataSource.connectionDetails"
-                                                       [readonly]="true">
+                                                       [mode]="'view'">
                         </app-vector-connection-details>
                     </div>
 

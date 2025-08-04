@@ -1,9 +1,8 @@
-export interface Model {
+import { BaseModel } from './base.model';
+
+export interface Model extends BaseModel {
     modelUId: string;
-    name: string;
     type?: string;
-    version?: string;
-    description?: string;
     provider?: string;
     endpoint?: string;
     apiKey?: string;

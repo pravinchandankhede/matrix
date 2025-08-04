@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class ModelDetailComponent implements OnInit {
     @Input() model: Model | null = null;
     editMode = signal(true); // Start in edit mode for add screen
+    tagsString = '';
 
     constructor(private modelService: ModelService, private router: Router) { }
 
@@ -19,6 +20,7 @@ export class ModelDetailComponent implements OnInit {
         if (!this.model) {
             this.model = {
                 modelUId: '',
+                id: '',
                 name: '',
                 type: '',
                 version: '',
@@ -27,9 +29,19 @@ export class ModelDetailComponent implements OnInit {
                 endpoint: '',
                 apiKey: '',
                 region: '',
-                isEnabled: true
+                isEnabled: true,
+                createdBy: '',
+                createdAt: new Date().toISOString(),
+                updatedBy: '',
+                updatedAt: new Date().toISOString(),
+                isActive: true,
+                metadata: {},
+                tags: []
             };
         }
+        
+        // Initialize string representation for form
+        this.tagsString = this.model.tags ? this.model.tags.join(', ') : '';
     }
 
     toggleEdit() {
@@ -38,6 +50,13 @@ export class ModelDetailComponent implements OnInit {
 
     onSave() {
         if (this.model) {
+            // Convert tags string back to array
+            this.model.tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            
+            // Update audit fields
+            this.model.updatedAt = new Date().toISOString();
+            // updatedBy should be set based on current user context
+            
             this.modelService.createModel(this.model).subscribe({
                 next: (result: any) => {
                     alert('Model saved successfully!');

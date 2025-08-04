@@ -1,11 +1,7 @@
+import { CustomizableModel } from './base.model';
 import { DataSource } from './data-source.model';
 
-export interface DataSourceCollection {
+export interface DataSourceCollection extends CustomizableModel {
     dataSourceCollectionUId: string; // Guid as string
-    name: string;
-    description: string;
-    createdDate: string; // ISO string
-    lastModifiedDate: string; // ISO string
     dataSources: DataSource[];
-    isCustom: boolean;
 }

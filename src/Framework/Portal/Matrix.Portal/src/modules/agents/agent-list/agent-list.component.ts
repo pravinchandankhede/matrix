@@ -16,7 +16,7 @@ export class AgentListComponent extends BaseListComponent<Agent> {
 
     constructor(
         private router: Router,
-        private agentListService: AgentService,
+        private agentListService: AgentService, 
         private errorService: ErrorService
     ) {
         super();

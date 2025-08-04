@@ -44,6 +44,16 @@
                         <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="ds.description">{{ ds.description }}</span></div>
                         <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ ds.type }}</div>
                         <div class="info-row"><mat-icon>category</mat-icon> <span class="label">SubType:</span> {{ ds.subType }}</div>
+                        <div class="info-row"><mat-icon>security</mat-icon> <span class="label">Access:</span> {{ ds.accessMode }}</div>
+                        <div class="info-row"><mat-icon>vpn_key</mat-icon> <span class="label">Auth:</span> {{ ds.authenticationType }}</div>
+                        <div class="date-row">
+                            <div><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ ds.createdAt | date:'mediumDate' }}</div>
+                            <div *ngIf="ds.updatedAt"><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ ds.updatedAt | date:'mediumDate' }}</div>
+                        </div>
+                        <div class="audit-row">
+                            <div><mat-icon>person</mat-icon> <span class="label">Owner:</span> {{ ds.owner }}</div>
+                            <div><mat-icon>person_outline</mat-icon> <span class="label">Created By:</span> {{ ds.createdBy }}</div>
+                        </div>
                         <div class="info-row">
                             <mat-icon>label</mat-icon> <span class="label">Tags:</span>
                             <div class="badge-container" *ngIf="ds.tags && ds.tags.length > 0">
@@ -62,6 +72,9 @@
                                 <mat-icon>{{ ds.isActive ? 'check_circle' : 'cancel' }}</mat-icon>
                                 {{ ds.isActive ? 'Active' : 'Inactive' }}
                             </span>
+                        </div>
+                        <div class="info-row" *ngIf="ds.isCustom">
+                            <mat-icon>settings</mat-icon> <span class="label">Custom:</span> Yes
                         </div>
                     </div>
                 </div>

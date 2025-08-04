@@ -53,15 +53,21 @@ export class DataSourceDetailComponent implements OnInit {
                 // Create mock data if service fails
                 this.dataSource = {
                     dataSourceUId: id,
+                    id: id,
                     name: `Sample Data Source ${id}`,
                     type: 'Structured',
                     subType: 'Database',
                     description: `This is a sample data source with ID ${id}. In a real application, this data would be fetched from a backend service.`,
                     tags: ['production', 'database', 'mysql'],
                     owner: 'System Administrator',
+                    createdBy: 'System Administrator',
                     createdAt: new Date('2024-01-15').toISOString(),
+                    updatedBy: 'System Administrator',
                     updatedAt: new Date().toISOString(),
                     isActive: true,
+                    isCustom: false,
+                    version: '1.0',
+                    metadata: {},
                     accessMode: 'ReadWrite',
                     authenticationType: 'APIKey',
                     connectionDetails: {
@@ -79,15 +85,21 @@ export class DataSourceDetailComponent implements OnInit {
     private initializeNewDataSource() {
         this.dataSource = {
             dataSourceUId: '',
+            id: '',
             name: '',
             type: 'Structured',
             subType: '',
             description: '',
             tags: [],
             owner: '',
+            createdBy: '',
             createdAt: new Date().toISOString(),
+            updatedBy: '',
             updatedAt: new Date().toISOString(),
             isActive: true,
+            isCustom: true,
+            version: '1.0',
+            metadata: {},
             accessMode: 'ReadWrite',
             authenticationType: 'APIKey',
             connectionDetails: {}

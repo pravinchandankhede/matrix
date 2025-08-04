@@ -13,6 +13,7 @@ export class CollectionDetailComponent implements OnInit {
     @Input() collection: DataSourceCollection | null = null;
     editMode = signal(false); // Start in view mode
     selectedDataSourceId: string | null = null;
+    tagsString = '';
 
     constructor(
         private router: Router,
@@ -39,6 +40,8 @@ export class CollectionDetailComponent implements OnInit {
         this.collectionService.getDataSourceCollection(id).subscribe({
             next: (collection: DataSourceCollection) => {
                 this.collection = collection;
+                // Initialize string representation for form
+                this.tagsString = this.collection.tags ? this.collection.tags.join(', ') : '';
             },
             error: (err: any) => {
                 // Handle error
@@ -49,13 +52,24 @@ export class CollectionDetailComponent implements OnInit {
     private initializeNewCollection() {
         this.collection = {
             dataSourceCollectionUId: '',
+            id: '',
             name: '',
             description: '',
-            createdDate: new Date().toISOString(),
-            lastModifiedDate: new Date().toISOString(),
-            dataSources: [],
-            isCustom: false
+            createdBy: '',
+            createdAt: new Date().toISOString(),
+            updatedBy: '',
+            updatedAt: new Date().toISOString(),
+            isActive: true,
+            version: '',
+            metadata: {},
+            tags: [],
+            isCustom: false,
+            owner: '',
+            dataSources: []
         };
+
+        // Initialize string representation for form
+        this.tagsString = '';
     }
 
     toggleEdit() {
@@ -64,6 +78,13 @@ export class CollectionDetailComponent implements OnInit {
 
     onSave() {
         if (this.collection) {
+            // Convert tags string back to array
+            this.collection.tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+
+            // Update audit fields
+            this.collection.updatedAt = new Date().toISOString();
+            // updatedBy should be set based on current user context
+
             this.collectionService.createDataSourceCollection(this.collection).subscribe({
                 next: (result: any) => {
                     alert('Collection saved successfully!');

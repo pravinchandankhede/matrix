@@ -49,6 +49,25 @@
                         <div class="info-row"><mat-icon>link</mat-icon> <span class="label">Endpoint:</span> <span class="endpoint">{{ model.endpoint }}</span></div>
                         <div class="info-row"><mat-icon>vpn_key</mat-icon> <span class="label">API Key:</span> {{ model.apiKey }}</div>
                         <div class="info-row"><mat-icon>public</mat-icon> <span class="label">Region:</span> {{ model.region }}</div>
+                        <div class="date-row">
+                            <div><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ model.createdAt | date:'mediumDate' }}</div>
+                            <div *ngIf="model.updatedAt"><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ model.updatedAt | date:'mediumDate' }}</div>
+                        </div>
+                        <div class="audit-row">
+                            <div><mat-icon>person</mat-icon> <span class="label">Created By:</span> {{ model.createdBy }}</div>
+                            <div><mat-icon>toggle_on</mat-icon> <span class="label">Active:</span> {{ model.isActive ? 'Yes' : 'No' }}</div>
+                        </div>
+                        <div *ngIf="model.tags && model.tags.length > 0">
+                            <mat-icon>label</mat-icon> <span class="label">Tags:</span>
+                            <div class="badge-container">
+                                @for (tag of model.tags.slice(0, 2); track tag) {
+                                <span class="tag-badge">{{ tag }}</span>
+                                }
+                                @if (model.tags.length > 2) {
+                                <span class="more-badge">+{{ model.tags.length - 2 }} more</span>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
                 }

@@ -16,7 +16,7 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
 
     constructor(
         private router: Router,
-        private chunkListService: ChunkService,
+        private chunkListService: ChunkService, 
         private errorService: ErrorService
     ) {
         super();

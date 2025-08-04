@@ -36,10 +36,28 @@
                     <div class="card-body" (click)="onSelect(col)">
                         <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Collection UID:</span> <span class="uid">{{ col.dataSourceCollectionUId }}</span></div>
                         <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="col.description">{{ col.description }}</span></div>
-                        <div class="info-row"><mat-icon>date_range</mat-icon> <span class="label">Created:</span> {{ col.createdDate | date:'mediumDate' }}</div>
-                        <div class="info-row"><mat-icon>update</mat-icon> <span class="label">Last Modified:</span> {{ col.lastModifiedDate | date:'mediumDate' }}</div>
                         <div class="info-row"><mat-icon>collections</mat-icon> <span class="label">Data Sources:</span> {{ col.dataSources.length }}</div>
+                        <div class="date-row">
+                            <div><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ col.createdAt | date:'mediumDate' }}</div>
+                            <div *ngIf="col.updatedAt"><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ col.updatedAt | date:'mediumDate' }}</div>
+                        </div>
+                        <div class="audit-row">
+                            <div><mat-icon>person</mat-icon> <span class="label">Owner:</span> {{ col.owner }}</div>
+                            <div><mat-icon>person_outline</mat-icon> <span class="label">Created By:</span> {{ col.createdBy }}</div>
+                        </div>
                         <div class="info-row"><mat-icon>build</mat-icon> <span class="label">Custom:</span> {{ col.isCustom ? 'Yes' : 'No' }}</div>
+                        <div class="info-row"><mat-icon>toggle_on</mat-icon> <span class="label">Active:</span> {{ col.isActive ? 'Yes' : 'No' }}</div>
+                        <div *ngIf="col.tags && col.tags.length > 0">
+                            <mat-icon>label</mat-icon> <span class="label">Tags:</span>
+                            <div class="badge-container">
+                                @for (tag of col.tags.slice(0, 2); track tag) {
+                                <span class="tag-badge">{{ tag }}</span>
+                                }
+                                @if (col.tags.length > 2) {
+                                <span class="more-badge">+{{ col.tags.length - 2 }} more</span>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
                 }

@@ -27,6 +27,25 @@
           <option [value]="false">No</option>
         </select>
       </div>
+      <div class="form-row">
+        <label>Owner:</label>
+        <input type="text" [(ngModel)]="collection.owner" name="owner" />
+      </div>
+      <div class="form-row">
+        <label>Created By:</label>
+        <input type="text" [(ngModel)]="collection.createdBy" name="createdBy" />
+      </div>
+      <div class="form-row">
+        <label>Active:</label>
+        <select [(ngModel)]="collection.isActive" name="isActive">
+          <option [value]="true">Yes</option>
+          <option [value]="false">No</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Tags:</label>
+        <textarea [(ngModel)]="tagsString" name="tags" placeholder="Comma separated tags" rows="2"></textarea>
+      </div>
       
       <div class="form-actions">
         <button type="button" class="btn-primary" (click)="onSave()">
@@ -60,6 +79,22 @@
               {{ collection.isCustom ? 'Yes' : 'No' }}
             </span>
           </div>
+          <div class="info-row">
+            <label>Owner:</label>
+            <span>{{ collection.owner }}</span>
+          </div>
+          <div class="info-row">
+            <label>Active:</label>
+            <span class="status" [class.active]="collection.isActive" [class.inactive]="!collection.isActive">
+              {{ collection.isActive ? 'Yes' : 'No' }}
+            </span>
+          </div>
+          <div class="info-row" *ngIf="collection.tags && collection.tags.length > 0">
+            <label>Tags:</label>
+            <div class="badge-container">
+              <span *ngFor="let tag of collection.tags" class="tag-badge">{{ tag }}</span>
+            </div>
+          </div>
           <div class="info-row" (click)="onDataSourcesClick()" [class.clickable]="hasDataSources()">
             <label>Data Sources:</label>
             <span>{{ collection.dataSources.length || 0 }} data sources</span>
@@ -67,11 +102,19 @@
           </div>
           <div class="info-row">
             <label>Created:</label>
-            <span>{{ collection.createdDate | date:'medium' }}</span>
+            <span>{{ collection.createdAt | date:'medium' }}</span>
           </div>
-          <div class="info-row" *ngIf="collection.lastModifiedDate">
-            <label>Last Modified:</label>
-            <span>{{ collection.lastModifiedDate | date:'medium' }}</span>
+          <div class="info-row" *ngIf="collection.updatedAt">
+            <label>Last Updated:</label>
+            <span>{{ collection.updatedAt | date:'medium' }}</span>
+          </div>
+          <div class="info-row">
+            <label>Created By:</label>
+            <span>{{ collection.createdBy }}</span>
+          </div>
+          <div class="info-row" *ngIf="collection.updatedBy">
+            <label>Updated By:</label>
+            <span>{{ collection.updatedBy }}</span>
           </div>
         </div>
         

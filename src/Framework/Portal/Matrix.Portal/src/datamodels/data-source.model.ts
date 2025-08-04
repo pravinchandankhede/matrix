@@ -1,14 +1,14 @@
-export interface DataSource {
+import { CustomizableModel } from './base.model';
+
+export interface DataSourceCollection extends CustomizableModel {
+  dataSourceCollectionUId: string;
+  collections: DataSource[];
+}
+
+export interface DataSource extends CustomizableModel {
   dataSourceUId: string;
-  name: string;
   type: DataSourceType;
   subType: string;
-  description?: string;
-  tags?: string[];
-  owner: string;
-  createdAt: string;
-  updatedAt?: string;
-  isActive: boolean;
   accessMode: AccessMode;
   authenticationType: AuthenticationType;
   connectionDetails: any;

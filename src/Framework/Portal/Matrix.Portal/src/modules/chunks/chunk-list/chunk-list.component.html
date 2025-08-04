@@ -41,9 +41,29 @@
                     </div>
                     <div class="card-body" (click)="onSelect(chunk)">
                         <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Chunk ID:</span> <span class="uid">{{ chunk.chunkId }}</span></div>
+                        <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="chunk.description">{{ chunk.description }}</span></div>
                         <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Source:</span> <span class="desc" [title]="chunk.chunkSource">{{ chunk.chunkSource }}</span></div>
                         <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Source ID:</span> {{ chunk.chunkSourceId }}</div>
                         <div class="info-row"><mat-icon>star</mat-icon> <span class="label">Correlation UID:</span> {{ chunk.correlationUId }}</div>
+                        <div class="date-row">
+                            <div><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ chunk.createdAt | date:'mediumDate' }}</div>
+                            <div *ngIf="chunk.updatedAt"><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ chunk.updatedAt | date:'mediumDate' }}</div>
+                        </div>
+                        <div class="audit-row">
+                            <div><mat-icon>person</mat-icon> <span class="label">Created By:</span> {{ chunk.createdBy }}</div>
+                            <div><mat-icon>toggle_on</mat-icon> <span class="label">Active:</span> {{ chunk.isActive ? 'Yes' : 'No' }}</div>
+                        </div>
+                        <div *ngIf="chunk.tags && chunk.tags.length > 0">
+                            <mat-icon>label</mat-icon> <span class="label">Tags:</span>
+                            <div class="badge-container">
+                                @for (tag of chunk.tags.slice(0, 2); track tag) {
+                                <span class="tag-badge">{{ tag }}</span>
+                                }
+                                @if (chunk.tags.length > 2) {
+                                <span class="more-badge">+{{ chunk.tags.length - 2 }} more</span>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
                 }

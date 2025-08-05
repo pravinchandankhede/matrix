@@ -1,28 +1,30 @@
 ﻿namespace Matrix.ChunkEngine.Worker.Strategies;
 
-using Matrix.ChunkEngine.DataModels;
 using Matrix.ChunkEngine.Interfaces;
+using Matrix.DataModels.Chunks;
 using System.Collections.Generic;
 
 internal class FixedSizeStrategy : IChunkStrategy
 {
     public IEnumerable<Chunk> ProcessDocument(IDocument document)
     {
-        var text = document.GetText();
+        String text = document.GetText();
 
-        var chunkSize = 1000;
-        var chunks = new List<Chunk>();
+        Int32 chunkSize = 1000;
+        List<Chunk> chunks = new List<Chunk>();
 
-        for (int i = 0; i < text.Length; i += chunkSize)
+        for (Int32 i = 0; i < text.Length; i += chunkSize)
         {
-            var chunkText = text.Substring(i, Math.Min(chunkSize, text.Length - i));
-            var chunk = new FixedSizeChunk
+            String chunkText = text.Substring(i, Math.Min(chunkSize, text.Length - i));
+            FixedSizeChunkStrategy chunk = new FixedSizeChunkStrategy
             {
-                Text = chunkText,
+                //TODO - Redo this.
+                Description = chunkText,
                 StartIndex = i,
                 EndIndex = i + chunkText.Length - 1
             };
-            chunks.Add(chunk);
+            //TODO - Add chunk to repository.
+            //chunks.Add(chunk);
         }
 
         return chunks;

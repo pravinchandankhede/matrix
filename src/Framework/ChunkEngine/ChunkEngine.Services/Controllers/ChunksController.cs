@@ -1,6 +1,7 @@
 ﻿namespace ChunkEngine.Services.Controllers;
 
 using Matrix.ChunkEngine.Interfaces;
+using Matrix.DataModels.Chunks;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -16,13 +17,13 @@ public class ChunksController : ControllerBase
 
     // GET: api/<ModelsController>
     [HttpGet]
-    public IEnumerable<Matrix.ChunkEngine.DataModels.Chunk> Get()
+    public IEnumerable<Chunk> Get()
     {
         return _chunkRepository.GetAllChunks();
     }
 
     [HttpPost]
-    public IActionResult AddModel([FromBody] Matrix.ChunkEngine.DataModels.Chunk chunk)
+    public IActionResult AddModel([FromBody] Chunk chunk)
     {
         if (chunk == null)
         {
@@ -37,7 +38,7 @@ public class ChunksController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(Guid id)
     {
-        Matrix.ChunkEngine.DataModels.Chunk? model = _chunkRepository.GetChunkById(id);
+        Chunk? model = _chunkRepository.GetChunkById(id);
         return model != null ? Ok(model) : NotFound();
     }
 

@@ -1,7 +1,7 @@
 ﻿namespace Matrix.ChunkEngine.DataLayer;
 
 using Matrix.ChunkEngine.Interfaces;
-using Matrix.ChunkEngine.DataModels;
+using Matrix.DataModels.Chunks;
 using System.Collections.Generic;
 
 public class ChunkRepository : IChunkRepository
@@ -10,8 +10,8 @@ public class ChunkRepository : IChunkRepository
 
     public ChunkRepository()
     {
-        var directory = AppDomain.CurrentDomain.BaseDirectory;
-        var Chunks = File.ReadAllText(Path.Join(directory, "Chunks.json"));
+        String directory = AppDomain.CurrentDomain.BaseDirectory;
+        String Chunks = File.ReadAllText(Path.Join(directory, "Chunks.json"));
         // Assuming Chunks.json contains a JSON array of Chunk objects
         _chunkList = System.Text.Json.JsonSerializer.Deserialize<List<Chunk>>(Chunks) ?? new List<Chunk>();
     }
@@ -38,7 +38,7 @@ public class ChunkRepository : IChunkRepository
 
     public void UpdateChunk(Chunk Chunk)
     {
-        var ChunkIndex = _chunkList.FindIndex(m => m.ChunkUId == Chunk.ChunkUId);
+        Int32 ChunkIndex = _chunkList.FindIndex(m => m.ChunkUId == Chunk.ChunkUId);
         if (ChunkIndex >= 0)
         {
             _chunkList[ChunkIndex] = Chunk;

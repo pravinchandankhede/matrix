@@ -1,7 +1,7 @@
 ﻿namespace Matrix.ChunkEngine.Worker;
 
-using Matrix.ChunkEngine.DataModels;
 using Matrix.ChunkEngine.Interfaces;
+using Matrix.DataModels.Chunks;
 using System.Collections.Generic;
 
 internal class ChunkProcessor : IChunkProcessor

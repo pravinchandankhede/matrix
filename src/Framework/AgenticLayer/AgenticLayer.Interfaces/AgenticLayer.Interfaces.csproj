@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\DataModels\DataModels\DataModels.csproj" />
-    <ProjectReference Include="..\..\ModelLayer\ModelLayer.DataModels\ModelLayer.DataModels.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,10 +8,10 @@
 
 namespace Matrix.ModelLayer.Registry;
 
-using Matrix.ModelLayer.DataModels;
-using System.Collections.Generic;
+using Matrix.DataModels.Models;
 using Matrix.ModelLayer.DataLayer;
 using Matrix.ModelLayer.Interfaces;
+using System.Collections.Generic;
 
 /// <summary>
 /// A registry for managing Models in the ecosystem, allowing registration, update, retrieval, listing, and removal of Models.
@@ -27,7 +27,7 @@ public class ModelRegistry
     /// <returns>True if the Model was added; false if an Model with the same name already exists.</returns>
     public void RegisterModel(Model Model)
     {
-        _repository.AddModel( Model);
+        _repository.AddModel(Model);
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ public class ModelRegistry
     /// <returns>The Model if found; otherwise, null.</returns>
     public Model? GetModel(String name)
     {
-        var Model = _repository.GetModel(name);
+        Model? Model = _repository.GetModel(name);
         return Model;
     }
 

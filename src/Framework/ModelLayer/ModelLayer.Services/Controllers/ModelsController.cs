@@ -16,13 +16,13 @@ public class ModelsController : ControllerBase
 
     // GET: api/<ModelsController>
     [HttpGet]
-    public IEnumerable<Matrix.ModelLayer.DataModels.Model> Get()
+    public IEnumerable<Matrix.DataModels.Models.Model> Get()
     {
         return _modelRepository.GetAllModels();
     }
 
     [HttpPost]
-    public IActionResult AddModel([FromBody] Matrix.ModelLayer.DataModels.Model model)
+    public IActionResult AddModel([FromBody] Matrix.DataModels.Models.Model model)
     {
         if (model == null)
             return BadRequest();

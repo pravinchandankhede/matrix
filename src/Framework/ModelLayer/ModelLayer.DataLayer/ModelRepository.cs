@@ -1,6 +1,6 @@
 ﻿namespace Matrix.ModelLayer.DataLayer;
 
-using Matrix.ModelLayer.DataModels;
+using Matrix.DataModels.Models;
 using Matrix.ModelLayer.Interfaces;
 using System.Collections.Generic;
 
@@ -10,8 +10,8 @@ public class ModelRepository : IModelRepository
 
     public ModelRepository()
     {
-        var directory = AppDomain.CurrentDomain.BaseDirectory;
-        var models = File.ReadAllText(Path.Join(directory,"models.json"));
+        String directory = AppDomain.CurrentDomain.BaseDirectory;
+        String models = File.ReadAllText(Path.Join(directory, "models.json"));
         // Assuming models.json contains a JSON array of Model objects
         modelList = System.Text.Json.JsonSerializer.Deserialize<List<Model>>(models) ?? new List<Model>();
     }
@@ -38,7 +38,7 @@ public class ModelRepository : IModelRepository
 
     public void UpdateModel(Model model)
     {
-        var modelIndex = modelList.FindIndex(m => m.Name.Equals(model.Name, StringComparison.OrdinalIgnoreCase));
+        Int32 modelIndex = modelList.FindIndex(m => m.Name.Equals(model.Name, StringComparison.OrdinalIgnoreCase));
         if (modelIndex >= 0)
         {
             modelList[modelIndex] = model;

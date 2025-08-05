@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ModelLayer.DataLayer\ModelLayer.DataLayer.csproj" />
-    <ProjectReference Include="..\ModelLayer.DataModels\ModelLayer.DataModels.csproj" />
     <ProjectReference Include="..\ModelLayer.Interfaces\ModelLayer.Interfaces.csproj" />
   </ItemGroup>
 

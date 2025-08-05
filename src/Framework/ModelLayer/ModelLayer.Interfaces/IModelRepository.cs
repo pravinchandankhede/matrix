@@ -1,6 +1,6 @@
 ﻿namespace Matrix.ModelLayer.Interfaces;
 
-using Matrix.ModelLayer.DataModels;
+using Matrix.DataModels.Models;
 
 public interface IModelRepository
 {

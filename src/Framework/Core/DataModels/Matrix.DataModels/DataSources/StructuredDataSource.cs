@@ -1,12 +1,10 @@
-﻿namespace Matrix.Matrix.DataModels.DataSources;
+﻿namespace Matrix.DataModels.DataSources;
 
+using Matrix.DataModels.BaseModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-public class StructuredAttributes : DataSourceAttributes
+public class StructuredDataSource : BaseModel
 {
     public required String Host { get; set; }
     public required Int32 Port { get; set; }

@@ -54,9 +54,9 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
     }
 
     filterPredicate(ds: DataSource): boolean {
-        const matchesName = ds.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+        const matchesName = ds.Name.toLowerCase().includes(this.searchTerm.toLowerCase());
         const matchesActive = this.selectedActive
-            ? ds.isActive.toString() === this.selectedActive
+            ? ds.IsActive.toString() === this.selectedActive
             : true;
         return matchesName && matchesActive;
     }
@@ -71,15 +71,15 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
     }
 
     onEdit(dataSource: DataSource): void {
-        this.router.navigate(['/datasources', dataSource.dataSourceUId], { queryParams: { edit: 'true' } });
+        this.router.navigate(['/datasources', dataSource.DataSourceUId], { queryParams: { edit: 'true' } });
     }
 
     onView(dataSource: DataSource): void {
-        this.router.navigate(['/datasources', dataSource.dataSourceUId], { queryParams: { edit: 'false' } });
+        this.router.navigate(['/datasources', dataSource.DataSourceUId], { queryParams: { edit: 'false' } });
     }
 
     onSelect(dataSource: DataSource): void {
-        this.router.navigate(['/datasources', dataSource.dataSourceUId]);
+        this.router.navigate(['/datasources', dataSource.DataSourceUId]);
     }
 
     onViewDetails(id: string): void {

@@ -1,9 +1,11 @@
-﻿namespace Matrix.Matrix.DataModels.Chunks;
+﻿namespace Matrix.DataModels.Chunks;
+
+using Matrix.DataModels.Tools;
 
 public class Document
 {
     public Guid DocumentUId { get; set; }
-    public String DocumentId { get; set; }
-    public String DocumentText { get; set; }
-    public Dictionary<String,String> Metadata { get; set; }
+    public required String DocumentId { get; set; }
+    public required String DocumentText { get; set; }
+    public ICollection<Metadata> Metadata { get; set; } = new List<Metadata>();
 }

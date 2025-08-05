@@ -641,6 +641,16 @@ body {
   box-sizing: border-box;
 }
 
+/* Connection Detail Form */
+.connection-detail-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .connection-form-row {
   display: flex;
   flex-direction: row;
@@ -713,6 +723,26 @@ body {
   border: 1px solid #e2e8f0;
   color: #6b7280;
   cursor: default;
+}
+
+.connection-form-row input.view-mode,
+.connection-form-row textarea.view-mode,
+.connection-form-row select.view-mode {
+  background: transparent;
+  border: none;
+  padding: 8px 0;
+  font-weight: 500;
+  color: #1f2937;
+  cursor: text;
+  box-shadow: none;
+}
+
+.connection-form-row input.view-mode:focus,
+.connection-form-row textarea.view-mode:focus,
+.connection-form-row select.view-mode:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
 }
 
 .connection-form-row textarea {

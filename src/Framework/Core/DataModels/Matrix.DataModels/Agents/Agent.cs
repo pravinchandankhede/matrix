@@ -6,14 +6,17 @@
 //  THIS CODE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 // ------------------------------------------------------------------------------
 
-namespace Matrix.Matrix.DataModels.Agents;
+namespace Matrix.DataModels.Agents;
 
+using Matrix.DataModels.BaseModels;
+using Matrix.DataModels.Features;
+using Matrix.DataModels.Tools;
 using System.Collections.Generic;
 
 /// <summary>
 /// Represents an agent in the ecosystem, including its name, metadata, features, capabilities, and integrated tools.
 /// </summary>
-public class Agent
+public class Agent : BaseModel
 {
     /// <summary>
     /// Gets or sets the unique identifier for the agent.
@@ -38,7 +41,7 @@ public class Agent
     /// <summary>
     /// A list of capabilities supported by the agent.
     /// </summary>
-    public List<String> Capabilities { get; set; } = new();
+    public List<Capability> Capabilities { get; set; } = new();
 
     /// <summary>
     /// Status like Active, Inactive, Maintenance, etc., indicating the current operational state of the agent.
@@ -51,27 +54,12 @@ public class Agent
     public String Version { get; set; } = String.Empty;
 
     /// <summary>
-    /// Creation date of agent.
-    /// </summary>
-    public DateTime CreatedDate { get; set; }
-
-    /// <summary>
-    /// Last updated on.
-    /// </summary>
-    public DateTime LastUpdatedDate { get; set; }
-
-    /// <summary>
-    /// Arbitrary metadata describing the agent as a property bag (e.g., description, version, author, etc.).
-    /// </summary>
-    public Dictionary<String, String> Metadata { get; set; } = new();
-
-    /// <summary>
     /// A list of features provided by the agent.
     /// </summary>
-    public List<String> Features { get; set; } = new();    
+    public ICollection<Feature> Features { get; set; } = new List<Feature>();
 
     /// <summary>
     /// A list of tools that the agent integrates with.
     /// </summary>
-    public List<String> IntegratedTools { get; set; } = new();
+    public ICollection<Tool> Tools { get; set; } = new List<Tool>();
 }

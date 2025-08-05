@@ -51,23 +51,23 @@ export class CollectionDetailComponent implements OnInit {
 
     private initializeNewCollection() {
         this.collection = {
-            dataSourceCollectionUId: '',
-            id: '',
-            name: '',
-            description: '',
-            createdBy: '',
-            createdAt: new Date().toISOString(),
-            updatedBy: '',
-            updatedAt: new Date().toISOString(),
-            isActive: true,
-            version: '',
-            metadata: {},
-            tags: [],
-            isCustom: false,
-            owner: '',
-            dataSources: []
+            DataSourceCollectionUId: '',
+            Id: '',
+            Name: '',
+            Description: '',
+            CreatedBy: '',
+            CreatedAt: new Date().toISOString(),
+            UpdatedBy: '',
+            UpdatedAt: new Date().toISOString(),
+            IsActive: true,
+            Version: '',
+            Metadata: {},
+            Tags: [],
+            IsCustom: false,
+            Owner: '',
+            DataSources: []
         };
-
+        
         // Initialize string representation for form
         this.tagsString = '';
     }
@@ -80,11 +80,11 @@ export class CollectionDetailComponent implements OnInit {
         if (this.collection) {
             // Convert tags string back to array
             this.collection.tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
-
+            
             // Update audit fields
-            this.collection.updatedAt = new Date().toISOString();
+            this.collection.UpdatedAt = new Date().toISOString();
             // updatedBy should be set based on current user context
-
+            
             this.collectionService.createDataSourceCollection(this.collection).subscribe({
                 next: (result: any) => {
                     alert('Collection saved successfully!');
@@ -102,7 +102,7 @@ export class CollectionDetailComponent implements OnInit {
     }
 
     hasDataSources(): boolean {
-        return !!(this.collection && this.collection.dataSources.length > 0);
+        return !!(this.collection && this.collection.DataSources.length > 0);
     }
 
     onDataSourcesClick() {
@@ -121,7 +121,7 @@ export class CollectionDetailComponent implements OnInit {
 
     goToDataSources() {
         if (this.collection) {
-            this.router.navigate(['datasources', 'list'], { queryParams: { collectionId: this.collection.dataSourceCollectionUId } });
+            this.router.navigate(['datasources', 'list'], { queryParams: { collectionId: this.collection.DataSourceCollectionUId } });
         }
     }
 }

@@ -45,7 +45,7 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
     }
 
     filterPredicate(collection: DataSourceCollection): boolean {
-        return collection.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+        return collection.Name.toLowerCase().includes(this.searchTerm.toLowerCase());
     }
 
     get filteredCollections(): DataSourceCollection[] {
@@ -57,14 +57,14 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
     }
 
     onSelect(collection: DataSourceCollection): void {
-        this.router.navigate(['/collections', collection.dataSourceCollectionUId]);
+        this.router.navigate(['/collections', collection.DataSourceCollectionUId]);
     }
 
     onEdit(collection: DataSourceCollection): void {
-        this.router.navigate(['/collections', collection.dataSourceCollectionUId], { queryParams: { edit: 'true' } });
+        this.router.navigate(['/collections', collection.DataSourceCollectionUId], { queryParams: { edit: 'true' } });
     }
 
     onView(collection: DataSourceCollection): void {
-        this.router.navigate(['/collections', collection.dataSourceCollectionUId], { queryParams: { edit: 'false' } });
+        this.router.navigate(['/collections', collection.DataSourceCollectionUId], { queryParams: { edit: 'false' } });
     }
 }

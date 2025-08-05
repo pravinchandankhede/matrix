@@ -24,31 +24,31 @@ export class AgentDetailComponent implements OnInit {
     ngOnInit() {
         if (!this.agent) {
             this.agent = {
-                agentUId: '',
-                id: '',
-                name: '',
-                description: '',
-                type: '',
-                capabilities: [],
-                status: 'Active',
-                version: '',
-                createdBy: '',
-                createdAt: new Date().toISOString(),
-                updatedBy: '',
-                updatedAt: new Date().toISOString(),
-                isActive: true,
-                metadata: {},
-                tags: [],
-                features: [],
-                integratedTools: []
+                AgentUId: '',
+                Id: '',
+                Name: '',
+                Description: '',
+                Type: '',
+                Capabilities: [],
+                Status: 'Active',
+                Version: '',
+                CreatedBy: '',
+                CreatedAt: new Date().toISOString(),
+                UpdatedBy: '',
+                UpdatedAt: new Date().toISOString(),
+                IsActive: true,
+                Metadata: {},
+                Tags: [],
+                Features: [],
+                IntegratedTools: []
             };
         }
 
         // Initialize string representations for form
-        this.capabilitiesString = this.agent.capabilities.join(', ');
-        this.featuresString = this.agent.features.join(', ');
-        this.integratedToolsString = this.agent.integratedTools.join(', ');
-        this.tagsString = this.agent.tags ? this.agent.tags.join(', ') : '';
+        this.capabilitiesString = this.agent.Capabilities.join(', ');
+        this.featuresString = this.agent.Features.join(', ');
+        this.integratedToolsString = this.agent.IntegratedTools.join(', ');
+        this.tagsString = this.agent.Tags ? this.agent.Tags.join(', ') : '';
     }
 
     toggleEdit() {
@@ -58,14 +58,14 @@ export class AgentDetailComponent implements OnInit {
     onSave() {
         if (this.agent) {
             // Convert string inputs back to arrays
-            this.agent.capabilities = this.capabilitiesString.split(',').map(s => s.trim()).filter(s => s.length > 0);
-            this.agent.features = this.featuresString.split(',').map(s => s.trim()).filter(s => s.length > 0);
-            this.agent.integratedTools = this.integratedToolsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
-            this.agent.tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            this.agent.Capabilities = this.capabilitiesString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            this.agent.Features = this.featuresString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            this.agent.IntegratedTools = this.integratedToolsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            this.agent.Tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
             
             // Update audit fields
-            this.agent.updatedAt = new Date().toISOString();
-            // updatedBy should be set based on current user context
+            this.agent.UpdatedAt = new Date().toISOString();
+            // UpdatedBy should be set based on current user context
 
             this.agentService.addAgent(this.agent).subscribe({
                 next: (result: any) => {

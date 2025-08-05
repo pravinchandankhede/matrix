@@ -4,37 +4,37 @@
  */
 export interface BaseModel {
   /** Unique identifier for the entity */
-  id: string;
+  Id: string;
   
   /** Display name of the entity */
-  name: string;
+  Name: string;
   
   /** Optional description of the entity */
-  description?: string;
+  Description?: string;
   
   /** User or system that created this entity */
-  createdBy: string;
+  CreatedBy: string;
   
   /** Timestamp when the entity was created (ISO date string) */
-  createdAt: string;
+  CreatedAt: string;
   
   /** User or system that last updated this entity */
-  updatedBy?: string;
+  UpdatedBy?: string;
   
   /** Timestamp when the entity was last updated (ISO date string) */
-  updatedAt?: string;
+  UpdatedAt?: string;
   
   /** Whether the entity is currently active/enabled */
-  isActive: boolean;
+  IsActive: boolean;
   
   /** Version number for optimistic concurrency control */
-  version?: string;
+  Version?: string;
   
   /** Additional metadata as key-value pairs */
-  metadata?: { [key: string]: string };
+  Metadata?: { [key: string]: string };
   
   /** Tags for categorization and filtering */
-  tags?: string[];
+  Tags?: string[];
 }
 
 /**
@@ -42,8 +42,8 @@ export interface BaseModel {
  */
 export interface CustomizableModel extends BaseModel {
   /** Whether this is a custom user-created entity */
-  isCustom: boolean;
+  IsCustom: boolean;
   
   /** Owner of the entity */
-  owner: string;
+  Owner: string;
 }

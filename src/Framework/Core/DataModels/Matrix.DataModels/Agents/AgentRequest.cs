@@ -1,6 +1,6 @@
-﻿namespace Matrix.Matrix.DataModels.Agents;
+﻿namespace Matrix.DataModels.Agents;
 
 public class AgentRequest
 {
-    public String Query { get; set; }
+    public required String Query { get; set; }
 }

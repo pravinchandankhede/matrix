@@ -19,29 +19,29 @@ export class ModelDetailComponent implements OnInit {
     ngOnInit() {
         if (!this.model) {
             this.model = {
-                modelUId: '',
-                id: '',
-                name: '',
-                type: '',
-                version: '',
-                description: '',
-                provider: '',
-                endpoint: '',
-                apiKey: '',
-                region: '',
-                isEnabled: true,
-                createdBy: '',
-                createdAt: new Date().toISOString(),
-                updatedBy: '',
-                updatedAt: new Date().toISOString(),
-                isActive: true,
-                metadata: {},
-                tags: []
+                ModelUId: '',
+                Id: '',
+                Name: '',
+                Type: '',
+                Version: '',
+                Description: '',
+                Provider: '',
+                Endpoint: '',
+                ApiKey: '',
+                Region: '',
+                IsEnabled: true,
+                CreatedBy: '',
+                CreatedAt: new Date().toISOString(),
+                UpdatedBy: '',
+                UpdatedAt: new Date().toISOString(),
+                IsActive: true,
+                Metadata: {},
+                Tags: []
             };
         }
         
         // Initialize string representation for form
-        this.tagsString = this.model.tags ? this.model.tags.join(', ') : '';
+        this.tagsString = this.model.Tags ? this.model.Tags.join(', ') : '';
     }
 
     toggleEdit() {
@@ -51,11 +51,11 @@ export class ModelDetailComponent implements OnInit {
     onSave() {
         if (this.model) {
             // Convert tags string back to array
-            this.model.tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            this.model.Tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
             
             // Update audit fields
-            this.model.updatedAt = new Date().toISOString();
-            // updatedBy should be set based on current user context
+            this.model.UpdatedAt = new Date().toISOString();
+            // UpdatedBy should be set based on current user context
             
             this.modelService.createModel(this.model).subscribe({
                 next: (result: any) => {

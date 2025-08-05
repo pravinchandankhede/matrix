@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="connection-detail-form">
   <div class="connection-form-row">
     <label>Vector DB Type</label>
-    <select formControlName="vectorDbType" [disabled]="mode === 'view'">
+    <select formControlName="vectorDbType" [disabled]="mode === 'view'" [class.view-mode]="mode === 'view'">
       <option value="Pinecone">Pinecone</option>
       <option value="FAISS">FAISS</option>
       <option value="Weaviate">Weaviate</option>
@@ -10,19 +10,19 @@
   </div>
   <div class="connection-form-row">
     <label>Index Name</label>
-    <input formControlName="indexName" [readonly]="mode === 'view'">
+    <input formControlName="indexName" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'">
   </div>
   <div class="connection-form-row">
     <label>Embedding Model</label>
-    <input formControlName="embeddingModel" [readonly]="mode === 'view'">
+    <input formControlName="embeddingModel" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'">
   </div>
   <div class="connection-form-row">
     <label>Dimension</label>
-    <input type="number" formControlName="dimension" [readonly]="mode === 'view'">
+    <input type="number" formControlName="dimension" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'">
   </div>
   <div class="connection-form-row">
     <label>Distance Metric</label>
-    <select formControlName="distanceMetric" [disabled]="mode === 'view'">
+    <select formControlName="distanceMetric" [disabled]="mode === 'view'" [class.view-mode]="mode === 'view'">
       <option value="Cosine">Cosine</option>
       <option value="Euclidean">Euclidean</option>
       <option value="DotProduct">Dot Product</option>

@@ -1,7 +1,9 @@
-﻿namespace Matrix.Matrix.DataModels.DataSources;
+﻿namespace Matrix.DataModels.DataSources;
+
+using Matrix.DataModels.BaseModels;
 using System;
 
-public class VectorAttributes : DataSourceAttributes
+public class VectorDataSource : BaseModel
 {
     public required VectorDbType VectorDbType { get; set; }
     public required String IndexName { get; set; }

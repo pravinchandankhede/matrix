@@ -49,8 +49,8 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
     }
 
     filterPredicate(chunk: Chunk): boolean {
-        const matchesText = chunk.text.toLowerCase().includes(this.searchTerm.toLowerCase());
-        const matchesType = this.selectedType ? chunk.type === this.selectedType : true;
+        const matchesText = chunk.Text.toLowerCase().includes(this.searchTerm.toLowerCase());
+        const matchesType = this.selectedType ? chunk.Type === this.selectedType : true;
         return matchesText && matchesType;
     }
 
@@ -68,14 +68,14 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
     }
 
     onEdit(chunk: Chunk): void {
-        this.router.navigate(['/chunks', chunk.chunkId], { queryParams: { edit: 'true' } });
+        this.router.navigate(['/chunks', chunk.ChunkId], { queryParams: { edit: 'true' } });
     }
 
     onView(chunk: Chunk): void {
-        this.router.navigate(['/chunks', chunk.chunkId], { queryParams: { edit: 'false' } });
+        this.router.navigate(['/chunks', chunk.ChunkId], { queryParams: { edit: 'false' } });
     }
 
     onSelect(chunk: Chunk): void {
-        this.router.navigate(['/chunks', chunk.chunkId]);
+        this.router.navigate(['/chunks', chunk.ChunkId]);
     }
 }

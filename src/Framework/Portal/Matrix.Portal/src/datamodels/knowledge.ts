@@ -4,11 +4,11 @@ import { DataSource, DataSourceCollection } from "./data-source.model";
 import { Model } from "./model";
 
 export interface Knowledge extends BaseModel {
-    knowledgeUId: string;
-    type: string;
-    dataSourceCollection: DataSourceCollection;
-    models : Model;
-    status: string;
-    outputDataSource : DataSource;
-    chunkStrategy : Chunk;
+    KnowledgeUId: string;
+    Type: string;
+    DataSourceCollection: DataSourceCollection;
+    Models : Model;
+    Status: string;
+    OutputDataSource : DataSource;
+    ChunkStrategy : Chunk;
 }

@@ -2,6 +2,7 @@ namespace DataSourceLayer.Services;
 
 using Matrix.DataSourceLayer.DataLayer;
 using Matrix.DataSourceLayer.Interfaces;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 public class Program
@@ -17,6 +18,7 @@ public class Program
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; // Use original property names
             });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();

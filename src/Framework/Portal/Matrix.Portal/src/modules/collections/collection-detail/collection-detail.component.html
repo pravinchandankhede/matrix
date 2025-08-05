@@ -1,6 +1,17 @@
-<div class="detail-container" *ngIf="collection">
+<div class      <div class="form-row">
+        <label>Collection UID:</label>
+        <input type="text" [(ngModel)]="collection.DataSourceCollectionUId" name="dataSourceCollectionUId" />
+      </div>
+      <div class="form-row">
+        <label>Name:</label>
+        <input type="text" [(ngModel)]="collection.Name" name="name" />
+      </div>
+      <div class="form-row">
+        <label>Description:</label>
+        <textarea [(ngModel)]="collection.Description" name="description"></textarea>
+      </div>tainer" *ngIf="collection">
   <div class="detail-header">
-    <h2><mat-icon>collections_bookmark</mat-icon> {{ collection.name || 'New Collection' }}</h2>
+    <h2><mat-icon>collections_bookmark</mat-icon> {{ collection.Name || 'New Collection' }}</h2>
     <button class="edit-btn" (click)="toggleEdit()">
       <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
     </button>
@@ -10,15 +21,15 @@
     <form *ngIf="editMode(); else viewMode" class="detail-form">
       <div class="form-row">
         <label>Collection UID:</label>
-        <input type="text" [(ngModel)]="collection.dataSourceCollectionUId" name="dataSourceCollectionUId" />
+        <input type="text" [(ngModel)]="collection.DataSourceCollectionUId" name="dataSourceCollectionUId" />
       </div>
       <div class="form-row">
         <label>Name:</label>
-        <input type="text" [(ngModel)]="collection.name" name="name" />
+        <input type="text" [(ngModel)]="collection.Name" name="name" />
       </div>
       <div class="form-row">
         <label>Description:</label>
-        <textarea [(ngModel)]="collection.description" name="description" rows="3"></textarea>
+        <textarea [(ngModel)]="collection.Description" name="description" rows="3"></textarea>
       </div>
       <div class="form-row">
         <label>Custom:</label>
@@ -29,7 +40,7 @@
       </div>
       <div class="form-row">
         <label>Owner:</label>
-        <input type="text" [(ngModel)]="collection.owner" name="owner" />
+        <input type="text" [(ngModel)]="collection.Owner" name="owner" />
       </div>
       <div class="form-row">
         <label>Created By:</label>
@@ -37,7 +48,7 @@
       </div>
       <div class="form-row">
         <label>Active:</label>
-        <select [(ngModel)]="collection.isActive" name="isActive">
+        <select [(ngModel)]="collection.IsActive" name="isActive">
           <option [value]="true">Yes</option>
           <option [value]="false">No</option>
         </select>
@@ -63,15 +74,15 @@
           <h3>Collection Information</h3>
           <div class="info-row">
             <label>Collection UID:</label>
-            <span class="uid">{{ collection.dataSourceCollectionUId }}</span>
+            <span class="uid">{{ collection.DataSourceCollectionUId }}</span>
           </div>
           <div class="info-row">
             <label>Name:</label>
-            <span>{{ collection.name }}</span>
+            <span>{{ collection.Name }}</span>
           </div>
-          <div class="info-row" *ngIf="collection.description">
+          <div class="info-row" *ngIf="collection.Description">
             <label>Description:</label>
-            <span>{{ collection.description }}</span>
+            <span>{{ collection.Description }}</span>
           </div>
           <div class="info-row">
             <label>Custom:</label>
@@ -81,56 +92,56 @@
           </div>
           <div class="info-row">
             <label>Owner:</label>
-            <span>{{ collection.owner }}</span>
+            <span>{{ collection.Owner }}</span>
           </div>
           <div class="info-row">
             <label>Active:</label>
-            <span class="status" [class.active]="collection.isActive" [class.inactive]="!collection.isActive">
-              {{ collection.isActive ? 'Yes' : 'No' }}
+            <span class="status" [class.active]="collection.IsActive" [class.inactive]="!collection.IsActive">
+              {{ collection.IsActive ? 'Yes' : 'No' }}
             </span>
           </div>
-          <div class="info-row" *ngIf="collection.tags && collection.tags.length > 0">
+          <div class="info-row" *ngIf="collection.Tags && collection.Tags.length > 0">
             <label>Tags:</label>
             <div class="badge-container">
-              <span *ngFor="let tag of collection.tags" class="tag-badge">{{ tag }}</span>
+              <span *ngFor="let tag of collection.Tags" class="tag-badge">{{ tag }}</span>
             </div>
           </div>
           <div class="info-row" (click)="onDataSourcesClick()" [class.clickable]="hasDataSources()">
             <label>Data Sources:</label>
-            <span>{{ collection.dataSources.length || 0 }} data sources</span>
+            <span>{{ collection.DataSources.length || 0 }} data sources</span>
             <mat-icon *ngIf="hasDataSources()" class="chevron">chevron_right</mat-icon>
           </div>
           <div class="info-row">
             <label>Created:</label>
-            <span>{{ collection.createdAt | date:'medium' }}</span>
+            <span>{{ collection.CreatedAt | date:'medium' }}</span>
           </div>
-          <div class="info-row" *ngIf="collection.updatedAt">
+          <div class="info-row" *ngIf="collection.UpdatedAt">
             <label>Last Updated:</label>
-            <span>{{ collection.updatedAt | date:'medium' }}</span>
+            <span>{{ collection.UpdatedAt | date:'medium' }}</span>
           </div>
           <div class="info-row">
             <label>Created By:</label>
-            <span>{{ collection.createdBy }}</span>
+            <span>{{ collection.CreatedBy }}</span>
           </div>
-          <div class="info-row" *ngIf="collection.updatedBy">
+          <div class="info-row" *ngIf="collection.UpdatedBy">
             <label>Updated By:</label>
-            <span>{{ collection.updatedBy }}</span>
+            <span>{{ collection.UpdatedBy }}</span>
           </div>
         </div>
         
         <!-- Data Sources Section -->
         <div class="info-section" *ngIf="hasDataSources()">
-          <h3>Data Sources ({{ collection.dataSources.length }})</h3>
+          <h3>Data Sources ({{ collection.DataSources.length }})</h3>
           <div class="data-sources-list">
-            <div class="data-source-item" *ngFor="let dataSource of collection.dataSources" (click)="onDataSourceSelected(dataSource.dataSourceUId)">
+            <div class="data-source-item" *ngFor="let dataSource of collection.DataSources" (click)="onDataSourceSelected(dataSource.DataSourceUId)">
               <div class="data-source-header">
                 <mat-icon>storage</mat-icon>
-                <span class="data-source-name">{{ dataSource.name }}</span>
-                <span class="data-source-type">{{ dataSource.type }}</span>
+                <span class="data-source-name">{{ dataSource.Name }}</span>
+                <span class="data-source-type">{{ dataSource.Type }}</span>
                 <mat-icon class="chevron">chevron_right</mat-icon>
               </div>
-              <div class="data-source-description" *ngIf="dataSource.description">
-                {{ dataSource.description }}
+              <div class="data-source-description" *ngIf="dataSource.Description">
+                {{ dataSource.Description }}
               </div>
             </div>
           </div>

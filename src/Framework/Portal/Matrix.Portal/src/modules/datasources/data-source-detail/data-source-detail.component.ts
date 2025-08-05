@@ -52,28 +52,28 @@ export class DataSourceDetailComponent implements OnInit {
             error: (err: any) => {
                 // Create mock data if service fails
                 this.dataSource = {
-                    dataSourceUId: id,
-                    id: id,
-                    name: `Sample Data Source ${id}`,
-                    type: 'Structured',
-                    subType: 'Database',
-                    description: `This is a sample data source with ID ${id}. In a real application, this data would be fetched from a backend service.`,
-                    tags: ['production', 'database', 'mysql'],
-                    owner: 'System Administrator',
-                    createdBy: 'System Administrator',
-                    createdAt: new Date('2024-01-15').toISOString(),
-                    updatedBy: 'System Administrator',
-                    updatedAt: new Date().toISOString(),
-                    isActive: true,
-                    isCustom: false,
-                    version: '1.0',
-                    metadata: {},
-                    accessMode: 'ReadWrite',
-                    authenticationType: 'APIKey',
-                    connectionDetails: {
-                        host: 'localhost',
-                        port: 3306,
-                        database: 'sample_db',
+                    DataSourceUId: id,
+                    Id: id,
+                    Name: `Sample Data Source ${id}`,
+                    Type: 'Structured',
+                    SubType: 'Database',
+                    Description: `This is a sample data source with ID ${id}. In a real application, this data would be fetched from a backend service.`,
+                    Tags: ['production', 'database', 'mysql'],
+                    Owner: 'System Administrator',
+                    CreatedBy: 'System Administrator',
+                    CreatedAt: new Date('2024-01-15').toISOString(),
+                    UpdatedBy: 'System Administrator',
+                    UpdatedAt: new Date().toISOString(),
+                    IsActive: true,
+                    IsCustom: false,
+                    Version: '1.0',
+                    Metadata: {},
+                    AccessMode: 'ReadWrite',
+                    AuthenticationType: 'APIKey',
+                    ConnectionDetails: {
+                        Host: 'localhost',
+                        Port: 3306,
+                        DatabaseName: 'sample_db',
                         ssl: true
                     }
                 };
@@ -84,32 +84,32 @@ export class DataSourceDetailComponent implements OnInit {
 
     private initializeNewDataSource() {
         this.dataSource = {
-            dataSourceUId: '',
-            id: '',
-            name: '',
-            type: 'Structured',
-            subType: '',
-            description: '',
-            tags: [],
-            owner: '',
-            createdBy: '',
-            createdAt: new Date().toISOString(),
-            updatedBy: '',
-            updatedAt: new Date().toISOString(),
-            isActive: true,
-            isCustom: true,
-            version: '1.0',
-            metadata: {},
-            accessMode: 'ReadWrite',
-            authenticationType: 'APIKey',
-            connectionDetails: {}
+            DataSourceUId: '',
+            Id: '',
+            Name: '',
+            Type: 'Structured',
+            SubType: '',
+            Description: '',
+            Tags: [],
+            Owner: '',
+            CreatedBy: '',
+            CreatedAt: new Date().toISOString(),
+            UpdatedBy: '',
+            UpdatedAt: new Date().toISOString(),
+            IsActive: true,
+            IsCustom: true,
+            Version: '1.0',
+            Metadata: {},
+            AccessMode: 'ReadWrite',
+            AuthenticationType: 'APIKey',
+            ConnectionDetails: {}
         };
         this.initializeFormStrings();
     }
 
     private initializeFormStrings() {
         if (this.dataSource) {
-            this.tagsString = this.dataSource.tags ? this.dataSource.tags.join(', ') : '';
+            this.tagsString = this.dataSource.Tags ? this.dataSource.Tags.join(', ') : '';
         }
     }
 
@@ -120,7 +120,7 @@ export class DataSourceDetailComponent implements OnInit {
     onSave() {
         if (this.dataSource) {
             // Convert tags string back to array
-            this.dataSource.tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            this.dataSource.Tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
 
             this.dataSourceService.createDataSource(this.dataSource).subscribe({
                 next: (result: any) => {
@@ -139,7 +139,7 @@ export class DataSourceDetailComponent implements OnInit {
     }
 
     hasConnectionDetails(): boolean {
-        return this.dataSource?.type === 'Structured' || this.dataSource?.type === 'Vector';
+        return this.dataSource?.Type === 'Structured' || this.dataSource?.Type === 'Vector';
     }
 
     onTypeClick() {

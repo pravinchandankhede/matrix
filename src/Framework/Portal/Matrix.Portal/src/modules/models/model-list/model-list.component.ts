@@ -50,9 +50,9 @@ export class ModelListComponent extends BaseListComponent<Model> {
     }
 
     filterPredicate(model: Model): boolean {
-        const matchesName = model.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+        const matchesName = model.Name.toLowerCase().includes(this.searchTerm.toLowerCase());
         const matchesEnabled = this.selectedEnabled
-            ? model.isEnabled.toString() === this.selectedEnabled
+            ? model.IsEnabled.toString() === this.selectedEnabled
             : true;
         return matchesName && matchesEnabled;
     }
@@ -71,14 +71,14 @@ export class ModelListComponent extends BaseListComponent<Model> {
     }
 
     onEdit(model: Model): void {
-        this.router.navigate(['/models', model.modelUId], { queryParams: { edit: 'true' } });
+        this.router.navigate(['/models', model.ModelUId], { queryParams: { edit: 'true' } });
     }
 
     onView(model: Model): void {
-        this.router.navigate(['/models', model.modelUId], { queryParams: { edit: 'false' } });
+        this.router.navigate(['/models', model.ModelUId], { queryParams: { edit: 'false' } });
     }
 
     onSelect(model: Model): void {
-        this.router.navigate(['/models', model.modelUId]);
+        this.router.navigate(['/models', model.ModelUId]);
     }
 }

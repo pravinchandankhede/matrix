@@ -1,27 +1,27 @@
 <form [formGroup]="form" class="connection-detail-form">
   <div class="connection-form-row">
     <label>Host</label>
-    <input formControlName="host" [readonly]="mode === 'view'">
+    <input formControlName="host" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'">
   </div>
   <div class="connection-form-row">
     <label>Port</label>
-    <input type="number" formControlName="port" [readonly]="mode === 'view'">
+    <input type="number" formControlName="port" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'">
   </div>
   <div class="connection-form-row">
     <label>Database Name</label>
-    <input formControlName="databaseName" [readonly]="mode === 'view'">
+    <input formControlName="databaseName" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'">
   </div>
   <div class="connection-form-row">
     <label>Schema</label>
-    <input formControlName="schema" [readonly]="mode === 'view'">
+    <input formControlName="schema" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'">
   </div>
   <div class="connection-form-row full-width">
     <label>Table List (comma separated)</label>
-    <input formControlName="tableList" [readonly]="mode === 'view'">
+    <input formControlName="tableList" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'">
   </div>
   <div class="connection-form-row full-width">
     <label>Query Template</label>
-    <textarea formControlName="queryTemplate" [readonly]="mode === 'view'"></textarea>
+    <textarea formControlName="queryTemplate" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'"></textarea>
   </div>
   <div class="connection-form-actions" *ngIf="mode !== 'view'">
     <button class="connection-btn-primary" type="button" (click)="onSave()">Save</button>

@@ -17,7 +17,8 @@ public class DataSourceRepository : IDataSourceRepository
 
         var options = new JsonSerializerOptions
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Use original property names
         };
         options.Converters.Add(new JsonStringEnumConverter());
 

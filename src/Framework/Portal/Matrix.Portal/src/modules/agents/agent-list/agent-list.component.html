@@ -28,9 +28,9 @@
                 @for (agent of filteredAgents; track agent) {
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-name">{{ agent.name }}</span>
+                        <span class="card-name">{{ agent.Name }}</span>
                         <div class="card-actions">
-                            <span class="status-badge" [ngClass]="agent.status.toLowerCase()">{{ agent.status }}</span>
+                            <span class="status-badge" [ngClass]="agent.Status.toLowerCase()">{{ agent.Status }}</span>
                             <button class="edit-icon-btn" (click)="onEdit(agent); $event.stopPropagation()" title="Edit">
                                 <mat-icon>edit</mat-icon>
                             </button>
@@ -40,49 +40,49 @@
                         </div>
                     </div>
                     <div class="card-body" (click)="onSelect(agent)">
-                        <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Agent UID:</span> <span class="uid">{{ agent.agentUId }}</span></div>
-                        <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="agent.description">{{ agent.description }}</span></div>
-                        <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ agent.type }}</div>
+                        <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Agent UID:</span> <span class="uid">{{ agent.AgentUId }}</span></div>
+                        <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="agent.Description">{{ agent.Description }}</span></div>
+                        <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ agent.Type }}</div>
                         <div class="info-row">
                             <mat-icon>settings</mat-icon> <span class="label">Capabilities:</span>
                             <div class="badge-container">
-                                @for (cap of agent.capabilities.slice(0, 3); track cap) {
+                                @for (cap of agent.Capabilities.slice(0, 3); track cap) {
                                 <span class="capability-badge">{{ cap }}</span>
                                 }
-                                @if (agent.capabilities.length > 3) {
-                                <span class="more-badge">+{{ agent.capabilities.length - 3 }} more</span>
+                                @if (agent.Capabilities.length > 3) {
+                                <span class="more-badge">+{{ agent.Capabilities.length - 3 }} more</span>
                                 }
                             </div>
                         </div>
                         <div class="info-row">
-                            <mat-icon>star</mat-icon> <span class="label">Features:</span> @for (feat of agent.features; track feat) {
+                            <mat-icon>star</mat-icon> <span class="label">Features:</span> @for (feat of agent.Features; track feat) {
                             <span class="feature-badge">{{ feat }}</span>
                             }
                         </div>
                         <div class="info-row">
-                            <mat-icon>build</mat-icon> <span class="label">Integrated Tools:</span> @for (tool of agent.integratedTools; track tool) {
+                            <mat-icon>build</mat-icon> <span class="label">Integrated Tools:</span> @for (tool of agent.IntegratedTools; track tool) {
                             <span class="tool-badge">{{ tool }}</span>
                             }
                         </div>
-                        <div class="info-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ agent.version }}</div>
+                        <div class="info-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ agent.Version }}</div>
                         <div class="date-row">
-                            <div><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ agent.createdAt | date:'mediumDate' }}</div>
-                            <div><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ agent.updatedAt | date:'mediumDate' }}</div>
+                            <div><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ agent.CreatedAt | date:'mediumDate' }}</div>
+                            <div><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ agent.UpdatedAt | date:'mediumDate' }}</div>
                         </div>
                         <div class="audit-row">
-                            <div><mat-icon>person</mat-icon> <span class="label">Created By:</span> {{ agent.createdBy }}</div>
-                            <div *ngIf="agent.updatedBy"><mat-icon>person_outline</mat-icon> <span class="label">Updated By:</span> {{ agent.updatedBy }}</div>
+                            <div><mat-icon>person</mat-icon> <span class="label">Created By:</span> {{ agent.CreatedBy }}</div>
+                            <div *ngIf="agent.UpdatedBy"><mat-icon>person_outline</mat-icon> <span class="label">Updated By:</span> {{ agent.UpdatedBy }}</div>
                         </div>
                         <div class="status-row">
-                            <div><mat-icon>toggle_on</mat-icon> <span class="label">Active:</span> {{ agent.isActive ? 'Yes' : 'No' }}</div>
-                            <div *ngIf="agent.tags && agent.tags.length > 0">
+                            <div><mat-icon>toggle_on</mat-icon> <span class="label">Active:</span> {{ agent.IsActive ? 'Yes' : 'No' }}</div>
+                            <div *ngIf="agent.Tags && agent.Tags.length > 0">
                                 <mat-icon>label</mat-icon> <span class="label">Tags:</span>
                                 <div class="badge-container">
-                                    @for (tag of agent.tags.slice(0, 2); track tag) {
+                                    @for (tag of agent.Tags.slice(0, 2); track tag) {
                                     <span class="tag-badge">{{ tag }}</span>
                                     }
-                                    @if (agent.tags.length > 2) {
-                                    <span class="more-badge">+{{ agent.tags.length - 2 }} more</span>
+                                    @if (agent.Tags.length > 2) {
+                                    <span class="more-badge">+{{ agent.Tags.length - 2 }} more</span>
                                     }
                                 </div>
                             </div>

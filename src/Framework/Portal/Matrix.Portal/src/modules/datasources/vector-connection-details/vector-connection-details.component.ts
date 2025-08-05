@@ -34,6 +34,17 @@ export class VectorConnectionDetailsComponent implements OnInit {
         }
     }
 
+    getConnectionValue(key: string): string {
+        const details = this.connectionDetails || (this.dataSource?.connectionDetails as VectorConnectionDetails);
+        const value = details?.[key as keyof VectorConnectionDetails];
+        if (typeof value === 'string') {
+            return value;
+        } else if (typeof value === 'number') {
+            return value.toString();
+        }
+        return '';
+    }
+
     onSave() {
         this.save.emit(this.form.value);
     }

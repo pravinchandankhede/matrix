@@ -1,18 +1,18 @@
-﻿namespace Matrix.Matrix.DataModels.Knowledge;
+﻿namespace Matrix.DataModels.Knowledge;
 
-using global::Matrix.Matrix.DataModels.Chunks;
-using global::Matrix.Matrix.DataModels.DataSources;
-using global::Matrix.Matrix.DataModels.Models;
+using Matrix.DataModels.Chunks;
+using Matrix.DataModels.DataSources;
+using Matrix.DataModels.Models;
 using System;
 
 public class Knowledge
 {
     public Guid KnowledgeUId { get; set; }
-    public String Type { get; set; }
-    public DataSourceCollection DataSourceCollection { get; set; }
-    public Model Model { get; set; }
-    public String Status { get; set; }
-    public DataSource OutputDataSource { get; set; }
-    public Chunk ChunkStrategy { get; set; }
+    public required String Type { get; set; }
+    public DataSourceCollection DataSourceCollection { get; set; } = null!;
+    public Model Model { get; set; } = null!;
+    public required String Status { get; set; }
+    public DataSource OutputDataSource { get; set; } = null!;
+    public Chunk ChunkStrategy { get; set; } = null!;
 }
 

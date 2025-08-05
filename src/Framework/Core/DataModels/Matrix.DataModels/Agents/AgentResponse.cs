@@ -1,8 +1,8 @@
-﻿namespace Matrix.Matrix.DataModels.Agents;
+﻿namespace Matrix.DataModels.Agents;
 
 public class AgentResponse
 {
-    public String Response { get; set; }
+    public required String Response { get; set; }
     public Boolean IsComplete { get; set; }
 
     override public String ToString()

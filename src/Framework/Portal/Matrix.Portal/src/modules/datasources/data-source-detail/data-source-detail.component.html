@@ -1,6 +1,6 @@
 <div class="detail-container" *ngIf="dataSource">
   <div class="detail-header">
-    <h2><mat-icon>storage</mat-icon> {{ dataSource.name || 'New Data Source' }}</h2>
+    <h2><mat-icon>storage</mat-icon> {{ dataSource.Name || 'New Data Source' }}</h2>
     <button class="edit-btn" (click)="toggleEdit()">
       <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
     </button>
@@ -57,19 +57,19 @@
             <div class="form-grid">
               <div class="form-row">
                 <label>Data Source UID:</label>
-                <input type="text" [(ngModel)]="dataSource.dataSourceUId" name="dataSourceUId" />
+                <input type="text" [(ngModel)]="dataSource.DataSourceUId" name="dataSourceUId" />
               </div>
               <div class="form-row">
                 <label>Name:</label>
-                <input type="text" [(ngModel)]="dataSource.name" name="name" />
+                <input type="text" [(ngModel)]="dataSource.Name" name="name" />
               </div>
               <div class="form-row full-width">
                 <label>Description:</label>
-                <textarea [(ngModel)]="dataSource.description" name="description" rows="3"></textarea>
+                <textarea [(ngModel)]="dataSource.Description" name="description" rows="3"></textarea>
               </div>
               <div class="form-row">
                 <label>Owner:</label>
-                <input type="text" [(ngModel)]="dataSource.owner" name="owner" />
+                <input type="text" [(ngModel)]="dataSource.Owner" name="owner" />
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@
             <div class="form-grid">
               <div class="form-row">
                 <label>Type:</label>
-                <select [(ngModel)]="dataSource.type" name="type">
+                <select [(ngModel)]="dataSource.Type" name="type">
                   <option value="Structured">Structured</option>
                   <option value="SemiStructured">Semi-Structured</option>
                   <option value="Unstructured">Unstructured</option>
@@ -93,18 +93,18 @@
               </div>
               <div class="form-row">
                 <label>Sub Type:</label>
-                <input type="text" [(ngModel)]="dataSource.subType" name="subType" />
+                <input type="text" [(ngModel)]="dataSource.SubType" name="subType" />
               </div>
               <div class="form-row">
                 <label>Access Mode:</label>
-                <select [(ngModel)]="dataSource.accessMode" name="accessMode">
+                <select [(ngModel)]="dataSource.AccessMode" name="accessMode">
                   <option value="ReadOnly">Read Only</option>
                   <option value="ReadWrite">Read Write</option>
                 </select>
               </div>
               <div class="form-row">
                 <label>
-                  <input type="checkbox" [(ngModel)]="dataSource.isActive" name="isActive" />
+                  <input type="checkbox" [(ngModel)]="dataSource.IsActive" name="isActive" />
                   Active
                 </label>
               </div>
@@ -115,13 +115,13 @@
           <div class="content-section" *ngIf="activeSection === 'connection' && hasConnectionDetails()">
             <h3>Connection Details</h3>
             <app-structured-connection-details 
-              *ngIf="dataSource.type === 'Structured'" 
-              [connectionDetails]="dataSource.connectionDetails"
+              *ngIf="dataSource.Type === 'Structured'" 
+              [connectionDetails]="dataSource.ConnectionDetails"
               [mode]="'edit'">
             </app-structured-connection-details>
             <app-vector-connection-details 
-              *ngIf="dataSource.type === 'Vector'" 
-              [connectionDetails]="dataSource.connectionDetails"
+              *ngIf="dataSource.Type === 'Vector'" 
+              [connectionDetails]="dataSource.ConnectionDetails"
               [mode]="'edit'">
             </app-vector-connection-details>
           </div>
@@ -132,7 +132,7 @@
             <div class="form-grid">
               <div class="form-row">
                 <label>Authentication Type:</label>
-                <select [(ngModel)]="dataSource.authenticationType" name="authenticationType">
+                <select [(ngModel)]="dataSource.AuthenticationType" name="authenticationType">
                   <option value="None">None</option>
                   <option value="APIKey">API Key</option>
                   <option value="OAuth2">OAuth2</option>
@@ -172,19 +172,19 @@
             <div class="info-grid">
               <div class="info-row">
                 <label>Data Source UID:</label>
-                <span class="uid">{{ dataSource.dataSourceUId }}</span>
+                <span class="uid">{{ dataSource.DataSourceUId }}</span>
               </div>
               <div class="info-row">
                 <label>Name:</label>
-                <span>{{ dataSource.name }}</span>
+                <span>{{ dataSource.Name }}</span>
               </div>
-              <div class="info-row" *ngIf="dataSource.description">
+              <div class="info-row" *ngIf="dataSource.Description">
                 <label>Description:</label>
-                <span>{{ dataSource.description }}</span>
+                <span>{{ dataSource.Description }}</span>
               </div>
               <div class="info-row">
                 <label>Owner:</label>
-                <span>{{ dataSource.owner }}</span>
+                <span>{{ dataSource.Owner }}</span>
               </div>
             </div>
           </div>
@@ -195,25 +195,25 @@
             <div class="info-grid">
               <div class="info-row">
                 <label>Type:</label>
-                <span>{{ dataSource.type }} - {{ dataSource.subType }}</span>
+                <span>{{ dataSource.Type }} - {{ dataSource.SubType }}</span>
               </div>
               <div class="info-row">
                 <label>Access Mode:</label>
-                <span>{{ dataSource.accessMode }}</span>
+                <span>{{ dataSource.AccessMode }}</span>
               </div>
               <div class="info-row">
                 <label>Status:</label>
-                <span class="status" [class.active]="dataSource.isActive" [class.inactive]="!dataSource.isActive">
-                  {{ dataSource.isActive ? 'Active' : 'Inactive' }}
+                <span class="status" [class.active]="dataSource.IsActive" [class.inactive]="!dataSource.IsActive">
+                  {{ dataSource.IsActive ? 'Active' : 'Inactive' }}
                 </span>
               </div>
               <div class="info-row">
                 <label>Created:</label>
-                <span>{{ dataSource.createdAt | date:'medium' }}</span>
+                <span>{{ dataSource.CreatedAt | date:'medium' }}</span>
               </div>
-              <div class="info-row" *ngIf="dataSource.updatedAt">
+              <div class="info-row" *ngIf="dataSource.UpdatedAt">
                 <label>Updated:</label>
-                <span>{{ dataSource.updatedAt | date:'medium' }}</span>
+                <span>{{ dataSource.UpdatedAt | date:'medium' }}</span>
               </div>
             </div>
           </div>
@@ -222,13 +222,13 @@
           <div class="content-section" *ngIf="activeSection === 'connection' && hasConnectionDetails()">
             <h3>Connection Details</h3>
             <app-structured-connection-details 
-              *ngIf="dataSource.type === 'Structured'" 
-              [connectionDetails]="dataSource.connectionDetails"
+              *ngIf="dataSource.Type === 'Structured'" 
+              [connectionDetails]="dataSource.ConnectionDetails"
               [mode]="'view'">
             </app-structured-connection-details>
             <app-vector-connection-details 
-              *ngIf="dataSource.type === 'Vector'" 
-              [connectionDetails]="dataSource.connectionDetails"
+              *ngIf="dataSource.Type === 'Vector'" 
+              [connectionDetails]="dataSource.ConnectionDetails"
               [mode]="'view'">
             </app-vector-connection-details>
           </div>
@@ -239,7 +239,7 @@
             <div class="info-grid">
               <div class="info-row">
                 <label>Authentication:</label>
-                <span>{{ dataSource.authenticationType }}</span>
+                <span>{{ dataSource.AuthenticationType }}</span>
               </div>
             </div>
           </div>

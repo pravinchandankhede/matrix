@@ -6,9 +6,11 @@
 //  THIS CODE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 // ------------------------------------------------------------------------------
 
-namespace Matrix.Matrix.DataModels.Models;
+namespace Matrix.DataModels.Models;
 
-public class Model
+using Matrix.DataModels.BaseModels;
+
+public class Model : BaseModel
 {
     public Guid ModelUId { get; set; }
     public required String Name { get; set; }

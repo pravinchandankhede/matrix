@@ -20,19 +20,42 @@ export class StructuredConnectionDetailsComponent implements OnInit {
     constructor(private fb: FormBuilder) { }
 
     ngOnInit() {
-        // Use connectionDetails input if provided, otherwise fallback to dataSource.connectionDetails
-        const details = this.connectionDetails || (this.dataSource?.connectionDetails as StructuredConnectionDetails);
+        // Use connectionDetails input if provided, otherwise fallback to dataSource.ConnectionDetails
+        const details = this.connectionDetails || (this.dataSource?.ConnectionDetails as StructuredConnectionDetails);
         this.form = this.fb.group({
-            host: [details?.host || ''],
-            port: [details?.port || ''],
-            databaseName: [details?.databaseName || ''],
-            schema: [details?.schema || ''],
-            tableList: [details?.tableList?.join(', ') || ''],
-            queryTemplate: [details?.queryTemplate || '']
+            host: [details?.Host || ''],
+            port: [details?.Port || ''],
+            databaseName: [details?.DatabaseName || ''],
+            schema: [details?.Schema || ''],
+            tableList: [details?.TableList?.join(', ') || ''],
+            queryTemplate: [details?.QueryTemplate || '']
         });
         if (this.mode === 'view' || this.readonly) {
             this.form.disable();
         }
+    }
+
+    getConnectionValue(key: string): string {
+        const details = this.connectionDetails || (this.dataSource?.ConnectionDetails as StructuredConnectionDetails);
+        const value = details?.[key as keyof StructuredConnectionDetails];
+        if (typeof value === 'string') {
+            return value;
+        } else if (typeof value === 'number') {
+            return value.toString();
+        } else if (Array.isArray(value)) {
+            return value.join(', ');
+        }
+        return '';
+    }
+
+    getTableListArray(): string[] {
+        const details = this.connectionDetails || (this.dataSource?.ConnectionDetails as StructuredConnectionDetails);
+        return details?.TableList || [];
+    }
+
+    getTableListDisplay(): boolean {
+        const tableList = this.getTableListArray();
+        return tableList && tableList.length > 0;
     }
 
     onSave() {

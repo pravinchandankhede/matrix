@@ -1,11 +1,11 @@
 import { BaseModel } from './base.model';
 
 export interface Model extends BaseModel {
-    modelUId: string;
-    type?: string;
-    provider?: string;
-    endpoint?: string;
-    apiKey?: string;
-    region?: string;
-    isEnabled: boolean;
+    ModelUId: string;
+    Type?: string;
+    Provider?: string;
+    Endpoint?: string;
+    ApiKey?: string;
+    Region?: string;
+    IsEnabled: boolean;
 }

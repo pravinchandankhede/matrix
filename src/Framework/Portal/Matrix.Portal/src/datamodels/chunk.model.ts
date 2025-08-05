@@ -1,17 +1,17 @@
 import { BaseModel } from './base.model';
 
 export interface Chunk extends BaseModel {
-    chunkId: string;
-    text: string;
-    type: string;
-    chunkSource: string;
-    chunkSourceId: string;
-    correlationUId: string; // Guid as string
+    ChunkId: string;
+    Text: string;
+    Type: string;
+    ChunkSource: string;
+    ChunkSourceId: string;
+    CorrelationUId: string; // Guid as string
 }
 
 export interface ChunkStrategy extends BaseModel {
-    chunkStrategyUId: string;
-    text: string;
-    type: string;    
-    correlationUId: string; // Guid as string
+    ChunkStrategyUId: string;
+    Text: string;
+    Type: string;    
+    CorrelationUId: string; // Guid as string
 }

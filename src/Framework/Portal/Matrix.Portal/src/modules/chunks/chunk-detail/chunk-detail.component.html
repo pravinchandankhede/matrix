@@ -1,7 +1,7 @@
 <div class="detail-container" *ngIf="chunk">
     <div class="section-wrapper modern-theme-bg">
         <div class="detail-header">
-            <h2><mat-icon>view_module</mat-icon> {{ chunk.text || 'New Chunk' }}</h2>
+            <h2><mat-icon>view_module</mat-icon> {{ chunk.Text || 'New Chunk' }}</h2>
             <button class="edit-btn" (click)="toggleEdit()">
                 <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
             </button>
@@ -9,23 +9,23 @@
         <form *ngIf="editMode(); else viewMode" class="detail-form">
             <div class="form-row">
                 <label>Chunk ID:</label>
-                <input type="text" [(ngModel)]="chunk.chunkId" name="chunkId" />
+                <input type="text" [(ngModel)]="chunk.ChunkId" name="chunkId" />
             </div>
             <div class="form-row">
                 <label>Text:</label>
-                <input type="text" [(ngModel)]="chunk.text" name="text" />
+                <input type="text" [(ngModel)]="chunk.Text" name="text" />
             </div>
             <div class="form-row">
                 <label>Type:</label>
-                <input type="text" [(ngModel)]="chunk.type" name="type" />
+                <input type="text" [(ngModel)]="chunk.Type" name="type" />
             </div>
             <div class="form-row">
                 <label>Source:</label>
-                <input type="text" [(ngModel)]="chunk.chunkSource" name="chunkSource" />
+                <input type="text" [(ngModel)]="chunk.ChunkSource" name="chunkSource" />
             </div>
             <div class="form-row">
                 <label>Source ID:</label>
-                <input type="text" [(ngModel)]="chunk.chunkSourceId" name="chunkSourceId" />
+                <input type="text" [(ngModel)]="chunk.ChunkSourceId" name="chunkSourceId" />
             </div>
             <div class="form-row">
                 <label>Correlation UID:</label>
@@ -33,11 +33,11 @@
             </div>
             <div class="form-row">
                 <label>Name:</label>
-                <input type="text" [(ngModel)]="chunk.name" name="name" />
+                <input type="text" [(ngModel)]="chunk.Name" name="name" />
             </div>
             <div class="form-row">
                 <label>Description:</label>
-                <textarea [(ngModel)]="chunk.description" name="description"></textarea>
+                <textarea [(ngModel)]="chunk.Description" name="description"></textarea>
             </div>
             <div class="form-row">
                 <label>Created By:</label>
@@ -45,7 +45,7 @@
             </div>
             <div class="form-row">
                 <label>Active:</label>
-                <select [(ngModel)]="chunk.isActive" name="isActive">
+                <select [(ngModel)]="chunk.IsActive" name="isActive">
                     <option [ngValue]="true">Yes</option>
                     <option [ngValue]="false">No</option>
                 </select>
@@ -60,23 +60,23 @@
         </form>
         <ng-template #viewMode>
             <div class="detail-view">
-                <div class="form-row"><label>Chunk ID:</label> {{ chunk.chunkId }}</div>
-                <div class="form-row"><label>Name:</label> {{ chunk.name }}</div>
-                <div class="form-row"><label>Description:</label> {{ chunk.description }}</div>
-                <div class="form-row"><label>Text:</label> {{ chunk.text }}</div>
-                <div class="form-row"><label>Type:</label> {{ chunk.type }}</div>
-                <div class="form-row"><label>Source:</label> {{ chunk.chunkSource }}</div>
-                <div class="form-row"><label>Source ID:</label> {{ chunk.chunkSourceId }}</div>
-                <div class="form-row"><label>Correlation UID:</label> {{ chunk.correlationUId }}</div>
-                <div class="form-row"><label>Created:</label> {{ chunk.createdAt | date:'mediumDate' }}</div>
-                <div class="form-row" *ngIf="chunk.updatedAt"><label>Last Updated:</label> {{ chunk.updatedAt | date:'mediumDate' }}</div>
-                <div class="form-row"><label>Created By:</label> {{ chunk.createdBy }}</div>
-                <div class="form-row" *ngIf="chunk.updatedBy"><label>Updated By:</label> {{ chunk.updatedBy }}</div>
-                <div class="form-row"><label>Active:</label> {{ chunk.isActive ? 'Yes' : 'No' }}</div>
-                <div class="form-row" *ngIf="chunk.tags && chunk.tags.length > 0">
+                <div class="form-row"><label>Chunk ID:</label> {{ chunk.ChunkId }}</div>
+                <div class="form-row"><label>Name:</label> {{ chunk.Name }}</div>
+                <div class="form-row"><label>Description:</label> {{ chunk.Description }}</div>
+                <div class="form-row"><label>Text:</label> {{ chunk.Text }}</div>
+                <div class="form-row"><label>Type:</label> {{ chunk.Type }}</div>
+                <div class="form-row"><label>Source:</label> {{ chunk.ChunkSource }}</div>
+                <div class="form-row"><label>Source ID:</label> {{ chunk.ChunkSourceId }}</div>
+                <div class="form-row"><label>Correlation UID:</label> {{ chunk.CorrelationUId }}</div>
+                <div class="form-row"><label>Created:</label> {{ chunk.CreatedAt | date:'mediumDate' }}</div>
+                <div class="form-row" *ngIf="chunk.UpdatedAt"><label>Last Updated:</label> {{ chunk.UpdatedAt | date:'mediumDate' }}</div>
+                <div class="form-row"><label>Created By:</label> {{ chunk.CreatedBy }}</div>
+                <div class="form-row" *ngIf="chunk.UpdatedBy"><label>Updated By:</label> {{ chunk.UpdatedBy }}</div>
+                <div class="form-row"><label>Active:</label> {{ chunk.IsActive ? 'Yes' : 'No' }}</div>
+                <div class="form-row" *ngIf="chunk.Tags && chunk.Tags.length > 0">
                     <label>Tags:</label>
                     <div class="badge-container">
-                        <span *ngFor="let tag of chunk.tags" class="tag-badge">{{ tag }}</span>
+                        <span *ngFor="let tag of chunk.Tags" class="tag-badge">{{ tag }}</span>
                     </div>
                 </div>
             </div>

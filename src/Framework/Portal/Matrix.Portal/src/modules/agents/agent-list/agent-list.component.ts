@@ -49,8 +49,8 @@ export class AgentListComponent extends BaseListComponent<Agent> {
     }
 
     filterPredicate(agent: Agent): boolean {
-        const matchesName = agent.name.toLowerCase().includes(this.searchTerm.toLowerCase());
-        const matchesStatus = this.selectedStatus ? agent.status === this.selectedStatus : true;
+        const matchesName = agent.Name.toLowerCase().includes(this.searchTerm.toLowerCase());
+        const matchesStatus = this.selectedStatus ? agent.Status === this.selectedStatus : true;
         return matchesName && matchesStatus;
     }
 
@@ -68,14 +68,14 @@ export class AgentListComponent extends BaseListComponent<Agent> {
     }
 
     onEdit(agent: Agent): void {
-        this.router.navigate(['/agents', agent.agentUId], { queryParams: { edit: 'true' } });
+        this.router.navigate(['/agents', agent.AgentUId], { queryParams: { edit: 'true' } });
     }
 
     onView(agent: Agent): void {
-        this.router.navigate(['/agents', agent.agentUId], { queryParams: { edit: 'false' } });
+        this.router.navigate(['/agents', agent.AgentUId], { queryParams: { edit: 'false' } });
     }
 
     onSelect(agent: Agent): void {
-        this.router.navigate(['/agents', agent.agentUId]);
+        this.router.navigate(['/agents', agent.AgentUId]);
     }
 }

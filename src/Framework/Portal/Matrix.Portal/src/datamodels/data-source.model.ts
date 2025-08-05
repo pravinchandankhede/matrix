@@ -1,17 +1,17 @@
 import { CustomizableModel } from './base.model';
 
 export interface DataSourceCollection extends CustomizableModel {
-  dataSourceCollectionUId: string;
-  collections: DataSource[];
+  DataSourceCollectionUId: string;
+  Collections: DataSource[];
 }
 
 export interface DataSource extends CustomizableModel {
-  dataSourceUId: string;
-  type: DataSourceType;
-  subType: string;
-  accessMode: AccessMode;
-  authenticationType: AuthenticationType;
-  connectionDetails: any;
+  DataSourceUId: string;
+  Type: DataSourceType;
+  SubType: string;
+  AccessMode: AccessMode;
+  AuthenticationType: AuthenticationType;
+  ConnectionDetails: any;
 }
 
 export type DataSourceType =
@@ -31,60 +31,60 @@ export type AuthenticationType = 'APIKey' | 'OAuth2' | 'BasicAuth' | 'Token' | '
 // Category-specific attribute interfaces (optional, for strong typing)
 
 export interface StructuredConnectionDetails {
-  host: string;
-  port: number;
-  databaseName: string;
-  schema?: string;
-  tableList?: string[];
-  queryTemplate?: string;
+  Host: string;
+  Port: number;
+  DatabaseName: string;
+  Schema?: string;
+  TableList?: string[];
+  QueryTemplate?: string;
 }
 
 export interface SemiStructuredConnectionDetails {
-  endpointUrl: string;
-  collectionName?: string;
-  queryParameters?: any;
-  dataFormat: 'JSON' | 'XML' | 'YAML';
+  EndpointUrl: string;
+  CollectionName?: string;
+  QueryParameters?: any;
+  DataFormat: 'JSON' | 'XML' | 'YAML';
 }
 
 export interface UnstructuredConnectionDetails {
-  storageType: 'FileSystem' | 'S3' | 'AzureBlob' | 'GDrive';
-  filePathOrUrl: string;
-  fileTypes: string[];
-  ocrRequired?: boolean;
+  StorageType: 'FileSystem' | 'S3' | 'AzureBlob' | 'GDrive';
+  FilePathOrUrl: string;
+  FileTypes: string[];
+  OcrRequired?: boolean;
 }
 
 export interface MultimediaConnectionDetails {
-  mediaType: 'Audio' | 'Video' | 'Image';
-  transcriptionEnabled?: boolean;
-  storageLocation: string;
-  supportedFormats: string[];
+  MediaType: 'Audio' | 'Video' | 'Image';
+  TranscriptionEnabled?: boolean;
+  StorageLocation: string;
+  SupportedFormats: string[];
 }
 
 export interface StreamingConnectionDetails {
-  brokerUrl: string;
-  topicName: string;
-  consumerGroup?: string;
-  messageFormat: 'JSON' | 'Avro' | 'Protobuf';
+  BrokerUrl: string;
+  TopicName: string;
+  ConsumerGroup?: string;
+  MessageFormat: 'JSON' | 'Avro' | 'Protobuf';
 }
 
 export interface ExternalConnectionDetails {
-  apiEndpoint: string;
-  httpMethod: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-  headers?: any;
-  queryParams?: any;
-  rateLimitPerMinute?: number;
+  ApiEndpoint: string;
+  HttpMethod: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  Headers?: any;
+  QueryParams?: any;
+  RateLimitPerMinute?: number;
 }
 
 export interface ProprietaryConnectionDetails {
-  vendorName: string;
-  integrationType: 'SDK' | 'API' | 'FileExport';
-  customParserRequired?: boolean;
+  VendorName: string;
+  IntegrationType: 'SDK' | 'API' | 'FileExport';
+  CustomParserRequired?: boolean;
 }
 
 export interface VectorConnectionDetails {
-  vectorDbType: 'Pinecone' | 'FAISS' | 'Weaviate' | 'Qdrant';
-  indexName: string;
-  embeddingModel: string;
-  dimension: number;
-  distanceMetric: 'Cosine' | 'Euclidean' | 'DotProduct';
+  VectorDbType: 'Pinecone' | 'FAISS' | 'Weaviate' | 'Qdrant';
+  IndexName: string;
+  EmbeddingModel: string;
+  Dimension: number;
+  DistanceMetric: 'Cosine' | 'Euclidean' | 'DotProduct';
 }

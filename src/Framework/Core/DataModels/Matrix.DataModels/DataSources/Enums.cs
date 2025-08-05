@@ -1,4 +1,4 @@
-﻿namespace Matrix.Matrix.DataModels.DataSources;
+﻿namespace Matrix.DataModels.DataSources;
 
 public enum DataSourceType
 {

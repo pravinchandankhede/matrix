@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AgenticLayer.AgentModels\AgenticLayer.AgentModels.csproj" />
-    <ProjectReference Include="..\AgenticLayer.DataLayer\AgenticLayer.DataLayer.csproj" />
+    <ProjectReference Include="..\..\Core\DataRepository\DataRepository.Interfaces\DataRepository.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Core\DataRepository\DataRepository.Repositories\DataRepository.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

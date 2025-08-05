@@ -5,9 +5,24 @@
         "Description": "An agent that processes invoices and manages billing tasks. This can talk to multiple systems and get the relevant responses for you.",
         "Type": "Billing",
         "Capabilities": [
-            "Invoice processing",
-            "Billing management",
-            "Payment tracking"
+            {
+                "CapabilityUId": "CCB45DA4-C8C3-4448-B74E-603BB9B4FC84",
+                "Name": "ProcessInvoice",
+                "Description": "Processes an invoice and returns the status.",
+                "Type": "Function"
+            },
+            {
+                "CapabilityUId": "DDB56EA5-D9D4-5559-C85F-704CC9C5FD95",
+                "Name": "Billing management",
+                "Description": "Retrieves the current billing status for a customer.",
+                "Type": "Billing"
+            },
+            {
+                "CapabilityUId": "EEB67FA6-E9E5-6660-D96F-805DD9D6FEA6",
+                "Name": "Payment tracking",
+                "Description": "Tracks payment status and updates the invoice accordingly.",
+                "Type": "Payment"
+            }
         ],
         "Status": "Active",
         "Version": "1.0.0",
@@ -29,9 +44,18 @@
         "Description": "An agent that handles customer support queries and issues.",
         "Type": "Support",
         "Capabilities": [
-            "Query handling",
-            "Issue resolution",
-            "Feedback collection"
+            {
+                "CapabilityUId": "FFB78FA7-F9F6-7771-EA7F-906EE9E7FFB8",
+                "Name": "HandleQuery",
+                "Description": "Handles customer queries and provides relevant information.",
+                "Type": "Query"
+            },
+            {
+                "CapabilityUId": "58CB22FC-7EBE-4555-B369-EDF8B5D03D56",
+                "Name": "ResolveIssue",
+                "Description": "Resolves customer issues and updates the ticket status.",
+                "Type": "Issue"
+            }
         ],
         "Status": "Active",
         "Version": "1.0.0",

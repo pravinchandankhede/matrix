@@ -7,11 +7,10 @@
 // ------------------------------------------------------------------------------
 
 namespace Matrix.AgenticLayer.AgentRegistry;
-
-using Matrix.AgenticLayer.AgentModels;
-using System.Collections.Concurrent;
+using Matrix.DataModels.Agents;
+using Matrix.DataRepository.Interfaces;
+using Matrix.DataRepository.Repositories;
 using System.Collections.Generic;
-using Matrix.AgenticLayer.DataLayer;
 
 /// <summary>
 /// A registry for managing agents in the ecosystem, allowing registration, update, retrieval, listing, and removal of agents.
@@ -27,7 +26,7 @@ public class AgentRegistry
     /// <returns>True if the agent was added; false if an agent with the same name already exists.</returns>
     public void RegisterAgent(Agent agent)
     {
-        _repository.AddAgent( agent);
+        _repository.Add(agent);
     }
 
     /// <summary>
@@ -37,7 +36,7 @@ public class AgentRegistry
     /// <returns>True if the agent was updated.</returns>
     public Boolean UpdateAgent(Agent agent)
     {
-        _repository.UpdateAgent(agent);
+        _repository.Update(agent);
         return true;
     }
 
@@ -46,9 +45,9 @@ public class AgentRegistry
     /// </summary>
     /// <param name="name">The name of the agent.</param>
     /// <returns>The agent if found; otherwise, null.</returns>
-    public Agent? GetAgent(String name)
+    public Agent? GetAgent(Guid agentUId)
     {
-        var agent = _repository.GetAgent(name);
+        Agent agent = _repository.GetById(agentUId);
         return agent;
     }
 
@@ -56,16 +55,16 @@ public class AgentRegistry
     /// Gets all registered agents in the registry.
     /// </summary>
     /// <returns>An enumerable of all agents.</returns>
-    public IEnumerable<Agent> GetAllAgents() => _repository.GetAllAgents();
+    public IEnumerable<Agent> GetAllAgents() => _repository.GetAll();
 
     /// <summary>
     /// Removes an agent from the registry by name.
     /// </summary>
     /// <param name="name">The name of the agent to remove.</param>
     /// <returns>True if the agent was removed; otherwise, false.</returns>
-    public Boolean RemoveAgent(String name)
+    public Boolean RemoveAgent(Agent agent)
     {
-        _repository.RemoveAgent(name);
+        _repository.Delete(agent);
         return true;
     }
 }

@@ -8,7 +8,7 @@
 
 namespace Matrix.AgenticLayer.Interfaces;
 
-using Matrix.AgenticLayer.AgentModels;
+using Matrix.DataModels.Agents;
 
 public interface IAgentApp
 {

@@ -6,7 +6,7 @@
 //  THIS CODE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 // ------------------------------------------------------------------------------
 
-using Matrix.AgenticLayer.AgentModels;
+using Matrix.DataModels.Agents;
 using Matrix.AgenticLayer.AgentRegistry;
 using Matrix.AgenticLayer.BaseAgent;
 using Matrix.AgenticLayer.Interfaces;

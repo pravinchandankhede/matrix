@@ -1,6 +1,7 @@
 ﻿namespace AgenticLayer.Services.Controllers;
 
-using Matrix.AgenticLayer.DataLayer;
+using Matrix.DataModels.Agents;
+using Matrix.DataRepository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -9,25 +10,25 @@ public class AgentsController : ControllerBase
 {
     private readonly IAgentRepository _agentRepository;
 
-    public AgentsController(IAgentRepository AgentRepository)
+    public AgentsController(IAgentRepository agentRepository)
     {
-        _agentRepository = AgentRepository;
+        _agentRepository = agentRepository;
     }
 
     // GET: api/<AgentsController>
     [HttpGet]
-    public IEnumerable<Matrix.AgenticLayer.AgentModels.Agent> Get()
+    public IEnumerable<Agent> Get()
     {
-        return _agentRepository.GetAllAgents();
+        return _agentRepository.GetAll();
     }
 
     [HttpPost]
-    public IActionResult AddAgent([FromBody] Matrix.AgenticLayer.AgentModels.Agent agent)
+    public IActionResult AddAgent([FromBody] Agent agent)
     {
         if (agent == null)
             return BadRequest();
 
-        _agentRepository.AddAgent(agent);
+        _agentRepository.Add(agent);
         return CreatedAtAction(nameof(Get), new { name = agent.Name }, agent);
     }
 
@@ -35,7 +36,7 @@ public class AgentsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(Guid agentId)
     {
-        var agent = _agentRepository.GetAgent(agentId.ToString());
+        var agent = _agentRepository.GetById(agentId);
         return agent != null ? Ok(agent) : NotFound();        
     }
 

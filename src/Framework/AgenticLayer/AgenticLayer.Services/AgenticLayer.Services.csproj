@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\AgenticLayer.DataLayer\agents.json" Link="agents.json">
+    <Content Include="..\..\Core\DataRepository\DataRepository.Repositories\agents.json" Link="agents.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AgenticLayer.DataLayer\AgenticLayer.DataLayer.csproj" />
+    <ProjectReference Include="..\..\Core\DataRepository\DataRepository.Repositories\DataRepository.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

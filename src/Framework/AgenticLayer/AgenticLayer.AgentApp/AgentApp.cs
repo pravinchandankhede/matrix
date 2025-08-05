@@ -9,18 +9,18 @@
 namespace Matrix.AgenticLayer.AgentApp;
 
 using Matrix.AgenticLayer.Interfaces;
-using Matrix.AgenticLayer.AgentModels;
+using Matrix.DataModels.Agents;
 
 public class AgentApp : IAgentApp
 {
-    public AgentApp(string agentName, string agentType)
+    public AgentApp(String agentName, String agentType)
     {
         AgentName = agentName;
         AgentType = agentType;
     }
 
-    public string AgentName { get; }
-    public string AgentType { get; }
+    public String AgentName { get; }
+    public String AgentType { get; }
 
     public virtual AgentResponse GetChatResponseAsync(AgentRequest request)
     {

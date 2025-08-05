@@ -1,13 +1,14 @@
 
 namespace AgenticLayer.Services;
 
-using Matrix.AgenticLayer.DataLayer;
+using Matrix.DataRepository.Interfaces;
+using Matrix.DataRepository.Repositories;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static void Main(String[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
 
@@ -18,7 +19,7 @@ public class Program
 
         builder.Services.AddSingleton<IAgentRepository, AgentRepository>();
 
-        var app = builder.Build();
+        WebApplication app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

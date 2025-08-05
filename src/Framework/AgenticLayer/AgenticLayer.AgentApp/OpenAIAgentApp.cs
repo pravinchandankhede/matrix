@@ -8,7 +8,7 @@
 
 namespace Matrix.AgenticLayer.AgentApp;
 
-using Matrix.AgenticLayer.AgentModels;
+using Matrix.DataModels.Agents;
 using System;
 
 internal class OpenAIAgentApp : AgentApp

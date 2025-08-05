@@ -4,16 +4,15 @@ using Matrix.DataModels.Agents;
 using Matrix.DataRepository.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 
-internal class AgentRepository : IAgentRepository
+public class AgentRepository : IAgentRepository
 {
     readonly List<Agent> agentList = [];
 
     public AgentRepository()
     {
-        var directory = AppDomain.CurrentDomain.BaseDirectory;
-        var agents = File.ReadAllText(Path.Join(directory, "agents.json"));
+        String directory = AppDomain.CurrentDomain.BaseDirectory;
+        String agents = File.ReadAllText(Path.Join(directory, "agents.json"));
         agentList = System.Text.Json.JsonSerializer.Deserialize<List<Agent>>(agents)!;
     }
 
@@ -35,8 +34,8 @@ internal class AgentRepository : IAgentRepository
 
     public Agent GetById(Guid entityUId)
     {
-        var agent = agentList.FirstOrDefault(a => a.AgentUId == entityUId);
-        
+        Agent? agent = agentList.FirstOrDefault(a => a.AgentUId == entityUId);
+
         if (agent == null)
         {
             throw new KeyNotFoundException($"Agent with ID {entityUId} not found.");
@@ -47,7 +46,7 @@ internal class AgentRepository : IAgentRepository
 
     public Agent Update(Agent entity)
     {
-        var agentIndex = this.agentList.FindIndex(a => a.AgentUId == entity.AgentUId);
+        Int32 agentIndex = this.agentList.FindIndex(a => a.AgentUId == entity.AgentUId);
 
         if (agentIndex >= 0)
         {

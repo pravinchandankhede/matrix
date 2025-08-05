@@ -1,6 +1,6 @@
 ﻿namespace Matrix.DataSourceLayer.DataLayer;
 
-using Matrix.DataSourceLayer.DataModels;
+using Matrix.DataModels.DataSources;
 using Matrix.DataSourceLayer.Interfaces;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -12,16 +12,16 @@ public class DataSourceCollectionRepository : IDataSourceCollectionRepository
 
     public DataSourceCollectionRepository()
     {
-        var directory = AppDomain.CurrentDomain.BaseDirectory;
-        var DataSourceCollections = File.ReadAllText(Path.Join(directory, "DataSourceCollections.json"));
+        String directory = AppDomain.CurrentDomain.BaseDirectory;
+        String DataSourceCollections = File.ReadAllText(Path.Join(directory, "DataSourceCollections.json"));
 
-        var options = new JsonSerializerOptions
+        JsonSerializerOptions options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         };
         options.Converters.Add(new JsonStringEnumConverter());
 
-        _dataSourceCollectionList = System.Text.Json.JsonSerializer.Deserialize<List<DataSourceCollection>>(DataSourceCollections,options) ?? new List<DataSourceCollection>();
+        _dataSourceCollectionList = System.Text.Json.JsonSerializer.Deserialize<List<DataSourceCollection>>(DataSourceCollections, options) ?? new List<DataSourceCollection>();
     }
 
     public void AddDataSourceCollection(DataSourceCollection DataSourceCollection)
@@ -31,7 +31,7 @@ public class DataSourceCollectionRepository : IDataSourceCollectionRepository
 
     public void DeleteDataSourceCollection(Guid id)
     {
-       _dataSourceCollectionList.RemoveAll(ds => ds.DataSourceCollectionUId == id);
+        _dataSourceCollectionList.RemoveAll(ds => ds.DataSourceCollectionUId == id);
     }
 
     public IEnumerable<DataSourceCollection> GetAllDataSourceCollections()

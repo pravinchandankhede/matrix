@@ -2,6 +2,7 @@
 
 namespace Matrix.DataSourceLayer.Services.Controllers;
 
+using Matrix.DataModels.DataSources;
 using Matrix.DataSourceLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,13 +19,13 @@ public class DataSourcesController : ControllerBase
 
     // GET: api/<AgentsController>
     [HttpGet]
-    public IEnumerable<Matrix.DataSourceLayer.DataModels.DataSource> Get()
+    public IEnumerable<DataSource> Get()
     {
         return _dataSourceRepository.GetAllDataSources();
     }
 
     [HttpPost]
-    public IActionResult AddAgent([FromBody] Matrix.DataSourceLayer.DataModels.DataSource dataSource)
+    public IActionResult AddAgent([FromBody] DataSource dataSource)
     {
         if (dataSource == null)
         {
@@ -39,7 +40,7 @@ public class DataSourcesController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(Guid id)
     {
-        DataModels.DataSource dataSource = _dataSourceRepository.GetDataSourceById(id);
+        DataSource dataSource = _dataSourceRepository.GetDataSourceById(id);
         return dataSource != null ? Ok(dataSource) : NotFound();
     }
 

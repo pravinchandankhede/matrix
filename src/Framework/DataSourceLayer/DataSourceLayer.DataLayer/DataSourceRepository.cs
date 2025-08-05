@@ -1,6 +1,6 @@
 ﻿namespace Matrix.DataSourceLayer.DataLayer;
 
-using Matrix.DataSourceLayer.DataModels;
+using Matrix.DataModels.DataSources;
 using Matrix.DataSourceLayer.Interfaces;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -12,17 +12,17 @@ public class DataSourceRepository : IDataSourceRepository
 
     public DataSourceRepository()
     {
-        var directory = AppDomain.CurrentDomain.BaseDirectory;
-        var dataSources = File.ReadAllText(Path.Join(directory, "datasources.json"));
+        String directory = AppDomain.CurrentDomain.BaseDirectory;
+        String dataSources = File.ReadAllText(Path.Join(directory, "datasources.json"));
 
-        var options = new JsonSerializerOptions
+        JsonSerializerOptions options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Use original property names
         };
         options.Converters.Add(new JsonStringEnumConverter());
 
-        _dataSourceList = System.Text.Json.JsonSerializer.Deserialize<List<DataSource>>(dataSources,options) ?? new List<DataSource>();
+        _dataSourceList = System.Text.Json.JsonSerializer.Deserialize<List<DataSource>>(dataSources, options) ?? new List<DataSource>();
     }
 
     public void AddDataSource(DataSource dataSource)
@@ -32,7 +32,7 @@ public class DataSourceRepository : IDataSourceRepository
 
     public void DeleteDataSource(Guid id)
     {
-       _dataSourceList.RemoveAll(ds => ds.DataSourceUId == id);
+        _dataSourceList.RemoveAll(ds => ds.DataSourceUId == id);
     }
 
     public IEnumerable<DataSource> GetAllDataSources()

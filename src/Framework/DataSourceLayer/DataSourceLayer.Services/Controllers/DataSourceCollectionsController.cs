@@ -2,6 +2,7 @@
 
 namespace Matrix.DataSourceLayer.Services.Controllers;
 
+using Matrix.DataModels.DataSources;
 using Matrix.DataSourceLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,13 +19,13 @@ public class DataSourceCollectionsController : ControllerBase
 
     // GET: api/<AgentsController>
     [HttpGet]
-    public IEnumerable<Matrix.DataSourceLayer.DataModels.DataSourceCollection> Get()
+    public IEnumerable<DataSourceCollection> Get()
     {
         return _dataSourceCollectionRepository.GetAllDataSourceCollections();
     }
 
     [HttpPost]
-    public IActionResult AddDataSourceCollection([FromBody] Matrix.DataSourceLayer.DataModels.DataSourceCollection dataSourceCollection)
+    public IActionResult AddDataSourceCollection([FromBody] DataSourceCollection dataSourceCollection)
     {
         if (dataSourceCollection == null)
         {
@@ -39,7 +40,7 @@ public class DataSourceCollectionsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(Guid id)
     {
-        DataModels.DataSourceCollection dataSourceCollection = _dataSourceCollectionRepository.GetDataSourceCollectionById(id);
+        DataSourceCollection dataSourceCollection = _dataSourceCollectionRepository.GetDataSourceCollectionById(id);
         return dataSourceCollection != null ? Ok(dataSourceCollection) : NotFound();
     }
 

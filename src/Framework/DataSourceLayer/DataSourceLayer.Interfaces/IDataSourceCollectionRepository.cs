@@ -1,6 +1,6 @@
 ﻿namespace Matrix.DataSourceLayer.Interfaces;
 
-using Matrix.DataSourceLayer.DataModels;
+using Matrix.DataModels.DataSources;
 
 public interface IDataSourceCollectionRepository
 {

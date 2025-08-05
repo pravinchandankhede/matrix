@@ -1,0 +1,50 @@
+[
+    {
+        "AgentUId": "AAC45BA4-A8A3-4448-B74E-603BB9B4FC84",
+        "Name": "Invoice",
+        "Description": "An agent that processes invoices and manages billing tasks. This can talk to multiple systems and get the relevant responses for you.",
+        "Type": "Billing",
+        "Capabilities": [
+            "Invoice processing",
+            "Billing management",
+            "Payment tracking"
+        ],
+        "Status": "Active",
+        "Version": "1.0.0",
+        "CreatedDate": "2023-10-01T12:00:00Z",
+        "LastUpdatedDate": "2023-10-15T12:00:00Z",
+        "Configuration": {
+            "MaxRetries": 3,
+            "TimeoutSeconds": 30,
+            "LogLevel": "Info"
+        },
+        "Dependencies": [
+            "DatabaseService",
+            "NotificationService"
+        ]
+    },
+    {
+        "AgentUId": "BBD56CA5-B9B4-5559-C85F-704CC9C5FD95",
+        "Name": "CustomerSupport",
+        "Description": "An agent that handles customer support queries and issues.",
+        "Type": "Support",
+        "Capabilities": [
+            "Query handling",
+            "Issue resolution",
+            "Feedback collection"
+        ],
+        "Status": "Active",
+        "Version": "1.0.0",
+        "CreatedDate": "2023-10-05T12:00:00Z",
+        "LastUpdatedDate": "2023-10-20T12:00:00Z",
+        "Configuration": {
+            "MaxRetries": 5,
+            "TimeoutSeconds": 45,
+            "LogLevel": "Debug"
+        },
+        "Dependencies": [
+            "CRMService",
+            "KnowledgeBaseService"
+        ]
+    }
+]

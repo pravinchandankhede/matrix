@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '../../../datamodels/data-source.model';
@@ -10,13 +10,16 @@ import { DataSourceType, AccessMode, AuthenticationType } from '../../../datamod
     selector: 'app-data-source-detail',
     standalone: false,
     templateUrl: './data-source-detail.component.html',
-    styleUrls: ['./data-source-detail.component.css']
+    styleUrls: ['./data-source-detail.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> {
     dataSourceForm: FormGroup;
     dataSourceTypes = Object.values(DataSourceType);
     accessModes = Object.values(AccessMode);
     authenticationTypes = Object.values(AuthenticationType);
+    activeSection: string = 'general';
+    tagsString: string = '';
 
     constructor(
         private fb: FormBuilder,
@@ -30,11 +33,12 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> {
 
     public loadItem(id: string): void {
         this.dataSourceService.getDataSource(id).subscribe({
-            next: (dataSource) => {
+            next: (dataSource: any) => {
                 this.item = dataSource;
                 this.populateForm(dataSource);
+                this.updateTagsString();
             },
-            error: (error) => console.error('Error loading data source:', error)
+            error: (error: any) => console.error('Error loading data source:', error)
         });
     }
 
@@ -66,6 +70,9 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> {
             return;
         }
 
+        // Update metadata from tags before saving
+        this.updateMetadataFromTags();
+
         if (this.dataSourceForm.valid) {
             const formValue = this.dataSourceForm.value;
             const dataSourceToSave: DataSource = {
@@ -80,12 +87,12 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> {
                 : this.dataSourceService.createDataSource(dataSourceToSave);
 
             saveOperation.subscribe({
-                next: (savedDataSource) => {
+                next: (savedDataSource: any) => {
                     this.item = savedDataSource;
                     console.log('Data source saved successfully');
                     this.router.navigate(['/datasources']);
                 },
-                error: (error) => console.error('Error saving data source:', error)
+                error: (error: any) => console.error('Error saving data source:', error)
             });
         }
     }
@@ -97,7 +104,7 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> {
                     console.log('Data source deleted successfully');
                     this.router.navigate(['/datasources']);
                 },
-                error: (error) => console.error('Error deleting data source:', error)
+                error: (error: any) => console.error('Error deleting data source:', error)
             });
         }
     }
@@ -136,5 +143,49 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> {
 
     get isEditMode(): boolean {
         return !!this.item?.dataSourceUId;
+    }
+
+    // Navigation methods for two-panel layout
+    setActiveSection(section: string): void {
+        this.activeSection = section;
+    }
+
+    hasConnectionDetails(): boolean {
+        return this.item?.type === 'Structured' || this.item?.type === 'Vector';
+    }
+
+    getTagsFromMetadata(): string[] {
+        if (!this.item?.metadata) return [];
+
+        // Extract tags from metadata array
+        const tagsMetadata = this.item.metadata.find(m => m['key'] === 'tags');
+        if (tagsMetadata && tagsMetadata['value']) {
+            return tagsMetadata['value'].split(',').map((tag: string) => tag.trim());
+        }
+        return [];
+    }
+
+    private updateTagsString(): void {
+        this.tagsString = this.getTagsFromMetadata().join(', ');
+    }
+
+    private updateMetadataFromTags(): void {
+        if (!this.item) return;
+
+        if (!this.item.metadata) {
+            this.item.metadata = [];
+        }
+
+        // Remove existing tags metadata
+        this.item.metadata = this.item.metadata.filter(m => m['key'] !== 'tags');
+
+        // Add new tags metadata if tags exist
+        if (this.tagsString.trim()) {
+            this.item.metadata.push({
+                key: 'tags',
+                value: this.tagsString,
+                type: 'string'
+            });
+        }
     }
 }

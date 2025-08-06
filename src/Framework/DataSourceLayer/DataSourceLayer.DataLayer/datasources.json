@@ -12,7 +12,7 @@
         "IsActive": true,
         "AccessMode": "ReadWrite",
         "AuthenticationType": "OAuth2",
-        "ConnectionDetails": {
+        "StructuredDataSource": {
             "Host": "db.company.com",
             "Port": 5432,
             "DatabaseName": "customers",
@@ -34,7 +34,7 @@
         "IsActive": true,
         "AccessMode": "ReadOnly",
         "AuthenticationType": "BasicAuth",
-        "ConnectionDetails": {
+        "StructuredDataSource": {
             "Host": "mysql.company.com",
             "Port": 3306,
             "DatabaseName": "finance",
@@ -56,7 +56,7 @@
         "IsActive": true,
         "AccessMode": "ReadWrite",
         "AuthenticationType": "Token",
-        "ConnectionDetails": {
+        "StructuredDataSource": {
             "Host": "sqlserver.company.com",
             "Port": 1433,
             "DatabaseName": "hr",
@@ -445,7 +445,7 @@
         "IsActive": true,
         "AccessMode": "ReadWrite",
         "AuthenticationType": "APIKey",
-        "ConnectionDetails": {
+        "VectorDataSource": {
             "VectorDbType": "Pinecone",
             "IndexName": "image-index",
             "EmbeddingModel": "resnet50",
@@ -466,7 +466,7 @@
         "IsActive": true,
         "AccessMode": "ReadWrite",
         "AuthenticationType": "APIKey",
-        "ConnectionDetails": {
+        "VectorDataSource": {
             "VectorDbType": "FAISS",
             "IndexName": "text-index",
             "EmbeddingModel": "bert-base",
@@ -487,7 +487,7 @@
         "IsActive": true,
         "AccessMode": "ReadWrite",
         "AuthenticationType": "APIKey",
-        "ConnectionDetails": {
+        "VectorDataSource": {
             "VectorDbType": "Weaviate",
             "IndexName": "product-index",
             "EmbeddingModel": "custom-model",

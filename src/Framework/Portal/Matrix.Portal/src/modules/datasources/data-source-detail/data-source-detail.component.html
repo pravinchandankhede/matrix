@@ -9,43 +9,287 @@
                 <mat-icon>close</mat-icon> Cancel
             </button>
         </div>
-        <form *ngIf="editMode; else viewMode" class="detail-form">
-            <div class="form-row">
-                <label>Data Source UID:</label>
-                <input type="text" [(ngModel)]="item.dataSourceUId" name="dataSourceUId" />
+
+        <div class="detail-content two-pane-layout">
+            <!-- Left Navigation Panel -->
+            <div class="left-panel">
+                <nav class="section-nav">
+                    <ul>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'general'"
+                            (click)="setActiveSection('general')">
+                            <mat-icon>info</mat-icon>
+                            <span>General</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'configuration'"
+                            (click)="setActiveSection('configuration')">
+                            <mat-icon>settings</mat-icon>
+                            <span>Configuration</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'connection'"
+                            (click)="setActiveSection('connection')"
+                            *ngIf="hasConnectionDetails()">
+                            <mat-icon>link</mat-icon>
+                            <span>Connection Details</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'security'"
+                            (click)="setActiveSection('security')">
+                            <mat-icon>security</mat-icon>
+                            <span>Security</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'metadata'"
+                            (click)="setActiveSection('metadata')">
+                            <mat-icon>description</mat-icon>
+                            <span>Metadata</span>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <div class="form-row">
-                <label>Name:</label>
-                <input type="text" [(ngModel)]="item.name" name="name" />
+
+            <!-- Right Content Panel -->
+            <div class="right-panel">
+                <div class="section-content">
+                    <!-- Edit Mode -->
+                    <form *ngIf="editMode; else viewMode" class="detail-form">
+                        <!-- General Section -->
+                        <div class="content-section" *ngIf="activeSection === 'general'">
+                            <h3>General Information</h3>
+                            <div class="form-grid">
+                                <div class="form-row">
+                                    <label>Data Source UID:</label>
+                                    <input type="text" [(ngModel)]="item.dataSourceUId" name="dataSourceUId" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Name:</label>
+                                    <input type="text" [(ngModel)]="item.name" name="name" />
+                                </div>
+                                <div class="form-row full-width">
+                                    <label>Description:</label>
+                                    <textarea [(ngModel)]="item.description" name="description" rows="3"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <label>Owner:</label>
+                                    <input type="text" [(ngModel)]="item.owner" name="owner" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Configuration Section -->
+                        <div class="content-section" *ngIf="activeSection === 'configuration'">
+                            <h3>Configuration</h3>
+                            <div class="form-grid">
+                                <div class="form-row">
+                                    <label>Type:</label>
+                                    <select [(ngModel)]="item.type" name="type">
+                                        <option value="Structured">Structured</option>
+                                        <option value="SemiStructured">Semi-Structured</option>
+                                        <option value="Unstructured">Unstructured</option>
+                                        <option value="Multimedia">Multimedia</option>
+                                        <option value="Streaming">Streaming</option>
+                                        <option value="External">External</option>
+                                        <option value="Proprietary">Proprietary</option>
+                                        <option value="Vector">Vector</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label>Sub Type:</label>
+                                    <input type="text" [(ngModel)]="item.subType" name="subType" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Access Mode:</label>
+                                    <select [(ngModel)]="item.accessMode" name="accessMode">
+                                        <option value="ReadOnly">Read Only</option>
+                                        <option value="ReadWrite">Read Write</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label>
+                                        <input type="checkbox" [(ngModel)]="item.isActive" name="isActive" />
+                                        Active
+                                    </label>
+                                </div>
+                                <div class="form-row">
+                                    <label>
+                                        <input type="checkbox" [(ngModel)]="item.isCustom" name="isCustom" />
+                                        Custom
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Connection Details Section -->
+                        <div class="content-section" *ngIf="activeSection === 'connection' && hasConnectionDetails()">
+                            <h3>Connection Details</h3>
+                            <app-structured-connection-details *ngIf="item.type === 'Structured'"
+                                                               [dataSource]="item"
+                                                               [mode]="'edit'">
+                            </app-structured-connection-details>
+                            <app-vector-connection-details *ngIf="item.type === 'Vector'"
+                                                           [dataSource]="item"
+                                                           [mode]="'edit'">
+                            </app-vector-connection-details>
+                        </div>
+
+                        <!-- Security Section -->
+                        <div class="content-section" *ngIf="activeSection === 'security'">
+                            <h3>Security Settings</h3>
+                            <div class="form-grid">
+                                <div class="form-row">
+                                    <label>Authentication Type:</label>
+                                    <select [(ngModel)]="item.authenticationType" name="authenticationType">
+                                        <option value="None">None</option>
+                                        <option value="APIKey">API Key</option>
+                                        <option value="OAuth2">OAuth2</option>
+                                        <option value="BasicAuth">Basic Auth</option>
+                                        <option value="Token">Token</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Metadata Section -->
+                        <div class="content-section" *ngIf="activeSection === 'metadata'">
+                            <h3>Metadata</h3>
+                            <div class="form-grid">
+                                <div class="form-row full-width">
+                                    <label>Tags:</label>
+                                    <input type="text" [(ngModel)]="tagsString" name="tags" placeholder="Comma-separated tags" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Created By:</label>
+                                    <input type="text" [(ngModel)]="item.createdBy" name="createdBy" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Modified By:</label>
+                                    <input type="text" [(ngModel)]="item.modifiedBy" name="modifiedBy" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-primary" (click)="onSave()">
+                                <mat-icon>save</mat-icon> Save
+                            </button>
+                            <button type="button" class="btn-secondary" (click)="onCancelEdit()">
+                                <mat-icon>cancel</mat-icon> Cancel
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- View Mode -->
+                    <ng-template #viewMode>
+                        <!-- General Section -->
+                        <div class="content-section" *ngIf="activeSection === 'general'">
+                            <h3>General Information</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Data Source UID:</label>
+                                    <span class="uid">{{ item.dataSourceUId }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Name:</label>
+                                    <span>{{ item.name }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.description">
+                                    <label>Description:</label>
+                                    <span>{{ item.description }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Owner:</label>
+                                    <span>{{ item.owner }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Configuration Section -->
+                        <div class="content-section" *ngIf="activeSection === 'configuration'">
+                            <h3>Configuration</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Type:</label>
+                                    <span>{{ item.type }} - {{ item.subType }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Access Mode:</label>
+                                    <span>{{ item.accessMode }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Status:</label>
+                                    <span class="status" [class.active]="item.isActive" [class.inactive]="!item.isActive">
+                                        {{ item.isActive ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Custom:</label>
+                                    <span>{{ item.isCustom ? 'Yes' : 'No' }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Created:</label>
+                                    <span>{{ item.createdDate | date:'medium' }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedDate">
+                                    <label>Updated:</label>
+                                    <span>{{ item.modifiedDate | date:'medium' }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Connection Details Section -->
+                        <div class="content-section" *ngIf="activeSection === 'connection' && hasConnectionDetails()">
+                            <h3>Connection Details</h3>
+                            <app-structured-connection-details *ngIf="item.type === 'Structured'"
+                                                               [dataSource]="item"
+                                                               [mode]="'view'">
+                            </app-structured-connection-details>
+                            <app-vector-connection-details *ngIf="item.type === 'Vector'"
+                                                           [dataSource]="item"
+                                                           [mode]="'view'">
+                            </app-vector-connection-details>
+                        </div>
+
+                        <!-- Security Section -->
+                        <div class="content-section" *ngIf="activeSection === 'security'">
+                            <h3>Security Settings</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Authentication:</label>
+                                    <span>{{ item.authenticationType }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Metadata Section -->
+                        <div class="content-section" *ngIf="activeSection === 'metadata'">
+                            <h3>Metadata</h3>
+                            <div class="info-grid">
+                                <div class="info-row" *ngIf="item.metadata && item.metadata.length > 0">
+                                    <label>Tags:</label>
+                                    <div class="tags">
+                                        <span class="tag" *ngFor="let tag of getTagsFromMetadata()">{{ tag }}</span>
+                                    </div>
+                                </div>
+                                <div class="info-row">
+                                    <label>Created By:</label>
+                                    <span>{{ item.createdBy }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedBy">
+                                    <label>Modified By:</label>
+                                    <span>{{ item.modifiedBy }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Correlation UID:</label>
+                                    <span class="uid">{{ item.correlationUId }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
             </div>
-            <div class="form-row">
-                <label>Description:</label>
-                <textarea [(ngModel)]="item.description" name="description"></textarea>
-            </div>
-            <div class="form-row">
-                <label>Type:</label>
-                <select [(ngModel)]="item.type" name="type">
-                    <option value="Structured">Structured</option>
-                    <option value="SemiStructured">Semi-Structured</option>
-                    <option value="Vector">Vector</option>
-                    <option value="Multimedia">Multimedia</option>
-                    <option value="Streaming">Streaming</option>
-                    <option value="External">External</option>
-                    <option value="Proprietary">Proprietary</option>
-                </select>
-            </div>
-            <div class="form-actions">
-                <button type="submit" class="save-btn" (click)="onSave()">Save</button>
-            </div>
-        </form>
-        <ng-template #viewMode>
-            <div class="detail-view">
-                <div class="form-row"><label>Data Source UID:</label> {{ item.dataSourceUId }}</div>
-                <div class="form-row"><label>Name:</label> {{ item.name }}</div>
-                <div class="form-row"><label>Description:</label> {{ item.description }}</div>
-                <div class="form-row"><label>Type:</label> {{ item.type }}</div>
-            </div>
-        </ng-template>
+        </div>
     </div>
 </div>
 

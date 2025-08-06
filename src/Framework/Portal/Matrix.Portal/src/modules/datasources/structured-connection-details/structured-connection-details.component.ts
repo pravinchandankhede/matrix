@@ -1,68 +1,69 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, ViewEncapsulation } from '@angular/core';
 import { DataSource } from '../../../datamodels/data-source.model';
 
 @Component({
     selector: 'app-structured-connection-details',
     standalone: false,
     templateUrl: './structured-connection-details.component.html',
-    styleUrls: ['./structured-connection-details.component.css']
+    styleUrls: ['./structured-connection-details.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
-export class StructuredConnectionDetailsComponent implements OnInit {
+export class StructuredConnectionDetailsComponent implements OnInit, OnChanges {
     @Input() dataSource: DataSource | null = null;
     @Input() mode: 'view' | 'edit' = 'view';
     @Input() readonly: boolean = false;
     @Output() connectionChange = new EventEmitter<any>();
 
-    form!: FormGroup;
+    tableListString: string = '';
 
-    constructor(private fb: FormBuilder) { }
+    get structuredDataSource() {
+        return this.dataSource?.structuredDataSource!;
+    }
+
+    constructor() { }
 
     ngOnInit() {
-        const structuredData = this.dataSource?.structuredDataSource;
-        this.form = this.fb.group({
-            host: [structuredData?.host || ''],
-            port: [structuredData?.port || 0],
-            databaseName: [structuredData?.databaseName || ''],
-            schema: [structuredData?.schema || ''],
-            tableList: [structuredData?.tableList?.join(', ') || ''],
-            queryTemplate: [structuredData?.queryTemplate || '']
-        });
-
-        if (this.mode === 'view' || this.readonly) {
-            this.form.disable();
-        }
-
-        this.form.valueChanges.subscribe(value => {
-            this.connectionChange.emit(value);
-        });
+        this.initializeStructuredDataSource();
+        this.updateTableListString();
     }
 
-    getConnectionValue(key: string): string {
-        const structuredData = this.dataSource?.structuredDataSource;
-        if (structuredData && key in structuredData) {
-            const value = (structuredData as any)[key];
-            return value ? value.toString() : '';
-        }
-        return '';
+    ngOnChanges() {
+        this.initializeStructuredDataSource();
+        this.updateTableListString();
     }
 
-    hasConnectionDetails(): boolean {
-        return !!this.dataSource?.structuredDataSource;
-    }
-
-    onSave(): void {
-        if (this.form.valid) {
-            const formValue = this.form.value;
-            const connectionData = {
-                ...formValue,
-                tableList: formValue.tableList ? formValue.tableList.split(',').map((t: string) => t.trim()) : []
+    private initializeStructuredDataSource() {
+        if (this.dataSource && !this.dataSource.structuredDataSource) {
+            this.dataSource.structuredDataSource = {
+                host: '',
+                port: 0,
+                databaseName: '',
+                schema: '',
+                tableList: [],
+                queryTemplate: '',
+                createdBy: '',
+                createdDate: new Date(),
+                modifiedBy: '',
+                modifiedDate: new Date(),
+                correlationUId: '',
+                rowVersion: new Uint8Array(),
+                metadata: []
             };
-            this.connectionChange.emit(connectionData);
         }
     }
 
-    onCancel(): void {
-        this.form.reset();
+    private updateTableListString() {
+        if (this.dataSource?.structuredDataSource?.tableList) {
+            this.tableListString = this.dataSource.structuredDataSource.tableList.join(', ');
+        }
+    }
+
+    onTableListChange() {
+        if (this.dataSource?.structuredDataSource) {
+            this.dataSource.structuredDataSource.tableList = this.tableListString
+                .split(',')
+                .map(table => table.trim())
+                .filter(table => table.length > 0);
+        }
     }
 }

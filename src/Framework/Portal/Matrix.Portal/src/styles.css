@@ -396,11 +396,11 @@ body {
         transform: translateY(-1px);
     }
 
-    .view-icon-btn {
-        background: rgba(102, 16, 242, 0.1);
-        border-color: rgba(102, 16, 242, 0.2);
-        color: #6610f2;
-    }
+.view-icon-btn {
+    background: rgba(102, 16, 242, 0.1);
+    border-color: rgba(102, 16, 242, 0.2);
+    color: #6610f2;
+}
 
     .view-icon-btn:hover {
         background: rgba(102, 16, 242, 0.15);
@@ -619,6 +619,20 @@ body {
     border-radius: 0.25rem;
 }
 
+.code-block {
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    color: #1f2937;
+    background: #f1f5f9;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    display: block;
+    margin-top: 4px;
+}
+
 .no-items-message {
     text-align: center;
     padding: 3rem 2rem;
@@ -632,173 +646,298 @@ body {
         margin-bottom: 1rem;
     }
 
-/* Global Connection Detail Form Styles */
-.connection-detail-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  width: 100%;
-  box-sizing: border-box;
+/* Data Source Detail Component Styles - Moved from component-specific CSS */
+
+/* Two-pane layout styles */
+.two-pane-layout {
+    display: flex;
+    flex: 1;
+    min-height: 600px;
+    background-color: #f8fafc;
+    width: 100%;
+    overflow: hidden;
 }
 
-/* Connection Detail Form */
-.connection-detail-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
+.left-panel {
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
+    background: white;
+    border-right: 1px solid #e2e8f0;
+    box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
 }
 
-.connection-form-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  background: #f8fafc;
-  border-radius: 8px;
-  /* border: 1px solid #e2e8f0; */
-  box-sizing: border-box;
-  width: 100%;
-  min-width: 0;
+.right-panel {
+    flex: 1;
+    background: #f8fafc;
+    overflow-y: auto;
+    min-width: 0;
+    width: calc(100% - 280px);
 }
 
-.connection-form-row.full-width {
-  grid-column: 1 / -1;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+.section-nav ul {
+    list-style: none;
+    padding: 16px 0;
+    margin: 0;
 }
 
-.connection-form-row label {
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
-  min-width: 120px;
-  flex-shrink: 0;
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #64748b;
 }
 
-.connection-form-row.full-width label {
-  min-width: auto;
+    .nav-item:hover {
+        background-color: #f1f5f9;
+        color: #3b82f6;
+    }
+
+    .nav-item.active {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+
+    .nav-item mat-icon {
+        margin-right: 12px;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+.section-content {
+    padding: 32px;
+    width: 100%;
+    background: white;
+    margin: 16px 0 16px 0;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
-.connection-form-row input,
-.connection-form-row textarea,
-.connection-form-row select {
-  padding: 12px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  background: white;
-  color: #1f2937;
-  flex: 1;
-  min-width: 0;
-  box-sizing: border-box;
-  width: 0;
+.content-section h3 {
+    margin: 0 0 24px 0;
+    color: #1e293b;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-bottom: 3px solid #3b82f6;
+    padding-bottom: 12px;
+    display: inline-block;
 }
 
-.connection-form-row.full-width input,
-.connection-form-row.full-width textarea,
-.connection-form-row.full-width select {
-  width: 100%;
+/* Enhanced Form Grid Styles */
+.detail-form .content-section .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.connection-form-row input:focus,
-.connection-form-row textarea:focus,
-.connection-form-row select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+/* Enhanced Form Row Styles - Override existing global styles */
+.detail-form .form-row,
+.content-section .form-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 8px;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
-.connection-form-row input[readonly],
-.connection-form-row textarea[readonly],
-.connection-form-row select[disabled] {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  color: #6b7280;
-  cursor: default;
+    .detail-form .form-row label,
+    .content-section .form-row label {
+        font-weight: 600;
+        color: #374151;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+        min-width: 120px;
+        flex-shrink: 0;
+    }
+
+    .detail-form .form-row input,
+    .detail-form .form-row textarea,
+    .detail-form .form-row select,
+    .content-section .form-row input,
+    .content-section .form-row textarea,
+    .content-section .form-row select {
+        flex: 1;
+        padding: 12px 16px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        background: white;
+        transition: all 0.2s ease;
+        min-width: 0;
+    }
+
+        .detail-form .form-row input:focus,
+        .detail-form .form-row textarea:focus,
+        .detail-form .form-row select:focus,
+        .content-section .form-row input:focus,
+        .content-section .form-row textarea:focus,
+        .content-section .form-row select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+/* Special handling for checkbox rows */
+.form-row:has(input[type="checkbox"]) {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
 }
 
-.connection-form-row input.view-mode,
-.connection-form-row textarea.view-mode,
-.connection-form-row select.view-mode {
-  background: transparent;
-  border: none;
-  padding: 8px 0;
-  font-weight: 500;
-  color: #1f2937;
-  cursor: text;
-  box-shadow: none;
+    .form-row:has(input[type="checkbox"]) label {
+        order: 2;
+        min-width: auto;
+    }
+
+/* Enhanced View Mode Styles */
+.content-section .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.connection-form-row input.view-mode:focus,
-.connection-form-row textarea.view-mode:focus,
-.connection-form-row select.view-mode:focus {
-  outline: none;
-  border: none;
-  box-shadow: none;
+/* Enhanced Info Row Styles - Override existing global styles */
+.content-section .info-row,
+.info-grid .info-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 8px;
 }
 
-.connection-form-row textarea {
-  resize: vertical;
-  min-height: 80px;
+    .content-section .info-row label,
+    .info-grid .info-row label {
+        font-weight: 600;
+        color: #374151;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+        min-width: 120px;
+        flex-shrink: 0;
+    }
+
+    .content-section .info-row span,
+    .info-grid .info-row span {
+        color: #1f2937;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        flex: 1;
+    }
+
+/* Enhanced Button Styles */
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.connection-form-actions {
-  display: flex;
-  gap: 16px;
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid #e5e7eb;
-  grid-column: 1 / -1;
-  justify-content: flex-start;
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+.btn-secondary {
+    background: white;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.connection-btn-primary {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    .btn-secondary:hover {
+        background: #f9fafb;
+        border-color: #9ca3af;
+        color: #374151;
+    }
+
+/* Override connection detail component styles to match design */
+.content-section app-structured-connection-details,
+.content-section app-vector-connection-details {
+    width: 100%;
+    display: block;
 }
 
-.connection-btn-primary:hover {
-  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+.form-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.connection-btn-secondary {
-  background: white;
-  color: #6b7280;
-  border: 1px solid #d1d5db;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* Enhanced status and specialty classes */
+.status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
-.connection-btn-secondary:hover {
-  background: #f9fafb;
-  border-color: #9ca3af;
-  color: #374151;
+    .status.active {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .status.inactive {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+.uid {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #3730a3;
+}
+
+/* Override connection detail component styles in edit mode */
+.detail-form app-structured-connection-details,
+.detail-form app-vector-connection-details {
+    grid-column: 1 / -1;
+    width: 100%;
+    display: block;
 }
 
 @media (max-width: 1024px) {

@@ -1,35 +1,61 @@
-<form [formGroup]="form" class="connection-detail-form">
-  <div class="connection-form-row">
-    <label>Vector DB Type</label>
-    <select formControlName="vectorDbType" [disabled]="mode === 'view'" [class.view-mode]="mode === 'view'">
-      <option value="Pinecone">Pinecone</option>
-      <option value="FAISS">FAISS</option>
-      <option value="Weaviate">Weaviate</option>
-      <option value="Qdrant">Qdrant</option>
-    </select>
-  </div>
-  <div class="connection-form-row">
-    <label>Index Name</label>
-    <input formControlName="indexName" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'">
-  </div>
-  <div class="connection-form-row">
-    <label>Embedding Model</label>
-    <input formControlName="embeddingModel" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'">
-  </div>
-  <div class="connection-form-row">
-    <label>Dimension</label>
-    <input type="number" formControlName="dimension" [readonly]="mode === 'view'" [class.view-mode]="mode === 'view'">
-  </div>
-  <div class="connection-form-row">
-    <label>Distance Metric</label>
-    <select formControlName="distanceMetric" [disabled]="mode === 'view'" [class.view-mode]="mode === 'view'">
-      <option value="Cosine">Cosine</option>
-      <option value="Euclidean">Euclidean</option>
-      <option value="DotProduct">Dot Product</option>
-    </select>
-  </div>
-  <div class="connection-form-actions" *ngIf="mode !== 'view'">
-    <button class="connection-btn-primary" type="button" (click)="onSave()">Save</button>
-    <button class="connection-btn-secondary" type="button" (click)="onCancel()">Cancel</button>
-  </div>
-</form>
+<div *ngIf="mode === 'edit' && dataSource?.vectorDataSource; else viewMode">
+    <div class="form-row">
+        <label>Vector DB Type:</label>
+        <select [(ngModel)]="vectorDataSource.vectorDbType" name="vectorDbType">
+            <option value="">Select Vector DB Type</option>
+            <option value="Pinecone">Pinecone</option>
+            <option value="FAISS">FAISS</option>
+            <option value="Weaviate">Weaviate</option>
+            <option value="Qdrant">Qdrant</option>
+            <option value="Chroma">Chroma</option>
+            <option value="Milvus">Milvus</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label>Index Name:</label>
+        <input type="text" [(ngModel)]="vectorDataSource.indexName" name="vectorIndexName" />
+    </div>
+    <div class="form-row">
+        <label>Embedding Model:</label>
+        <input type="text" [(ngModel)]="vectorDataSource.embeddingModel" name="vectorEmbeddingModel" placeholder="e.g., text-embedding-ada-002" />
+    </div>
+    <div class="form-row">
+        <label>Dimension:</label>
+        <input type="number" [(ngModel)]="vectorDataSource.dimension" name="vectorDimension" placeholder="Vector dimension size" />
+    </div>
+    <div class="form-row">
+        <label>Distance Metric:</label>
+        <select [(ngModel)]="vectorDataSource.distanceMetric" name="vectorDistanceMetric">
+            <option value="">Select Distance Metric</option>
+            <option value="Cosine">Cosine</option>
+            <option value="Euclidean">Euclidean</option>
+            <option value="DotProduct">Dot Product</option>
+            <option value="Manhattan">Manhattan</option>
+        </select>
+    </div>
+</div>
+
+<ng-template #viewMode>
+    <div class="info-grid">
+        <div class="info-row" *ngIf="dataSource?.vectorDataSource?.vectorDbType">
+            <label>Vector DB Type:</label>
+            <span>{{ vectorDataSource.vectorDbType }}</span>
+        </div>
+        <div class="info-row" *ngIf="dataSource?.vectorDataSource?.indexName">
+            <label>Index Name:</label>
+            <span>{{ vectorDataSource.indexName }}</span>
+        </div>
+        <div class="info-row" *ngIf="dataSource?.vectorDataSource?.embeddingModel">
+            <label>Embedding Model:</label>
+            <span>{{ vectorDataSource.embeddingModel }}</span>
+        </div>
+        <div class="info-row" *ngIf="dataSource?.vectorDataSource?.dimension">
+            <label>Dimension:</label>
+            <span>{{ vectorDataSource.dimension }}</span>
+        </div>
+        <div class="info-row" *ngIf="dataSource?.vectorDataSource?.distanceMetric">
+            <label>Distance Metric:</label>
+            <span>{{ vectorDataSource.distanceMetric }}</span>
+        </div>
+    </div>
+</ng-template>

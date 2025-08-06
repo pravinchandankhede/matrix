@@ -1,63 +1,50 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, ViewEncapsulation } from '@angular/core';
 import { DataSource } from '../../../datamodels/data-source.model';
+import { VectorDbType, DistanceMetric } from '../../../datamodels/base.model';
 
 @Component({
     selector: 'app-vector-connection-details',
     standalone: false,
     templateUrl: './vector-connection-details.component.html',
-    styleUrls: ['./vector-connection-details.component.css']
+    styleUrls: ['./vector-connection-details.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
-export class VectorConnectionDetailsComponent implements OnInit {
+export class VectorConnectionDetailsComponent implements OnInit, OnChanges {
     @Input() dataSource: DataSource | null = null;
     @Input() mode: 'view' | 'edit' = 'view';
     @Input() readonly: boolean = false;
     @Output() connectionChange = new EventEmitter<any>();
 
-    form!: FormGroup;
+    get vectorDataSource() {
+        return this.dataSource?.vectorDataSource!;
+    }
 
-    constructor(private fb: FormBuilder) { }
+    constructor() { }
 
     ngOnInit() {
-        const vectorData = this.dataSource?.vectorDataSource;
-        this.form = this.fb.group({
-            vectorDbType: [vectorData?.vectorDbType || ''],
-            indexName: [vectorData?.indexName || ''],
-            embeddingModel: [vectorData?.embeddingModel || ''],
-            dimension: [vectorData?.dimension || 0],
-            distanceMetric: [vectorData?.distanceMetric || '']
-        });
+        this.initializeVectorDataSource();
+    }
 
-        if (this.mode === 'view' || this.readonly) {
-            this.form.disable();
+    ngOnChanges() {
+        this.initializeVectorDataSource();
+    }
+
+    private initializeVectorDataSource() {
+        if (this.dataSource && !this.dataSource.vectorDataSource) {
+            this.dataSource.vectorDataSource = {
+                vectorDbType: VectorDbType.Pinecone,
+                indexName: '',
+                embeddingModel: '',
+                dimension: 0,
+                distanceMetric: DistanceMetric.Cosine,
+                createdBy: '',
+                createdDate: new Date(),
+                modifiedBy: '',
+                modifiedDate: new Date(),
+                correlationUId: '',
+                rowVersion: new Uint8Array(),
+                metadata: []
+            };
         }
-
-        this.form.valueChanges.subscribe(value => {
-            this.connectionChange.emit(value);
-        });
-    }
-
-    getConnectionValue(key: string): string {
-        const vectorData = this.dataSource?.vectorDataSource;
-        if (vectorData && key in vectorData) {
-            const value = (vectorData as any)[key];
-            return value ? value.toString() : '';
-        }
-        return '';
-    }
-
-    hasConnectionDetails(): boolean {
-        return !!this.dataSource?.vectorDataSource;
-    }
-
-    onSave(): void {
-        if (this.form.valid) {
-            const connectionData = this.form.value;
-            this.connectionChange.emit(connectionData);
-        }
-    }
-
-    onCancel(): void {
-        this.form.reset();
     }
 }

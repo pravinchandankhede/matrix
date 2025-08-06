@@ -5,7 +5,8 @@ import { ChunkDetailComponent } from './chunk-detail/chunk-detail.component';
 
 const routes: Routes = [
     { path: '', component: ChunkListComponent },
-    { path: 'add', component: ChunkDetailComponent }
+    { path: 'add', component: ChunkDetailComponent },
+    { path: ':id', component: ChunkDetailComponent }
 ];
 
 @NgModule({

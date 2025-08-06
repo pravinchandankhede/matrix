@@ -5,7 +5,8 @@ import { AgentDetailComponent } from './agent-detail/agent-detail.component';
 
 const routes: Routes = [
     { path: '', component: AgentListComponent },
-    { path: 'add', component: AgentDetailComponent }
+    { path: 'add', component: AgentDetailComponent },
+    { path: ':id', component: AgentDetailComponent }
 ];
 
 @NgModule({

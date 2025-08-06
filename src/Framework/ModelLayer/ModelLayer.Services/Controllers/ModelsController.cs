@@ -33,9 +33,9 @@ public class ModelsController : ControllerBase
 
     //// GET api/<AgentsController>/5
     [HttpGet("{id}")]
-    public IActionResult Get(Guid modelId)
+    public IActionResult Get(Guid id)
     {
-        var model = _modelRepository.GetModel(modelId.ToString());
+        var model = _modelRepository.GetModel(id);
         return model != null ? Ok(model) : NotFound();
     }
 

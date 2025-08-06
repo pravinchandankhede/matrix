@@ -6,6 +6,7 @@ import { ModelDetailComponent } from './model-detail/model-detail.component';
 const routes: Routes = [
     { path: '', component: ModelListComponent },
     { path: 'add', component: ModelDetailComponent },
+    { path: ':id', component: ModelDetailComponent }
 ];
 
 @NgModule({

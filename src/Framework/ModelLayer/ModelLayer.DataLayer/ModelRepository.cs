@@ -26,9 +26,9 @@ public class ModelRepository : IModelRepository
         return modelList;
     }
 
-    public Model? GetModel(String name)
+    public Model? GetModel(Guid modelUId)
     {
-        return modelList.FirstOrDefault(m => m.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        return modelList.FirstOrDefault(m => m.ModelUId == modelUId);
     }
 
     public void RemoveModel(String name)
@@ -39,6 +39,7 @@ public class ModelRepository : IModelRepository
     public void UpdateModel(Model model)
     {
         Int32 modelIndex = modelList.FindIndex(m => m.Name.Equals(model.Name, StringComparison.OrdinalIgnoreCase));
+
         if (modelIndex >= 0)
         {
             modelList[modelIndex] = model;

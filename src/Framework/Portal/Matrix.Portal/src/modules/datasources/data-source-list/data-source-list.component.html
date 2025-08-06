@@ -6,84 +6,136 @@
                 <mat-icon>add_circle</mat-icon> Add Data Source
             </button>
         </div>
+
         <div class="toolbar modern-toolbar">
             <div class="search-filter-group">
                 <div class="search-box">
                     <span class="material-icons">search</span>
-                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search by name...">
+                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search data sources...">
                 </div>
-                <select #filterSelect (change)="onFilterChange(filterSelect.value)">
-                    <option value="">All</option>
+
+                <select (change)="onActiveFilterChange($any($event.target).value)">
+                    <option value="">All Status</option>
                     <option value="true">Active</option>
                     <option value="false">Inactive</option>
                 </select>
+
+                <select (change)="onTypeFilterChange($any($event.target).value)">
+                    <option value="">All Types</option>
+                    <option *ngFor="let type of uniqueTypes" [value]="type">{{ type }}</option>
+                </select>
+
                 <button class="filter-btn" (click)="onSearch()">
                     <span class="material-icons">filter_list</span> Filter
                 </button>
             </div>
         </div>
+
         <ng-container *ngIf="filteredDataSources.length > 0; else noDataSources">
             <div class="card-grid">
-                @for (ds of filteredDataSources; track ds) {
-                <div class="card">
+                <div class="card" *ngFor="let ds of filteredDataSources; trackBy: trackByFn">
                     <div class="card-header">
-                        <span class="card-name">{{ ds.Name }}</span>
+                        <span class="card-name">{{ ds.name }}</span>
                         <div class="card-actions">
-                            <span class="status-badge" [ngClass]="ds.Type.toLowerCase()">{{ ds.Type }}</span>
+                            <span class="status-badge" [ngClass]="ds.isActive ? 'active' : 'inactive'">
+                                {{ ds.isActive ? 'Active' : 'Inactive' }}
+                            </span>
+                            <span class="type-badge" [ngClass]="ds.type.toLowerCase()">{{ ds.type }}</span>
                             <button class="edit-icon-btn" (click)="onEdit(ds); $event.stopPropagation()" title="Edit">
                                 <mat-icon>edit</mat-icon>
                             </button>
                             <button class="view-icon-btn" (click)="onView(ds); $event.stopPropagation()" title="View">
                                 <mat-icon>visibility</mat-icon>
                             </button>
+                            <button class="delete-icon-btn" (click)="onDelete(ds); $event.stopPropagation()" title="Delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
                         </div>
                     </div>
+
                     <div class="card-body" (click)="onSelect(ds)">
-                        <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Data Source UID:</span> <span class="uid">{{ ds.DataSourceUId }}</span></div>
-                        <div class="info-row"><mat-icon>person</mat-icon> <span class="label">Owner:</span> <span>{{ ds.Owner }}</span></div>
-                        <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="ds.Description">{{ ds.Description }}</span></div>
-                        <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ ds.Type }}</div>
-                        <div class="info-row"><mat-icon>category</mat-icon> <span class="label">SubType:</span> {{ ds.subType }}</div>
-                        <div class="info-row"><mat-icon>security</mat-icon> <span class="label">Access:</span> {{ ds.accessMode }}</div>
-                        <div class="info-row"><mat-icon>vpn_key</mat-icon> <span class="label">Auth:</span> {{ ds.authenticationType }}</div>
-                        <div class="date-row">
-                            <div><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ ds.CreatedAt | date:'mediumDate' }}</div>
-                            <div *ngIf="ds.UpdatedAt"><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ ds.UpdatedAt | date:'mediumDate' }}</div>
-                        </div>
-                        <div class="audit-row">
-                            <div><mat-icon>person</mat-icon> <span class="label">Owner:</span> {{ ds.Owner }}</div>
-                            <div><mat-icon>person_outline</mat-icon> <span class="label">Created By:</span> {{ ds.createdBy }}</div>
-                        </div>
                         <div class="info-row">
-                            <mat-icon>label</mat-icon> <span class="label">Tags:</span>
-                            <div class="badge-container" *ngIf="ds.tags && ds.tags.length > 0">
-                                @for (tag of ds.tags.slice(0, 3); track tag) {
-                                <span class="tag-badge">{{ tag }}</span>
-                                }
-                                @if (ds.tags.length > 3) {
-                                <span class="more-badge">+{{ ds.tags.length - 3 }} more</span>
-                                }
-                            </div>
-                            <span *ngIf="!ds.tags || ds.tags.length === 0" class="no-tags">No tags</span>
+                            <mat-icon>fingerprint</mat-icon>
+                            <span class="label">Data Source ID:</span>
+                            <span class="uid">{{ ds.dataSourceUId }}</span>
                         </div>
+
+                        <div class="info-row" *ngIf="ds.description">
+                            <mat-icon>description</mat-icon>
+                            <span class="label">Description:</span>
+                            <span class="desc" [title]="ds.description">{{ ds.description }}</span>
+                        </div>
+
                         <div class="info-row">
-                            <mat-icon>power</mat-icon> <span class="label">Status:</span>
-                            <span class="status-badge" [ngClass]="ds.IsActive ? 'active' : 'inactive'">
-                                <mat-icon>{{ ds.IsActive ? 'check_circle' : 'cancel' }}</mat-icon>
-                                {{ ds.IsActive ? 'Active' : 'Inactive' }}
-                            </span>
+                            <mat-icon>person</mat-icon>
+                            <span class="label">Owner:</span>
+                            <span>{{ ds.owner }}</span>
                         </div>
+
+                        <div class="info-row">
+                            <mat-icon>category</mat-icon>
+                            <span class="label">Type:</span>
+                            <span>{{ ds.type }}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <mat-icon>label</mat-icon>
+                            <span class="label">SubType:</span>
+                            <span>{{ ds.subType }}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <mat-icon>security</mat-icon>
+                            <span class="label">Access Mode:</span>
+                            <span>{{ ds.accessMode }}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <mat-icon>vpn_key</mat-icon>
+                            <span class="label">Authentication:</span>
+                            <span>{{ ds.authenticationType }}</span>
+                        </div>
+
                         <div class="info-row" *ngIf="ds.isCustom">
-                            <mat-icon>settings</mat-icon> <span class="label">Custom:</span> Yes
+                            <mat-icon>star</mat-icon>
+                            <span class="label">Custom:</span>
+                            <span class="custom-badge">Yes</span>
+                        </div>
+
+                        <div class="audit-row">
+                            <div class="audit-item">
+                                <mat-icon>person</mat-icon>
+                                <span class="label">Created By:</span>
+                                <span>{{ ds.createdBy }}</span>
+                            </div>
+                            <div class="audit-item">
+                                <mat-icon>schedule</mat-icon>
+                                <span class="label">Created:</span>
+                                <span>{{ ds.createdDate | date:'medium' }}</span>
+                            </div>
+                        </div>
+
+                        <div class="audit-row" *ngIf="ds.modifiedBy">
+                            <div class="audit-item">
+                                <mat-icon>person_outline</mat-icon>
+                                <span class="label">Modified By:</span>
+                                <span>{{ ds.modifiedBy }}</span>
+                            </div>
+                            <div class="audit-item">
+                                <mat-icon>update</mat-icon>
+                                <span class="label">Modified:</span>
+                                <span>{{ ds.modifiedDate | date:'medium' }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                }
             </div>
         </ng-container>
+
         <ng-template #noDataSources>
             <div class="no-items-message">
-                <mat-icon>info</mat-icon> No data sources found. Please add or configure data sources to see them here.
+                <mat-icon>info</mat-icon>
+                No data sources found. Click "Add Data Source" to create your first data source.
             </div>
         </ng-template>
     </div>

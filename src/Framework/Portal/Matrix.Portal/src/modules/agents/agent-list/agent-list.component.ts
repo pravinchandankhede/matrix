@@ -13,17 +13,18 @@ import { BaseListComponent } from '../../../shared/base-list.component';
 })
 export class AgentListComponent extends BaseListComponent<Agent> {
     selectedStatus: string = '';
+    selectedType: string = '';
 
     constructor(
         private router: Router,
-        private agentListService: AgentService, 
+        private agentService: AgentService, 
         private errorService: ErrorService
     ) {
         super();
     }
 
     fetchItems(): void {
-        this.agentListService.getAgents().subscribe({
+        this.agentService.getAgents().subscribe({
             next: (data: Agent[]) => {
                 this.items = data;
                 this.applyFilter();
@@ -49,13 +50,20 @@ export class AgentListComponent extends BaseListComponent<Agent> {
     }
 
     filterPredicate(agent: Agent): boolean {
-        const matchesName = agent.Name.toLowerCase().includes(this.searchTerm.toLowerCase());
-        const matchesStatus = this.selectedStatus ? agent.Status === this.selectedStatus : true;
-        return matchesName && matchesStatus;
+        const matchesName = agent.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                           agent.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+        const matchesStatus = this.selectedStatus ? agent.status === this.selectedStatus : true;
+        const matchesType = this.selectedType ? agent.type === this.selectedType : true;
+        return matchesName && matchesStatus && matchesType;
     }
 
-    override onFilterChange(status: string) {
+    onStatusFilterChange(status: string): void {
         this.selectedStatus = status;
+        this.applyFilter();
+    }
+
+    onTypeFilterChange(type: string): void {
+        this.selectedType = type;
         this.applyFilter();
     }
 
@@ -63,19 +71,46 @@ export class AgentListComponent extends BaseListComponent<Agent> {
         return this.filteredItems;
     }
 
+    get uniqueStatuses(): string[] {
+        return [...new Set(this.items.map(agent => agent.status))].filter(Boolean);
+    }
+
+    get uniqueTypes(): string[] {
+        return [...new Set(this.items.map(agent => agent.type))].filter(Boolean);
+    }
+
     onAdd(): void {
         this.router.navigate(['/agents/add']);
     }
 
     onEdit(agent: Agent): void {
-        this.router.navigate(['/agents', agent.AgentUId], { queryParams: { edit: 'true' } });
+        this.router.navigate(['/agents', agent.agentUId], { queryParams: { edit: 'true' } });
     }
 
     onView(agent: Agent): void {
-        this.router.navigate(['/agents', agent.AgentUId], { queryParams: { edit: 'false' } });
+        this.router.navigate(['/agents', agent.agentUId], { queryParams: { edit: 'false' } });
     }
 
     onSelect(agent: Agent): void {
-        this.router.navigate(['/agents', agent.AgentUId]);
+        this.router.navigate(['/agents', agent.agentUId]);
+    }
+
+    onDelete(agent: Agent): void {
+        if (confirm(`Are you sure you want to delete agent "${agent.name}"?`)) {
+            this.agentService.deleteAgent(agent.agentUId).subscribe({
+                next: () => {
+                    this.fetchItems();
+                    this.errorService.addError(`Agent "${agent.name}" deleted successfully.`, 'Agent List');
+                },
+                error: (err: any) => {
+                    console.error('Delete agent error:', err);
+                    this.errorService.addError('Failed to delete agent.', 'Agent List');
+                }
+            });
+        }
+    }
+
+    trackByFn(index: number, item: Agent): string {
+        return item.agentUId;
     }
 }

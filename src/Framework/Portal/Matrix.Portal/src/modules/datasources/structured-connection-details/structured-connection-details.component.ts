@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DataSource, StructuredConnectionDetails } from '../../../datamodels/data-source.model';
+import { DataSource } from '../../../datamodels/data-source.model';
 
 @Component({
     selector: 'app-structured-connection-details',
@@ -9,62 +9,60 @@ import { DataSource, StructuredConnectionDetails } from '../../../datamodels/dat
     styleUrls: ['./structured-connection-details.component.css']
 })
 export class StructuredConnectionDetailsComponent implements OnInit {
-    @Input() dataSource!: DataSource;
-    @Input() connectionDetails?: StructuredConnectionDetails;
+    @Input() dataSource: DataSource | null = null;
+    @Input() mode: 'view' | 'edit' = 'view';
     @Input() readonly: boolean = false;
-    @Input() mode: 'add' | 'edit' | 'view' = 'view';
-    @Output() save = new EventEmitter<StructuredConnectionDetails>();
-    @Output() cancel = new EventEmitter<void>();
+    @Output() connectionChange = new EventEmitter<any>();
+
     form!: FormGroup;
 
     constructor(private fb: FormBuilder) { }
 
     ngOnInit() {
-        // Use connectionDetails input if provided, otherwise fallback to dataSource.ConnectionDetails
-        const details = this.connectionDetails || (this.dataSource?.ConnectionDetails as StructuredConnectionDetails);
+        const structuredData = this.dataSource?.structuredDataSource;
         this.form = this.fb.group({
-            host: [details?.Host || ''],
-            port: [details?.Port || ''],
-            databaseName: [details?.DatabaseName || ''],
-            schema: [details?.Schema || ''],
-            tableList: [details?.TableList?.join(', ') || ''],
-            queryTemplate: [details?.QueryTemplate || '']
+            host: [structuredData?.host || ''],
+            port: [structuredData?.port || 0],
+            databaseName: [structuredData?.databaseName || ''],
+            schema: [structuredData?.schema || ''],
+            tableList: [structuredData?.tableList?.join(', ') || ''],
+            queryTemplate: [structuredData?.queryTemplate || '']
         });
+
         if (this.mode === 'view' || this.readonly) {
             this.form.disable();
         }
+
+        this.form.valueChanges.subscribe(value => {
+            this.connectionChange.emit(value);
+        });
     }
 
     getConnectionValue(key: string): string {
-        const details = this.connectionDetails || (this.dataSource?.ConnectionDetails as StructuredConnectionDetails);
-        const value = details?.[key as keyof StructuredConnectionDetails];
-        if (typeof value === 'string') {
-            return value;
-        } else if (typeof value === 'number') {
-            return value.toString();
-        } else if (Array.isArray(value)) {
-            return value.join(', ');
+        const structuredData = this.dataSource?.structuredDataSource;
+        if (structuredData && key in structuredData) {
+            const value = (structuredData as any)[key];
+            return value ? value.toString() : '';
         }
         return '';
     }
 
-    getTableListArray(): string[] {
-        const details = this.connectionDetails || (this.dataSource?.ConnectionDetails as StructuredConnectionDetails);
-        return details?.TableList || [];
+    hasConnectionDetails(): boolean {
+        return !!this.dataSource?.structuredDataSource;
     }
 
-    getTableListDisplay(): boolean {
-        const tableList = this.getTableListArray();
-        return tableList && tableList.length > 0;
+    onSave(): void {
+        if (this.form.valid) {
+            const formValue = this.form.value;
+            const connectionData = {
+                ...formValue,
+                tableList: formValue.tableList ? formValue.tableList.split(',').map((t: string) => t.trim()) : []
+            };
+            this.connectionChange.emit(connectionData);
+        }
     }
 
-    onSave() {
-        const value = this.form.value;
-        value.tableList = value.tableList ? value.tableList.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0) : [];
-        this.save.emit(value);
-    }
-
-    onCancel() {
-        this.cancel.emit();
+    onCancel(): void {
+        this.form.reset();
     }
 }

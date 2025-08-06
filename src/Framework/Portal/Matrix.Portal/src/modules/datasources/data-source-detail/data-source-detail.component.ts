@@ -1,7 +1,10 @@
-import { Component, Input, signal, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '../../../datamodels/data-source.model';
 import { DataSourceService } from '../../../services/data-source.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { BaseDetailComponent } from '../../../shared/base-detail.component';
+import { DataSourceType, AccessMode, AuthenticationType } from '../../../datamodels/base.model';
 
 @Component({
     selector: 'app-data-source-detail',
@@ -9,149 +12,129 @@ import { Router, ActivatedRoute } from '@angular/router';
     templateUrl: './data-source-detail.component.html',
     styleUrls: ['./data-source-detail.component.css']
 })
-export class DataSourceDetailComponent implements OnInit {
-    @Input() dataSource: DataSource | null = null;
-    editMode = signal(false); // Start in view mode
-
-    // Navigation for two-pane layout
-    activeSection: string = 'general';
-
-    // Form helper properties
-    tagsString = '';
+export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> {
+    dataSourceForm: FormGroup;
+    dataSourceTypes = Object.values(DataSourceType);
+    accessModes = Object.values(AccessMode);
+    authenticationTypes = Object.values(AuthenticationType);
 
     constructor(
+        private fb: FormBuilder,
         private dataSourceService: DataSourceService,
-        private router: Router,
-        private route: ActivatedRoute
-    ) { }
-
-    ngOnInit() {
-        const id = this.route.snapshot.paramMap.get('id');
-
-        if (id && id !== 'add') {
-            // Viewing existing data source - start in view mode
-            this.editMode.set(false);
-            this.loadDataSource(id);
-        } else if (id === 'add') {
-            // Adding new data source
-            this.editMode.set(true);
-            this.initializeNewDataSource();
-        } else if (!this.dataSource) {
-            // Fallback for when used as component with no data
-            this.initializeNewDataSource();
-        }
+        route: ActivatedRoute,
+        router: Router
+    ) {
+        super(route, router);
+        this.dataSourceForm = this.createForm();
     }
 
-    private loadDataSource(id: string) {
-        // Try to get from service first, fallback to mock data
+    public loadItem(id: string): void {
         this.dataSourceService.getDataSource(id).subscribe({
-            next: (dataSource: DataSource) => {
-                this.dataSource = dataSource;
-                this.initializeFormStrings();
+            next: (dataSource) => {
+                this.item = dataSource;
+                this.populateForm(dataSource);
             },
-            error: (err: any) => {
-                // Create mock data if service fails
-                this.dataSource = {
-                    DataSourceUId: id,
-                    Id: id,
-                    Name: `Sample Data Source ${id}`,
-                    Type: 'Structured',
-                    SubType: 'Database',
-                    Description: `This is a sample data source with ID ${id}. In a real application, this data would be fetched from a backend service.`,
-                    Tags: ['production', 'database', 'mysql'],
-                    Owner: 'System Administrator',
-                    CreatedBy: 'System Administrator',
-                    CreatedAt: new Date('2024-01-15').toISOString(),
-                    UpdatedBy: 'System Administrator',
-                    UpdatedAt: new Date().toISOString(),
-                    IsActive: true,
-                    IsCustom: false,
-                    Version: '1.0',
-                    Metadata: {},
-                    AccessMode: 'ReadWrite',
-                    AuthenticationType: 'APIKey',
-                    ConnectionDetails: {
-                        Host: 'localhost',
-                        Port: 3306,
-                        DatabaseName: 'sample_db',
-                        ssl: true
-                    }
-                };
-                this.initializeFormStrings();
-            }
+            error: (error) => console.error('Error loading data source:', error)
         });
     }
 
-    private initializeNewDataSource() {
-        this.dataSource = {
-            DataSourceUId: '',
-            Id: '',
-            Name: '',
-            Type: 'Structured',
-            SubType: '',
-            Description: '',
-            Tags: [],
-            Owner: '',
-            CreatedBy: '',
-            CreatedAt: new Date().toISOString(),
-            UpdatedBy: '',
-            UpdatedAt: new Date().toISOString(),
-            IsActive: true,
-            IsCustom: true,
-            Version: '1.0',
-            Metadata: {},
-            AccessMode: 'ReadWrite',
-            AuthenticationType: 'APIKey',
-            ConnectionDetails: {}
+    public createNewItem(): DataSource {
+        return {
+            dataSourceUId: '',
+            name: '',
+            type: DataSourceType.Structured,
+            subType: '',
+            description: '',
+            owner: '',
+            isActive: true,
+            accessMode: AccessMode.ReadOnly,
+            authenticationType: AuthenticationType.None,
+            isCustom: false,
+            createdBy: 'Current User',
+            createdDate: new Date(),
+            modifiedBy: 'Current User',
+            modifiedDate: new Date(),
+            correlationUId: '',
+            rowVersion: new Uint8Array(),
+            metadata: []
         };
-        this.initializeFormStrings();
     }
 
-    private initializeFormStrings() {
-        if (this.dataSource) {
-            this.tagsString = this.dataSource.Tags ? this.dataSource.Tags.join(', ') : '';
+    public saveItem(): void {
+        if (!this.item) {
+            console.error('No item to save');
+            return;
         }
-    }
 
-    toggleEdit() {
-        this.editMode.update((v: boolean) => !v);
-    }
+        if (this.dataSourceForm.valid) {
+            const formValue = this.dataSourceForm.value;
+            const dataSourceToSave: DataSource = {
+                ...this.item,
+                ...formValue,
+                modifiedBy: 'Current User',
+                modifiedDate: new Date()
+            };
 
-    onSave() {
-        if (this.dataSource) {
-            // Convert tags string back to array
-            this.dataSource.Tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            const saveOperation = this.item.dataSourceUId
+                ? this.dataSourceService.updateDataSource(dataSourceToSave)
+                : this.dataSourceService.createDataSource(dataSourceToSave);
 
-            this.dataSourceService.createDataSource(this.dataSource).subscribe({
-                next: (result: any) => {
-                    alert('Data source saved successfully!');
+            saveOperation.subscribe({
+                next: (savedDataSource) => {
+                    this.item = savedDataSource;
+                    console.log('Data source saved successfully');
                     this.router.navigate(['/datasources']);
                 },
-                error: (err: any) => {
-                    alert('Failed to save data source.');
-                }
+                error: (error) => console.error('Error saving data source:', error)
             });
         }
     }
 
-    onCancel() {
-        this.router.navigate(['/datasources']);
-    }
-
-    hasConnectionDetails(): boolean {
-        return this.dataSource?.Type === 'Structured' || this.dataSource?.Type === 'Vector';
-    }
-
-    onTypeClick() {
-        console.log('Type clicked - editMode:', this.editMode(), 'hasConnectionDetails:', this.hasConnectionDetails());
-        // Navigate to connection details page or open dialog
-        if (!this.editMode() && this.hasConnectionDetails()) {
-            console.log('Navigate to connection details');
-            // Add navigation logic here if needed
+    public deleteItem(): void {
+        if (this.item?.dataSourceUId && confirm('Are you sure you want to delete this data source?')) {
+            this.dataSourceService.deleteDataSource(this.item.dataSourceUId).subscribe({
+                next: () => {
+                    console.log('Data source deleted successfully');
+                    this.router.navigate(['/datasources']);
+                },
+                error: (error) => console.error('Error deleting data source:', error)
+            });
         }
     }
 
-    setActiveSection(section: string): void {
-        this.activeSection = section;
+    private createForm(): FormGroup {
+        return this.fb.group({
+            name: ['', [Validators.required, Validators.maxLength(100)]],
+            type: ['', Validators.required],
+            subType: ['', Validators.maxLength(50)],
+            description: ['', Validators.maxLength(500)],
+            owner: ['', [Validators.required, Validators.maxLength(100)]],
+            isActive: [true],
+            accessMode: ['', Validators.required],
+            authenticationType: ['', Validators.required],
+            isCustom: [false]
+        });
+    }
+
+    private populateForm(dataSource: DataSource): void {
+        this.dataSourceForm.patchValue({
+            name: dataSource.name,
+            type: dataSource.type,
+            subType: dataSource.subType,
+            description: dataSource.description,
+            owner: dataSource.owner,
+            isActive: dataSource.isActive,
+            accessMode: dataSource.accessMode,
+            authenticationType: dataSource.authenticationType,
+            isCustom: dataSource.isCustom
+        });
+    }
+
+    get isFormValid(): boolean {
+        return this.dataSourceForm.valid;
+    }
+
+    get isEditMode(): boolean {
+        return !!this.item?.dataSourceUId;
     }
 }

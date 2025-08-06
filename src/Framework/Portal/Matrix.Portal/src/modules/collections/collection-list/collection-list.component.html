@@ -6,66 +6,103 @@
                 <mat-icon>add_circle</mat-icon> Add Collection
             </button>
         </div>
+
         <div class="toolbar modern-toolbar">
             <div class="search-filter-group">
                 <div class="search-box">
                     <span class="material-icons">search</span>
-                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search by name...">
+                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search collections...">
                 </div>
+
+                <select (change)="onCustomFilterChange($any($event.target).value)">
+                    <option value="">All Types</option>
+                    <option value="true">Custom</option>
+                    <option value="false">Standard</option>
+                </select>
+
                 <button class="filter-btn" (click)="onSearch()">
                     <span class="material-icons">filter_list</span> Filter
                 </button>
             </div>
         </div>
+
         <ng-container *ngIf="filteredCollections.length > 0; else noCollections">
             <div class="card-grid">
-                @for (col of filteredCollections; track col) {
-                <div class="card">
+                <div class="card" *ngFor="let col of filteredCollections; trackBy: trackByFn">
                     <div class="card-header">
-                        <span class="card-name">{{ col.Name }}</span>
+                        <span class="card-name">{{ col.name }}</span>
                         <div class="card-actions">
-                            <span class="status-badge" [ngClass]="col.isCustom ? 'custom' : 'standard'">{{ col.isCustom ? 'Custom' : 'Standard' }}</span>
+                            <span class="status-badge" [ngClass]="col.isCustom ? 'custom' : 'standard'">
+                                {{ col.isCustom ? 'Custom' : 'Standard' }}
+                            </span>
                             <button class="edit-icon-btn" (click)="onEdit(col); $event.stopPropagation()" title="Edit">
                                 <mat-icon>edit</mat-icon>
                             </button>
                             <button class="view-icon-btn" (click)="onView(col); $event.stopPropagation()" title="View">
                                 <mat-icon>visibility</mat-icon>
                             </button>
+                            <button class="delete-icon-btn" (click)="onDelete(col); $event.stopPropagation()" title="Delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
                         </div>
                     </div>
+
                     <div class="card-body" (click)="onSelect(col)">
-                        <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Collection UID:</span> <span class="uid">{{ col.DataSourceCollectionUId }}</span></div>
-                        <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="col.Description">{{ col.Description }}</span></div>
-                        <div class="info-row"><mat-icon>collections</mat-icon> <span class="label">Data Sources:</span> {{ col.dataSources.length }}</div>
+                        <div class="info-row">
+                            <mat-icon>fingerprint</mat-icon>
+                            <span class="label">Collection UID:</span>
+                            <span class="uid">{{ col.dataSourceCollectionUId }}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <mat-icon>description</mat-icon>
+                            <span class="label">Description:</span>
+                            <span class="desc" [title]="col.description">{{ col.description }}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <mat-icon>collections</mat-icon>
+                            <span class="label">Data Sources:</span>
+                            <span class="count-badge">{{ col.dataSources.length }}</span>
+                        </div>
+
+                        <div class="info-row" *ngIf="col.dataSources.length > 0">
+                            <mat-icon>list</mat-icon>
+                            <span class="label">Sources:</span>
+                            <div class="source-list">
+                                <span class="source-name" *ngFor="let ds of col.dataSources.slice(0, 3); trackBy: trackDataSourceFn">
+                                    {{ ds.name }}
+                                </span>
+                                <span class="more-badge" *ngIf="col.dataSources.length > 3">
+                                    +{{ col.dataSources.length - 3 }} more
+                                </span>
+                            </div>
+                        </div>
+
                         <div class="date-row">
-                            <div><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ col.CreatedAt | date:'mediumDate' }}</div>
-                            <div *ngIf="col.UpdatedAt"><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ col.UpdatedAt | date:'mediumDate' }}</div>
+                            <div class="date-item">
+                                <mat-icon>calendar_today</mat-icon>
+                                <span class="label">Created:</span>
+                                <span>{{ col.createdDate | date:'medium' }}</span>
+                            </div>
                         </div>
-                        <div class="audit-row">
-                            <div><mat-icon>person</mat-icon> <span class="label">Owner:</span> {{ col.Owner }}</div>
-                            <div><mat-icon>person_outline</mat-icon> <span class="label">Created By:</span> {{ col.createdBy }}</div>
-                        </div>
-                        <div class="info-row"><mat-icon>build</mat-icon> <span class="label">Custom:</span> {{ col.isCustom ? 'Yes' : 'No' }}</div>
-                        <div class="info-row"><mat-icon>toggle_on</mat-icon> <span class="label">Active:</span> {{ col.IsActive ? 'Yes' : 'No' }}</div>
-                        <div *ngIf="col.tags && col.tags.length > 0">
-                            <mat-icon>label</mat-icon> <span class="label">Tags:</span>
-                            <div class="badge-container">
-                                @for (tag of col.tags.slice(0, 2); track tag) {
-                                <span class="tag-badge">{{ tag }}</span>
-                                }
-                                @if (col.tags.length > 2) {
-                                <span class="more-badge">+{{ col.tags.length - 2 }} more</span>
-                                }
+
+                        <div class="date-row">
+                            <div class="date-item">
+                                <mat-icon>update</mat-icon>
+                                <span class="label">Modified:</span>
+                                <span>{{ col.modifiedDate | date:'medium' }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                }
             </div>
         </ng-container>
+
         <ng-template #noCollections>
             <div class="no-items-message">
-                <mat-icon>info</mat-icon> No collections found. Please add or configure collections to see them here.
+                <mat-icon>info</mat-icon>
+                No collections found. Click "Add Collection" to create your first data source collection.
             </div>
         </ng-template>
     </div>

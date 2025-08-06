@@ -1,7 +1,9 @@
-import { Component, Input, signal, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Model } from '../../../datamodels/model';
 import { ModelService } from '../../../services/model.service';
-import { Router } from '@angular/router';
+import { BaseDetailComponent } from '../../../shared/base-detail.component';
 
 @Component({
     selector: 'app-model-detail',
@@ -9,63 +11,121 @@ import { Router } from '@angular/router';
     templateUrl: './model-detail.component.html',
     styleUrls: ['./model-detail.component.css']
 })
-export class ModelDetailComponent implements OnInit {
-    @Input() model: Model | null = null;
-    editMode = signal(true); // Start in edit mode for add screen
-    tagsString = '';
+export class ModelDetailComponent extends BaseDetailComponent<Model> {
+    modelForm: FormGroup;
 
-    constructor(private modelService: ModelService, private router: Router) { }
+    constructor(
+        private fb: FormBuilder,
+        private modelService: ModelService,
+        route: ActivatedRoute,
+        router: Router
+    ) {
+        super(route, router);
+        this.modelForm = this.createForm();
+    }
 
-    ngOnInit() {
-        if (!this.model) {
-            this.model = {
-                ModelUId: '',
-                Id: '',
-                Name: '',
-                Type: '',
-                Version: '',
-                Description: '',
-                Provider: '',
-                Endpoint: '',
-                ApiKey: '',
-                Region: '',
-                IsEnabled: true,
-                CreatedBy: '',
-                CreatedAt: new Date().toISOString(),
-                UpdatedBy: '',
-                UpdatedAt: new Date().toISOString(),
-                IsActive: true,
-                Metadata: {},
-                Tags: []
+    public loadItem(id: string): void {
+        this.modelService.getModel(id).subscribe({
+            next: (model) => {
+                this.item = model;
+                this.populateForm(model);
+            },
+            error: (error) => console.error('Error loading model:', error)
+        });
+    }
+
+    public createNewItem(): Model {
+        return {
+            modelUId: '',
+            name: '',
+            type: '',
+            version: '',
+            description: '',
+            provider: '',
+            endpoint: '',
+            apiKey: '',
+            region: '',
+            isEnabled: true,
+            createdBy: 'Current User',
+            createdDate: new Date(),
+            modifiedBy: 'Current User',
+            modifiedDate: new Date(),
+            correlationUId: '',
+            rowVersion: new Uint8Array(),
+            metadata: []
+        };
+    }
+
+    public saveItem(): void {
+        if (this.modelForm.valid) {
+            const formValue = this.modelForm.value;
+            const modelToSave: Model = {
+                ...this.item,
+                ...formValue,
+                modifiedBy: 'Current User',
+                modifiedDate: new Date()
             };
-        }
-        
-        // Initialize string representation for form
-        this.tagsString = this.model.Tags ? this.model.Tags.join(', ') : '';
-    }
 
-    toggleEdit() {
-        this.editMode.update((v: boolean) => !v);
-    }
+            const saveOperation = this.item?.modelUId
+                ? this.modelService.updateModel(modelToSave)
+                : this.modelService.createModel(modelToSave);
 
-    onSave() {
-        if (this.model) {
-            // Convert tags string back to array
-            this.model.Tags = this.tagsString.split(',').map(s => s.trim()).filter(s => s.length > 0);
-            
-            // Update audit fields
-            this.model.UpdatedAt = new Date().toISOString();
-            // UpdatedBy should be set based on current user context
-            
-            this.modelService.createModel(this.model).subscribe({
-                next: (result: any) => {
-                    alert('Model saved successfully!');
+            saveOperation.subscribe({
+                next: (savedModel) => {
+                    this.item = savedModel;
+                    console.log('Model saved successfully');
                     this.router.navigate(['/models']);
                 },
-                error: (err: any) => {
-                    alert('Failed to save model.');
-                }
+                error: (error) => console.error('Error saving model:', error)
             });
         }
+    }
+
+    public deleteItem(): void {
+        if (this.item?.modelUId && confirm('Are you sure you want to delete this model?')) {
+            this.modelService.deleteModel(this.item.modelUId).subscribe({
+                next: () => {
+                    console.log('Model deleted successfully');
+                    this.router.navigate(['/models']);
+                },
+                error: (error) => console.error('Error deleting model:', error)
+            });
+        }
+    }
+
+    private createForm(): FormGroup {
+        return this.fb.group({
+            name: ['', [Validators.required, Validators.maxLength(100)]],
+            type: ['', Validators.maxLength(50)],
+            version: ['', Validators.maxLength(20)],
+            description: ['', Validators.maxLength(500)],
+            provider: ['', Validators.maxLength(100)],
+            endpoint: ['', Validators.maxLength(500)],
+            apiKey: ['', Validators.maxLength(200)],
+            region: ['', Validators.maxLength(50)],
+            isEnabled: [true]
+        });
+    }
+
+    private populateForm(model: Model): void {
+        this.modelForm.patchValue({
+            name: model.name,
+            type: model.type,
+            version: model.version,
+            description: model.description,
+            provider: model.provider,
+            endpoint: model.endpoint,
+            apiKey: model.apiKey,
+            region: model.region,
+            isEnabled: model.isEnabled
+        });
+    }
+
+    get isFormValid(): boolean {
+        return this.modelForm.valid;
+    }
+
+    get isEditMode(): boolean {
+        return !!this.item?.modelUId;
     }
 }

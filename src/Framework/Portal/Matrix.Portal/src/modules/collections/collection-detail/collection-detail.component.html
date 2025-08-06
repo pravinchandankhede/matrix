@@ -1,152 +1,37 @@
-<div class      <div class="form-row">
-        <label>Collection UID:</label>
-        <input type="text" [(ngModel)]="collection.DataSourceCollectionUId" name="dataSourceCollectionUId" />
-      </div>
-      <div class="form-row">
-        <label>Name:</label>
-        <input type="text" [(ngModel)]="collection.Name" name="name" />
-      </div>
-      <div class="form-row">
-        <label>Description:</label>
-        <textarea [(ngModel)]="collection.Description" name="description"></textarea>
-      </div>tainer" *ngIf="collection">
-  <div class="detail-header">
-    <h2><mat-icon>collections_bookmark</mat-icon> {{ collection.Name || 'New Collection' }}</h2>
-    <button class="edit-btn" (click)="toggleEdit()">
-      <mat-icon>{{ editMode() ? 'close' : 'edit' }}</mat-icon> {{ editMode() ? 'Cancel' : 'Edit' }}
-    </button>
-  </div>
-  
-  <div class="detail-content">
-    <form *ngIf="editMode(); else viewMode" class="detail-form">
-      <div class="form-row">
-        <label>Collection UID:</label>
-        <input type="text" [(ngModel)]="collection.DataSourceCollectionUId" name="dataSourceCollectionUId" />
-      </div>
-      <div class="form-row">
-        <label>Name:</label>
-        <input type="text" [(ngModel)]="collection.Name" name="name" />
-      </div>
-      <div class="form-row">
-        <label>Description:</label>
-        <textarea [(ngModel)]="collection.Description" name="description" rows="3"></textarea>
-      </div>
-      <div class="form-row">
-        <label>Custom:</label>
-        <select [(ngModel)]="collection.isCustom" name="isCustom">
-          <option [value]="true">Yes</option>
-          <option [value]="false">No</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label>Owner:</label>
-        <input type="text" [(ngModel)]="collection.Owner" name="owner" />
-      </div>
-      <div class="form-row">
-        <label>Created By:</label>
-        <input type="text" [(ngModel)]="collection.createdBy" name="createdBy" />
-      </div>
-      <div class="form-row">
-        <label>Active:</label>
-        <select [(ngModel)]="collection.IsActive" name="isActive">
-          <option [value]="true">Yes</option>
-          <option [value]="false">No</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label>Tags:</label>
-        <textarea [(ngModel)]="tagsString" name="tags" placeholder="Comma separated tags" rows="2"></textarea>
-      </div>
-      
-      <div class="form-actions">
-        <button type="button" class="btn-primary" (click)="onSave()">
-          <mat-icon>save</mat-icon> Save
-        </button>
-        <button type="button" class="btn-secondary" (click)="onCancel()">
-          <mat-icon>cancel</mat-icon> Cancel
-        </button>
-      </div>
-    </form>
-    
-    <ng-template #viewMode>
-      <div class="view-content">
-        <div class="info-section">
-          <h3>Collection Information</h3>
-          <div class="info-row">
-            <label>Collection UID:</label>
-            <span class="uid">{{ collection.DataSourceCollectionUId }}</span>
-          </div>
-          <div class="info-row">
-            <label>Name:</label>
-            <span>{{ collection.Name }}</span>
-          </div>
-          <div class="info-row" *ngIf="collection.Description">
-            <label>Description:</label>
-            <span>{{ collection.Description }}</span>
-          </div>
-          <div class="info-row">
-            <label>Custom:</label>
-            <span class="status" [class.active]="collection.isCustom" [class.inactive]="!collection.isCustom">
-              {{ collection.isCustom ? 'Yes' : 'No' }}
-            </span>
-          </div>
-          <div class="info-row">
-            <label>Owner:</label>
-            <span>{{ collection.Owner }}</span>
-          </div>
-          <div class="info-row">
-            <label>Active:</label>
-            <span class="status" [class.active]="collection.IsActive" [class.inactive]="!collection.IsActive">
-              {{ collection.IsActive ? 'Yes' : 'No' }}
-            </span>
-          </div>
-          <div class="info-row" *ngIf="collection.Tags && collection.Tags.length > 0">
-            <label>Tags:</label>
-            <div class="badge-container">
-              <span *ngFor="let tag of collection.Tags" class="tag-badge">{{ tag }}</span>
-            </div>
-          </div>
-          <div class="info-row" (click)="onDataSourcesClick()" [class.clickable]="hasDataSources()">
-            <label>Data Sources:</label>
-            <span>{{ collection.DataSources.length || 0 }} data sources</span>
-            <mat-icon *ngIf="hasDataSources()" class="chevron">chevron_right</mat-icon>
-          </div>
-          <div class="info-row">
-            <label>Created:</label>
-            <span>{{ collection.CreatedAt | date:'medium' }}</span>
-          </div>
-          <div class="info-row" *ngIf="collection.UpdatedAt">
-            <label>Last Updated:</label>
-            <span>{{ collection.UpdatedAt | date:'medium' }}</span>
-          </div>
-          <div class="info-row">
-            <label>Created By:</label>
-            <span>{{ collection.CreatedBy }}</span>
-          </div>
-          <div class="info-row" *ngIf="collection.UpdatedBy">
-            <label>Updated By:</label>
-            <span>{{ collection.UpdatedBy }}</span>
-          </div>
+<div class="detail-container" *ngIf="item">
+    <div class="section-wrapper modern-theme-bg">
+        <div class="detail-header">
+            <h2><mat-icon>collections_bookmark</mat-icon> {{ item.name || 'New Collection' }}</h2>
+            <button class="edit-btn" (click)="onEdit()" *ngIf="!editMode">
+                <mat-icon>edit</mat-icon> Edit
+            </button>
+            <button class="edit-btn" (click)="onCancelEdit()" *ngIf="editMode">
+                <mat-icon>close</mat-icon> Cancel
+            </button>
         </div>
-        
-        <!-- Data Sources Section -->
-        <div class="info-section" *ngIf="hasDataSources()">
-          <h3>Data Sources ({{ collection.DataSources.length }})</h3>
-          <div class="data-sources-list">
-            <div class="data-source-item" *ngFor="let dataSource of collection.DataSources" (click)="onDataSourceSelected(dataSource.DataSourceUId)">
-              <div class="data-source-header">
-                <mat-icon>storage</mat-icon>
-                <span class="data-source-name">{{ dataSource.Name }}</span>
-                <span class="data-source-type">{{ dataSource.Type }}</span>
-                <mat-icon class="chevron">chevron_right</mat-icon>
-              </div>
-              <div class="data-source-description" *ngIf="dataSource.Description">
-                {{ dataSource.Description }}
-              </div>
+        <form *ngIf="editMode; else viewMode" class="detail-form">
+            <div class="form-row">
+                <label>Collection UID:</label>
+                <input type="text" [(ngModel)]="item.dataSourceCollectionUId" name="dataSourceCollectionUId" />
             </div>
-          </div>
-        </div>
-      </div>
-    </ng-template>
-  </div>
+            <div class="form-row">
+                <label>Name:</label>
+                <input type="text" [(ngModel)]="item.name" name="name" />
+            </div>
+            <div class="form-row">
+                <label>Description:</label>
+                <textarea [(ngModel)]="item.description" name="description"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="save-btn" (click)="onSave()">Save</button>
+            </div>
+        </form>
+        <ng-template #viewMode>
+            <div class="detail-view">
+                <div class="form-row"><label>Collection UID:</label> {{ item.dataSourceCollectionUId }}</div>
+                <div class="form-row"><label>Name:</label> {{ item.name }}</div>
+                <div class="form-row"><label>Description:</label> {{ item.description }}</div>
+            </div>
+        </ng-template>
+    </div>
 </div>

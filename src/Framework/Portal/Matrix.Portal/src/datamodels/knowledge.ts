@@ -1,14 +1,14 @@
-import { BaseModel } from './base.model';
-import { Chunk } from "./chunk.model";
-import { DataSource, DataSourceCollection } from "./data-source.model";
-import { Model } from "./model";
+import { DataSourceCollection } from './data-source-collection.model';
+import { Model } from './model';
+import { DataSource } from './data-source.model';
+import { Chunk } from './chunk.model';
 
-export interface Knowledge extends BaseModel {
-    KnowledgeUId: string;
-    Type: string;
-    DataSourceCollection: DataSourceCollection;
-    Models : Model;
-    Status: string;
-    OutputDataSource : DataSource;
-    ChunkStrategy : Chunk;
+export interface Knowledge {
+  knowledgeUId: string;
+  type: string;
+  dataSourceCollection: DataSourceCollection;
+  model: Model;
+  status: string;
+  outputDataSource: DataSource;
+  chunkStrategy: Chunk;
 }

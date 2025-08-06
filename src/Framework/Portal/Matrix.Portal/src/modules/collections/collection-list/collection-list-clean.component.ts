@@ -90,8 +90,4 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
     trackByFn(index: number, item: DataSourceCollection): string {
         return item.dataSourceCollectionUId;
     }
-
-    trackDataSourceFn(index: number, item: any): string {
-        return item.dataSourceUId || item.name || index.toString();
-    }
 }

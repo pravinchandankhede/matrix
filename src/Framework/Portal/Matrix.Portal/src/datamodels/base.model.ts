@@ -2,39 +2,31 @@
  * Base interface containing common audit fields and properties
  * that are shared across all domain models.
  */
+export interface Metadata {
+  [key: string]: any;
+}
+
 export interface BaseModel {
-  /** Unique identifier for the entity */
-  Id: string;
-  
-  /** Display name of the entity */
-  Name: string;
-  
-  /** Optional description of the entity */
-  Description?: string;
-  
   /** User or system that created this entity */
-  CreatedBy: string;
+  createdBy: string;
   
   /** Timestamp when the entity was created (ISO date string) */
-  CreatedAt: string;
+  createdDate: Date;
   
   /** User or system that last updated this entity */
-  UpdatedBy?: string;
+  modifiedBy: string;
   
   /** Timestamp when the entity was last updated (ISO date string) */
-  UpdatedAt?: string;
+  modifiedDate: Date;
   
-  /** Whether the entity is currently active/enabled */
-  IsActive: boolean;
+  /** Unique identifier for the entity */
+  correlationUId: string; // Guid as string
   
   /** Version number for optimistic concurrency control */
-  Version?: string;
+  rowVersion: Uint8Array;
   
   /** Additional metadata as key-value pairs */
-  Metadata?: { [key: string]: string };
-  
-  /** Tags for categorization and filtering */
-  Tags?: string[];
+  metadata: Metadata[];
 }
 
 /**
@@ -46,4 +38,111 @@ export interface CustomizableModel extends BaseModel {
   
   /** Owner of the entity */
   Owner: string;
+}
+
+/**
+ * TypeScript enums mapped from C# Enums
+ */
+export enum DataSourceType {
+  Structured = 'Structured',
+  SemiStructured = 'SemiStructured',
+  Unstructured = 'Unstructured',
+  Multimedia = 'Multimedia',
+  Streaming = 'Streaming',
+  External = 'External',
+  Proprietary = 'Proprietary',
+  Vector = 'Vector',
+}
+
+export enum AccessMode {
+  ReadOnly = 'ReadOnly',
+  ReadWrite = 'ReadWrite',
+}
+
+export enum AuthenticationType {
+  APIKey = 'APIKey',
+  OAuth2 = 'OAuth2',
+  BasicAuth = 'BasicAuth',
+  Token = 'Token',
+  None = 'None',
+}
+
+export enum DataFormat {
+  JSON = 'JSON',
+  XML = 'XML',
+  YAML = 'YAML',
+}
+
+export enum StorageType {
+  FileSystem = 'FileSystem',
+  S3 = 'S3',
+  AzureBlob = 'AzureBlob',
+  GDrive = 'GDrive',
+}
+
+export enum MediaType {
+  Audio = 'Audio',
+  Video = 'Video',
+  Image = 'Image',
+}
+
+export enum MessageFormat {
+  JSON = 'JSON',
+  Avro = 'Avro',
+  Protobuf = 'Protobuf',
+}
+
+export enum HttpMethod {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+  PATCH = 'PATCH',
+}
+
+export enum IntegrationType {
+  SDK = 'SDK',
+  API = 'API',
+  FileExport = 'FileExport',
+}
+
+export enum VectorDbType {
+  Pinecone = 'Pinecone',
+  FAISS = 'FAISS',
+  Weaviate = 'Weaviate',
+  Qdrant = 'Qdrant',
+}
+
+export enum DistanceMetric {
+  Cosine = 'Cosine',
+  Euclidean = 'Euclidean',
+  DotProduct = 'DotProduct',
+}
+
+/**
+ * Interfaces for related models
+ */
+export interface ExternalAttributes {
+  apiEndpoint: string;
+  httpMethod: HttpMethod;
+  headers: Record<string, any>;
+  queryParams: Record<string, any>;
+  rateLimitPerMinute?: number;
+}
+
+export interface StructuredDataSource extends BaseModel {
+  host: string;
+  port: number;
+  databaseName: string;
+  schema?: string;
+  tableList: string[];
+  queryTemplate?: string;
+}
+
+export interface VectorDataSource extends BaseModel {
+  vectorDbType: VectorDbType;
+  indexName: string;
+  embeddingModel: string;
+  dimension: number;
+  distanceMetric: DistanceMetric;
 }

@@ -1,100 +1,152 @@
 <div class="list-container">
     <div class="section-wrapper modern-theme-bg">
         <div class="list-header">
-            <h2><mat-icon>smart_toy</mat-icon> Current Agents</h2>
+            <h2><mat-icon>smart_toy</mat-icon> Agents</h2>
             <button class="add-btn" (click)="onAdd()">
                 <mat-icon>add_circle</mat-icon> Add Agent
             </button>
         </div>
+
         <div class="toolbar modern-toolbar">
             <div class="search-filter-group">
                 <div class="search-box">
                     <span class="material-icons">search</span>
-                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search by name...">
+                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search agents...">
                 </div>
-                <select #filterSelect (change)="onFilterChange(filterSelect.value)">
-                    <option value="">All</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    <option value="Maintenance">Maintenance</option>
+
+                <select (change)="onStatusFilterChange($any($event.target).value)">
+                    <option value="">All Statuses</option>
+                    <option *ngFor="let status of uniqueStatuses" [value]="status">{{ status }}</option>
                 </select>
+
+                <select (change)="onTypeFilterChange($any($event.target).value)">
+                    <option value="">All Types</option>
+                    <option *ngFor="let type of uniqueTypes" [value]="type">{{ type }}</option>
+                </select>
+
                 <button class="filter-btn" (click)="onSearch()">
                     <span class="material-icons">filter_list</span> Filter
                 </button>
             </div>
         </div>
+
         <ng-container *ngIf="filteredAgents.length > 0; else noAgents">
             <div class="card-grid">
-                @for (agent of filteredAgents; track agent) {
-                <div class="card">
+                <div class="card" *ngFor="let agent of filteredAgents; trackBy: trackByFn">
                     <div class="card-header">
-                        <span class="card-name">{{ agent.Name }}</span>
+                        <span class="card-name">{{ agent.name }}</span>
                         <div class="card-actions">
-                            <span class="status-badge" [ngClass]="agent.Status.toLowerCase()">{{ agent.Status }}</span>
+                            <span class="status-badge" [ngClass]="agent.status.toLowerCase()">{{ agent.status }}</span>
                             <button class="edit-icon-btn" (click)="onEdit(agent); $event.stopPropagation()" title="Edit">
                                 <mat-icon>edit</mat-icon>
                             </button>
                             <button class="view-icon-btn" (click)="onView(agent); $event.stopPropagation()" title="View">
                                 <mat-icon>visibility</mat-icon>
                             </button>
+                            <button class="delete-icon-btn" (click)="onDelete(agent); $event.stopPropagation()" title="Delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
                         </div>
                     </div>
+
                     <div class="card-body" (click)="onSelect(agent)">
-                        <div class="info-row"><mat-icon>fingerprint</mat-icon> <span class="label">Agent UID:</span> <span class="uid">{{ agent.AgentUId }}</span></div>
-                        <div class="info-row"><mat-icon>info</mat-icon> <span class="label">Description:</span> <span class="desc" [title]="agent.Description">{{ agent.Description }}</span></div>
-                        <div class="info-row"><mat-icon>category</mat-icon> <span class="label">Type:</span> {{ agent.Type }}</div>
                         <div class="info-row">
-                            <mat-icon>settings</mat-icon> <span class="label">Capabilities:</span>
+                            <mat-icon>fingerprint</mat-icon>
+                            <span class="label">Agent ID:</span>
+                            <span class="uid">{{ agent.agentUId }}</span>
+                        </div>
+
+                        <div class="info-row" *ngIf="agent.description">
+                            <mat-icon>description</mat-icon>
+                            <span class="label">Description:</span>
+                            <span class="desc" [title]="agent.description">{{ agent.description }}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <mat-icon>category</mat-icon>
+                            <span class="label">Type:</span>
+                            <span>{{ agent.type }}</span>
+                        </div>
+
+                        <div class="info-row" *ngIf="agent.version">
+                            <mat-icon>label</mat-icon>
+                            <span class="label">Version:</span>
+                            <span>{{ agent.version }}</span>
+                        </div>
+
+                        <div class="info-row" *ngIf="agent.capabilities && agent.capabilities.length > 0">
+                            <mat-icon>settings</mat-icon>
+                            <span class="label">Capabilities:</span>
                             <div class="badge-container">
-                                @for (cap of agent.Capabilities.slice(0, 3); track cap) {
-                                <span class="capability-badge">{{ cap }}</span>
-                                }
-                                @if (agent.Capabilities.length > 3) {
-                                <span class="more-badge">+{{ agent.Capabilities.length - 3 }} more</span>
-                                }
+                                <span class="capability-badge" *ngFor="let cap of agent.capabilities.slice(0, 3)">
+                                    {{ cap.name }}
+                                </span>
+                                <span class="more-badge" *ngIf="agent.capabilities.length > 3">
+                                    +{{ agent.capabilities.length - 3 }} more
+                                </span>
                             </div>
                         </div>
-                        <div class="info-row">
-                            <mat-icon>star</mat-icon> <span class="label">Features:</span> @for (feat of agent.Features; track feat) {
-                            <span class="feature-badge">{{ feat }}</span>
-                            }
+
+                        <div class="info-row" *ngIf="agent.features && agent.features.length > 0">
+                            <mat-icon>star</mat-icon>
+                            <span class="label">Features:</span>
+                            <div class="badge-container">
+                                <span class="feature-badge" *ngFor="let feat of agent.features.slice(0, 3)">
+                                    {{ feat.name }}
+                                </span>
+                                <span class="more-badge" *ngIf="agent.features.length > 3">
+                                    +{{ agent.features.length - 3 }} more
+                                </span>
+                            </div>
                         </div>
-                        <div class="info-row">
-                            <mat-icon>build</mat-icon> <span class="label">Integrated Tools:</span> @for (tool of agent.IntegratedTools; track tool) {
-                            <span class="tool-badge">{{ tool }}</span>
-                            }
+
+                        <div class="info-row" *ngIf="agent.tools && agent.tools.length > 0">
+                            <mat-icon>build</mat-icon>
+                            <span class="label">Tools:</span>
+                            <div class="badge-container">
+                                <span class="tool-badge" *ngFor="let tool of agent.tools.slice(0, 3)">
+                                    {{ tool.name }}
+                                </span>
+                                <span class="more-badge" *ngIf="agent.tools.length > 3">
+                                    +{{ agent.tools.length - 3 }} more
+                                </span>
+                            </div>
                         </div>
-                        <div class="info-row"><mat-icon>update</mat-icon> <span class="label">Version:</span> {{ agent.Version }}</div>
-                        <div class="date-row">
-                            <div><mat-icon>calendar_today</mat-icon> <span class="label">Created:</span> {{ agent.CreatedAt | date:'mediumDate' }}</div>
-                            <div><mat-icon>calendar_view_day</mat-icon> <span class="label">Last Updated:</span> {{ agent.UpdatedAt | date:'mediumDate' }}</div>
-                        </div>
+
                         <div class="audit-row">
-                            <div><mat-icon>person</mat-icon> <span class="label">Created By:</span> {{ agent.CreatedBy }}</div>
-                            <div *ngIf="agent.UpdatedBy"><mat-icon>person_outline</mat-icon> <span class="label">Updated By:</span> {{ agent.UpdatedBy }}</div>
+                            <div class="audit-item">
+                                <mat-icon>person</mat-icon>
+                                <span class="label">Created By:</span>
+                                <span>{{ agent.createdBy }}</span>
+                            </div>
+                            <div class="audit-item">
+                                <mat-icon>schedule</mat-icon>
+                                <span class="label">Created:</span>
+                                <span>{{ agent.createdDate | date:'medium' }}</span>
+                            </div>
                         </div>
-                        <div class="status-row">
-                            <div><mat-icon>toggle_on</mat-icon> <span class="label">Active:</span> {{ agent.IsActive ? 'Yes' : 'No' }}</div>
-                            <div *ngIf="agent.Tags && agent.Tags.length > 0">
-                                <mat-icon>label</mat-icon> <span class="label">Tags:</span>
-                                <div class="badge-container">
-                                    @for (tag of agent.Tags.slice(0, 2); track tag) {
-                                    <span class="tag-badge">{{ tag }}</span>
-                                    }
-                                    @if (agent.Tags.length > 2) {
-                                    <span class="more-badge">+{{ agent.Tags.length - 2 }} more</span>
-                                    }
-                                </div>
+
+                        <div class="audit-row" *ngIf="agent.modifiedBy">
+                            <div class="audit-item">
+                                <mat-icon>person_outline</mat-icon>
+                                <span class="label">Modified By:</span>
+                                <span>{{ agent.modifiedBy }}</span>
+                            </div>
+                            <div class="audit-item">
+                                <mat-icon>update</mat-icon>
+                                <span class="label">Modified:</span>
+                                <span>{{ agent.modifiedDate | date:'medium' }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                }
             </div>
         </ng-container>
+
         <ng-template #noAgents>
             <div class="no-items-message">
-                <mat-icon>info</mat-icon> No agents found. Please add or configure agents to see them here.
+                <mat-icon>info</mat-icon>
+                No agents found. Click "Add Agent" to create your first agent.
             </div>
         </ng-template>
     </div>

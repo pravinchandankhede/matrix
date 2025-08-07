@@ -17,7 +17,7 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
 
     constructor(
         private router: Router,
-        private chunkService: ChunkService, 
+        private chunkService: ChunkService,
         private errorService: ErrorService
     ) {
         super();
@@ -51,7 +51,7 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
 
     filterPredicate(chunk: Chunk): boolean {
         const matchesText = chunk.text.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                           chunk.chunkId.toLowerCase().includes(this.searchTerm.toLowerCase());
+            chunk.chunkId.toLowerCase().includes(this.searchTerm.toLowerCase());
         const matchesType = this.selectedType ? chunk.type === this.selectedType : true;
         const matchesSource = this.selectedSource ? chunk.chunkSource === this.selectedSource : true;
         return matchesText && matchesType && matchesSource;
@@ -84,15 +84,23 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
     }
 
     onEdit(chunk: Chunk): void {
-        this.router.navigate(['/chunks', chunk.chunkUId], { queryParams: { edit: 'true' } });
+        this.router.navigate(['/chunks', chunk.chunkUId], {
+            queryParams: { edit: 'true' },
+            state: { itemName: chunk.text ? chunk.text.substring(0, 50) + (chunk.text.length > 50 ? '...' : '') : 'Chunk' }
+        });
     }
 
     onView(chunk: Chunk): void {
-        this.router.navigate(['/chunks', chunk.chunkUId], { queryParams: { edit: 'false' } });
+        this.router.navigate(['/chunks', chunk.chunkUId], {
+            queryParams: { edit: 'false' },
+            state: { itemName: chunk.text ? chunk.text.substring(0, 50) + (chunk.text.length > 50 ? '...' : '') : 'Chunk' }
+        });
     }
 
     onSelect(chunk: Chunk): void {
-        this.router.navigate(['/chunks', chunk.chunkUId]);
+        this.router.navigate(['/chunks', chunk.chunkUId], {
+            state: { itemName: chunk.text ? chunk.text.substring(0, 50) + (chunk.text.length > 50 ? '...' : '') : 'Chunk' }
+        });
     }
 
     onDelete(chunk: Chunk): void {

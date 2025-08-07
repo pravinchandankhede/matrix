@@ -17,7 +17,7 @@ export class AgentListComponent extends BaseListComponent<Agent> {
 
     constructor(
         private router: Router,
-        private agentService: AgentService, 
+        private agentService: AgentService,
         private errorService: ErrorService
     ) {
         super();
@@ -51,7 +51,7 @@ export class AgentListComponent extends BaseListComponent<Agent> {
 
     filterPredicate(agent: Agent): boolean {
         const matchesName = agent.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                           agent.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+            agent.description.toLowerCase().includes(this.searchTerm.toLowerCase());
         const matchesStatus = this.selectedStatus ? agent.status === this.selectedStatus : true;
         const matchesType = this.selectedType ? agent.type === this.selectedType : true;
         return matchesName && matchesStatus && matchesType;
@@ -84,15 +84,23 @@ export class AgentListComponent extends BaseListComponent<Agent> {
     }
 
     onEdit(agent: Agent): void {
-        this.router.navigate(['/agents', agent.agentUId], { queryParams: { edit: 'true' } });
+        this.router.navigate(['/agents', agent.agentUId], {
+            queryParams: { edit: 'true' },
+            state: { itemName: agent.name }
+        });
     }
 
     onView(agent: Agent): void {
-        this.router.navigate(['/agents', agent.agentUId], { queryParams: { edit: 'false' } });
+        this.router.navigate(['/agents', agent.agentUId], {
+            queryParams: { edit: 'false' },
+            state: { itemName: agent.name }
+        });
     }
 
     onSelect(agent: Agent): void {
-        this.router.navigate(['/agents', agent.agentUId]);
+        this.router.navigate(['/agents', agent.agentUId], {
+            state: { itemName: agent.name }
+        });
     }
 
     onDelete(agent: Agent): void {

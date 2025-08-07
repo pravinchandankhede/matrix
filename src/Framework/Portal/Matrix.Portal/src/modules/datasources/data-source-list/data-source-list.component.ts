@@ -51,8 +51,8 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
 
     filterPredicate(dataSource: DataSource): boolean {
         const matchesName = dataSource.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                           (dataSource.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ?? false);
-        const matchesActive = this.selectedActive ? 
+            (dataSource.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ?? false);
+        const matchesActive = this.selectedActive ?
             (this.selectedActive === 'true' ? dataSource.isActive : !dataSource.isActive) : true;
         const matchesType = this.selectedType ? dataSource.type === this.selectedType : true;
         return matchesName && matchesActive && matchesType;
@@ -81,15 +81,23 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
     }
 
     onEdit(dataSource: DataSource): void {
-        this.router.navigate(['/datasources', dataSource.dataSourceUId], { queryParams: { edit: 'true' } });
+        this.router.navigate(['/datasources', dataSource.dataSourceUId], {
+            queryParams: { edit: 'true' },
+            state: { itemName: dataSource.name }
+        });
     }
 
     onView(dataSource: DataSource): void {
-        this.router.navigate(['/datasources', dataSource.dataSourceUId], { queryParams: { edit: 'false' } });
+        this.router.navigate(['/datasources', dataSource.dataSourceUId], {
+            queryParams: { edit: 'false' },
+            state: { itemName: dataSource.name }
+        });
     }
 
     onSelect(dataSource: DataSource): void {
-        this.router.navigate(['/datasources', dataSource.dataSourceUId]);
+        this.router.navigate(['/datasources', dataSource.dataSourceUId], {
+            state: { itemName: dataSource.name }
+        });
     }
 
     onDelete(dataSource: DataSource): void {

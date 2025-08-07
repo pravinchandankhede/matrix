@@ -52,12 +52,12 @@ export class ModelListComponent extends BaseListComponent<Model> {
 
     filterPredicate(model: Model): boolean {
         const matchesName = model.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                           (model.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ?? false);
-        const matchesEnabled = this.selectedEnabled ? 
+            (model.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ?? false);
+        const matchesEnabled = this.selectedEnabled ?
             (this.selectedEnabled === 'true' ? model.isEnabled : !model.isEnabled) : true;
-        const matchesProvider = this.selectedProvider ? 
+        const matchesProvider = this.selectedProvider ?
             (model.provider?.toLowerCase() === this.selectedProvider.toLowerCase()) : true;
-        const matchesType = this.selectedType ? 
+        const matchesType = this.selectedType ?
             (model.type?.toLowerCase() === this.selectedType.toLowerCase()) : true;
         return matchesName && matchesEnabled && matchesProvider && matchesType;
     }
@@ -94,15 +94,23 @@ export class ModelListComponent extends BaseListComponent<Model> {
     }
 
     onEdit(model: Model): void {
-        this.router.navigate(['/models', model.modelUId], { queryParams: { edit: 'true' } });
+        this.router.navigate(['/models', model.modelUId], {
+            queryParams: { edit: 'true' },
+            state: { itemName: model.name }
+        });
     }
 
     onView(model: Model): void {
-        this.router.navigate(['/models', model.modelUId], { queryParams: { edit: 'false' } });
+        this.router.navigate(['/models', model.modelUId], {
+            queryParams: { edit: 'false' },
+            state: { itemName: model.name }
+        });
     }
 
     onSelect(model: Model): void {
-        this.router.navigate(['/models', model.modelUId]);
+        this.router.navigate(['/models', model.modelUId], {
+            state: { itemName: model.name }
+        });
     }
 
     onDelete(model: Model): void {

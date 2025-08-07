@@ -48,8 +48,8 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
 
     filterPredicate(collection: DataSourceCollection): boolean {
         const matchesName = collection.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                           collection.description.toLowerCase().includes(this.searchTerm.toLowerCase());
-        const matchesCustom = this.selectedCustom ? 
+            collection.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+        const matchesCustom = this.selectedCustom ?
             (this.selectedCustom === 'true' ? collection.isCustom : !collection.isCustom) : true;
         return matchesName && matchesCustom;
     }
@@ -68,15 +68,23 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
     }
 
     onEdit(collection: DataSourceCollection): void {
-        this.router.navigate(['/collections', collection.dataSourceCollectionUId], { queryParams: { edit: 'true' } });
+        this.router.navigate(['/collections', collection.dataSourceCollectionUId], {
+            queryParams: { edit: 'true' },
+            state: { itemName: collection.name }
+        });
     }
 
     onView(collection: DataSourceCollection): void {
-        this.router.navigate(['/collections', collection.dataSourceCollectionUId], { queryParams: { edit: 'false' } });
+        this.router.navigate(['/collections', collection.dataSourceCollectionUId], {
+            queryParams: { edit: 'false' },
+            state: { itemName: collection.name }
+        });
     }
 
     onSelect(collection: DataSourceCollection): void {
-        this.router.navigate(['/collections', collection.dataSourceCollectionUId]);
+        this.router.navigate(['/collections', collection.dataSourceCollectionUId], {
+            state: { itemName: collection.name }
+        });
     }
 
     onDelete(collection: DataSourceCollection): void {

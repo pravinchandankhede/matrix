@@ -23,6 +23,7 @@ export class BreadcrumbComponent {
         ).subscribe(() => {
             this.breadcrumbs = this.buildBreadcrumbs(this.route.root);
             this.showHomeBreadcrumb = this.router.url !== '/';
+            this.resolveBreadcrumbNames();
         });
     }
 
@@ -45,5 +46,31 @@ export class BreadcrumbComponent {
 
     private formatLabel(str: string): string {
         return str.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+
+    private resolveBreadcrumbNames(): void {
+        // Check if we have navigation state with item name
+        const navigation = this.router.getCurrentNavigation();
+        const state = navigation?.extras?.state || (history.state as any);
+
+        if (state && state.itemName) {
+            // Look for the last breadcrumb (which should be the detail screen) and update its label
+            this.breadcrumbs.forEach((breadcrumb, index) => {
+                const urlParts = breadcrumb.url.split('/');
+                if (urlParts.length >= 3) {
+                    const possibleUid = urlParts[2]; // the potential UID
+
+                    // Check if this looks like a UID (contains hyphens, proper length)
+                    if (this.isUid(possibleUid)) {
+                        this.breadcrumbs[index].label = state.itemName;
+                    }
+                }
+            });
+        }
+    }
+
+    private isUid(str: string): boolean {
+        // Check if string looks like a UID (has hyphens and reasonable length)
+        return str.includes('-') && str.length > 20 && /^[a-f0-9-]+$/i.test(str);
     }
 }

@@ -10,158 +10,202 @@
             </button>
         </div>
 
-        <div class="detail-content">
-            <div class="section-content">
-                <!-- Edit Mode -->
-                <form *ngIf="editMode; else viewMode" class="detail-form">
-                    <!-- Basic Information Section -->
-                    <div class="content-section">
-                        <h3>Basic Information</h3>
-                        <div class="form-grid">
-                            <div class="form-row">
-                                <label>Agent UID:</label>
-                                <input type="text" [(ngModel)]="item.agentUId" name="agentUId" />
-                            </div>
-                            <div class="form-row">
-                                <label>Name:</label>
-                                <input type="text" [(ngModel)]="item.name" name="name" placeholder="Enter agent name" />
-                            </div>
-                            <div class="form-row full-width">
-                                <label>Description:</label>
-                                <textarea [(ngModel)]="item.description" name="description" placeholder="Enter agent description" rows="3"></textarea>
-                            </div>
-                            <div class="form-row">
-                                <label>Type:</label>
-                                <input type="text" [(ngModel)]="item.type" name="type" placeholder="Enter agent type" />
-                            </div>
-                            <div class="form-row">
-                                <label>Status:</label>
-                                <select [(ngModel)]="item.status" name="status">
-                                    <option value="Active">Active</option>
-                                    <option value="Inactive">Inactive</option>
-                                    <option value="Maintenance">Maintenance</option>
-                                </select>
-                            </div>
-                            <div class="form-row">
-                                <label>Version:</label>
-                                <input type="text" [(ngModel)]="item.version" name="version" placeholder="Enter version" />
-                            </div>
-                        </div>
-                    </div>
+        <div class="detail-content two-pane-layout">
+            <!-- Left Navigation Panel -->
+            <div class="left-panel">
+                <nav class="section-nav">
+                    <ul>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'general'"
+                            (click)="setActiveSection('general')">
+                            <mat-icon>info</mat-icon>
+                            <span>General</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'capabilities'"
+                            (click)="setActiveSection('capabilities')"
+                            *ngIf="item.capabilities && item.capabilities.length > 0">
+                            <mat-icon>psychology</mat-icon>
+                            <span>Capabilities</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'features'"
+                            (click)="setActiveSection('features')"
+                            *ngIf="item.features && item.features.length > 0">
+                            <mat-icon>star</mat-icon>
+                            <span>Features</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'tools'"
+                            (click)="setActiveSection('tools')"
+                            *ngIf="item.tools && item.tools.length > 0">
+                            <mat-icon>build</mat-icon>
+                            <span>Tools</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'audit'"
+                            (click)="setActiveSection('audit')">
+                            <mat-icon>history</mat-icon>
+                            <span>Audit</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
 
-                    <div class="form-actions">
-                        <button type="button" class="btn-primary" (click)="onSave()">
-                            <mat-icon>save</mat-icon> {{ isNew ? 'Create' : 'Save' }}
-                        </button>
-                        <button *ngIf="!isNew && item?.agentUId" type="button" class="btn-secondary" (click)="onDelete()">
-                            <mat-icon>delete</mat-icon> Delete
-                        </button>
-                        <button type="button" class="btn-secondary" (click)="router.navigate(['/agents'])">
-                            <mat-icon>arrow_back</mat-icon> Back to Agents
-                        </button>
-                    </div>
-                </form>
-
-                <!-- View Mode -->
-                <ng-template #viewMode>
-                    <!-- Basic Information Section -->
-                    <div class="content-section">
-                        <h3>Basic Information</h3>
-                        <div class="info-grid">
-                            <div class="info-row">
-                                <label>Agent UID:</label>
-                                <span class="uid">{{ item.agentUId }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Name:</label>
-                                <span>{{ item.name }}</span>
-                            </div>
-                            <div class="info-row" *ngIf="item.description">
-                                <label>Description:</label>
-                                <span>{{ item.description }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Type:</label>
-                                <span>{{ item.type }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Status:</label>
-                                <span class="status" [class.active]="item.status === 'Active'" [class.inactive]="item.status === 'Inactive'">
-                                    {{ item.status }}
-                                </span>
-                            </div>
-                            <div class="info-row">
-                                <label>Version:</label>
-                                <span>{{ item.version }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Capabilities Section -->
-                    <div class="content-section" *ngIf="item.capabilities && item.capabilities.length > 0">
-                        <h3>Capabilities</h3>
-                        <div class="info-grid">
-                            <div *ngFor="let capability of item.capabilities" class="info-row">
-                                <label>{{ capability.name }}:</label>
-                                <div>
-                                    <span>{{ capability.description }}</span>
-                                    <span class="capability-badge">{{ capability.type }}</span>
+            <!-- Right Content Panel -->
+            <div class="right-panel">
+                <div class="section-content">
+                    <!-- Edit Mode -->
+                    <form *ngIf="editMode; else viewMode" class="detail-form">
+                        <!-- Basic Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'general'">
+                            <h3>General Information</h3>
+                            <div class="form-grid">
+                                <div class="form-row">
+                                    <label>Agent UID:</label>
+                                    <input type="text" [(ngModel)]="item.agentUId" name="agentUId" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Name:</label>
+                                    <input type="text" [(ngModel)]="item.name" name="name" placeholder="Enter agent name" />
+                                </div>
+                                <div class="form-row full-width">
+                                    <label>Description:</label>
+                                    <textarea [(ngModel)]="item.description" name="description" placeholder="Enter agent description" rows="3"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <label>Type:</label>
+                                    <input type="text" [(ngModel)]="item.type" name="type" placeholder="Enter agent type" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Status:</label>
+                                    <select [(ngModel)]="item.status" name="status">
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                        <option value="Maintenance">Maintenance</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label>Version:</label>
+                                    <input type="text" [(ngModel)]="item.version" name="version" placeholder="Enter version" />
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Features Section -->
-                    <div class="content-section" *ngIf="item.features && item.features.length > 0">
-                        <h3>Features</h3>
-                        <div class="info-grid">
-                            <div *ngFor="let feature of item.features" class="info-row">
-                                <label>{{ feature.name }}:</label>
-                                <div>
-                                    <span>{{ feature.description }}</span>
-                                    <span class="feature-badge">{{ feature.type }}</span>
+                        <div class="form-actions">
+                            <button type="button" class="btn-primary" (click)="onSave()">
+                                <mat-icon>save</mat-icon> {{ isNew ? 'Create' : 'Save' }}
+                            </button>
+                            <button *ngIf="!isNew && item?.agentUId" type="button" class="btn-secondary" (click)="onDelete()">
+                                <mat-icon>delete</mat-icon> Delete
+                            </button>
+                            <button type="button" class="btn-secondary" (click)="router.navigate(['/agents'])">
+                                <mat-icon>arrow_back</mat-icon> Back to Agents
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- View Mode -->
+                    <ng-template #viewMode>
+                        <!-- Basic Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'general'">
+                            <h3>General Information</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Agent UID:</label>
+                                    <span class="uid">{{ item.agentUId }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Name:</label>
+                                    <span>{{ item.name }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.description">
+                                    <label>Description:</label>
+                                    <span>{{ item.description }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Type:</label>
+                                    <span>{{ item.type }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Status:</label>
+                                    <span class="status" [class.active]="item.status === 'Active'" [class.inactive]="item.status === 'Inactive'">
+                                        {{ item.status }}
+                                    </span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Version:</label>
+                                    <span>{{ item.version }}</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Tools Section -->
-                    <div class="content-section" *ngIf="item.tools && item.tools.length > 0">
-                        <h3>Tools</h3>
-                        <div class="info-grid">
-                            <div *ngFor="let tool of item.tools" class="info-row">
-                                <label>{{ tool.name }}:</label>
-                                <div>
-                                    <span>{{ tool.description }}</span>
-                                    <span class="tool-badge">{{ tool.type }}</span>
+                        <!-- Capabilities Section -->
+                        <div class="content-section" *ngIf="activeSection === 'capabilities' && item.capabilities && item.capabilities.length > 0">
+                            <h3>Capabilities</h3>
+                            <div class="info-grid">
+                                <div *ngFor="let capability of item.capabilities" class="info-row">
+                                    <label>{{ capability.name }}:</label>
+                                    <div>
+                                        <span>{{ capability.description }}</span>
+                                        <span class="capability-badge">{{ capability.type }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Audit Information Section -->
-                    <div class="content-section">
-                        <h3>Audit Information</h3>
-                        <div class="info-grid">
-                            <div class="info-row">
-                                <label>Created By:</label>
-                                <span>{{ item.createdBy }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Created Date:</label>
-                                <span>{{ item.createdDate | date:'medium' }}</span>
-                            </div>
-                            <div class="info-row" *ngIf="item.modifiedBy">
-                                <label>Modified By:</label>
-                                <span>{{ item.modifiedBy }}</span>
-                            </div>
-                            <div class="info-row" *ngIf="item.modifiedDate">
-                                <label>Modified Date:</label>
-                                <span>{{ item.modifiedDate | date:'medium' }}</span>
+                        <!-- Features Section -->
+                        <div class="content-section" *ngIf="activeSection === 'features' && item.features && item.features.length > 0">
+                            <h3>Features</h3>
+                            <div class="info-grid">
+                                <div *ngFor="let feature of item.features" class="info-row">
+                                    <label>{{ feature.name }}:</label>
+                                    <div>
+                                        <span>{{ feature.description }}</span>
+                                        <span class="feature-badge">{{ feature.type }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </ng-template>
+
+                        <!-- Tools Section -->
+                        <div class="content-section" *ngIf="activeSection === 'tools' && item.tools && item.tools.length > 0">
+                            <h3>Tools</h3>
+                            <div class="info-grid">
+                                <div *ngFor="let tool of item.tools" class="info-row">
+                                    <label>{{ tool.name }}:</label>
+                                    <div>
+                                        <span>{{ tool.description }}</span>
+                                        <span class="tool-badge">{{ tool.type }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Audit Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'audit'">
+                            <h3>Audit Information</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Created By:</label>
+                                    <span>{{ item.createdBy }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Created Date:</label>
+                                    <span>{{ item.createdDate | date:'medium' }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedBy">
+                                    <label>Modified By:</label>
+                                    <span>{{ item.modifiedBy }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedDate">
+                                    <label>Modified Date:</label>
+                                    <span>{{ item.modifiedDate | date:'medium' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
             </div>
         </div>
     </div>

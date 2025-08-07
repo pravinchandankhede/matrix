@@ -12,6 +12,9 @@ import { BaseDetailComponent } from '../../../shared/base-detail.component';
     styleUrls: ['./model-detail.component.css']
 })
 export class ModelDetailComponent extends BaseDetailComponent<Model> {
+    // Navigation
+    activeSection: string = 'general';
+
     modelForm: FormGroup;
 
     constructor(
@@ -119,6 +122,11 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> {
             region: model.region,
             isEnabled: model.isEnabled
         });
+    }
+
+    // Navigation methods
+    setActiveSection(section: string): void {
+        this.activeSection = section;
     }
 
     get isFormValid(): boolean {

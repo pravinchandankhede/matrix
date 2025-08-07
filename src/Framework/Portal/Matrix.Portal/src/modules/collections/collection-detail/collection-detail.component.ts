@@ -12,6 +12,9 @@ import { BaseDetailComponent } from '../../../shared/base-detail.component';
     styleUrls: ['./collection-detail.component.css']
 })
 export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCollection> {
+    // Navigation
+    activeSection: string = 'general';
+
     collectionForm: FormGroup;
 
     constructor(
@@ -114,5 +117,9 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
 
     get dataSourceCount(): number {
         return this.item?.dataSources?.length || 0;
+    }
+
+    setActiveSection(section: string): void {
+        this.activeSection = section;
     }
 }

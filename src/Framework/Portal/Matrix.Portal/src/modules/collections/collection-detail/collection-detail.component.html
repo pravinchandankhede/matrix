@@ -10,12 +10,31 @@
             </button>
         </div>
 
-        <div class="detail-content">
-            <div class="section-content">
+        <div class="two-pane-layout">
+            <!-- Left Panel - Navigation -->
+            <div class="left-panel">
+                <div class="navigation-menu">
+                    <div class="nav-item"
+                         [class.active]="activeSection === 'general'"
+                         (click)="setActiveSection('general')">
+                        <mat-icon>info</mat-icon>
+                        <span>General</span>
+                    </div>
+                    <div class="nav-item"
+                         [class.active]="activeSection === 'audit'"
+                         (click)="setActiveSection('audit')">
+                        <mat-icon>history</mat-icon>
+                        <span>Audit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Content -->
+            <div class="right-panel">
                 <!-- Edit Mode -->
                 <form *ngIf="editMode; else viewMode" class="detail-form">
                     <!-- Collection Information Section -->
-                    <div class="content-section">
+                    <div class="content-section" *ngIf="activeSection === 'general'">
                         <h3>Collection Information</h3>
                         <div class="form-grid">
                             <div class="form-row">
@@ -33,6 +52,33 @@
                         </div>
                     </div>
 
+                    <!-- Audit Information Section -->
+                    <div class="content-section" *ngIf="activeSection === 'audit'">
+                        <h3>Audit Information</h3>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <label>Created By:</label>
+                                <span>{{ item.createdBy }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Created Date:</label>
+                                <span>{{ item.createdDate | date:'medium' }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.modifiedBy">
+                                <label>Modified By:</label>
+                                <span>{{ item.modifiedBy }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.modifiedDate">
+                                <label>Modified Date:</label>
+                                <span>{{ item.modifiedDate | date:'medium' }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Correlation UID:</label>
+                                <span class="uid">{{ item.correlationUId }}</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-actions">
                         <button type="button" class="btn-primary" (click)="onSave()">
                             <mat-icon>save</mat-icon> Save
@@ -46,7 +92,7 @@
                 <!-- View Mode -->
                 <ng-template #viewMode>
                     <!-- Collection Information Section -->
-                    <div class="content-section">
+                    <div class="content-section" *ngIf="activeSection === 'general'">
                         <h3>Collection Information</h3>
                         <div class="info-grid">
                             <div class="info-row">
@@ -65,7 +111,7 @@
                     </div>
 
                     <!-- Audit Information Section -->
-                    <div class="content-section">
+                    <div class="content-section" *ngIf="activeSection === 'audit'">
                         <h3>Audit Information</h3>
                         <div class="info-grid">
                             <div class="info-row">

@@ -12,6 +12,9 @@ import { BaseDetailComponent } from '../../../shared/base-detail.component';
     styleUrls: ['./chunk-detail.component.css']
 })
 export class ChunkDetailComponent extends BaseDetailComponent<Chunk> {
+    // Navigation
+    activeSection: string = 'general';
+
     chunkForm: FormGroup;
 
     constructor(
@@ -117,5 +120,9 @@ export class ChunkDetailComponent extends BaseDetailComponent<Chunk> {
 
     get isEditMode(): boolean {
         return !!this.item?.chunkUId;
+    }
+
+    setActiveSection(section: string): void {
+        this.activeSection = section;
     }
 }

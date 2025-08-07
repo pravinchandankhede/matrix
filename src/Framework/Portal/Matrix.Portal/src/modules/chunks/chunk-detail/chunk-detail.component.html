@@ -10,12 +10,31 @@
             </button>
         </div>
 
-        <div class="detail-content">
-            <div class="section-content">
+        <div class="two-pane-layout">
+            <!-- Left Panel - Navigation -->
+            <div class="left-panel">
+                <div class="navigation-menu">
+                    <div class="nav-item"
+                         [class.active]="activeSection === 'general'"
+                         (click)="setActiveSection('general')">
+                        <mat-icon>info</mat-icon>
+                        <span>General</span>
+                    </div>
+                    <div class="nav-item"
+                         [class.active]="activeSection === 'metadata'"
+                         (click)="setActiveSection('metadata')">
+                        <mat-icon>description</mat-icon>
+                        <span>Metadata</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Content -->
+            <div class="right-panel">
                 <!-- Edit Mode -->
                 <form *ngIf="editMode; else viewMode" class="detail-form">
                     <!-- Chunk Information Section -->
-                    <div class="content-section">
+                    <div class="content-section" *ngIf="activeSection === 'general'">
                         <h3>Chunk Information</h3>
                         <div class="form-grid">
                             <div class="form-row">
@@ -30,6 +49,13 @@
                                 <label>Type:</label>
                                 <input type="text" [(ngModel)]="item.type" name="type" />
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Metadata Section -->
+                    <div class="content-section" *ngIf="activeSection === 'metadata'">
+                        <h3>Metadata</h3>
+                        <div class="form-grid">
                             <div class="form-row">
                                 <label>Source:</label>
                                 <input type="text" [(ngModel)]="item.chunkSource" name="chunkSource" />
@@ -58,7 +84,7 @@
                 <!-- View Mode -->
                 <ng-template #viewMode>
                     <!-- Chunk Information Section -->
-                    <div class="content-section">
+                    <div class="content-section" *ngIf="activeSection === 'general'">
                         <h3>Chunk Information</h3>
                         <div class="info-grid">
                             <div class="info-row">
@@ -73,6 +99,13 @@
                                 <label>Type:</label>
                                 <span>{{ item.type }}</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Metadata Section -->
+                    <div class="content-section" *ngIf="activeSection === 'metadata'">
+                        <h3>Metadata</h3>
+                        <div class="info-grid">
                             <div class="info-row">
                                 <label>Source:</label>
                                 <span>{{ item.chunkSource }}</span>

@@ -10,162 +10,218 @@
             </button>
         </div>
 
-        <div class="detail-content">
-            <div class="section-content">
-                <!-- Edit Mode -->
-                <form *ngIf="editMode; else viewMode" class="detail-form">
-                    <!-- Model Information Section -->
-                    <div class="content-section">
-                        <h3>Model Information</h3>
-                        <div class="form-grid">
-                            <div class="form-row">
-                                <label>Model UID:</label>
-                                <input type="text" [(ngModel)]="item.modelUId" name="modelUId" />
-                            </div>
-                            <div class="form-row">
-                                <label>Name:</label>
-                                <input type="text" [(ngModel)]="item.name" name="name" />
-                            </div>
-                            <div class="form-row full-width">
-                                <label>Description:</label>
-                                <textarea [(ngModel)]="item.description" name="description" rows="3"></textarea>
-                            </div>
-                            <div class="form-row">
-                                <label>Type:</label>
-                                <input type="text" [(ngModel)]="item.type" name="type" />
-                            </div>
-                            <div class="form-row">
-                                <label>Version:</label>
-                                <input type="text" [(ngModel)]="item.version" name="version" />
-                            </div>
-                            <div class="form-row">
-                                <label>Provider:</label>
-                                <input type="text" [(ngModel)]="item.provider" name="provider" />
+        <div class="detail-content two-pane-layout">
+            <!-- Left Navigation Panel -->
+            <div class="left-panel">
+                <nav class="section-nav">
+                    <ul>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'general'"
+                            (click)="setActiveSection('general')">
+                            <mat-icon>info</mat-icon>
+                            <span>General</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'configuration'"
+                            (click)="setActiveSection('configuration')">
+                            <mat-icon>settings</mat-icon>
+                            <span>Configuration</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'audit'"
+                            (click)="setActiveSection('audit')">
+                            <mat-icon>history</mat-icon>
+                            <span>Audit</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Right Content Panel -->
+            <div class="right-panel">
+                <div class="section-content">
+                    <!-- Edit Mode -->
+                    <form *ngIf="editMode; else viewMode" class="detail-form">
+                        <!-- Model Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'general'">
+                            <h3>Model Information</h3>
+                            <div class="form-grid">
+                                <div class="form-row">
+                                    <label>Model UID:</label>
+                                    <input type="text" [(ngModel)]="item.modelUId" name="modelUId" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Name:</label>
+                                    <input type="text" [(ngModel)]="item.name" name="name" />
+                                </div>
+                                <div class="form-row full-width">
+                                    <label>Description:</label>
+                                    <textarea [(ngModel)]="item.description" name="description" rows="3"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <label>Type:</label>
+                                    <input type="text" [(ngModel)]="item.type" name="type" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Version:</label>
+                                    <input type="text" [(ngModel)]="item.version" name="version" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Provider:</label>
+                                    <input type="text" [(ngModel)]="item.provider" name="provider" />
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Configuration Section -->
-                    <div class="content-section">
-                        <h3>Configuration</h3>
-                        <div class="form-grid">
-                            <div class="form-row">
-                                <label>Endpoint:</label>
-                                <input type="text" [(ngModel)]="item.endpoint" name="endpoint" />
-                            </div>
-                            <div class="form-row">
-                                <label>API Key:</label>
-                                <input type="text" [(ngModel)]="item.apiKey" name="apiKey" />
-                            </div>
-                            <div class="form-row">
-                                <label>Region:</label>
-                                <input type="text" [(ngModel)]="item.region" name="region" />
-                            </div>
-                            <div class="form-row">
-                                <label>Enabled:</label>
-                                <select [(ngModel)]="item.isEnabled" name="isEnabled">
-                                    <option [ngValue]="true">Yes</option>
-                                    <option [ngValue]="false">No</option>
-                                </select>
+                        <!-- Configuration Section -->
+                        <div class="content-section" *ngIf="activeSection === 'configuration'">
+                            <h3>Configuration</h3>
+                            <div class="form-grid">
+                                <div class="form-row">
+                                    <label>Endpoint:</label>
+                                    <input type="text" [(ngModel)]="item.endpoint" name="endpoint" />
+                                </div>
+                                <div class="form-row">
+                                    <label>API Key:</label>
+                                    <input type="text" [(ngModel)]="item.apiKey" name="apiKey" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Region:</label>
+                                    <input type="text" [(ngModel)]="item.region" name="region" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Enabled:</label>
+                                    <select [(ngModel)]="item.isEnabled" name="isEnabled">
+                                        <option [ngValue]="true">Yes</option>
+                                        <option [ngValue]="false">No</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-actions">
-                        <button type="button" class="btn-primary" (click)="onSave()">
-                            <mat-icon>save</mat-icon> Save
-                        </button>
-                        <button type="button" class="btn-secondary" (click)="onCancelEdit()">
-                            <mat-icon>cancel</mat-icon> Cancel
-                        </button>
-                    </div>
-                </form>
-
-                <!-- View Mode -->
-                <ng-template #viewMode>
-                    <!-- Model Information Section -->
-                    <div class="content-section">
-                        <h3>Model Information</h3>
-                        <div class="info-grid">
-                            <div class="info-row">
-                                <label>Model UID:</label>
-                                <span class="uid">{{ item.modelUId }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Name:</label>
-                                <span>{{ item.name }}</span>
-                            </div>
-                            <div class="info-row" *ngIf="item.description">
-                                <label>Description:</label>
-                                <span>{{ item.description }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Type:</label>
-                                <span>{{ item.type }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Version:</label>
-                                <span>{{ item.version }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Provider:</label>
-                                <span>{{ item.provider }}</span>
+                        <!-- Audit Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'audit'">
+                            <h3>Audit Information</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Created By:</label>
+                                    <span>{{ item.createdBy }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Created Date:</label>
+                                    <span>{{ item.createdDate | date:'medium' }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedBy">
+                                    <label>Modified By:</label>
+                                    <span>{{ item.modifiedBy }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedDate">
+                                    <label>Modified Date:</label>
+                                    <span>{{ item.modifiedDate | date:'medium' }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Correlation UID:</label>
+                                    <span class="uid">{{ item.correlationUId }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Configuration Section -->
-                    <div class="content-section">
-                        <h3>Configuration</h3>
-                        <div class="info-grid">
-                            <div class="info-row">
-                                <label>Endpoint:</label>
-                                <span>{{ item.endpoint }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>API Key:</label>
-                                <span>{{ item.apiKey ? '••••••••' : 'Not set' }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Region:</label>
-                                <span>{{ item.region }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Status:</label>
-                                <span class="status" [class.active]="item.isEnabled" [class.inactive]="!item.isEnabled">
-                                    {{ item.isEnabled ? 'Enabled' : 'Disabled' }}
-                                </span>
+                        <div class="form-actions">
+                            <button type="button" class="btn-primary" (click)="onSave()">
+                                <mat-icon>save</mat-icon> Save
+                            </button>
+                            <button type="button" class="btn-secondary" (click)="onCancelEdit()">
+                                <mat-icon>cancel</mat-icon> Cancel
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- View Mode -->
+                    <ng-template #viewMode>
+                        <!-- Model Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'general'">
+                            <h3>Model Information</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Model UID:</label>
+                                    <span class="uid">{{ item.modelUId }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Name:</label>
+                                    <span>{{ item.name }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.description">
+                                    <label>Description:</label>
+                                    <span>{{ item.description }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Type:</label>
+                                    <span>{{ item.type }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Version:</label>
+                                    <span>{{ item.version }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Provider:</label>
+                                    <span>{{ item.provider }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Audit Information Section -->
-                    <div class="content-section">
-                        <h3>Audit Information</h3>
-                        <div class="info-grid">
-                            <div class="info-row">
-                                <label>Created By:</label>
-                                <span>{{ item.createdBy }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Created Date:</label>
-                                <span>{{ item.createdDate | date:'medium' }}</span>
-                            </div>
-                            <div class="info-row" *ngIf="item.modifiedBy">
-                                <label>Modified By:</label>
-                                <span>{{ item.modifiedBy }}</span>
-                            </div>
-                            <div class="info-row" *ngIf="item.modifiedDate">
-                                <label>Modified Date:</label>
-                                <span>{{ item.modifiedDate | date:'medium' }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Correlation UID:</label>
-                                <span class="uid">{{ item.correlationUId }}</span>
+                        <!-- Configuration Section -->
+                        <div class="content-section" *ngIf="activeSection === 'configuration'">
+                            <h3>Configuration</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Endpoint:</label>
+                                    <span>{{ item.endpoint }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>API Key:</label>
+                                    <span>{{ item.apiKey ? '••••••••' : 'Not set' }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Region:</label>
+                                    <span>{{ item.region }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Status:</label>
+                                    <span class="status" [class.active]="item.isEnabled" [class.inactive]="!item.isEnabled">
+                                        {{ item.isEnabled ? 'Enabled' : 'Disabled' }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </ng-template>
+
+                        <!-- Audit Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'audit'">
+                            <h3>Audit Information</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Created By:</label>
+                                    <span>{{ item.createdBy }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Created Date:</label>
+                                    <span>{{ item.createdDate | date:'medium' }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedBy">
+                                    <label>Modified By:</label>
+                                    <span>{{ item.modifiedBy }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedDate">
+                                    <label>Modified Date:</label>
+                                    <span>{{ item.modifiedDate | date:'medium' }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Correlation UID:</label>
+                                    <span class="uid">{{ item.correlationUId }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
             </div>
         </div>
     </div>

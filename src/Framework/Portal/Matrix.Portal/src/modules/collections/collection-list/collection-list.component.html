@@ -48,51 +48,19 @@
                     </div>
 
                     <div class="card-body" (click)="onSelect(col)">
-                        <div class="info-row">
-                            <mat-icon>fingerprint</mat-icon>
-                            <span class="label">Collection UID:</span>
-                            <span class="uid">{{ col.dataSourceCollectionUId }}</span>
-                        </div>
-
-                        <div class="info-row">
-                            <mat-icon>description</mat-icon>
-                            <span class="label">Description:</span>
+                        <div class="info-row" *ngIf="col.description">
                             <span class="desc" [title]="col.description">{{ col.description }}</span>
                         </div>
 
                         <div class="info-row">
-                            <mat-icon>collections</mat-icon>
                             <span class="label">Data Sources:</span>
                             <span class="count-badge">{{ col.dataSources.length }}</span>
+                            <span class="label" *ngIf="col.dataSources.length > 0" style="margin-left: 16px;">Preview:</span>
+                            <span *ngIf="col.dataSources.length > 0">{{ getDataSourcePreview(col.dataSources) }}</span>
                         </div>
 
-                        <div class="info-row" *ngIf="col.dataSources.length > 0">
-                            <mat-icon>list</mat-icon>
-                            <span class="label">Sources:</span>
-                            <div class="source-list">
-                                <span class="source-name" *ngFor="let ds of col.dataSources.slice(0, 3); trackBy: trackDataSourceFn">
-                                    {{ ds.name }}
-                                </span>
-                                <span class="more-badge" *ngIf="col.dataSources.length > 3">
-                                    +{{ col.dataSources.length - 3 }} more
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="date-row">
-                            <div class="date-item">
-                                <mat-icon>calendar_today</mat-icon>
-                                <span class="label">Created:</span>
-                                <span>{{ col.createdDate | date:'medium' }}</span>
-                            </div>
-                        </div>
-
-                        <div class="date-row">
-                            <div class="date-item">
-                                <mat-icon>update</mat-icon>
-                                <span class="label">Modified:</span>
-                                <span>{{ col.modifiedDate | date:'medium' }}</span>
-                            </div>
+                        <div class="audit-row">
+                            <span class="audit-text">{{ col.createdBy }} • {{ col.createdDate | date:'MMM d, y' }}</span>
                         </div>
                     </div>
                 </div>

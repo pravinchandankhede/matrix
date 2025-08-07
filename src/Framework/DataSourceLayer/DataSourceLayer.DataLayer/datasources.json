@@ -26,7 +26,7 @@
         "Name": "FinanceDB",
         "Type": "Structured",
         "SubType": "MySQL",
-        "Description": "Finance records database",
+        "Description": "Finance records database Finance records database Finance records database Finance records database",
         "Tags": [ "finance", "mysql" ],
         "Owner": "Finance Team",
         "CreatedAt": "2023-03-10T09:00:00Z",

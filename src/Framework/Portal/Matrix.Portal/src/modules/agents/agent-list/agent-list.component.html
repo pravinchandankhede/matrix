@@ -50,93 +50,30 @@
                     </div>
 
                     <div class="card-body" (click)="onSelect(agent)">
-                        <div class="info-row">
-                            <mat-icon>fingerprint</mat-icon>
-                            <span class="label">Agent ID:</span>
-                            <span class="uid">{{ agent.agentUId }}</span>
-                        </div>
-
                         <div class="info-row" *ngIf="agent.description">
-                            <mat-icon>description</mat-icon>
-                            <span class="label">Description:</span>
                             <span class="desc" [title]="agent.description">{{ agent.description }}</span>
                         </div>
 
                         <div class="info-row">
-                            <mat-icon>category</mat-icon>
                             <span class="label">Type:</span>
                             <span>{{ agent.type }}</span>
-                        </div>
-
-                        <div class="info-row" *ngIf="agent.version">
-                            <mat-icon>label</mat-icon>
-                            <span class="label">Version:</span>
-                            <span>{{ agent.version }}</span>
+                            <span class="label" *ngIf="agent.version" style="margin-left: 16px;">Version:</span>
+                            <span *ngIf="agent.version">{{ agent.version }}</span>
                         </div>
 
                         <div class="info-row" *ngIf="agent.capabilities && agent.capabilities.length > 0">
-                            <mat-icon>settings</mat-icon>
-                            <span class="label">Capabilities:</span>
                             <div class="badge-container">
-                                <span class="capability-badge" *ngFor="let cap of agent.capabilities.slice(0, 3)">
+                                <span class="capability-badge" *ngFor="let cap of agent.capabilities.slice(0, 2)">
                                     {{ cap.name }}
                                 </span>
-                                <span class="more-badge" *ngIf="agent.capabilities.length > 3">
-                                    +{{ agent.capabilities.length - 3 }} more
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="info-row" *ngIf="agent.features && agent.features.length > 0">
-                            <mat-icon>star</mat-icon>
-                            <span class="label">Features:</span>
-                            <div class="badge-container">
-                                <span class="feature-badge" *ngFor="let feat of agent.features.slice(0, 3)">
-                                    {{ feat.name }}
-                                </span>
-                                <span class="more-badge" *ngIf="agent.features.length > 3">
-                                    +{{ agent.features.length - 3 }} more
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="info-row" *ngIf="agent.tools && agent.tools.length > 0">
-                            <mat-icon>build</mat-icon>
-                            <span class="label">Tools:</span>
-                            <div class="badge-container">
-                                <span class="tool-badge" *ngFor="let tool of agent.tools.slice(0, 3)">
-                                    {{ tool.name }}
-                                </span>
-                                <span class="more-badge" *ngIf="agent.tools.length > 3">
-                                    +{{ agent.tools.length - 3 }} more
+                                <span class="more-badge" *ngIf="agent.capabilities.length > 2">
+                                    +{{ agent.capabilities.length - 2 }} more
                                 </span>
                             </div>
                         </div>
 
                         <div class="audit-row">
-                            <div class="audit-item">
-                                <mat-icon>person</mat-icon>
-                                <span class="label">Created By:</span>
-                                <span>{{ agent.createdBy }}</span>
-                            </div>
-                            <div class="audit-item">
-                                <mat-icon>schedule</mat-icon>
-                                <span class="label">Created:</span>
-                                <span>{{ agent.createdDate | date:'medium' }}</span>
-                            </div>
-                        </div>
-
-                        <div class="audit-row" *ngIf="agent.modifiedBy">
-                            <div class="audit-item">
-                                <mat-icon>person_outline</mat-icon>
-                                <span class="label">Modified By:</span>
-                                <span>{{ agent.modifiedBy }}</span>
-                            </div>
-                            <div class="audit-item">
-                                <mat-icon>update</mat-icon>
-                                <span class="label">Modified:</span>
-                                <span>{{ agent.modifiedDate | date:'medium' }}</span>
-                            </div>
+                            <span class="audit-text">{{ agent.createdBy }} • {{ agent.createdDate | date:'MMM d, y' }}</span>
                         </div>
                     </div>
                 </div>

@@ -49,7 +49,13 @@ export class ChunkDetailComponent extends BaseDetailComponent<Chunk> {
             chunkStrategy: {
                 strategyType: 'FixedSize',
                 parameters: { chunkSize: 1000, overlap: 100 }
-            }
+            },
+            createdBy: '',
+            createdDate: new Date(),
+            modifiedBy: '',
+            modifiedDate: new Date(),
+            rowVersion: new Uint8Array(),
+            metadata: []
         };
     }
 

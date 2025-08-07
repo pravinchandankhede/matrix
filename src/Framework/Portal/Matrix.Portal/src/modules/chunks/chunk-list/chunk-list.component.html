@@ -51,51 +51,23 @@
 
                     <div class="card-body" (click)="onSelect(chunk)">
                         <div class="info-row">
-                            <mat-icon>fingerprint</mat-icon>
-                            <span class="label">Chunk UID:</span>
-                            <span class="uid">{{ chunk.chunkUId }}</span>
+                            <span class="desc" [title]="chunk.text">{{ truncateText(chunk.text, 200) }}</span>
                         </div>
 
                         <div class="info-row">
-                            <mat-icon>label</mat-icon>
-                            <span class="label">Chunk ID:</span>
-                            <span>{{ chunk.chunkId }}</span>
-                        </div>
-
-                        <div class="info-row">
-                            <mat-icon>text_fields</mat-icon>
-                            <span class="label">Text Preview:</span>
-                            <span class="text-preview" [title]="chunk.text">{{ truncateText(chunk.text, 100) }}</span>
-                        </div>
-
-                        <div class="info-row">
-                            <mat-icon>category</mat-icon>
                             <span class="label">Type:</span>
                             <span>{{ chunk.type }}</span>
-                        </div>
-
-                        <div class="info-row">
-                            <mat-icon>source</mat-icon>
-                            <span class="label">Source:</span>
+                            <span class="label" style="margin-left: 16px;">Source:</span>
                             <span>{{ chunk.chunkSource }}</span>
                         </div>
 
-                        <div class="info-row">
-                            <mat-icon>link</mat-icon>
-                            <span class="label">Source ID:</span>
-                            <span>{{ chunk.chunkSourceId }}</span>
-                        </div>
-
-                        <div class="info-row">
-                            <mat-icon>hub</mat-icon>
-                            <span class="label">Correlation UID:</span>
-                            <span class="uid">{{ chunk.correlationUId }}</span>
-                        </div>
-
                         <div class="info-row" *ngIf="chunk.chunkStrategy">
-                            <mat-icon>settings</mat-icon>
                             <span class="label">Strategy:</span>
                             <span>{{ chunk.chunkStrategy.strategyType }}</span>
+                        </div>
+
+                        <div class="audit-row">
+                            <span class="audit-text">{{ chunk.createdBy }} • {{ chunk.createdDate | date:'MMM d, y' }}</span>
                         </div>
                     </div>
                 </div>

@@ -40,7 +40,6 @@
                             <span class="status-badge" [ngClass]="ds.isActive ? 'active' : 'inactive'">
                                 {{ ds.isActive ? 'Active' : 'Inactive' }}
                             </span>
-                            <span class="type-badge" [ngClass]="ds.type.toLowerCase()">{{ ds.type }}</span>
                             <button class="edit-icon-btn" (click)="onEdit(ds); $event.stopPropagation()" title="Edit">
                                 <mat-icon>edit</mat-icon>
                             </button>
@@ -54,78 +53,26 @@
                     </div>
 
                     <div class="card-body" (click)="onSelect(ds)">
-                        <div class="info-row">
-                            <mat-icon>fingerprint</mat-icon>
-                            <span class="label">Data Source ID:</span>
-                            <span class="uid">{{ ds.dataSourceUId }}</span>
-                        </div>
-
                         <div class="info-row" *ngIf="ds.description">
-                            <mat-icon>description</mat-icon>
-                            <span class="label">Description:</span>
                             <span class="desc" [title]="ds.description">{{ ds.description }}</span>
                         </div>
 
                         <div class="info-row">
-                            <mat-icon>person</mat-icon>
-                            <span class="label">Owner:</span>
-                            <span>{{ ds.owner }}</span>
-                        </div>
-
-                        <div class="info-row">
-                            <mat-icon>category</mat-icon>
                             <span class="label">Type:</span>
                             <span>{{ ds.type }}</span>
+                            <span class="label" *ngIf="ds.subType" style="margin-left: 16px;">SubType:</span>
+                            <span *ngIf="ds.subType">{{ ds.subType }}</span>
                         </div>
 
                         <div class="info-row">
-                            <mat-icon>label</mat-icon>
-                            <span class="label">SubType:</span>
-                            <span>{{ ds.subType }}</span>
-                        </div>
-
-                        <div class="info-row">
-                            <mat-icon>security</mat-icon>
-                            <span class="label">Access Mode:</span>
+                            <span class="label">Owner:</span>
+                            <span>{{ ds.owner }}</span>
+                            <span class="label" style="margin-left: 16px;">Access:</span>
                             <span>{{ ds.accessMode }}</span>
                         </div>
 
-                        <div class="info-row">
-                            <mat-icon>vpn_key</mat-icon>
-                            <span class="label">Authentication:</span>
-                            <span>{{ ds.authenticationType }}</span>
-                        </div>
-
-                        <div class="info-row" *ngIf="ds.isCustom">
-                            <mat-icon>star</mat-icon>
-                            <span class="label">Custom:</span>
-                            <span class="custom-badge">Yes</span>
-                        </div>
-
                         <div class="audit-row">
-                            <div class="audit-item">
-                                <mat-icon>person</mat-icon>
-                                <span class="label">Created By:</span>
-                                <span>{{ ds.createdBy }}</span>
-                            </div>
-                            <div class="audit-item">
-                                <mat-icon>schedule</mat-icon>
-                                <span class="label">Created:</span>
-                                <span>{{ ds.createdDate | date:'medium' }}</span>
-                            </div>
-                        </div>
-
-                        <div class="audit-row" *ngIf="ds.modifiedBy">
-                            <div class="audit-item">
-                                <mat-icon>person_outline</mat-icon>
-                                <span class="label">Modified By:</span>
-                                <span>{{ ds.modifiedBy }}</span>
-                            </div>
-                            <div class="audit-item">
-                                <mat-icon>update</mat-icon>
-                                <span class="label">Modified:</span>
-                                <span>{{ ds.modifiedDate | date:'medium' }}</span>
-                            </div>
+                            <span class="audit-text">{{ ds.createdBy }} • {{ ds.createdDate | date:'MMM d, y' }}</span>
                         </div>
                     </div>
                 </div>

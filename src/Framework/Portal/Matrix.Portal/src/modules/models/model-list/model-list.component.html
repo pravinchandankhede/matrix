@@ -58,78 +58,26 @@
                     </div>
 
                     <div class="card-body" (click)="onSelect(model)">
-                        <div class="info-row">
-                            <mat-icon>fingerprint</mat-icon>
-                            <span class="label">Model UID:</span>
-                            <span class="uid">{{ model.modelUId }}</span>
-                        </div>
-
                         <div class="info-row" *ngIf="model.description">
-                            <mat-icon>description</mat-icon>
-                            <span class="label">Description:</span>
                             <span class="desc" [title]="model.description">{{ model.description }}</span>
                         </div>
 
-                        <div class="info-row" *ngIf="model.type">
-                            <mat-icon>category</mat-icon>
+                        <div class="info-row">
                             <span class="label">Type:</span>
                             <span>{{ model.type }}</span>
+                            <span class="label" *ngIf="model.version" style="margin-left: 16px;">Version:</span>
+                            <span *ngIf="model.version">{{ model.version }}</span>
                         </div>
 
-                        <div class="info-row" *ngIf="model.version">
-                            <mat-icon>label</mat-icon>
-                            <span class="label">Version:</span>
-                            <span>{{ model.version }}</span>
-                        </div>
-
-                        <div class="info-row" *ngIf="model.provider">
-                            <mat-icon>business</mat-icon>
+                        <div class="info-row">
                             <span class="label">Provider:</span>
                             <span>{{ model.provider }}</span>
-                        </div>
-
-                        <div class="info-row" *ngIf="model.endpoint">
-                            <mat-icon>link</mat-icon>
-                            <span class="label">Endpoint:</span>
-                            <span class="endpoint" [title]="model.endpoint">{{ model.endpoint }}</span>
-                        </div>
-
-                        <div class="info-row" *ngIf="model.region">
-                            <mat-icon>public</mat-icon>
-                            <span class="label">Region:</span>
-                            <span>{{ model.region }}</span>
-                        </div>
-
-                        <div class="info-row" *ngIf="model.apiKey">
-                            <mat-icon>vpn_key</mat-icon>
-                            <span class="label">API Key:</span>
-                            <span class="api-key">{{ model.apiKey.substring(0, 8) }}***</span>
+                            <span class="label" *ngIf="model.region" style="margin-left: 16px;">Region:</span>
+                            <span *ngIf="model.region">{{ model.region }}</span>
                         </div>
 
                         <div class="audit-row">
-                            <div class="audit-item">
-                                <mat-icon>person</mat-icon>
-                                <span class="label">Created By:</span>
-                                <span>{{ model.createdBy }}</span>
-                            </div>
-                            <div class="audit-item">
-                                <mat-icon>schedule</mat-icon>
-                                <span class="label">Created:</span>
-                                <span>{{ model.createdDate | date:'medium' }}</span>
-                            </div>
-                        </div>
-
-                        <div class="audit-row" *ngIf="model.modifiedBy">
-                            <div class="audit-item">
-                                <mat-icon>person_outline</mat-icon>
-                                <span class="label">Modified By:</span>
-                                <span>{{ model.modifiedBy }}</span>
-                            </div>
-                            <div class="audit-item">
-                                <mat-icon>update</mat-icon>
-                                <span class="label">Modified:</span>
-                                <span>{{ model.modifiedDate | date:'medium' }}</span>
-                            </div>
+                            <span class="audit-text">{{ model.createdBy }} • {{ model.createdDate | date:'MMM d, y' }}</span>
                         </div>
                     </div>
                 </div>

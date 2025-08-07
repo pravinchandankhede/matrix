@@ -102,4 +102,16 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
     trackDataSourceFn(index: number, item: any): string {
         return item.dataSourceUId || item.name || index.toString();
     }
+
+    getDataSourcePreview(dataSources: any[]): string {
+        const first = dataSources[0]?.name || '';
+        if (dataSources.length === 1) {
+            return first;
+        } else if (dataSources.length === 2) {
+            return `${first}, ${dataSources[1]?.name || ''}`;
+        } else if (dataSources.length > 2) {
+            return `${first}, ${dataSources[1]?.name || ''}, +${dataSources.length - 2} more`;
+        }
+        return '';
+    }
 }

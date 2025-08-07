@@ -1,116 +1,168 @@
-<div class="agent-detail">
-    <div class="header">
-        <h2>{{ isNew ? 'New Agent' : 'Agent Details' }}</h2>
-        <div class="header-actions">
-            <button class="save-btn" (click)="saveItem()">
-                <mat-icon>save</mat-icon> {{ isNew ? 'Create' : 'Save' }}
+<div class="detail-container" *ngIf="item">
+    <div class="section-wrapper modern-theme-bg">
+        <div class="detail-header">
+            <h2><mat-icon>smart_toy</mat-icon> {{ item.name || 'New Agent' }}</h2>
+            <button class="edit-btn" (click)="onEdit()" *ngIf="!editMode">
+                <mat-icon>edit</mat-icon> Edit
             </button>
-            <button *ngIf="!isNew && item?.agentUId" class="delete-btn" (click)="deleteItem()">
-                <mat-icon>delete</mat-icon> Delete
+            <button class="edit-btn" (click)="onCancelEdit()" *ngIf="editMode">
+                <mat-icon>close</mat-icon> Cancel
             </button>
         </div>
-    </div>
 
-    <div class="content" *ngIf="item">
-        <div class="detail-section">
-            <h3>Basic Information</h3>
-            <div class="detail-row">
-                <mat-icon>fingerprint</mat-icon>
-                <span class="label">Agent UID:</span>
-                <span>{{ item.agentUId }}</span>
-            </div>
-            <div class="detail-row">
-                <mat-icon>person</mat-icon>
-                <span class="label">Name:</span>
-                <input type="text" [(ngModel)]="item.name" placeholder="Enter agent name">
-            </div>
-            <div class="detail-row" *ngIf="item.description">
-                <mat-icon>description</mat-icon>
-                <span class="label">Description:</span>
-                <textarea [(ngModel)]="item.description" placeholder="Enter agent description"></textarea>
-            </div>
-            <div class="detail-row" *ngIf="item.type">
-                <mat-icon>category</mat-icon>
-                <span class="label">Type:</span>
-                <input type="text" [(ngModel)]="item.type" placeholder="Enter agent type">
-            </div>
-            <div class="detail-row" *ngIf="item.status">
-                <mat-icon>info</mat-icon>
-                <span class="label">Status:</span>
-                <select [(ngModel)]="item.status">
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    <option value="Maintenance">Maintenance</option>
-                </select>
-            </div>
-            <div class="detail-row" *ngIf="item.version">
-                <mat-icon>settings</mat-icon>
-                <span class="label">Version:</span>
-                <input type="text" [(ngModel)]="item.version" placeholder="Enter version">
+        <div class="detail-content">
+            <div class="section-content">
+                <!-- Edit Mode -->
+                <form *ngIf="editMode; else viewMode" class="detail-form">
+                    <!-- Basic Information Section -->
+                    <div class="content-section">
+                        <h3>Basic Information</h3>
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label>Agent UID:</label>
+                                <input type="text" [(ngModel)]="item.agentUId" name="agentUId" />
+                            </div>
+                            <div class="form-row">
+                                <label>Name:</label>
+                                <input type="text" [(ngModel)]="item.name" name="name" placeholder="Enter agent name" />
+                            </div>
+                            <div class="form-row full-width">
+                                <label>Description:</label>
+                                <textarea [(ngModel)]="item.description" name="description" placeholder="Enter agent description" rows="3"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <label>Type:</label>
+                                <input type="text" [(ngModel)]="item.type" name="type" placeholder="Enter agent type" />
+                            </div>
+                            <div class="form-row">
+                                <label>Status:</label>
+                                <select [(ngModel)]="item.status" name="status">
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label>Version:</label>
+                                <input type="text" [(ngModel)]="item.version" name="version" placeholder="Enter version" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-primary" (click)="onSave()">
+                            <mat-icon>save</mat-icon> {{ isNew ? 'Create' : 'Save' }}
+                        </button>
+                        <button *ngIf="!isNew && item?.agentUId" type="button" class="btn-secondary" (click)="onDelete()">
+                            <mat-icon>delete</mat-icon> Delete
+                        </button>
+                        <button type="button" class="btn-secondary" (click)="router.navigate(['/agents'])">
+                            <mat-icon>arrow_back</mat-icon> Back to Agents
+                        </button>
+                    </div>
+                </form>
+
+                <!-- View Mode -->
+                <ng-template #viewMode>
+                    <!-- Basic Information Section -->
+                    <div class="content-section">
+                        <h3>Basic Information</h3>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <label>Agent UID:</label>
+                                <span class="uid">{{ item.agentUId }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Name:</label>
+                                <span>{{ item.name }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.description">
+                                <label>Description:</label>
+                                <span>{{ item.description }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Type:</label>
+                                <span>{{ item.type }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Status:</label>
+                                <span class="status" [class.active]="item.status === 'Active'" [class.inactive]="item.status === 'Inactive'">
+                                    {{ item.status }}
+                                </span>
+                            </div>
+                            <div class="info-row">
+                                <label>Version:</label>
+                                <span>{{ item.version }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Capabilities Section -->
+                    <div class="content-section" *ngIf="item.capabilities && item.capabilities.length > 0">
+                        <h3>Capabilities</h3>
+                        <div class="info-grid">
+                            <div *ngFor="let capability of item.capabilities" class="info-row">
+                                <label>{{ capability.name }}:</label>
+                                <div>
+                                    <span>{{ capability.description }}</span>
+                                    <span class="capability-badge">{{ capability.type }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Features Section -->
+                    <div class="content-section" *ngIf="item.features && item.features.length > 0">
+                        <h3>Features</h3>
+                        <div class="info-grid">
+                            <div *ngFor="let feature of item.features" class="info-row">
+                                <label>{{ feature.name }}:</label>
+                                <div>
+                                    <span>{{ feature.description }}</span>
+                                    <span class="feature-badge">{{ feature.type }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tools Section -->
+                    <div class="content-section" *ngIf="item.tools && item.tools.length > 0">
+                        <h3>Tools</h3>
+                        <div class="info-grid">
+                            <div *ngFor="let tool of item.tools" class="info-row">
+                                <label>{{ tool.name }}:</label>
+                                <div>
+                                    <span>{{ tool.description }}</span>
+                                    <span class="tool-badge">{{ tool.type }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audit Information Section -->
+                    <div class="content-section">
+                        <h3>Audit Information</h3>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <label>Created By:</label>
+                                <span>{{ item.createdBy }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Created Date:</label>
+                                <span>{{ item.createdDate | date:'medium' }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.modifiedBy">
+                                <label>Modified By:</label>
+                                <span>{{ item.modifiedBy }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.modifiedDate">
+                                <label>Modified Date:</label>
+                                <span>{{ item.modifiedDate | date:'medium' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
             </div>
         </div>
-
-        <div class="detail-section" *ngIf="item.capabilities && item.capabilities.length > 0">
-            <h3>Capabilities</h3>
-            <div class="capabilities-list">
-                <div *ngFor="let capability of item.capabilities" class="capability-item">
-                    <h4>{{ capability.name }}</h4>
-                    <p *ngIf="capability.description">{{ capability.description }}</p>
-                    <span class="type-badge">{{ capability.type }}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="detail-section" *ngIf="item.features && item.features.length > 0">
-            <h3>Features</h3>
-            <div class="features-list">
-                <div *ngFor="let feature of item.features" class="feature-item">
-                    <h4>{{ feature.name }}</h4>
-                    <p *ngIf="feature.description">{{ feature.description }}</p>
-                    <span class="type-badge">{{ feature.type }}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="detail-section" *ngIf="item.tools && item.tools.length > 0">
-            <h3>Tools</h3>
-            <div class="tools-list">
-                <div *ngFor="let tool of item.tools" class="tool-item">
-                    <h4>{{ tool.name }}</h4>
-                    <p *ngIf="tool.description">{{ tool.description }}</p>
-                    <span class="type-badge">{{ tool.type }}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="detail-section">
-            <h3>Audit Information</h3>
-            <div class="detail-row">
-                <mat-icon>person_add</mat-icon>
-                <span class="label">Created By:</span>
-                <span>{{ item.createdBy }}</span>
-            </div>
-            <div class="detail-row">
-                <mat-icon>schedule</mat-icon>
-                <span class="label">Created Date:</span>
-                <span>{{ item.createdDate | date:'medium' }}</span>
-            </div>
-            <div class="detail-row" *ngIf="item.modifiedBy">
-                <mat-icon>edit</mat-icon>
-                <span class="label">Modified By:</span>
-                <span>{{ item.modifiedBy }}</span>
-            </div>
-            <div class="detail-row" *ngIf="item.modifiedDate">
-                <mat-icon>update</mat-icon>
-                <span class="label">Modified Date:</span>
-                <span>{{ item.modifiedDate | date:'medium' }}</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer">
-        <button class="back-btn" (click)="router.navigate(['/agents'])">
-            <mat-icon>arrow_back</mat-icon> Back to Agents
-        </button>
     </div>
 </div>

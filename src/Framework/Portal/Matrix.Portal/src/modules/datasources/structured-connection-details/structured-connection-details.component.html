@@ -45,7 +45,7 @@
         </div>
         <div class="info-row" *ngIf="dataSource?.structuredDataSource?.tableList?.length">
             <label>Table List:</label>
-            <span>{{ structuredDataSource.tableList?.join(', ') }}</span>
+            <span>{{ structuredDataSource.tableList.join(', ') }}</span>
         </div>
         <div class="info-row" *ngIf="dataSource?.structuredDataSource?.queryTemplate">
             <label>Query Template:</label>

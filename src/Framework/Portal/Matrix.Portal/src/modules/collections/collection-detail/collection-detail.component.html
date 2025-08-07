@@ -63,6 +63,33 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Audit Information Section -->
+                    <div class="content-section">
+                        <h3>Audit Information</h3>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <label>Created By:</label>
+                                <span>{{ item.createdBy }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Created Date:</label>
+                                <span>{{ item.createdDate | date:'medium' }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.modifiedBy">
+                                <label>Modified By:</label>
+                                <span>{{ item.modifiedBy }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.modifiedDate">
+                                <label>Modified Date:</label>
+                                <span>{{ item.modifiedDate | date:'medium' }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Correlation UID:</label>
+                                <span class="uid">{{ item.correlationUId }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </ng-template>
             </div>
         </div>

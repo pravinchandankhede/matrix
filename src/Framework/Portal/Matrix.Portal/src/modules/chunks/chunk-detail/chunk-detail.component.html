@@ -10,117 +10,121 @@
             </button>
         </div>
 
-        <div class="two-pane-layout">
+        <div class="detail-content two-pane-layout">
             <!-- Left Panel - Navigation -->
             <div class="left-panel">
-                <div class="navigation-menu">
-                    <div class="nav-item"
-                         [class.active]="activeSection === 'general'"
-                         (click)="setActiveSection('general')">
-                        <mat-icon>info</mat-icon>
-                        <span>General</span>
-                    </div>
-                    <div class="nav-item"
-                         [class.active]="activeSection === 'metadata'"
-                         (click)="setActiveSection('metadata')">
-                        <mat-icon>description</mat-icon>
-                        <span>Metadata</span>
-                    </div>
-                </div>
+                <nav class="section-nav">
+                    <ul>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'general'"
+                            (click)="setActiveSection('general')">
+                            <mat-icon>info</mat-icon>
+                            <span>General</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'metadata'"
+                            (click)="setActiveSection('metadata')">
+                            <mat-icon>description</mat-icon>
+                            <span>Metadata</span>
+                        </li>
+                    </ul>
+                </nav>
             </div>
 
             <!-- Right Panel - Content -->
             <div class="right-panel">
-                <!-- Edit Mode -->
-                <form *ngIf="editMode; else viewMode" class="detail-form">
-                    <!-- Chunk Information Section -->
-                    <div class="content-section" *ngIf="activeSection === 'general'">
-                        <h3>Chunk Information</h3>
-                        <div class="form-grid">
-                            <div class="form-row">
-                                <label>Chunk ID:</label>
-                                <input type="text" [(ngModel)]="item.chunkId" name="chunkId" />
-                            </div>
-                            <div class="form-row full-width">
-                                <label>Text:</label>
-                                <textarea [(ngModel)]="item.text" name="text" rows="4"></textarea>
-                            </div>
-                            <div class="form-row">
-                                <label>Type:</label>
-                                <input type="text" [(ngModel)]="item.type" name="type" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Metadata Section -->
-                    <div class="content-section" *ngIf="activeSection === 'metadata'">
-                        <h3>Metadata</h3>
-                        <div class="form-grid">
-                            <div class="form-row">
-                                <label>Source:</label>
-                                <input type="text" [(ngModel)]="item.chunkSource" name="chunkSource" />
-                            </div>
-                            <div class="form-row">
-                                <label>Source ID:</label>
-                                <input type="text" [(ngModel)]="item.chunkSourceId" name="chunkSourceId" />
-                            </div>
-                            <div class="form-row">
-                                <label>Correlation UID:</label>
-                                <input type="text" [(ngModel)]="item.correlationUId" name="correlationUId" />
+                <div class="section-content">
+                    <!-- Edit Mode -->
+                    <form *ngIf="editMode; else viewMode" class="detail-form">
+                        <!-- Chunk Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'general'">
+                            <h3>Chunk Information</h3>
+                            <div class="form-grid">
+                                <div class="form-row">
+                                    <label>Chunk ID:</label>
+                                    <input type="text" [(ngModel)]="item.chunkId" name="chunkId" />
+                                </div>
+                                <div class="form-row full-width">
+                                    <label>Text:</label>
+                                    <textarea [(ngModel)]="item.text" name="text" rows="4"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <label>Type:</label>
+                                    <input type="text" [(ngModel)]="item.type" name="type" />
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-actions">
-                        <button type="button" class="btn-primary" (click)="onSave()">
-                            <mat-icon>save</mat-icon> Save
-                        </button>
-                        <button type="button" class="btn-secondary" (click)="onCancelEdit()">
-                            <mat-icon>cancel</mat-icon> Cancel
-                        </button>
-                    </div>
-                </form>
-
-                <!-- View Mode -->
-                <ng-template #viewMode>
-                    <!-- Chunk Information Section -->
-                    <div class="content-section" *ngIf="activeSection === 'general'">
-                        <h3>Chunk Information</h3>
-                        <div class="info-grid">
-                            <div class="info-row">
-                                <label>Chunk ID:</label>
-                                <span class="uid">{{ item.chunkId }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Text:</label>
-                                <span>{{ item.text }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Type:</label>
-                                <span>{{ item.type }}</span>
+                        <!-- Metadata Section -->
+                        <div class="content-section" *ngIf="activeSection === 'metadata'">
+                            <h3>Metadata</h3>
+                            <div class="form-grid">
+                                <div class="form-row">
+                                    <label>Source:</label>
+                                    <input type="text" [(ngModel)]="item.chunkSource" name="chunkSource" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Source ID:</label>
+                                    <input type="text" [(ngModel)]="item.chunkSourceId" name="chunkSourceId" />
+                                </div>
+                                <div class="form-row">
+                                    <label>Correlation UID:</label>
+                                    <input type="text" [(ngModel)]="item.correlationUId" name="correlationUId" />
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Metadata Section -->
-                    <div class="content-section" *ngIf="activeSection === 'metadata'">
-                        <h3>Metadata</h3>
-                        <div class="info-grid">
-                            <div class="info-row">
-                                <label>Source:</label>
-                                <span>{{ item.chunkSource }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Source ID:</label>
-                                <span class="uid">{{ item.chunkSourceId }}</span>
-                            </div>
-                            <div class="info-row">
-                                <label>Correlation UID:</label>
-                                <span class="uid">{{ item.correlationUId }}</span>
+                        <div class="form-actions">
+                            <button type="button" class="btn-primary" (click)="onSave()">
+                                <mat-icon>save</mat-icon> Save
+                            </button>
+                            <button type="button" class="btn-secondary" (click)="onCancelEdit()">
+                                <mat-icon>cancel</mat-icon> Cancel
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- View Mode -->
+                    <ng-template #viewMode>
+                        <!-- Chunk Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'general'">
+                            <h3>Chunk Information</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Chunk ID:</label>
+                                    <span class="uid">{{ item.chunkId }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Text:</label>
+                                    <span>{{ item.text }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Type:</label>
+                                    <span>{{ item.type }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </ng-template>
+
+                        <!-- Metadata Section -->
+                        <div class="content-section" *ngIf="activeSection === 'metadata'">
+                            <h3>Metadata</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Source:</label>
+                                    <span>{{ item.chunkSource }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Source ID:</label>
+                                    <span class="uid">{{ item.chunkSourceId }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Correlation UID:</label>
+                                    <span class="uid">{{ item.correlationUId }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
             </div>
         </div>
     </div>

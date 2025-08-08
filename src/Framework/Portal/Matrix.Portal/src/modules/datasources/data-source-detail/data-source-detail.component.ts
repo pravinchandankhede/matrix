@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '../../../datamodels/data-source.model';
 import { DataSourceService } from '../../../services/data-source.service';
-import { ErrorService } from '../../../services/error.service';
 import { BaseDetailComponent } from '../../../shared/base-detail.component';
 import { DataSourceType, AccessMode, AuthenticationType } from '../../../datamodels/base.model';
 
@@ -27,7 +26,6 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> i
     constructor(
         private fb: FormBuilder,
         private dataSourceService: DataSourceService,
-        private errorService: ErrorService,
         protected override route: ActivatedRoute,
         protected override router: Router
     ) {
@@ -43,35 +41,39 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> i
         // Populate form for new items after view init
         setTimeout(() => {
             if (this.isNew && this.item) {
-                this.populateForm(this.item);
+                this.populateForm();
                 this.updateTagsString();
             }
         });
     }
 
-    public loadItem(id: string): void {
-        this.isLoading = true;
-        this.dataSourceService.getDataSource(id).subscribe({
-            next: (dataSource: DataSource) => {
-                this.item = dataSource;
-                this.populateForm(dataSource);
-                this.updateTagsString();
-                this.isLoading = false;
-            },
-            error: (err: any) => {
-                this.handleError(err, 'Load data source');
-                if (err.status === 404) {
-                    this.errorService.addError('Data source not found.', 'Data Source Detail');
-                } else {
-                    this.errorService.addError('Failed to load data source details.', 'Data Source Detail');
-                }
-                this.isLoading = false;
-            }
-        });
+    // Base class implementations
+    getItemService(): DataSourceService {
+        return this.dataSourceService;
     }
 
-    public createNewItem(): DataSource {
-        return {
+    getItemName(item: DataSource): string {
+        return item.name || 'Unknown Data Source';
+    }
+
+    getItemListRoute(): string {
+        return '/datasources';
+    }
+
+    getEntityName(): string {
+        return 'Data Source';
+    }
+
+    getErrorContext(): string {
+        return 'Data Source Detail';
+    }
+
+    getItemId(item: DataSource): string {
+        return item.dataSourceUId;
+    }
+
+    createNewItem(): DataSource {
+        const newDataSource = {
             dataSourceUId: this.generateId(),
             name: 'New Data Source',
             type: DataSourceType.Structured,
@@ -90,105 +92,66 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> i
             rowVersion: undefined,
             metadata: []
         };
+
+        // Populate form with default values
+        setTimeout(() => {
+            this.populateForm();
+            this.updateTagsString();
+        });
+
+        return newDataSource;
     }
 
-    public saveItem(): void {
-        if (!this.item) return;
+    validateItem(): string[] {
+        const errors: string[] = [];
 
-        // Basic validation with specific error messages
-        if (!this.dataSourceForm.valid) {
-            this.markFormGroupTouched(this.dataSourceForm);
-            const errors = this.getFormValidationErrors();
-            this.errorService.addError(
-                `Please fix the following errors: ${errors.join(', ')}`,
-                'Data Source Detail'
-            );
-            return;
-        }
+        // Mark all form controls as touched to show validation errors
+        this.markFormGroupTouched(this.dataSourceForm);
 
-        // Update metadata from tags before saving
+        // Update metadata from tags before validation
         this.updateMetadataFromTags();
 
-        const formValue = this.dataSourceForm.value;
-        const dataSourceToSave: DataSource = {
-            ...this.item,
-            ...formValue,
-            modifiedBy: 'System',
-            modifiedDate: new Date()
-        };
-
-        if (this.isNew) {
-            // Create new data source
-            this.isLoading = true;
-            this.dataSourceService.createDataSource(dataSourceToSave).subscribe({
-                next: (createdDataSource: DataSource) => {
-                    this.item = createdDataSource;
-                    this.isNew = false;
-                    this.editMode = false;
-                    this.isLoading = false;
-                    this.errorService.addError(
-                        `Data source "${createdDataSource.name}" created successfully.`,
-                        'Data Source Detail'
-                    );
-                    this.router.navigate(['/datasources', createdDataSource.dataSourceUId], {
-                        queryParams: { edit: 'false' }
-                    });
-                },
-                error: (err: any) => {
-                    this.handleError(err, 'Create data source');
-                    this.errorService.addError('Failed to create data source.', 'Data Source Detail');
-                    this.isLoading = false;
-                }
-            });
-        } else {
-            // Update existing data source
-            this.isLoading = true;
-            this.dataSourceService.updateDataSource(dataSourceToSave).subscribe({
-                next: (updatedDataSource: DataSource) => {
-                    this.item = updatedDataSource;
-                    this.editMode = false;
-                    this.isLoading = false;
-                    this.populateForm(updatedDataSource);
-                    this.updateTagsString();
-                    this.errorService.addError(
-                        `Data source "${updatedDataSource.name}" updated successfully.`,
-                        'Data Source Detail'
-                    );
-                },
-                error: (err: any) => {
-                    this.handleError(err, 'Update data source');
-                    this.errorService.addError('Failed to update data source.', 'Data Source Detail');
-                    this.isLoading = false;
-                }
-            });
+        // Check reactive form validation
+        if (!this.dataSourceForm.valid) {
+            const validationErrors = this.getFormValidationErrors(this.dataSourceForm);
+            errors.push(...validationErrors);
         }
+
+        return errors;
     }
 
-    public deleteItem(): void {
-        if (!this.item || this.isNew || !this.item.dataSourceUId) return;
+    updateItemFromForm(): void {
+        if (!this.item) return;
 
-        this.isLoading = true;
-        this.dataSourceService.deleteDataSource(this.item.dataSourceUId).subscribe({
-            next: () => {
-                this.errorService.addError(
-                    `Data source "${this.item!.name}" deleted successfully.`,
-                    'Data Source Detail'
-                );
-                this.router.navigate(['/datasources']);
-            },
-            error: (err: any) => {
-                this.handleError(err, 'Delete data source');
-                this.errorService.addError('Failed to delete data source.', 'Data Source Detail');
-                this.isLoading = false;
-            }
-        });
+        const formValue = this.dataSourceForm.value;
+
+        // Update basic properties from form
+        this.item.name = formValue.name?.trim() || '';
+        this.item.type = formValue.type || DataSourceType.Structured;
+        this.item.subType = formValue.subType?.trim() || '';
+        this.item.description = formValue.description?.trim() || '';
+        this.item.owner = formValue.owner?.trim() || '';
+        this.item.isActive = formValue.isActive !== undefined ? formValue.isActive : true;
+        this.item.accessMode = formValue.accessMode || AccessMode.ReadOnly;
+        this.item.authenticationType = formValue.authenticationType || AuthenticationType.None;
+        this.item.isCustom = formValue.isCustom !== undefined ? formValue.isCustom : false;
+
+        this.item.modifiedBy = 'System';
+        this.item.modifiedDate = new Date();
     }
 
-    // Navigation methods for two-panel layout
-    setActiveSection(section: string): void {
-        this.activeSection = section;
+    // Lifecycle hooks
+    protected override onItemLoaded(item: DataSource): void {
+        this.populateForm();
+        this.updateTagsString();
     }
 
+    protected override onItemUpdated(): void {
+        this.populateForm();
+        this.updateTagsString();
+    }
+
+    // Form management methods
     private createForm(): FormGroup {
         return this.fb.group({
             name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -203,18 +166,25 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> i
         });
     }
 
-    private populateForm(dataSource: DataSource): void {
-        this.dataSourceForm.patchValue({
-            name: dataSource.name,
-            type: dataSource.type,
-            subType: dataSource.subType,
-            description: dataSource.description,
-            owner: dataSource.owner,
-            isActive: dataSource.isActive,
-            accessMode: dataSource.accessMode,
-            authenticationType: dataSource.authenticationType,
-            isCustom: dataSource.isCustom
-        });
+    private populateForm(): void {
+        if (this.item) {
+            this.dataSourceForm.patchValue({
+                name: this.item.name || '',
+                type: this.item.type || DataSourceType.Structured,
+                subType: this.item.subType || '',
+                description: this.item.description || '',
+                owner: this.item.owner || '',
+                isActive: this.item.isActive !== undefined ? this.item.isActive : true,
+                accessMode: this.item.accessMode || AccessMode.ReadOnly,
+                authenticationType: this.item.authenticationType || AuthenticationType.None,
+                isCustom: this.item.isCustom !== undefined ? this.item.isCustom : false
+            });
+        }
+    }
+
+    // Navigation methods
+    setActiveSection(section: string): void {
+        this.activeSection = section;
     }
 
     get isFormValid(): boolean {
@@ -225,6 +195,7 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> i
         return !!this.item?.dataSourceUId;
     }
 
+    // Utility methods
     private markFormGroupTouched(formGroup: FormGroup): void {
         Object.keys(formGroup.controls).forEach(key => {
             const control = formGroup.get(key);
@@ -232,10 +203,10 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> i
         });
     }
 
-    private getFormValidationErrors(): string[] {
+    private getFormValidationErrors(formGroup: FormGroup): string[] {
         const errors: string[] = [];
-        Object.keys(this.dataSourceForm.controls).forEach(key => {
-            const control = this.dataSourceForm.get(key);
+        Object.keys(formGroup.controls).forEach(key => {
+            const control = formGroup.get(key);
             if (control && control.invalid && control.touched) {
                 if (control.errors?.['required']) {
                     errors.push(`${this.getFieldDisplayName(key)} is required`);
@@ -261,6 +232,7 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> i
         return fieldNames[fieldName] || fieldName;
     }
 
+    // DataSource-specific methods
     hasConnectionDetails(): boolean {
         return this.item?.type === 'Structured' || this.item?.type === 'Vector';
     }

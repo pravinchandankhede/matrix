@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Model } from '../../../datamodels/model';
 import { ModelService } from '../../../services/model.service';
-import { ErrorService } from '../../../services/error.service';
 import { BaseDetailComponent } from '../../../shared/base-detail.component';
 
 @Component({
@@ -21,7 +20,6 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> implements 
     constructor(
         private fb: FormBuilder,
         private modelService: ModelService,
-        private errorService: ErrorService,
         protected override route: ActivatedRoute,
         protected override router: Router
     ) {
@@ -37,33 +35,38 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> implements 
         // Populate form for new items after view init
         setTimeout(() => {
             if (this.isNew && this.item) {
-                this.populateForm(this.item);
+                this.populateForm();
             }
         });
     }
 
-    public loadItem(id: string): void {
-        this.isLoading = true;
-        this.modelService.getModel(id).subscribe({
-            next: (model: Model) => {
-                this.item = model;
-                this.populateForm(model);
-                this.isLoading = false;
-            },
-            error: (err: any) => {
-                this.handleError(err, 'Load model');
-                if (err.status === 404) {
-                    this.errorService.addError('Model not found.', 'Model Detail');
-                } else {
-                    this.errorService.addError('Failed to load model details.', 'Model Detail');
-                }
-                this.isLoading = false;
-            }
-        });
+    // Base class implementations
+    getItemService(): ModelService {
+        return this.modelService;
     }
 
-    public createNewItem(): Model {
-        return {
+    getItemName(item: Model): string {
+        return item.name || 'Unknown Model';
+    }
+
+    getItemListRoute(): string {
+        return '/models';
+    }
+
+    getEntityName(): string {
+        return 'Model';
+    }
+
+    getErrorContext(): string {
+        return 'Model Detail';
+    }
+
+    getItemId(item: Model): string {
+        return item.modelUId;
+    }
+
+    createNewItem(): Model {
+        const newModel = {
             modelUId: this.generateId(),
             name: '',
             type: '',
@@ -82,96 +85,60 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> implements 
             rowVersion: undefined,
             metadata: []
         };
+
+        // Populate form with default values
+        setTimeout(() => {
+            this.populateForm();
+        });
+
+        return newModel;
     }
 
-    public saveItem(): void {
+    validateItem(): string[] {
+        const errors: string[] = [];
+
+        // Mark all form controls as touched to show validation errors
+        this.markFormGroupTouched(this.modelForm);
+
+        // Check reactive form validation
+        if (!this.modelForm.valid) {
+            const validationErrors = this.getFormValidationErrors(this.modelForm);
+            errors.push(...validationErrors);
+        }
+
+        return errors;
+    }
+
+    updateItemFromForm(): void {
         if (!this.item) return;
 
-        // Basic validation with specific error messages
-        if (!this.modelForm.valid) {
-            this.markFormGroupTouched(this.modelForm);
-            const errors = this.getFormValidationErrors();
-            this.errorService.addError(
-                `Please fix the following errors: ${errors.join(', ')}`,
-                'Model Detail'
-            );
-            return;
-        }
-
         const formValue = this.modelForm.value;
-        const modelToSave: Model = {
-            ...this.item,
-            ...formValue,
-            modifiedBy: 'System',
-            modifiedDate: new Date()
-        };
 
-        if (this.isNew) {
-            // Create new model
-            this.isLoading = true;
-            this.modelService.createModel(modelToSave).subscribe({
-                next: (createdModel: Model) => {
-                    this.item = createdModel;
-                    this.isNew = false;
-                    this.editMode = false;
-                    this.isLoading = false;
-                    this.errorService.addError(
-                        `Model "${createdModel.name}" created successfully.`,
-                        'Model Detail'
-                    );
-                    this.router.navigate(['/models', createdModel.modelUId], {
-                        queryParams: { edit: 'false' }
-                    });
-                },
-                error: (err: any) => {
-                    this.handleError(err, 'Create model');
-                    this.errorService.addError('Failed to create model.', 'Model Detail');
-                    this.isLoading = false;
-                }
-            });
-        } else {
-            // Update existing model
-            this.isLoading = true;
-            this.modelService.updateModel(modelToSave).subscribe({
-                next: (updatedModel: Model) => {
-                    this.item = updatedModel;
-                    this.editMode = false;
-                    this.isLoading = false;
-                    this.populateForm(updatedModel);
-                    this.errorService.addError(
-                        `Model "${updatedModel.name}" updated successfully.`,
-                        'Model Detail'
-                    );
-                },
-                error: (err: any) => {
-                    this.handleError(err, 'Update model');
-                    this.errorService.addError('Failed to update model.', 'Model Detail');
-                    this.isLoading = false;
-                }
-            });
-        }
+        // Update basic properties from form
+        this.item.name = formValue.name?.trim() || '';
+        this.item.type = formValue.type?.trim() || '';
+        this.item.version = formValue.version?.trim() || '';
+        this.item.description = formValue.description?.trim() || '';
+        this.item.provider = formValue.provider?.trim() || '';
+        this.item.endpoint = formValue.endpoint?.trim() || '';
+        this.item.apiKey = formValue.apiKey?.trim() || '';
+        this.item.region = formValue.region?.trim() || '';
+        this.item.isEnabled = formValue.isEnabled || true;
+
+        this.item.modifiedBy = 'System';
+        this.item.modifiedDate = new Date();
     }
 
-    public deleteItem(): void {
-        if (!this.item || this.isNew || !this.item.modelUId) return;
-
-        this.isLoading = true;
-        this.modelService.deleteModel(this.item.modelUId).subscribe({
-            next: () => {
-                this.errorService.addError(
-                    `Model "${this.item!.name}" deleted successfully.`,
-                    'Model Detail'
-                );
-                this.router.navigate(['/models']);
-            },
-            error: (err: any) => {
-                this.handleError(err, 'Delete model');
-                this.errorService.addError('Failed to delete model.', 'Model Detail');
-                this.isLoading = false;
-            }
-        });
+    // Lifecycle hooks
+    protected override onItemLoaded(item: Model): void {
+        this.populateForm();
     }
 
+    protected override onItemUpdated(): void {
+        this.populateForm();
+    }
+
+    // Form management methods
     private createForm(): FormGroup {
         return this.fb.group({
             name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -186,18 +153,20 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> implements 
         });
     }
 
-    private populateForm(model: Model): void {
-        this.modelForm.patchValue({
-            name: model.name,
-            type: model.type,
-            version: model.version,
-            description: model.description,
-            provider: model.provider,
-            endpoint: model.endpoint,
-            apiKey: model.apiKey,
-            region: model.region,
-            isEnabled: model.isEnabled
-        });
+    private populateForm(): void {
+        if (this.item) {
+            this.modelForm.patchValue({
+                name: this.item.name || '',
+                type: this.item.type || '',
+                version: this.item.version || '',
+                description: this.item.description || '',
+                provider: this.item.provider || '',
+                endpoint: this.item.endpoint || '',
+                apiKey: this.item.apiKey || '',
+                region: this.item.region || '',
+                isEnabled: this.item.isEnabled !== undefined ? this.item.isEnabled : true
+            });
+        }
     }
 
     // Navigation methods
@@ -213,6 +182,7 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> implements 
         return !!this.item?.modelUId;
     }
 
+    // Utility methods
     private markFormGroupTouched(formGroup: FormGroup): void {
         Object.keys(formGroup.controls).forEach(key => {
             const control = formGroup.get(key);
@@ -220,10 +190,10 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> implements 
         });
     }
 
-    private getFormValidationErrors(): string[] {
+    private getFormValidationErrors(formGroup: FormGroup): string[] {
         const errors: string[] = [];
-        Object.keys(this.modelForm.controls).forEach(key => {
-            const control = this.modelForm.get(key);
+        Object.keys(formGroup.controls).forEach(key => {
+            const control = formGroup.get(key);
             if (control && control.invalid && control.touched) {
                 if (control.errors?.['required']) {
                     errors.push(`${this.getFieldDisplayName(key)} is required`);

@@ -1,9 +1,9 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { DataSourceCollection } from '../../../datamodels/data-source-collection.model';
 import { DataSourceCollectionService } from '../../../services/data-source-collection.service';
-import { ErrorService } from '../../../services/error.service';
 import { BaseDetailComponent } from '../../../shared/base-detail.component';
 
 @Component({
@@ -21,7 +21,6 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
     constructor(
         private fb: FormBuilder,
         private collectionService: DataSourceCollectionService,
-        private errorService: ErrorService,
         protected override route: ActivatedRoute,
         protected override router: Router
     ) {
@@ -37,33 +36,38 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
         // Populate form for new items after view init
         setTimeout(() => {
             if (this.isNew && this.item) {
-                this.populateForm(this.item);
+                this.populateForm();
             }
         });
     }
 
-    public loadItem(id: string): void {
-        this.isLoading = true;
-        this.collectionService.getDataSourceCollection(id).subscribe({
-            next: (collection: DataSourceCollection) => {
-                this.item = collection;
-                this.populateForm(collection);
-                this.isLoading = false;
-            },
-            error: (err: any) => {
-                this.handleError(err, 'Load collection');
-                if (err.status === 404) {
-                    this.errorService.addError('Collection not found.', 'Collection Detail');
-                } else {
-                    this.errorService.addError('Failed to load collection details.', 'Collection Detail');
-                }
-                this.isLoading = false;
-            }
-        });
+    // Base class implementations
+    getItemService(): DataSourceCollectionService {
+        return this.collectionService;
     }
 
-    public createNewItem(): DataSourceCollection {
-        return {
+    getItemName(item: DataSourceCollection): string {
+        return item.name || 'Unknown Collection';
+    }
+
+    getItemListRoute(): string {
+        return '/collections';
+    }
+
+    getEntityName(): string {
+        return 'Collection';
+    }
+
+    getErrorContext(): string {
+        return 'Collection Detail';
+    }
+
+    getItemId(item: DataSourceCollection): string {
+        return item.dataSourceCollectionUId;
+    }
+
+    createNewItem(): DataSourceCollection {
+        const newCollection = {
             dataSourceCollectionUId: this.generateId(),
             name: '',
             description: '',
@@ -77,96 +81,72 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
             rowVersion: undefined,
             metadata: []
         };
+
+        // Populate form with default values
+        setTimeout(() => {
+            this.populateForm();
+        });
+
+        return newCollection;
     }
 
-    public saveItem(): void {
+    validateItem(): string[] {
+        const errors: string[] = [];
+
+        // Mark all form controls as touched to show validation errors
+        this.markFormGroupTouched(this.collectionForm);
+
+        // Check reactive form validation
+        if (!this.collectionForm.valid) {
+            const validationErrors = this.getFormValidationErrors(this.collectionForm);
+            errors.push(...validationErrors);
+        }
+
+        return errors;
+    }
+
+    updateItemFromForm(): void {
         if (!this.item) return;
 
-        // Basic validation with specific error messages
-        if (!this.collectionForm.valid) {
-            this.markFormGroupTouched(this.collectionForm);
-            const errors = this.getFormValidationErrors();
-            this.errorService.addError(
-                `Please fix the following errors: ${errors.join(', ')}`,
-                'Collection Detail'
-            );
-            return;
-        }
-
         const formValue = this.collectionForm.value;
-        const collectionToSave: DataSourceCollection = {
-            ...this.item,
-            ...formValue,
-            modifiedBy: 'System',
-            modifiedDate: new Date()
-        };
 
-        if (this.isNew) {
-            // Create new collection
-            this.isLoading = true;
-            this.collectionService.createDataSourceCollection(collectionToSave).subscribe({
-                next: (createdCollection: DataSourceCollection) => {
-                    this.item = createdCollection;
-                    this.isNew = false;
-                    this.editMode = false;
-                    this.isLoading = false;
-                    this.errorService.addError(
-                        `Collection "${createdCollection.name}" created successfully.`,
-                        'Collection Detail'
-                    );
-                    this.router.navigate(['/collections', createdCollection.dataSourceCollectionUId], {
-                        queryParams: { edit: 'false' }
-                    });
-                },
-                error: (err: any) => {
-                    this.handleError(err, 'Create collection');
-                    this.errorService.addError('Failed to create collection.', 'Collection Detail');
-                    this.isLoading = false;
-                }
-            });
-        } else {
-            // Update existing collection
-            this.isLoading = true;
-            this.collectionService.updateDataSourceCollection(collectionToSave).subscribe({
-                next: (updatedCollection: DataSourceCollection) => {
-                    this.item = updatedCollection;
-                    this.editMode = false;
-                    this.isLoading = false;
-                    this.populateForm(updatedCollection);
-                    this.errorService.addError(
-                        `Collection "${updatedCollection.name}" updated successfully.`,
-                        'Collection Detail'
-                    );
-                },
-                error: (err: any) => {
-                    this.handleError(err, 'Update collection');
-                    this.errorService.addError('Failed to update collection.', 'Collection Detail');
-                    this.isLoading = false;
-                }
-            });
-        }
+        // Update basic properties from form
+        this.item.name = formValue.name?.trim() || '';
+        this.item.description = formValue.description?.trim() || '';
+        this.item.isCustom = formValue.isCustom !== undefined ? formValue.isCustom : false;
+
+        this.item.modifiedBy = 'System';
+        this.item.modifiedDate = new Date();
     }
 
-    public deleteItem(): void {
-        if (!this.item || this.isNew || !this.item.dataSourceCollectionUId) return;
-
-        this.isLoading = true;
-        this.collectionService.deleteDataSourceCollection(this.item.dataSourceCollectionUId).subscribe({
-            next: () => {
-                this.errorService.addError(
-                    `Collection "${this.item!.name}" deleted successfully.`,
-                    'Collection Detail'
-                );
-                this.router.navigate(['/collections']);
-            },
-            error: (err: any) => {
-                this.handleError(err, 'Delete collection');
-                this.errorService.addError('Failed to delete collection.', 'Collection Detail');
-                this.isLoading = false;
-            }
-        });
+    // Lifecycle hooks
+    protected override onItemLoaded(item: DataSourceCollection): void {
+        this.populateForm();
     }
 
+    protected override onItemUpdated(): void {
+        this.populateForm();
+    }
+
+    // Override base class methods to handle specific service naming
+    protected override getLoadItemObservable(id: string): Observable<DataSourceCollection | null> {
+        return this.collectionService.getDataSourceCollection(id);
+    }
+
+    protected override getCreateItemObservable(): Observable<DataSourceCollection | null> {
+        return this.collectionService.createDataSourceCollection(this.item!);
+    }
+
+    protected override getUpdateItemObservable(): Observable<DataSourceCollection | null> {
+        return this.collectionService.updateDataSourceCollection(this.item!);
+    }
+
+    protected override getDeleteItemObservable(): Observable<any> {
+        const id = this.getItemId(this.item!);
+        return this.collectionService.deleteDataSourceCollection(id);
+    }
+
+    // Form management methods
     private createForm(): FormGroup {
         return this.fb.group({
             name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -175,12 +155,19 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
         });
     }
 
-    private populateForm(collection: DataSourceCollection): void {
-        this.collectionForm.patchValue({
-            name: collection.name,
-            description: collection.description,
-            isCustom: collection.isCustom
-        });
+    private populateForm(): void {
+        if (this.item) {
+            this.collectionForm.patchValue({
+                name: this.item.name || '',
+                description: this.item.description || '',
+                isCustom: this.item.isCustom !== undefined ? this.item.isCustom : false
+            });
+        }
+    }
+
+    // Navigation methods
+    setActiveSection(section: string): void {
+        this.activeSection = section;
     }
 
     get isFormValid(): boolean {
@@ -195,10 +182,7 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
         return this.item?.dataSources?.length || 0;
     }
 
-    setActiveSection(section: string): void {
-        this.activeSection = section;
-    }
-
+    // Utility methods
     private markFormGroupTouched(formGroup: FormGroup): void {
         Object.keys(formGroup.controls).forEach(key => {
             const control = formGroup.get(key);
@@ -206,10 +190,10 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
         });
     }
 
-    private getFormValidationErrors(): string[] {
+    private getFormValidationErrors(formGroup: FormGroup): string[] {
         const errors: string[] = [];
-        Object.keys(this.collectionForm.controls).forEach(key => {
-            const control = this.collectionForm.get(key);
+        Object.keys(formGroup.controls).forEach(key => {
+            const control = formGroup.get(key);
             if (control && control.invalid && control.touched) {
                 if (control.errors?.['required']) {
                     errors.push(`${this.getFieldDisplayName(key)} is required`);

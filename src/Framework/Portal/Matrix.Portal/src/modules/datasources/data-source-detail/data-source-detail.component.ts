@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '../../../datamodels/data-source.model';
 import { DataSourceService } from '../../../services/data-source.service';
+import { ErrorService } from '../../../services/error.service';
 import { BaseDetailComponent } from '../../../shared/base-detail.component';
 import { DataSourceType, AccessMode, AuthenticationType } from '../../../datamodels/base.model';
 
@@ -24,27 +25,38 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> {
     constructor(
         private fb: FormBuilder,
         private dataSourceService: DataSourceService,
-        route: ActivatedRoute,
-        router: Router
+        private errorService: ErrorService,
+        protected override route: ActivatedRoute,
+        protected override router: Router
     ) {
         super(route, router);
         this.dataSourceForm = this.createForm();
     }
 
     public loadItem(id: string): void {
+        this.isLoading = true;
         this.dataSourceService.getDataSource(id).subscribe({
-            next: (dataSource: any) => {
+            next: (dataSource: DataSource) => {
                 this.item = dataSource;
                 this.populateForm(dataSource);
                 this.updateTagsString();
+                this.isLoading = false;
             },
-            error: (error: any) => console.error('Error loading data source:', error)
+            error: (err: any) => {
+                this.handleError(err, 'Load data source');
+                if (err.status === 404) {
+                    this.errorService.addError('Data source not found.', 'Data Source Detail');
+                } else {
+                    this.errorService.addError('Failed to load data source details.', 'Data Source Detail');
+                }
+                this.isLoading = false;
+            }
         });
     }
 
     public createNewItem(): DataSource {
         return {
-            dataSourceUId: '',
+            dataSourceUId: this.generateId(),
             name: '',
             type: DataSourceType.Structured,
             subType: '',
@@ -54,12 +66,12 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> {
             accessMode: AccessMode.ReadOnly,
             authenticationType: AuthenticationType.None,
             isCustom: false,
-            createdBy: 'Current User',
+            createdBy: 'System',
             createdDate: new Date(),
-            modifiedBy: 'Current User',
+            modifiedBy: 'System',
             modifiedDate: new Date(),
-            correlationUId: '',
-            rowVersion: new Uint8Array(),
+            correlationUId: this.generateId(),
+            rowVersion: undefined,
             metadata: []
         };
     }

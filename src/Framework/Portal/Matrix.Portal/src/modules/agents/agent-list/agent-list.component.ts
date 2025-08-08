@@ -80,7 +80,9 @@ export class AgentListComponent extends BaseListComponent<Agent> {
     }
 
     onAdd(): void {
-        this.router.navigate(['/agents/add']);
+        this.router.navigate(['/agents/add'], {
+            queryParams: { edit: 'true' }
+        });
     }
 
     onEdit(agent: Agent): void {

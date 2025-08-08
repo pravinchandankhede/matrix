@@ -34,9 +34,9 @@ public class AgentsController : ControllerBase
 
     //// GET api/<AgentsController>/5
     [HttpGet("{id}")]
-    public IActionResult Get(Guid agentId)
+    public IActionResult Get(Guid id)
     {
-        var agent = _agentRepository.GetById(agentId);
+        var agent = _agentRepository.GetById(id);
         return agent != null ? Ok(agent) : NotFound();        
     }
 

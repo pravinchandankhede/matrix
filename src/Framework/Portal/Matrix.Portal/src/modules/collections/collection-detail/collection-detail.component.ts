@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSourceCollection } from '../../../datamodels/data-source-collection.model';
 import { DataSourceCollectionService } from '../../../services/data-source-collection.service';
+import { ErrorService } from '../../../services/error.service';
 import { BaseDetailComponent } from '../../../shared/base-detail.component';
 
 @Component({
@@ -20,75 +21,132 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
     constructor(
         private fb: FormBuilder,
         private collectionService: DataSourceCollectionService,
-        route: ActivatedRoute,
-        router: Router
+        private errorService: ErrorService,
+        protected override route: ActivatedRoute,
+        protected override router: Router
     ) {
         super(route, router);
         this.collectionForm = this.createForm();
     }
 
     public loadItem(id: string): void {
+        this.isLoading = true;
         this.collectionService.getDataSourceCollection(id).subscribe({
-            next: (collection) => {
+            next: (collection: DataSourceCollection) => {
                 this.item = collection;
                 this.populateForm(collection);
+                this.isLoading = false;
             },
-            error: (error) => console.error('Error loading collection:', error)
+            error: (err: any) => {
+                this.handleError(err, 'Load collection');
+                if (err.status === 404) {
+                    this.errorService.addError('Collection not found.', 'Collection Detail');
+                } else {
+                    this.errorService.addError('Failed to load collection details.', 'Collection Detail');
+                }
+                this.isLoading = false;
+            }
         });
     }
 
     public createNewItem(): DataSourceCollection {
         return {
-            dataSourceCollectionUId: '',
+            dataSourceCollectionUId: this.generateId(),
             name: '',
             description: '',
             dataSources: [],
             isCustom: false,
-            createdBy: 'Current User',
+            createdBy: 'System',
             createdDate: new Date(),
-            modifiedBy: 'Current User',
+            modifiedBy: 'System',
             modifiedDate: new Date(),
-            correlationUId: '',
-            rowVersion: new Uint8Array(),
+            correlationUId: this.generateId(),
+            rowVersion: undefined,
             metadata: []
         };
     }
 
     public saveItem(): void {
-        if (this.collectionForm.valid) {
-            const formValue = this.collectionForm.value;
-            const collectionToSave: DataSourceCollection = {
-                ...this.item,
-                ...formValue,
-                modifiedBy: 'Current User',
-                modifiedDate: new Date()
-            };
+        if (!this.item) return;
 
-            const saveOperation = this.item?.dataSourceCollectionUId
-                ? this.collectionService.updateDataSourceCollection(collectionToSave)
-                : this.collectionService.createDataSourceCollection(collectionToSave);
+        // Basic validation
+        if (!this.collectionForm.valid) {
+            this.errorService.addError('Please fix the form errors before saving.', 'Collection Detail');
+            return;
+        }
 
-            saveOperation.subscribe({
-                next: (savedCollection) => {
-                    this.item = savedCollection;
-                    console.log('Collection saved successfully');
-                    this.router.navigate(['/collections']);
+        const formValue = this.collectionForm.value;
+        const collectionToSave: DataSourceCollection = {
+            ...this.item,
+            ...formValue,
+            modifiedBy: 'System',
+            modifiedDate: new Date()
+        };
+
+        if (this.isNew) {
+            // Create new collection
+            this.isLoading = true;
+            this.collectionService.createDataSourceCollection(collectionToSave).subscribe({
+                next: (createdCollection: DataSourceCollection) => {
+                    this.item = createdCollection;
+                    this.isNew = false;
+                    this.editMode = false;
+                    this.isLoading = false;
+                    this.errorService.addError(
+                        `Collection "${createdCollection.name}" created successfully.`,
+                        'Collection Detail'
+                    );
+                    this.router.navigate(['/collections', createdCollection.dataSourceCollectionUId], {
+                        queryParams: { edit: 'false' }
+                    });
                 },
-                error: (error) => console.error('Error saving collection:', error)
+                error: (err: any) => {
+                    this.handleError(err, 'Create collection');
+                    this.errorService.addError('Failed to create collection.', 'Collection Detail');
+                    this.isLoading = false;
+                }
+            });
+        } else {
+            // Update existing collection
+            this.isLoading = true;
+            this.collectionService.updateDataSourceCollection(collectionToSave).subscribe({
+                next: (updatedCollection: DataSourceCollection) => {
+                    this.item = updatedCollection;
+                    this.editMode = false;
+                    this.isLoading = false;
+                    this.populateForm(updatedCollection);
+                    this.errorService.addError(
+                        `Collection "${updatedCollection.name}" updated successfully.`,
+                        'Collection Detail'
+                    );
+                },
+                error: (err: any) => {
+                    this.handleError(err, 'Update collection');
+                    this.errorService.addError('Failed to update collection.', 'Collection Detail');
+                    this.isLoading = false;
+                }
             });
         }
     }
 
     public deleteItem(): void {
-        if (this.item?.dataSourceCollectionUId && confirm('Are you sure you want to delete this collection?')) {
-            this.collectionService.deleteDataSourceCollection(this.item.dataSourceCollectionUId).subscribe({
-                next: () => {
-                    console.log('Collection deleted successfully');
-                    this.router.navigate(['/collections']);
-                },
-                error: (error) => console.error('Error deleting collection:', error)
-            });
-        }
+        if (!this.item || this.isNew || !this.item.dataSourceCollectionUId) return;
+
+        this.isLoading = true;
+        this.collectionService.deleteDataSourceCollection(this.item.dataSourceCollectionUId).subscribe({
+            next: () => {
+                this.errorService.addError(
+                    `Collection "${this.item!.name}" deleted successfully.`,
+                    'Collection Detail'
+                );
+                this.router.navigate(['/collections']);
+            },
+            error: (err: any) => {
+                this.handleError(err, 'Delete collection');
+                this.errorService.addError('Failed to delete collection.', 'Collection Detail');
+                this.isLoading = false;
+            }
+        });
     }
 
     private createForm(): FormGroup {

@@ -23,7 +23,7 @@ export interface BaseModel {
   correlationUId: string; // Guid as string
   
   /** Version number for optimistic concurrency control */
-  rowVersion: Uint8Array;
+  rowVersion?: Uint8Array;
   
   /** Additional metadata as key-value pairs */
   metadata: Metadata[];

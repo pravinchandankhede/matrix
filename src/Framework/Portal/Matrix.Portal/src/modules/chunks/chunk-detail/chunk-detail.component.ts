@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Chunk } from '../../../datamodels/chunk.model';
 import { ChunkService } from '../../../services/chunk.service';
+import { ErrorService } from '../../../services/error.service';
 import { BaseDetailComponent } from '../../../shared/base-detail.component';
 
 @Component({
@@ -20,8 +21,9 @@ export class ChunkDetailComponent extends BaseDetailComponent<Chunk> {
     constructor(
         private fb: FormBuilder,
         private chunkService: ChunkService,
-        route: ActivatedRoute,
-        router: Router
+        private errorService: ErrorService,
+        protected override route: ActivatedRoute,
+        protected override router: Router
     ) {
         super(route, router);
         this.chunkForm = this.createForm();
@@ -39,22 +41,22 @@ export class ChunkDetailComponent extends BaseDetailComponent<Chunk> {
 
     public createNewItem(): Chunk {
         return {
-            chunkUId: '',
+            chunkUId: this.generateId(),
             chunkId: '',
             text: '',
             type: 'Text',
             chunkSource: '',
             chunkSourceId: '',
-            correlationUId: '',
+            correlationUId: this.generateId(),
             chunkStrategy: {
                 strategyType: 'FixedSize',
                 parameters: { chunkSize: 1000, overlap: 100 }
             },
-            createdBy: '',
+            createdBy: 'System',
             createdDate: new Date(),
-            modifiedBy: '',
+            modifiedBy: 'System',
             modifiedDate: new Date(),
-            rowVersion: new Uint8Array(),
+            rowVersion: undefined,
             metadata: []
         };
     }

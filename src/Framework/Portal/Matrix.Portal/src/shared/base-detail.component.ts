@@ -6,30 +6,31 @@ import { takeUntil } from 'rxjs/operators';
 @Directive()
 export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
     @Input() editMode: boolean = false;
-    
+
     item: T | null = null;
     isLoading: boolean = false;
     isNew: boolean = false;
     itemId: string | null = null;
-    
+
     protected destroy$ = new Subject<void>();
 
     constructor(
         protected route: ActivatedRoute,
         protected router: Router
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.route.paramMap.pipe(
             takeUntil(this.destroy$)
         ).subscribe(params => {
             this.itemId = params.get('id');
-            if (this.itemId) {
+            if (this.itemId && this.itemId !== 'add') {
                 this.isNew = false;
                 this.loadItem(this.itemId);
             } else {
                 this.isNew = true;
                 this.item = this.createNewItem();
+                this.editMode = true; // Auto-enter edit mode for new items
             }
         });
 
@@ -92,5 +93,13 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
     protected handleError(error: any, operation: string): void {
         console.error(`${operation} failed:`, error);
         // You can inject ErrorService here if needed
+    }
+
+    protected generateId(): string {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
     }
 }

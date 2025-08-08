@@ -31,19 +31,19 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> {
 
     loadItem(id: string): void {
         this.isLoading = true;
-        this.agentService.getAgents().subscribe({
-            next: (agents: Agent[]) => {
-                this.item = agents.find(a => a.agentUId === id) || null;
-                if (this.item) {
-                    this.updateFormHelpers();
-                } else {
-                    this.errorService.addError('Agent not found.', 'Agent Detail');
-                }
+        this.agentService.getAgent(id).subscribe({
+            next: (agent: Agent) => {
+                this.item = agent;
+                this.updateFormHelpers();
                 this.isLoading = false;
             },
             error: (err: any) => {
                 this.handleError(err, 'Load agent');
-                this.errorService.addError('Failed to load agent details.', 'Agent Detail');
+                if (err.status === 404) {
+                    this.errorService.addError('Agent not found.', 'Agent Detail');
+                } else {
+                    this.errorService.addError('Failed to load agent details.', 'Agent Detail');
+                }
                 this.isLoading = false;
             }
         });
@@ -65,7 +65,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> {
             modifiedBy: 'System',
             modifiedDate: new Date(),
             correlationUId: this.generateId(),
-            rowVersion: new Uint8Array(),
+            rowVersion: undefined,
             metadata: []
         };
     }
@@ -73,18 +73,61 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> {
     saveItem(): void {
         if (!this.item) return;
 
+        // Basic validation
+        if (!this.item.name || !this.item.name.trim()) {
+            this.errorService.addError('Agent name is required.', 'Agent Detail');
+            return;
+        }
+
+        if (!this.item.type || !this.item.type.trim()) {
+            this.errorService.addError('Agent type is required.', 'Agent Detail');
+            return;
+        }
+
         this.updateItemFromForm();
 
-        // For now, just simulate save since we don't have create/update endpoints
-        this.editMode = false;
-        this.errorService.addError(
-            `Agent "${this.item.name}" ${this.isNew ? 'created' : 'updated'} successfully.`,
-            'Agent Detail'
-        );
-
         if (this.isNew) {
-            this.router.navigate(['/agents', this.item.agentUId], {
-                queryParams: { edit: 'false' }
+            // Create new agent
+            this.isLoading = true;
+            this.agentService.createAgent(this.item).subscribe({
+                next: (createdAgent: Agent) => {
+                    this.item = createdAgent;
+                    this.isNew = false;
+                    this.editMode = false;
+                    this.isLoading = false;
+                    this.errorService.addError(
+                        `Agent "${createdAgent.name}" created successfully.`,
+                        'Agent Detail'
+                    );
+                    this.router.navigate(['/agents', createdAgent.agentUId], {
+                        queryParams: { edit: 'false' }
+                    });
+                },
+                error: (err: any) => {
+                    this.handleError(err, 'Create agent');
+                    this.errorService.addError('Failed to create agent.', 'Agent Detail');
+                    this.isLoading = false;
+                }
+            });
+        } else {
+            // Update existing agent
+            this.isLoading = true;
+            this.agentService.updateAgent(this.item).subscribe({
+                next: (updatedAgent: Agent) => {
+                    this.item = updatedAgent;
+                    this.editMode = false;
+                    this.isLoading = false;
+                    this.updateFormHelpers();
+                    this.errorService.addError(
+                        `Agent "${updatedAgent.name}" updated successfully.`,
+                        'Agent Detail'
+                    );
+                },
+                error: (err: any) => {
+                    this.handleError(err, 'Update agent');
+                    this.errorService.addError('Failed to update agent.', 'Agent Detail');
+                    this.isLoading = false;
+                }
             });
         }
     }
@@ -92,12 +135,21 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> {
     deleteItem(): void {
         if (!this.item || this.isNew) return;
 
-        // For now, just simulate delete
-        this.errorService.addError(
-            `Agent "${this.item.name}" deleted successfully.`,
-            'Agent Detail'
-        );
-        this.router.navigate(['/agents']);
+        this.isLoading = true;
+        this.agentService.deleteAgent(this.item.agentUId).subscribe({
+            next: () => {
+                this.errorService.addError(
+                    `Agent "${this.item!.name}" deleted successfully.`,
+                    'Agent Detail'
+                );
+                this.router.navigate(['/agents']);
+            },
+            error: (err: any) => {
+                this.handleError(err, 'Delete agent');
+                this.errorService.addError('Failed to delete agent.', 'Agent Detail');
+                this.isLoading = false;
+            }
+        });
     }
 
     // Navigation methods
@@ -131,7 +183,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> {
                 modifiedBy: 'System',
                 modifiedDate: new Date(),
                 correlationUId: this.generateId(),
-                rowVersion: new Uint8Array(),
+                rowVersion: undefined,
                 metadata: []
             } as Capability));
 
@@ -151,7 +203,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> {
                 modifiedBy: 'System',
                 modifiedDate: new Date(),
                 correlationUId: this.generateId(),
-                rowVersion: new Uint8Array(),
+                rowVersion: undefined,
                 metadata: []
             } as Feature));
 
@@ -171,19 +223,11 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> {
                 modifiedBy: 'System',
                 modifiedDate: new Date(),
                 correlationUId: this.generateId(),
-                rowVersion: new Uint8Array(),
+                rowVersion: undefined,
                 metadata: []
             } as Tool));
 
         this.item.modifiedBy = 'System';
         this.item.modifiedDate = new Date();
-    }
-
-    private generateId(): string {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            const r = Math.random() * 16 | 0;
-            const v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
     }
 }

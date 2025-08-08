@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Model } from '../../../datamodels/model';
 import { ModelService } from '../../../services/model.service';
+import { ErrorService } from '../../../services/error.service';
 import { BaseDetailComponent } from '../../../shared/base-detail.component';
 
 @Component({
@@ -20,8 +21,9 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> {
     constructor(
         private fb: FormBuilder,
         private modelService: ModelService,
-        route: ActivatedRoute,
-        router: Router
+        private errorService: ErrorService,
+        protected override route: ActivatedRoute,
+        protected override router: Router
     ) {
         super(route, router);
         this.modelForm = this.createForm();
@@ -39,7 +41,7 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> {
 
     public createNewItem(): Model {
         return {
-            modelUId: '',
+            modelUId: this.generateId(),
             name: '',
             type: '',
             version: '',
@@ -49,12 +51,12 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> {
             apiKey: '',
             region: '',
             isEnabled: true,
-            createdBy: 'Current User',
+            createdBy: 'System',
             createdDate: new Date(),
-            modifiedBy: 'Current User',
+            modifiedBy: 'System',
             modifiedDate: new Date(),
-            correlationUId: '',
-            rowVersion: new Uint8Array(),
+            correlationUId: this.generateId(),
+            rowVersion: undefined,
             metadata: []
         };
     }

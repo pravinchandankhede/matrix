@@ -1,4 +1,10 @@
 <div class="detail-container" *ngIf="item">
+    <!-- Loading indicator -->
+    <div *ngIf="isLoading" class="loading-overlay">
+        <mat-icon class="spinner">hourglass_empty</mat-icon>
+        <span>{{ isNew ? 'Creating agent...' : 'Loading...' }}</span>
+    </div>
+
     <div class="section-wrapper modern-theme-bg">
         <div class="detail-header">
             <h2><mat-icon>smart_toy</mat-icon> {{ item.name || 'New Agent' }}</h2>
@@ -66,16 +72,16 @@
                                     <input type="text" [(ngModel)]="item.agentUId" name="agentUId" />
                                 </div>
                                 <div class="form-row">
-                                    <label>Name:</label>
-                                    <input type="text" [(ngModel)]="item.name" name="name" placeholder="Enter agent name" />
+                                    <label>Name: <span class="required">*</span></label>
+                                    <input type="text" [(ngModel)]="item.name" name="name" placeholder="Enter agent name" required />
                                 </div>
                                 <div class="form-row full-width">
                                     <label>Description:</label>
                                     <textarea [(ngModel)]="item.description" name="description" placeholder="Enter agent description" rows="3"></textarea>
                                 </div>
                                 <div class="form-row">
-                                    <label>Type:</label>
-                                    <input type="text" [(ngModel)]="item.type" name="type" placeholder="Enter agent type" />
+                                    <label>Type: <span class="required">*</span></label>
+                                    <input type="text" [(ngModel)]="item.type" name="type" placeholder="Enter agent type" required />
                                 </div>
                                 <div class="form-row">
                                     <label>Status:</label>
@@ -93,13 +99,15 @@
                         </div>
 
                         <div class="form-actions">
-                            <button type="button" class="btn-primary" (click)="onSave()">
-                                <mat-icon>save</mat-icon> {{ isNew ? 'Create' : 'Save' }}
+                            <button type="button" class="btn-primary" (click)="onSave()" [disabled]="isLoading">
+                                <mat-icon *ngIf="!isLoading">save</mat-icon>
+                                <mat-icon *ngIf="isLoading" class="spinner">hourglass_empty</mat-icon>
+                                {{ isLoading ? 'Saving...' : (isNew ? 'Create' : 'Save') }}
                             </button>
-                            <button *ngIf="!isNew && item?.agentUId" type="button" class="btn-secondary" (click)="onDelete()">
+                            <button *ngIf="!isNew && item?.agentUId" type="button" class="btn-secondary" (click)="onDelete()" [disabled]="isLoading">
                                 <mat-icon>delete</mat-icon> Delete
                             </button>
-                            <button type="button" class="btn-secondary" (click)="router.navigate(['/agents'])">
+                            <button type="button" class="btn-secondary" (click)="router.navigate(['/agents'])" [disabled]="isLoading">
                                 <mat-icon>arrow_back</mat-icon> Back to Agents
                             </button>
                         </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSourceCollection } from '../../../datamodels/data-source-collection.model';
@@ -12,7 +12,7 @@ import { BaseDetailComponent } from '../../../shared/base-detail.component';
     templateUrl: './collection-detail.component.html',
     styleUrls: ['./collection-detail.component.css']
 })
-export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCollection> {
+export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCollection> implements AfterViewInit {
     // Navigation
     activeSection: string = 'general';
 
@@ -27,6 +27,19 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
     ) {
         super(route, router);
         this.collectionForm = this.createForm();
+    }
+
+    override ngOnInit(): void {
+        super.ngOnInit();
+    }
+
+    ngAfterViewInit(): void {
+        // Populate form for new items after view init
+        setTimeout(() => {
+            if (this.isNew && this.item) {
+                this.populateForm(this.item);
+            }
+        });
     }
 
     public loadItem(id: string): void {
@@ -69,9 +82,14 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
     public saveItem(): void {
         if (!this.item) return;
 
-        // Basic validation
+        // Basic validation with specific error messages
         if (!this.collectionForm.valid) {
-            this.errorService.addError('Please fix the form errors before saving.', 'Collection Detail');
+            this.markFormGroupTouched(this.collectionForm);
+            const errors = this.getFormValidationErrors();
+            this.errorService.addError(
+                `Please fix the following errors: ${errors.join(', ')}`,
+                'Collection Detail'
+            );
             return;
         }
 
@@ -179,5 +197,36 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
 
     setActiveSection(section: string): void {
         this.activeSection = section;
+    }
+
+    private markFormGroupTouched(formGroup: FormGroup): void {
+        Object.keys(formGroup.controls).forEach(key => {
+            const control = formGroup.get(key);
+            control?.markAsTouched();
+        });
+    }
+
+    private getFormValidationErrors(): string[] {
+        const errors: string[] = [];
+        Object.keys(this.collectionForm.controls).forEach(key => {
+            const control = this.collectionForm.get(key);
+            if (control && control.invalid && control.touched) {
+                if (control.errors?.['required']) {
+                    errors.push(`${this.getFieldDisplayName(key)} is required`);
+                }
+                if (control.errors?.['maxlength']) {
+                    errors.push(`${this.getFieldDisplayName(key)} is too long`);
+                }
+            }
+        });
+        return errors;
+    }
+
+    private getFieldDisplayName(fieldName: string): string {
+        const fieldNames: { [key: string]: string } = {
+            'name': 'Name',
+            'description': 'Description'
+        };
+        return fieldNames[fieldName] || fieldName;
     }
 }

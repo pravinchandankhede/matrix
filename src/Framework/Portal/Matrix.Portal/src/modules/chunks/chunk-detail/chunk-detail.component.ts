@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Chunk } from '../../../datamodels/chunk.model';
@@ -12,7 +12,7 @@ import { BaseDetailComponent } from '../../../shared/base-detail.component';
     templateUrl: './chunk-detail.component.html',
     styleUrls: ['./chunk-detail.component.css']
 })
-export class ChunkDetailComponent extends BaseDetailComponent<Chunk> {
+export class ChunkDetailComponent extends BaseDetailComponent<Chunk> implements AfterViewInit {
     // Navigation
     activeSection: string = 'general';
 
@@ -29,13 +29,36 @@ export class ChunkDetailComponent extends BaseDetailComponent<Chunk> {
         this.chunkForm = this.createForm();
     }
 
+    override ngOnInit(): void {
+        super.ngOnInit();
+    }
+
+    ngAfterViewInit(): void {
+        // Populate form for new items after view init
+        setTimeout(() => {
+            if (this.isNew && this.item) {
+                this.populateForm(this.item);
+            }
+        });
+    }
+
     public loadItem(id: string): void {
+        this.isLoading = true;
         this.chunkService.getChunk(id).subscribe({
-            next: (chunk) => {
+            next: (chunk: Chunk) => {
                 this.item = chunk;
                 this.populateForm(chunk);
+                this.isLoading = false;
             },
-            error: (error) => console.error('Error loading chunk:', error)
+            error: (err: any) => {
+                this.handleError(err, 'Load chunk');
+                if (err.status === 404) {
+                    this.errorService.addError('Chunk not found.', 'Chunk Detail');
+                } else {
+                    this.errorService.addError('Failed to load chunk details.', 'Chunk Detail');
+                }
+                this.isLoading = false;
+            }
         });
     }
 
@@ -62,38 +85,98 @@ export class ChunkDetailComponent extends BaseDetailComponent<Chunk> {
     }
 
     public saveItem(): void {
-        if (this.chunkForm.valid) {
-            const formValue = this.chunkForm.value;
-            const chunkToSave: Chunk = {
-                ...this.item,
-                ...formValue
-            };
+        if (!this.item) return;
 
-            const saveOperation = this.item?.chunkUId
-                ? this.chunkService.updateChunk(chunkToSave)
-                : this.chunkService.createChunk(chunkToSave);
+        // Basic validation with specific error messages
+        if (!this.chunkForm.valid) {
+            this.markFormGroupTouched(this.chunkForm);
+            const errors = this.getFormValidationErrors();
+            this.errorService.addError(
+                `Please fix the following errors: ${errors.join(', ')}`,
+                'Chunk Detail'
+            );
+            return;
+        }
 
-            saveOperation.subscribe({
-                next: (savedChunk) => {
-                    this.item = savedChunk;
-                    console.log('Chunk saved successfully');
-                    this.router.navigate(['/chunks']);
+        const formValue = this.chunkForm.value;
+        const chunkToSave: Chunk = {
+            ...this.item,
+            ...formValue,
+            chunkStrategy: {
+                strategyType: formValue.strategyType,
+                parameters: {
+                    chunkSize: formValue.chunkSize,
+                    overlap: formValue.overlap
+                }
+            },
+            modifiedBy: 'System',
+            modifiedDate: new Date()
+        };
+
+        if (this.isNew) {
+            // Create new chunk
+            this.isLoading = true;
+            this.chunkService.createChunk(chunkToSave).subscribe({
+                next: (createdChunk: Chunk) => {
+                    this.item = createdChunk;
+                    this.isNew = false;
+                    this.editMode = false;
+                    this.isLoading = false;
+                    this.errorService.addError(
+                        `Chunk "${createdChunk.chunkId}" created successfully.`,
+                        'Chunk Detail'
+                    );
+                    this.router.navigate(['/chunks', createdChunk.chunkUId], {
+                        queryParams: { edit: 'false' }
+                    });
                 },
-                error: (error) => console.error('Error saving chunk:', error)
+                error: (err: any) => {
+                    this.handleError(err, 'Create chunk');
+                    this.errorService.addError('Failed to create chunk.', 'Chunk Detail');
+                    this.isLoading = false;
+                }
+            });
+        } else {
+            // Update existing chunk
+            this.isLoading = true;
+            this.chunkService.updateChunk(chunkToSave).subscribe({
+                next: (updatedChunk: Chunk) => {
+                    this.item = updatedChunk;
+                    this.editMode = false;
+                    this.isLoading = false;
+                    this.populateForm(updatedChunk);
+                    this.errorService.addError(
+                        `Chunk "${updatedChunk.chunkId}" updated successfully.`,
+                        'Chunk Detail'
+                    );
+                },
+                error: (err: any) => {
+                    this.handleError(err, 'Update chunk');
+                    this.errorService.addError('Failed to update chunk.', 'Chunk Detail');
+                    this.isLoading = false;
+                }
             });
         }
     }
 
     public deleteItem(): void {
-        if (this.item?.chunkUId && confirm('Are you sure you want to delete this chunk?')) {
-            this.chunkService.deleteChunk(this.item.chunkUId).subscribe({
-                next: () => {
-                    console.log('Chunk deleted successfully');
-                    this.router.navigate(['/chunks']);
-                },
-                error: (error) => console.error('Error deleting chunk:', error)
-            });
-        }
+        if (!this.item || this.isNew || !this.item.chunkUId) return;
+
+        this.isLoading = true;
+        this.chunkService.deleteChunk(this.item.chunkUId).subscribe({
+            next: () => {
+                this.errorService.addError(
+                    `Chunk "${this.item!.chunkId}" deleted successfully.`,
+                    'Chunk Detail'
+                );
+                this.router.navigate(['/chunks']);
+            },
+            error: (err: any) => {
+                this.handleError(err, 'Delete chunk');
+                this.errorService.addError('Failed to delete chunk.', 'Chunk Detail');
+                this.isLoading = false;
+            }
+        });
     }
 
     private createForm(): FormGroup {
@@ -132,5 +215,48 @@ export class ChunkDetailComponent extends BaseDetailComponent<Chunk> {
 
     setActiveSection(section: string): void {
         this.activeSection = section;
+    }
+
+    private markFormGroupTouched(formGroup: FormGroup): void {
+        Object.keys(formGroup.controls).forEach(key => {
+            const control = formGroup.get(key);
+            control?.markAsTouched();
+        });
+    }
+
+    private getFormValidationErrors(): string[] {
+        const errors: string[] = [];
+        Object.keys(this.chunkForm.controls).forEach(key => {
+            const control = this.chunkForm.get(key);
+            if (control && control.invalid && control.touched) {
+                if (control.errors?.['required']) {
+                    errors.push(`${this.getFieldDisplayName(key)} is required`);
+                }
+                if (control.errors?.['maxlength']) {
+                    errors.push(`${this.getFieldDisplayName(key)} is too long`);
+                }
+                if (control.errors?.['min']) {
+                    errors.push(`${this.getFieldDisplayName(key)} is too small`);
+                }
+                if (control.errors?.['max']) {
+                    errors.push(`${this.getFieldDisplayName(key)} is too large`);
+                }
+            }
+        });
+        return errors;
+    }
+
+    private getFieldDisplayName(fieldName: string): string {
+        const fieldNames: { [key: string]: string } = {
+            'chunkId': 'Chunk ID',
+            'text': 'Text',
+            'type': 'Type',
+            'chunkSource': 'Chunk Source',
+            'chunkSourceId': 'Chunk Source ID',
+            'strategyType': 'Strategy Type',
+            'chunkSize': 'Chunk Size',
+            'overlap': 'Overlap'
+        };
+        return fieldNames[fieldName] || fieldName;
     }
 }

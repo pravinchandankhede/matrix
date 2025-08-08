@@ -80,7 +80,9 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
     }
 
     onAdd(): void {
-        this.router.navigate(['/chunks/add']);
+        this.router.navigate(['/chunks/add'], {
+            queryParams: { edit: 'true' }
+        });
     }
 
     onEdit(chunk: Chunk): void {

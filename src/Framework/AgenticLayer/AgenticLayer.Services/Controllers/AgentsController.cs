@@ -40,17 +40,17 @@ public class AgentsController : ControllerBase
         return agent != null ? Ok(agent) : NotFound();        
     }
 
-    //// POST api/<AgentsController>
-    //[HttpPost]
-    //public void Post([FromBody] string value)
-    //{
-    //}
-
-    //// PUT api/<AgentsController>/5
-    //[HttpPut("{id}")]
-    //public void Put(int id, [FromBody] string value)
-    //{
-    //}
+    // PUT api/<AgentsController>/5
+    [HttpPut("{id}")]
+    public IActionResult Put(Guid id, [FromBody] Agent agent)
+    {
+        if (agent == null || agent.AgentUId != id)
+        {
+            return BadRequest();
+        }
+        _agentRepository.Update(agent);
+        return NoContent();
+    }
 
     //// DELETE api/<AgentsController>/5
     //[HttpDelete("{id}")]

@@ -77,7 +77,9 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
     }
 
     onAdd(): void {
-        this.router.navigate(['/datasources/add']);
+        this.router.navigate(['/datasources/add'], {
+            queryParams: { edit: 'true' }
+        });
     }
 
     onEdit(dataSource: DataSource): void {

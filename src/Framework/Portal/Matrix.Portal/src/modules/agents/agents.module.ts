@@ -4,7 +4,7 @@ import { AgentsRoutingModule } from './agents-routing.module';
 import { AgentListComponent } from './agent-list/agent-list.component';
 import { MatIconModule } from '@angular/material/icon';
 import { AgentDetailComponent } from './agent-detail/agent-detail.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [AgentListComponent, AgentDetailComponent],
@@ -12,7 +12,8 @@ import { FormsModule } from '@angular/forms';
         CommonModule,
         AgentsRoutingModule,
         MatIconModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
     ],
 })
 export class AgentsModule { }

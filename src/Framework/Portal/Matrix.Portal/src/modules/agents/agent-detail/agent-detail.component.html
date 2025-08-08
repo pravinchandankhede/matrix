@@ -29,22 +29,19 @@
                         </li>
                         <li class="nav-item"
                             [class.active]="activeSection === 'capabilities'"
-                            (click)="setActiveSection('capabilities')"
-                            *ngIf="item.capabilities && item.capabilities.length > 0">
+                            (click)="setActiveSection('capabilities')">
                             <mat-icon>psychology</mat-icon>
                             <span>Capabilities</span>
                         </li>
                         <li class="nav-item"
                             [class.active]="activeSection === 'features'"
-                            (click)="setActiveSection('features')"
-                            *ngIf="item.features && item.features.length > 0">
+                            (click)="setActiveSection('features')">
                             <mat-icon>star</mat-icon>
                             <span>Features</span>
                         </li>
                         <li class="nav-item"
                             [class.active]="activeSection === 'tools'"
-                            (click)="setActiveSection('tools')"
-                            *ngIf="item.tools && item.tools.length > 0">
+                            (click)="setActiveSection('tools')">
                             <mat-icon>build</mat-icon>
                             <span>Tools</span>
                         </li>
@@ -62,42 +59,171 @@
             <div class="right-panel">
                 <div class="section-content">
                     <!-- Edit Mode -->
-                    <form *ngIf="editMode; else viewMode" class="detail-form">
+                    <div *ngIf="editMode; else viewMode" class="detail-form">
                         <!-- Basic Information Section -->
                         <div class="content-section" *ngIf="activeSection === 'general'">
-                            <h3>General Information</h3>
-                            <div class="form-grid">
-                                <div class="form-row">
-                                    <label>Agent UID:</label>
-                                    <input type="text" [(ngModel)]="item.agentUId" name="agentUId" />
+                            <form [formGroup]="agentForm" (ngSubmit)="onSave()">
+                                <h3>General Information</h3>
+                                <div class="form-grid">
+                                    <div class="form-row">
+                                        <label>Agent UID:</label>
+                                        <input type="text" [value]="item.agentUId" readonly />
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Name: <span class="required">*</span></label>
+                                        <input type="text" formControlName="name" placeholder="Enter agent name" />
+                                        <div *ngIf="agentForm.get('name')?.invalid && (agentForm.get('name')?.dirty || agentForm.get('name')?.touched)" class="field-error">
+                                            <span *ngIf="agentForm.get('name')?.errors?.['required']">Agent name is required.</span>
+                                            <span *ngIf="agentForm.get('name')?.errors?.['minlength']">Agent name must be at least 2 characters long.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-row full-width">
+                                        <label>Description:</label>
+                                        <textarea formControlName="description" placeholder="Enter agent description" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Type: <span class="required">*</span></label>
+                                        <input type="text" formControlName="type" placeholder="Enter agent type" />
+                                        <div *ngIf="agentForm.get('type')?.invalid && (agentForm.get('type')?.dirty || agentForm.get('type')?.touched)" class="field-error">
+                                            <span *ngIf="agentForm.get('type')?.errors?.['required']">Agent type is required.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Status:</label>
+                                        <select formControlName="status">
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                            <option value="Maintenance">Maintenance</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Version:</label>
+                                        <input type="text" formControlName="version" placeholder="Enter version" />
+                                    </div>
                                 </div>
-                                <div class="form-row">
-                                    <label>Name: <span class="required">*</span></label>
-                                    <input type="text" [(ngModel)]="item.name" name="name" placeholder="Enter agent name" required />
+                            </form>
+                        </div>
+
+                        <!-- Capabilities Section -->
+                        <div class="content-section" *ngIf="activeSection === 'capabilities'">
+                            <h3>Capabilities</h3>
+                            <div class="items-edit-container">
+                                <div *ngFor="let capability of item.capabilities; let i = index" class="item-edit-wrapper">
+                                    <div class="capability-item">
+                                        <div class="item-form-grid">
+                                            <div class="item-form-row">
+                                                <label>Name: <span class="required">*</span></label>
+                                                <input type="text" [(ngModel)]="capability.name" placeholder="Enter capability name" name="capability_name_{{i}}" />
+                                            </div>
+                                            <div class="item-form-row">
+                                                <label>Type:</label>
+                                                <select [(ngModel)]="capability.type" name="capability_type_{{i}}">
+                                                    <option value="General">General</option>
+                                                    <option value="Specialized">Specialized</option>
+                                                    <option value="Advanced">Advanced</option>
+                                                </select>
+                                            </div>
+                                            <div class="item-form-row item-form-row-full">
+                                                <label>Description:</label>
+                                                <textarea [(ngModel)]="capability.description" placeholder="Enter capability description" rows="3" name="capability_desc_{{i}}"></textarea>
+                                            </div>
+                                            <div class="item-form-actions">
+                                                <button type="button" class="btn-secondary btn-small" (click)="removeCapability(i)">
+                                                    <mat-icon>delete</mat-icon> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-row full-width">
-                                    <label>Description:</label>
-                                    <textarea [(ngModel)]="item.description" name="description" placeholder="Enter agent description" rows="3"></textarea>
-                                </div>
-                                <div class="form-row">
-                                    <label>Type: <span class="required">*</span></label>
-                                    <input type="text" [(ngModel)]="item.type" name="type" placeholder="Enter agent type" required />
-                                </div>
-                                <div class="form-row">
-                                    <label>Status:</label>
-                                    <select [(ngModel)]="item.status" name="status">
-                                        <option value="Active">Active</option>
-                                        <option value="Inactive">Inactive</option>
-                                        <option value="Maintenance">Maintenance</option>
-                                    </select>
-                                </div>
-                                <div class="form-row">
-                                    <label>Version:</label>
-                                    <input type="text" [(ngModel)]="item.version" name="version" placeholder="Enter version" />
+                                <div class="add-item-section">
+                                    <button type="button" class="btn-primary" (click)="addCapability()">
+                                        <mat-icon>add</mat-icon> Add Capability
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Features Section -->
+                        <div class="content-section" *ngIf="activeSection === 'features'">
+                            <h3>Features</h3>
+                            <div class="items-edit-container">
+                                <div *ngFor="let feature of item.features; let i = index" class="item-edit-wrapper">
+                                    <div class="feature-item">
+                                        <div class="item-form-grid">
+                                            <div class="item-form-row">
+                                                <label>Name: <span class="required">*</span></label>
+                                                <input type="text" [(ngModel)]="feature.name" placeholder="Enter feature name" name="feature_name_{{i}}" />
+                                            </div>
+                                            <div class="item-form-row">
+                                                <label>Type:</label>
+                                                <select [(ngModel)]="feature.type" name="feature_type_{{i}}">
+                                                    <option value="General">General</option>
+                                                    <option value="UI">UI</option>
+                                                    <option value="API">API</option>
+                                                    <option value="Integration">Integration</option>
+                                                </select>
+                                            </div>
+                                            <div class="item-form-row item-form-row-full">
+                                                <label>Description:</label>
+                                                <textarea [(ngModel)]="feature.description" placeholder="Enter feature description" rows="3" name="feature_desc_{{i}}"></textarea>
+                                            </div>
+                                            <div class="item-form-actions">
+                                                <button type="button" class="btn-secondary btn-small" (click)="removeFeature(i)">
+                                                    <mat-icon>delete</mat-icon> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-item-section">
+                                    <button type="button" class="btn-primary" (click)="addFeature()">
+                                        <mat-icon>add</mat-icon> Add Feature
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tools Section -->
+                        <div class="content-section" *ngIf="activeSection === 'tools'">
+                            <h3>Tools</h3>
+                            <div class="items-edit-container">
+                                <div *ngFor="let tool of item.tools; let i = index" class="item-edit-wrapper">
+                                    <div class="tool-item">
+                                        <div class="item-form-grid">
+                                            <div class="item-form-row">
+                                                <label>Name: <span class="required">*</span></label>
+                                                <input type="text" [(ngModel)]="tool.name" placeholder="Enter tool name" name="tool_name_{{i}}" />
+                                            </div>
+                                            <div class="item-form-row">
+                                                <label>Type:</label>
+                                                <select [(ngModel)]="tool.type" name="tool_type_{{i}}">
+                                                    <option value="General">General</option>
+                                                    <option value="Development">Development</option>
+                                                    <option value="Analytics">Analytics</option>
+                                                    <option value="Integration">Integration</option>
+                                                </select>
+                                            </div>
+                                            <div class="item-form-row item-form-row-full">
+                                                <label>Description:</label>
+                                                <textarea [(ngModel)]="tool.description" placeholder="Enter tool description" rows="3" name="tool_desc_{{i}}"></textarea>
+                                            </div>
+                                            <div class="item-form-actions">
+                                                <button type="button" class="btn-secondary btn-small" (click)="removeTool(i)">
+                                                    <mat-icon>delete</mat-icon> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-item-section">
+                                    <button type="button" class="btn-primary" (click)="addTool()">
+                                        <mat-icon>add</mat-icon> Add Tool
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions - Show for all sections -->
                         <div class="form-actions">
                             <button type="button" class="btn-primary" (click)="onSave()" [disabled]="isLoading">
                                 <mat-icon *ngIf="!isLoading">save</mat-icon>
@@ -111,7 +237,7 @@
                                 <mat-icon>arrow_back</mat-icon> Back to Agents
                             </button>
                         </div>
-                    </form>
+                    </div>
 
                     <!-- View Mode -->
                     <ng-template #viewMode>
@@ -149,45 +275,78 @@
                         </div>
 
                         <!-- Capabilities Section -->
-                        <div class="content-section" *ngIf="activeSection === 'capabilities' && item.capabilities && item.capabilities.length > 0">
+                        <div class="content-section" *ngIf="activeSection === 'capabilities'">
                             <h3>Capabilities</h3>
-                            <div class="info-grid">
-                                <div *ngFor="let capability of item.capabilities" class="info-row">
-                                    <label>{{ capability.name }}:</label>
-                                    <div>
-                                        <span>{{ capability.description }}</span>
+                            <div class="capability-list" *ngIf="item.capabilities && item.capabilities.length > 0; else noCapabilities">
+                                <div *ngFor="let capability of item.capabilities" class="capability-view-item">
+                                    <div class="capability-header">
+                                        <h4>{{ capability.name }}</h4>
                                         <span class="capability-badge">{{ capability.type }}</span>
+                                    </div>
+                                    <div class="capability-description" *ngIf="capability.description">
+                                        <p>{{ capability.description }}</p>
+                                    </div>
+                                    <div class="capability-description" *ngIf="!capability.description">
+                                        <p class="no-description">No description provided</p>
                                     </div>
                                 </div>
                             </div>
+                            <ng-template #noCapabilities>
+                                <div class="empty-state">
+                                    <mat-icon>psychology</mat-icon>
+                                    <p>No capabilities defined for this agent.</p>
+                                </div>
+                            </ng-template>
                         </div>
 
                         <!-- Features Section -->
-                        <div class="content-section" *ngIf="activeSection === 'features' && item.features && item.features.length > 0">
+                        <div class="content-section" *ngIf="activeSection === 'features'">
                             <h3>Features</h3>
-                            <div class="info-grid">
-                                <div *ngFor="let feature of item.features" class="info-row">
-                                    <label>{{ feature.name }}:</label>
-                                    <div>
-                                        <span>{{ feature.description }}</span>
+                            <div class="feature-list" *ngIf="item.features && item.features.length > 0; else noFeatures">
+                                <div *ngFor="let feature of item.features" class="feature-view-item">
+                                    <div class="feature-header">
+                                        <h4>{{ feature.name }}</h4>
                                         <span class="feature-badge">{{ feature.type }}</span>
+                                    </div>
+                                    <div class="feature-description" *ngIf="feature.description">
+                                        <p>{{ feature.description }}</p>
+                                    </div>
+                                    <div class="feature-description" *ngIf="!feature.description">
+                                        <p class="no-description">No description provided</p>
                                     </div>
                                 </div>
                             </div>
+                            <ng-template #noFeatures>
+                                <div class="empty-state">
+                                    <mat-icon>star</mat-icon>
+                                    <p>No features defined for this agent.</p>
+                                </div>
+                            </ng-template>
                         </div>
 
                         <!-- Tools Section -->
-                        <div class="content-section" *ngIf="activeSection === 'tools' && item.tools && item.tools.length > 0">
+                        <div class="content-section" *ngIf="activeSection === 'tools'">
                             <h3>Tools</h3>
-                            <div class="info-grid">
-                                <div *ngFor="let tool of item.tools" class="info-row">
-                                    <label>{{ tool.name }}:</label>
-                                    <div>
-                                        <span>{{ tool.description }}</span>
+                            <div class="tool-list" *ngIf="item.tools && item.tools.length > 0; else noTools">
+                                <div *ngFor="let tool of item.tools" class="tool-view-item">
+                                    <div class="tool-header">
+                                        <h4>{{ tool.name }}</h4>
                                         <span class="tool-badge">{{ tool.type }}</span>
+                                    </div>
+                                    <div class="tool-description" *ngIf="tool.description">
+                                        <p>{{ tool.description }}</p>
+                                    </div>
+                                    <div class="tool-description" *ngIf="!tool.description">
+                                        <p class="no-description">No description provided</p>
                                     </div>
                                 </div>
                             </div>
+                            <ng-template #noTools>
+                                <div class="empty-state">
+                                    <mat-icon>build</mat-icon>
+                                    <p>No tools defined for this agent.</p>
+                                </div>
+                            </ng-template>
                         </div>
 
                         <!-- Audit Information Section -->

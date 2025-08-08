@@ -66,6 +66,20 @@ export class BreadcrumbComponent {
                     }
                 }
             });
+        } else {
+            // Fallback: try to get the name from current state if available
+            const currentState = history.state;
+            if (currentState && currentState.itemName) {
+                this.breadcrumbs.forEach((breadcrumb, index) => {
+                    const urlParts = breadcrumb.url.split('/');
+                    if (urlParts.length >= 3) {
+                        const possibleUid = urlParts[2];
+                        if (this.isUid(possibleUid)) {
+                            this.breadcrumbs[index].label = currentState.itemName;
+                        }
+                    }
+                });
+            }
         }
     }
 

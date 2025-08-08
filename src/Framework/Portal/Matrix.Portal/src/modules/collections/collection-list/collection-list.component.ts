@@ -64,7 +64,9 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
     }
 
     onAdd(): void {
-        this.router.navigate(['/collections/add']);
+        this.router.navigate(['/collections/add'], {
+            queryParams: { edit: 'true' }
+        });
     }
 
     onEdit(collection: DataSourceCollection): void {

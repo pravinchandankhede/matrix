@@ -90,7 +90,9 @@ export class ModelListComponent extends BaseListComponent<Model> {
     }
 
     onAdd(): void {
-        this.router.navigate(['/models/add']);
+        this.router.navigate(['/models/add'], {
+            queryParams: { edit: 'true' }
+        });
     }
 
     onEdit(model: Model): void {

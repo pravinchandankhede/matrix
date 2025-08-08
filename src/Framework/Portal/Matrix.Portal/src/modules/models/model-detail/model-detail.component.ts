@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Model } from '../../../datamodels/model';
@@ -12,7 +12,7 @@ import { BaseDetailComponent } from '../../../shared/base-detail.component';
     templateUrl: './model-detail.component.html',
     styleUrls: ['./model-detail.component.css']
 })
-export class ModelDetailComponent extends BaseDetailComponent<Model> {
+export class ModelDetailComponent extends BaseDetailComponent<Model> implements AfterViewInit {
     // Navigation
     activeSection: string = 'general';
 
@@ -29,13 +29,36 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> {
         this.modelForm = this.createForm();
     }
 
+    override ngOnInit(): void {
+        super.ngOnInit();
+    }
+
+    ngAfterViewInit(): void {
+        // Populate form for new items after view init
+        setTimeout(() => {
+            if (this.isNew && this.item) {
+                this.populateForm(this.item);
+            }
+        });
+    }
+
     public loadItem(id: string): void {
+        this.isLoading = true;
         this.modelService.getModel(id).subscribe({
-            next: (model) => {
+            next: (model: Model) => {
                 this.item = model;
                 this.populateForm(model);
+                this.isLoading = false;
             },
-            error: (error) => console.error('Error loading model:', error)
+            error: (err: any) => {
+                this.handleError(err, 'Load model');
+                if (err.status === 404) {
+                    this.errorService.addError('Model not found.', 'Model Detail');
+                } else {
+                    this.errorService.addError('Failed to load model details.', 'Model Detail');
+                }
+                this.isLoading = false;
+            }
         });
     }
 
@@ -62,40 +85,91 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> {
     }
 
     public saveItem(): void {
-        if (this.modelForm.valid) {
-            const formValue = this.modelForm.value;
-            const modelToSave: Model = {
-                ...this.item,
-                ...formValue,
-                modifiedBy: 'Current User',
-                modifiedDate: new Date()
-            };
+        if (!this.item) return;
 
-            const saveOperation = this.item?.modelUId
-                ? this.modelService.updateModel(modelToSave)
-                : this.modelService.createModel(modelToSave);
+        // Basic validation with specific error messages
+        if (!this.modelForm.valid) {
+            this.markFormGroupTouched(this.modelForm);
+            const errors = this.getFormValidationErrors();
+            this.errorService.addError(
+                `Please fix the following errors: ${errors.join(', ')}`,
+                'Model Detail'
+            );
+            return;
+        }
 
-            saveOperation.subscribe({
-                next: (savedModel) => {
-                    this.item = savedModel;
-                    console.log('Model saved successfully');
-                    this.router.navigate(['/models']);
+        const formValue = this.modelForm.value;
+        const modelToSave: Model = {
+            ...this.item,
+            ...formValue,
+            modifiedBy: 'System',
+            modifiedDate: new Date()
+        };
+
+        if (this.isNew) {
+            // Create new model
+            this.isLoading = true;
+            this.modelService.createModel(modelToSave).subscribe({
+                next: (createdModel: Model) => {
+                    this.item = createdModel;
+                    this.isNew = false;
+                    this.editMode = false;
+                    this.isLoading = false;
+                    this.errorService.addError(
+                        `Model "${createdModel.name}" created successfully.`,
+                        'Model Detail'
+                    );
+                    this.router.navigate(['/models', createdModel.modelUId], {
+                        queryParams: { edit: 'false' }
+                    });
                 },
-                error: (error) => console.error('Error saving model:', error)
+                error: (err: any) => {
+                    this.handleError(err, 'Create model');
+                    this.errorService.addError('Failed to create model.', 'Model Detail');
+                    this.isLoading = false;
+                }
+            });
+        } else {
+            // Update existing model
+            this.isLoading = true;
+            this.modelService.updateModel(modelToSave).subscribe({
+                next: (updatedModel: Model) => {
+                    this.item = updatedModel;
+                    this.editMode = false;
+                    this.isLoading = false;
+                    this.populateForm(updatedModel);
+                    this.errorService.addError(
+                        `Model "${updatedModel.name}" updated successfully.`,
+                        'Model Detail'
+                    );
+                },
+                error: (err: any) => {
+                    this.handleError(err, 'Update model');
+                    this.errorService.addError('Failed to update model.', 'Model Detail');
+                    this.isLoading = false;
+                }
             });
         }
     }
 
     public deleteItem(): void {
-        if (this.item?.modelUId && confirm('Are you sure you want to delete this model?')) {
-            this.modelService.deleteModel(this.item.modelUId).subscribe({
-                next: () => {
-                    console.log('Model deleted successfully');
-                    this.router.navigate(['/models']);
-                },
-                error: (error) => console.error('Error deleting model:', error)
-            });
-        }
+        if (!this.item || this.isNew || !this.item.modelUId) return;
+
+        this.isLoading = true;
+        this.modelService.deleteModel(this.item.modelUId).subscribe({
+            next: () => {
+                this.errorService.addError(
+                    `Model "${this.item!.name}" deleted successfully.`,
+                    'Model Detail'
+                );
+                this.router.navigate(['/models']);
+            },
+            error: (err: any) => {
+                this.handleError(err, 'Delete model');
+                this.errorService.addError('Failed to delete model.', 'Model Detail');
+                this.isLoading = false;
+            }
+        });
     }
 
     private createForm(): FormGroup {
@@ -137,5 +211,42 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> {
 
     get isEditMode(): boolean {
         return !!this.item?.modelUId;
+    }
+
+    private markFormGroupTouched(formGroup: FormGroup): void {
+        Object.keys(formGroup.controls).forEach(key => {
+            const control = formGroup.get(key);
+            control?.markAsTouched();
+        });
+    }
+
+    private getFormValidationErrors(): string[] {
+        const errors: string[] = [];
+        Object.keys(this.modelForm.controls).forEach(key => {
+            const control = this.modelForm.get(key);
+            if (control && control.invalid && control.touched) {
+                if (control.errors?.['required']) {
+                    errors.push(`${this.getFieldDisplayName(key)} is required`);
+                }
+                if (control.errors?.['maxlength']) {
+                    errors.push(`${this.getFieldDisplayName(key)} is too long`);
+                }
+            }
+        });
+        return errors;
+    }
+
+    private getFieldDisplayName(fieldName: string): string {
+        const fieldNames: { [key: string]: string } = {
+            'name': 'Name',
+            'type': 'Type',
+            'version': 'Version',
+            'description': 'Description',
+            'provider': 'Provider',
+            'endpoint': 'Endpoint',
+            'apiKey': 'API Key',
+            'region': 'Region'
+        };
+        return fieldNames[fieldName] || fieldName;
     }
 }

@@ -1,4 +1,10 @@
 <div class="detail-container" *ngIf="item">
+    <!-- Loading indicator -->
+    <div *ngIf="isLoading" class="loading-overlay">
+        <mat-icon class="spinner">hourglass_empty</mat-icon>
+        <span>{{ isNew ? 'Creating model...' : 'Loading...' }}</span>
+    </div>
+
     <div class="section-wrapper modern-theme-bg">
         <div class="detail-header">
             <h2><mat-icon>view_list</mat-icon> {{ item.name || 'New Model' }}</h2>
@@ -41,34 +47,50 @@
             <div class="right-panel">
                 <div class="section-content">
                     <!-- Edit Mode -->
-                    <form *ngIf="editMode; else viewMode" class="detail-form">
+                    <form *ngIf="editMode; else viewMode" [formGroup]="modelForm" class="detail-form">
                         <!-- Model Information Section -->
                         <div class="content-section" *ngIf="activeSection === 'general'">
                             <h3>Model Information</h3>
                             <div class="form-grid">
                                 <div class="form-row">
                                     <label>Model UID:</label>
-                                    <input type="text" [(ngModel)]="item.modelUId" name="modelUId" />
+                                    <input type="text" [value]="item.modelUId" readonly />
                                 </div>
                                 <div class="form-row">
-                                    <label>Name:</label>
-                                    <input type="text" [(ngModel)]="item.name" name="name" />
+                                    <label>Name: <span class="required">*</span></label>
+                                    <input type="text" formControlName="name" placeholder="Enter model name" />
+                                    <div *ngIf="modelForm.get('name')?.invalid && modelForm.get('name')?.touched" class="error-message">
+                                        <span *ngIf="modelForm.get('name')?.errors?.['required']">Name is required</span>
+                                        <span *ngIf="modelForm.get('name')?.errors?.['maxlength']">Name is too long</span>
+                                    </div>
                                 </div>
                                 <div class="form-row full-width">
                                     <label>Description:</label>
-                                    <textarea [(ngModel)]="item.description" name="description" rows="3"></textarea>
+                                    <textarea formControlName="description" placeholder="Enter model description" rows="3"></textarea>
+                                    <div *ngIf="modelForm.get('description')?.invalid && modelForm.get('description')?.touched" class="error-message">
+                                        <span *ngIf="modelForm.get('description')?.errors?.['maxlength']">Description is too long</span>
+                                    </div>
                                 </div>
                                 <div class="form-row">
                                     <label>Type:</label>
-                                    <input type="text" [(ngModel)]="item.type" name="type" />
+                                    <input type="text" formControlName="type" placeholder="Enter model type" />
+                                    <div *ngIf="modelForm.get('type')?.invalid && modelForm.get('type')?.touched" class="error-message">
+                                        <span *ngIf="modelForm.get('type')?.errors?.['maxlength']">Type is too long</span>
+                                    </div>
                                 </div>
                                 <div class="form-row">
                                     <label>Version:</label>
-                                    <input type="text" [(ngModel)]="item.version" name="version" />
+                                    <input type="text" formControlName="version" placeholder="Enter version" />
+                                    <div *ngIf="modelForm.get('version')?.invalid && modelForm.get('version')?.touched" class="error-message">
+                                        <span *ngIf="modelForm.get('version')?.errors?.['maxlength']">Version is too long</span>
+                                    </div>
                                 </div>
                                 <div class="form-row">
                                     <label>Provider:</label>
-                                    <input type="text" [(ngModel)]="item.provider" name="provider" />
+                                    <input type="text" formControlName="provider" placeholder="Enter provider name" />
+                                    <div *ngIf="modelForm.get('provider')?.invalid && modelForm.get('provider')?.touched" class="error-message">
+                                        <span *ngIf="modelForm.get('provider')?.errors?.['maxlength']">Provider is too long</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -79,19 +101,28 @@
                             <div class="form-grid">
                                 <div class="form-row">
                                     <label>Endpoint:</label>
-                                    <input type="text" [(ngModel)]="item.endpoint" name="endpoint" />
+                                    <input type="text" formControlName="endpoint" placeholder="Enter API endpoint" />
+                                    <div *ngIf="modelForm.get('endpoint')?.invalid && modelForm.get('endpoint')?.touched" class="error-message">
+                                        <span *ngIf="modelForm.get('endpoint')?.errors?.['maxlength']">Endpoint is too long</span>
+                                    </div>
                                 </div>
                                 <div class="form-row">
                                     <label>API Key:</label>
-                                    <input type="text" [(ngModel)]="item.apiKey" name="apiKey" />
+                                    <input type="password" formControlName="apiKey" placeholder="Enter API key" />
+                                    <div *ngIf="modelForm.get('apiKey')?.invalid && modelForm.get('apiKey')?.touched" class="error-message">
+                                        <span *ngIf="modelForm.get('apiKey')?.errors?.['maxlength']">API Key is too long</span>
+                                    </div>
                                 </div>
                                 <div class="form-row">
                                     <label>Region:</label>
-                                    <input type="text" [(ngModel)]="item.region" name="region" />
+                                    <input type="text" formControlName="region" placeholder="Enter region" />
+                                    <div *ngIf="modelForm.get('region')?.invalid && modelForm.get('region')?.touched" class="error-message">
+                                        <span *ngIf="modelForm.get('region')?.errors?.['maxlength']">Region is too long</span>
+                                    </div>
                                 </div>
                                 <div class="form-row">
                                     <label>Enabled:</label>
-                                    <select [(ngModel)]="item.isEnabled" name="isEnabled">
+                                    <select formControlName="isEnabled">
                                         <option [ngValue]="true">Yes</option>
                                         <option [ngValue]="false">No</option>
                                     </select>
@@ -127,11 +158,16 @@
                         </div>
 
                         <div class="form-actions">
-                            <button type="button" class="btn-primary" (click)="onSave()">
-                                <mat-icon>save</mat-icon> Save
+                            <button type="button" class="btn-primary" (click)="onSave()" [disabled]="isLoading">
+                                <mat-icon *ngIf="!isLoading">save</mat-icon>
+                                <mat-icon *ngIf="isLoading" class="spinner">hourglass_empty</mat-icon>
+                                {{ isLoading ? 'Saving...' : (isNew ? 'Create' : 'Save') }}
                             </button>
-                            <button type="button" class="btn-secondary" (click)="onCancelEdit()">
-                                <mat-icon>cancel</mat-icon> Cancel
+                            <button *ngIf="!isNew && item?.modelUId" type="button" class="btn-secondary" (click)="onDelete()" [disabled]="isLoading">
+                                <mat-icon>delete</mat-icon> Delete
+                            </button>
+                            <button type="button" class="btn-secondary" (click)="router.navigate(['/models'])" [disabled]="isLoading">
+                                <mat-icon>arrow_back</mat-icon> Back to Models
                             </button>
                         </div>
                     </form>

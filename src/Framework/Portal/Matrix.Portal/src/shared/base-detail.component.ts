@@ -37,7 +37,10 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
         this.route.queryParamMap.pipe(
             takeUntil(this.destroy$)
         ).subscribe(params => {
-            this.editMode = params.get('edit') === 'true';
+            // Only override editMode from query params if not creating a new item
+            if (!this.isNew) {
+                this.editMode = params.get('edit') === 'true';
+            }
         });
     }
 

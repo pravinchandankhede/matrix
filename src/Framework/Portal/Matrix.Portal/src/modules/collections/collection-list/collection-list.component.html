@@ -6,20 +6,20 @@
                 <mat-icon>add_circle</mat-icon> Add Collection
             </button>
         </div>
-
+        
         <div class="toolbar modern-toolbar">
             <div class="search-filter-group">
                 <div class="search-box">
                     <span class="material-icons">search</span>
                     <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search collections...">
                 </div>
-
+                
                 <select (change)="onCustomFilterChange($any($event.target).value)">
                     <option value="">All Types</option>
                     <option value="true">Custom</option>
                     <option value="false">Standard</option>
                 </select>
-
+                
                 <button class="filter-btn" (click)="onSearch()">
                     <span class="material-icons">filter_list</span> Filter
                 </button>
@@ -46,19 +46,19 @@
                             </button>
                         </div>
                     </div>
-
+                    
                     <div class="card-body" (click)="onSelect(col)">
                         <div class="info-row" *ngIf="col.description">
                             <span class="desc" [title]="col.description">{{ col.description }}</span>
                         </div>
-
+                        
                         <div class="info-row">
-                            <span class="label">Data Sources:</span>
+                            <span class="label">Data Sources:</span> 
                             <span class="count-badge">{{ col.dataSources.length }}</span>
-                            <span class="label" *ngIf="col.dataSources.length > 0" style="margin-left: 16px;">Preview:</span>
+                            <span class="label" *ngIf="col.dataSources.length > 0" style="margin-left: 16px;">Preview:</span> 
                             <span *ngIf="col.dataSources.length > 0">{{ getDataSourcePreview(col.dataSources) }}</span>
                         </div>
-
+                        
                         <div class="audit-row">
                             <span class="audit-text">{{ col.createdBy }} • {{ col.createdDate | date:'MMM d, y' }}</span>
                         </div>
@@ -66,10 +66,10 @@
                 </div>
             </div>
         </ng-container>
-
+        
         <ng-template #noCollections>
             <div class="no-items-message">
-                <mat-icon>info</mat-icon>
+                <mat-icon>info</mat-icon> 
                 No collections found. Click "Add Collection" to create your first data source collection.
             </div>
         </ng-template>

@@ -6,25 +6,25 @@
                 <mat-icon>add_circle</mat-icon> Add Data Source
             </button>
         </div>
-
+        
         <div class="toolbar modern-toolbar">
             <div class="search-filter-group">
                 <div class="search-box">
                     <span class="material-icons">search</span>
                     <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search data sources...">
                 </div>
-
+                
                 <select (change)="onActiveFilterChange($any($event.target).value)">
                     <option value="">All Status</option>
                     <option value="true">Active</option>
                     <option value="false">Inactive</option>
                 </select>
-
+                
                 <select (change)="onTypeFilterChange($any($event.target).value)">
                     <option value="">All Types</option>
                     <option *ngFor="let type of uniqueTypes" [value]="type">{{ type }}</option>
                 </select>
-
+                
                 <button class="filter-btn" (click)="onSearch()">
                     <span class="material-icons">filter_list</span> Filter
                 </button>
@@ -51,26 +51,26 @@
                             </button>
                         </div>
                     </div>
-
+                    
                     <div class="card-body" (click)="onSelect(ds)">
                         <div class="info-row" *ngIf="ds.description">
                             <span class="desc" [title]="ds.description">{{ ds.description }}</span>
                         </div>
-
+                        
                         <div class="info-row">
-                            <span class="label">Type:</span>
+                            <span class="label">Type:</span> 
                             <span>{{ ds.type }}</span>
-                            <span class="label" *ngIf="ds.subType" style="margin-left: 16px;">SubType:</span>
+                            <span class="label" *ngIf="ds.subType" style="margin-left: 16px;">SubType:</span> 
                             <span *ngIf="ds.subType">{{ ds.subType }}</span>
                         </div>
-
+                        
                         <div class="info-row">
-                            <span class="label">Owner:</span>
+                            <span class="label">Owner:</span> 
                             <span>{{ ds.owner }}</span>
-                            <span class="label" style="margin-left: 16px;">Access:</span>
+                            <span class="label" style="margin-left: 16px;">Access:</span> 
                             <span>{{ ds.accessMode }}</span>
                         </div>
-
+                        
                         <div class="audit-row">
                             <span class="audit-text">{{ ds.createdBy }} • {{ ds.createdDate | date:'MMM d, y' }}</span>
                         </div>
@@ -78,10 +78,10 @@
                 </div>
             </div>
         </ng-container>
-
+        
         <ng-template #noDataSources>
             <div class="no-items-message">
-                <mat-icon>info</mat-icon>
+                <mat-icon>info</mat-icon> 
                 No data sources found. Click "Add Data Source" to create your first data source.
             </div>
         </ng-template>

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Agent } from '../../../datamodels/agent.model';
 import { AgentService } from '../../../services/agent.service';
 import { BaseListComponent } from '../../../shared/base-list.component';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-agent-list',
@@ -13,34 +14,38 @@ export class AgentListComponent extends BaseListComponent<Agent> {
     selectedStatus: string = '';
     selectedType: string = '';
 
-    constructor(private agentService: AgentService) {
-        super();
-    }
+    private agentService = inject(AgentService);
 
-    getEntityName(): string {
+    protected getEntityName(): string {
         return 'Agent';
     }
 
-    getListContext(): string {
+    protected getErrorContext(): string {
         return 'Agent List';
     }
 
-    getDetailRoute(): string {
+    protected getDetailRoute(): string {
         return '/agents';
     }
 
-    fetchItems(): void {
-        this.agentService.getAgents().subscribe({
-            next: (data: Agent[]) => {
-                this.handleLoadSuccess(data);
-            },
-            error: (err: any) => {
-                this.handleLoadError(err);
-            }
-        });
+    protected getItemId(agent: Agent): string {
+        return agent.agentUId;
     }
 
-    filterPredicate(agent: Agent): boolean {
+    protected fetchItems(): void {
+        this.agentService.getAgents()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: Agent[]) => {
+                    this.handleLoadSuccess(data);
+                },
+                error: (err: any) => {
+                    this.handleLoadError(err);
+                }
+            });
+    }
+
+    protected filterPredicate(agent: Agent): boolean {
         const matchesName = agent.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
             agent.description.toLowerCase().includes(this.searchTerm.toLowerCase());
         const matchesStatus = this.selectedStatus ? agent.status === this.selectedStatus : true;
@@ -88,18 +93,16 @@ export class AgentListComponent extends BaseListComponent<Agent> {
 
     onDelete(agent: Agent): void {
         this.handleDelete(agent, () => {
-            this.agentService.deleteAgent(agent.agentUId).subscribe({
-                next: () => {
-                    this.handleDeleteSuccess(agent.name);
-                },
-                error: (err: any) => {
-                    this.handleDeleteError(err);
-                }
-            });
+            this.agentService.deleteAgent(agent.agentUId)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: () => {
+                        this.handleDeleteSuccess(agent.name);
+                    },
+                    error: (err: any) => {
+                        this.handleDeleteError(err);
+                    }
+                });
         });
-    }
-
-    trackByFn(index: number, item: Agent): string {
-        return item.agentUId;
     }
 }

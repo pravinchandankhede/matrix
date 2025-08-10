@@ -26,15 +26,15 @@
         </div>
 
         <div class="notification-list" *ngIf="notifications.length > 0">
-            <div class="notification-item"
-                 *ngFor="let notification of notifications"
+            <div class="notification-item" 
+                 *ngFor="let notification of notifications" 
                  [class.unread]="!notification.isRead"
                  [class.error]="notification.notificationType === 'error'"
                  [class.warning]="notification.notificationType === 'warning'"
                  [class.info]="notification.notificationType === 'info'"
                  [class.success]="notification.notificationType === 'success'"
                  (click)="markAsRead(notification)">
-
+                
                 <div class="notification-icon">
                     <mat-icon [class]="notification.notificationType">
                         {{ getNotificationIcon(notification.notificationType) }}
@@ -50,11 +50,11 @@
                             {{ getRelativeTime(notification.timestamp) }}
                         </span>
                     </div>
-
+                    
                     <div class="notification-message">
                         {{ notification.message }}
                     </div>
-
+                    
                     <div class="notification-details" *ngIf="notification.details">
                         <span class="details-text">{{ notification.details }}</span>
                     </div>
@@ -67,8 +67,8 @@
                 </div>
 
                 <div class="notification-controls">
-                    <button class="dismiss-btn"
-                            title="Dismiss"
+                    <button class="dismiss-btn" 
+                            title="Dismiss" 
                             (click)="dismissNotification(notification); $event.stopPropagation()">
                         <mat-icon>close</mat-icon>
                     </button>

@@ -10,7 +10,7 @@ import { NotificationService } from '../../services/notification.service';
 export class HeaderComponent {
     @Output() profileClick = new EventEmitter<void>();
 
-    constructor(public notificationService: NotificationService) { }
+    constructor(public notificationService: NotificationService) {}
 
     get unreadNotificationCount(): number {
         return this.notificationService.getUnreadCount();

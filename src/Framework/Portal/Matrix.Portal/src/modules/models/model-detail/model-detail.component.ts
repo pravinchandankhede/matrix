@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Model } from '../../../datamodels/model';
@@ -17,13 +17,11 @@ export class ModelDetailComponent extends BaseDetailComponent<Model> implements 
 
     modelForm: FormGroup;
 
-    constructor(
-        private fb: FormBuilder,
-        private modelService: ModelService,
-        protected override route: ActivatedRoute,
-        protected override router: Router
-    ) {
-        super(route, router);
+    private fb = inject(FormBuilder);
+    private modelService = inject(ModelService);
+
+    constructor() {
+        super();
         this.modelForm = this.createForm();
     }
 

@@ -1,55 +1,55 @@
 <div *ngIf="mode === 'edit' && dataSource?.structuredDataSource; else viewMode">
-    <div class="form-row">
-        <label>Host:</label>
-        <input type="text" [(ngModel)]="structuredDataSource.host" name="structuredHost" />
-    </div>
-    <div class="form-row">
-        <label>Port:</label>
-        <input type="number" [(ngModel)]="structuredDataSource.port" name="structuredPort" />
-    </div>
-    <div class="form-row">
-        <label>Database Name:</label>
-        <input type="text" [(ngModel)]="structuredDataSource.databaseName" name="structuredDatabaseName" />
-    </div>
-    <div class="form-row">
-        <label>Schema:</label>
-        <input type="text" [(ngModel)]="structuredDataSource.schema" name="structuredSchema" />
-    </div>
-    <div class="form-row full-width">
-        <label>Table List:</label>
-        <input type="text" [(ngModel)]="tableListString" name="structuredTableList" placeholder="Comma separated table names" (ngModelChange)="onTableListChange()" />
-    </div>
-    <div class="form-row full-width">
-        <label>Query Template:</label>
-        <textarea [(ngModel)]="structuredDataSource.queryTemplate" name="structuredQueryTemplate" rows="3" placeholder="SQL query template"></textarea>
-    </div>
+  <div class="form-row">
+    <label>Host:</label>
+    <input type="text" [(ngModel)]="structuredDataSource.host" name="structuredHost" />
+  </div>
+  <div class="form-row">
+    <label>Port:</label>
+    <input type="number" [(ngModel)]="structuredDataSource.port" name="structuredPort" />
+  </div>
+  <div class="form-row">
+    <label>Database Name:</label>
+    <input type="text" [(ngModel)]="structuredDataSource.databaseName" name="structuredDatabaseName" />
+  </div>
+  <div class="form-row">
+    <label>Schema:</label>
+    <input type="text" [(ngModel)]="structuredDataSource.schema" name="structuredSchema" />
+  </div>
+  <div class="form-row full-width">
+    <label>Table List:</label>
+    <input type="text" [(ngModel)]="tableListString" name="structuredTableList" placeholder="Comma separated table names" (ngModelChange)="onTableListChange()" />
+  </div>
+  <div class="form-row full-width">
+    <label>Query Template:</label>
+    <textarea [(ngModel)]="structuredDataSource.queryTemplate" name="structuredQueryTemplate" rows="3" placeholder="SQL query template"></textarea>
+  </div>
 </div>
 
 <ng-template #viewMode>
-    <div class="info-grid">
-        <div class="info-row" *ngIf="dataSource?.structuredDataSource?.host">
-            <label>Host:</label>
-            <span>{{ structuredDataSource.host }}</span>
-        </div>
-        <div class="info-row" *ngIf="dataSource?.structuredDataSource?.port">
-            <label>Port:</label>
-            <span>{{ structuredDataSource.port }}</span>
-        </div>
-        <div class="info-row" *ngIf="dataSource?.structuredDataSource?.databaseName">
-            <label>Database Name:</label>
-            <span>{{ structuredDataSource.databaseName }}</span>
-        </div>
-        <div class="info-row" *ngIf="dataSource?.structuredDataSource?.schema">
-            <label>Schema:</label>
-            <span>{{ structuredDataSource.schema }}</span>
-        </div>
-        <div class="info-row" *ngIf="dataSource?.structuredDataSource?.tableList?.length">
-            <label>Table List:</label>
-            <span>{{ structuredDataSource.tableList.join(', ') }}</span>
-        </div>
-        <div class="info-row" *ngIf="dataSource?.structuredDataSource?.queryTemplate">
-            <label>Query Template:</label>
-            <span class="code-block">{{ structuredDataSource.queryTemplate }}</span>
-        </div>
+  <div class="info-grid">
+    <div class="info-row" *ngIf="dataSource?.structuredDataSource?.host">
+      <label>Host:</label>
+      <span>{{ structuredDataSource.host }}</span>
     </div>
+    <div class="info-row" *ngIf="dataSource?.structuredDataSource?.port">
+      <label>Port:</label>
+      <span>{{ structuredDataSource.port }}</span>
+    </div>
+    <div class="info-row" *ngIf="dataSource?.structuredDataSource?.databaseName">
+      <label>Database Name:</label>
+      <span>{{ structuredDataSource.databaseName }}</span>
+    </div>
+    <div class="info-row" *ngIf="dataSource?.structuredDataSource?.schema">
+      <label>Schema:</label>
+      <span>{{ structuredDataSource.schema }}</span>
+    </div>
+    <div class="info-row" *ngIf="dataSource?.structuredDataSource?.tableList?.length">
+      <label>Table List:</label>
+      <span>{{ structuredDataSource.tableList.join(', ') }}</span>
+    </div>
+    <div class="info-row" *ngIf="dataSource?.structuredDataSource?.queryTemplate">
+      <label>Query Template:</label>
+      <span class="code-block">{{ structuredDataSource.queryTemplate }}</span>
+    </div>
+  </div>
 </ng-template>

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ModelService } from '../../../services/model.service';
 import { Model } from '../../../datamodels/model';
 import { BaseListComponent } from '../../../shared/base-list.component';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-model-list',
@@ -14,34 +15,38 @@ export class ModelListComponent extends BaseListComponent<Model> {
     selectedProvider: string = '';
     selectedType: string = '';
 
-    constructor(private modelService: ModelService) {
-        super();
-    }
+    private modelService = inject(ModelService);
 
-    getEntityName(): string {
+    protected getEntityName(): string {
         return 'Model';
     }
 
-    getListContext(): string {
+    protected getErrorContext(): string {
         return 'Model List';
     }
 
-    getDetailRoute(): string {
+    protected getDetailRoute(): string {
         return '/models';
     }
 
-    fetchItems(): void {
-        this.modelService.getModels().subscribe({
-            next: (data: Model[]) => {
-                this.handleLoadSuccess(data);
-            },
-            error: (err: any) => {
-                this.handleLoadError(err);
-            }
-        });
+    protected getItemId(model: Model): string {
+        return model.modelUId;
     }
 
-    filterPredicate(model: Model): boolean {
+    protected fetchItems(): void {
+        this.modelService.getModels()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: Model[]) => {
+                    this.handleLoadSuccess(data);
+                },
+                error: (err: any) => {
+                    this.handleLoadError(err);
+                }
+            });
+    }
+
+    protected filterPredicate(model: Model): boolean {
         const matchesName = model.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
             (model.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ?? false);
         const matchesEnabled = this.selectedEnabled ?
@@ -98,12 +103,16 @@ export class ModelListComponent extends BaseListComponent<Model> {
 
     onDelete(model: Model): void {
         this.handleDelete(model, () => {
-            // Note: Update this when actual delete service method is available
-            this.handleDeleteSuccess(model.name);
+            this.modelService.deleteModel(model.modelUId)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: () => {
+                        this.handleDeleteSuccess(model.name);
+                    },
+                    error: (err: any) => {
+                        this.handleDeleteError(err);
+                    }
+                });
         });
-    }
-
-    trackByFn(index: number, item: Model): string {
-        return item.modelUId;
     }
 }

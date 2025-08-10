@@ -52,14 +52,14 @@ export class BreadcrumbComponent {
         // Check if we have navigation state with item name
         const navigation = this.router.getCurrentNavigation();
         const state = navigation?.extras?.state || (history.state as any);
-
+        
         if (state && state.itemName) {
             // Look for the last breadcrumb (which should be the detail screen) and update its label
             this.breadcrumbs.forEach((breadcrumb, index) => {
                 const urlParts = breadcrumb.url.split('/');
                 if (urlParts.length >= 3) {
                     const possibleUid = urlParts[2]; // the potential UID
-
+                    
                     // Check if this looks like a UID (contains hyphens, proper length)
                     if (this.isUid(possibleUid)) {
                         this.breadcrumbs[index].label = state.itemName;

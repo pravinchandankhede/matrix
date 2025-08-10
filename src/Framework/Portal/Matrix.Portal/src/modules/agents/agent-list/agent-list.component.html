@@ -6,24 +6,24 @@
                 <mat-icon>add_circle</mat-icon> Add Agent
             </button>
         </div>
-
+        
         <div class="toolbar modern-toolbar">
             <div class="search-filter-group">
                 <div class="search-box">
                     <span class="material-icons">search</span>
                     <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search agents...">
                 </div>
-
+                
                 <select (change)="onStatusFilterChange($any($event.target).value)">
                     <option value="">All Statuses</option>
                     <option *ngFor="let status of uniqueStatuses" [value]="status">{{ status }}</option>
                 </select>
-
+                
                 <select (change)="onTypeFilterChange($any($event.target).value)">
                     <option value="">All Types</option>
                     <option *ngFor="let type of uniqueTypes" [value]="type">{{ type }}</option>
                 </select>
-
+                
                 <button class="filter-btn" (click)="onSearch()">
                     <span class="material-icons">filter_list</span> Filter
                 </button>
@@ -48,19 +48,19 @@
                             </button>
                         </div>
                     </div>
-
+                    
                     <div class="card-body" (click)="onSelect(agent)">
                         <div class="info-row" *ngIf="agent.description">
                             <span class="desc" [title]="agent.description">{{ agent.description }}</span>
                         </div>
-
+                        
                         <div class="info-row">
-                            <span class="label">Type:</span>
+                            <span class="label">Type:</span> 
                             <span>{{ agent.type }}</span>
-                            <span class="label" *ngIf="agent.version" style="margin-left: 16px;">Version:</span>
+                            <span class="label" *ngIf="agent.version" style="margin-left: 16px;">Version:</span> 
                             <span *ngIf="agent.version">{{ agent.version }}</span>
                         </div>
-
+                        
                         <div class="info-row" *ngIf="agent.capabilities && agent.capabilities.length > 0">
                             <div class="badge-container">
                                 <span class="capability-badge" *ngFor="let cap of agent.capabilities.slice(0, 2)">
@@ -71,7 +71,7 @@
                                 </span>
                             </div>
                         </div>
-
+                        
                         <div class="audit-row">
                             <span class="audit-text">{{ agent.createdBy }} • {{ agent.createdDate | date:'MMM d, y' }}</span>
                         </div>
@@ -79,10 +79,10 @@
                 </div>
             </div>
         </ng-container>
-
+        
         <ng-template #noAgents>
             <div class="no-items-message">
-                <mat-icon>info</mat-icon>
+                <mat-icon>info</mat-icon> 
                 No agents found. Click "Add Agent" to create your first agent.
             </div>
         </ng-template>

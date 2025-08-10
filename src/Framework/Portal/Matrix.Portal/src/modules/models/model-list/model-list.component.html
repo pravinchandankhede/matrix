@@ -6,30 +6,30 @@
                 <mat-icon>add_circle</mat-icon> Add Model
             </button>
         </div>
-
+        
         <div class="toolbar modern-toolbar">
             <div class="search-filter-group">
                 <div class="search-box">
                     <span class="material-icons">search</span>
                     <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search models...">
                 </div>
-
+                
                 <select (change)="onEnabledFilterChange($any($event.target).value)">
                     <option value="">All Status</option>
                     <option value="true">Enabled</option>
                     <option value="false">Disabled</option>
                 </select>
-
+                
                 <select (change)="onProviderFilterChange($any($event.target).value)">
                     <option value="">All Providers</option>
                     <option *ngFor="let provider of uniqueProviders" [value]="provider">{{ provider }}</option>
                 </select>
-
+                
                 <select (change)="onTypeFilterChange($any($event.target).value)">
                     <option value="">All Types</option>
                     <option *ngFor="let type of uniqueTypes" [value]="type">{{ type }}</option>
                 </select>
-
+                
                 <button class="filter-btn" (click)="onSearch()">
                     <span class="material-icons">filter_list</span> Filter
                 </button>
@@ -56,26 +56,26 @@
                             </button>
                         </div>
                     </div>
-
+                    
                     <div class="card-body" (click)="onSelect(model)">
                         <div class="info-row" *ngIf="model.description">
                             <span class="desc" [title]="model.description">{{ model.description }}</span>
                         </div>
-
+                        
                         <div class="info-row">
-                            <span class="label">Type:</span>
+                            <span class="label">Type:</span> 
                             <span>{{ model.type }}</span>
-                            <span class="label" *ngIf="model.version" style="margin-left: 16px;">Version:</span>
+                            <span class="label" *ngIf="model.version" style="margin-left: 16px;">Version:</span> 
                             <span *ngIf="model.version">{{ model.version }}</span>
                         </div>
-
+                        
                         <div class="info-row">
-                            <span class="label">Provider:</span>
+                            <span class="label">Provider:</span> 
                             <span>{{ model.provider }}</span>
-                            <span class="label" *ngIf="model.region" style="margin-left: 16px;">Region:</span>
+                            <span class="label" *ngIf="model.region" style="margin-left: 16px;">Region:</span> 
                             <span *ngIf="model.region">{{ model.region }}</span>
                         </div>
-
+                        
                         <div class="audit-row">
                             <span class="audit-text">{{ model.createdBy }} • {{ model.createdDate | date:'MMM d, y' }}</span>
                         </div>
@@ -83,10 +83,10 @@
                 </div>
             </div>
         </ng-container>
-
+        
         <ng-template #noModels>
             <div class="no-items-message">
-                <mat-icon>info</mat-icon>
+                <mat-icon>info</mat-icon> 
                 No models found. Click "Add Model" to create your first model.
             </div>
         </ng-template>

@@ -1,25 +1,18 @@
-import { OnInit, OnDestroy, Directive, Input, inject } from '@angular/core';
+import { OnInit, Directive, Input, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NotificationService } from '../services/notification.service';
+import { BaseComponent } from './base.component';
 
 @Directive()
-export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
+export abstract class BaseDetailComponent<T> extends BaseComponent<T> implements OnInit {
     @Input() editMode: boolean = false;
-
+    
     item: T | null = null;
-    isLoading: boolean = false;
     isNew: boolean = false;
     itemId: string | null = null;
-
-    protected destroy$ = new Subject<void>();
-    protected notificationService = inject(NotificationService);
-
-    constructor(
-        protected route: ActivatedRoute,
-        protected router: Router
-    ) { }
+    
+    protected route = inject(ActivatedRoute);
 
     ngOnInit(): void {
         this.route.paramMap.pipe(
@@ -44,11 +37,6 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
                 this.editMode = params.get('edit') === 'true';
             }
         });
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 
     // Abstract methods that derived classes must implement
@@ -115,7 +103,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
         this.getDeleteItemObservable().subscribe({
             next: (response: any) => {
                 this.notificationService.addError(
-                    `${this.getEntityName()} "${this.getItemName(this.item!)}" deleted successfully.`,
+                    `${this.getEntityName()} "${this.getItemName(this.item!)}" deleted successfully.`, 
                     this.getErrorContext()
                 );
                 this.router.navigate([this.getItemListRoute()]);
@@ -138,14 +126,14 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
                     this.isNew = false;
                     this.editMode = false;
                     this.isLoading = false;
-
+                    
                     this.notificationService.addError(
-                        `${this.getEntityName()} "${this.getItemName(createdItem)}" created successfully.`,
+                        `${this.getEntityName()} "${this.getItemName(createdItem)}" created successfully.`, 
                         this.getErrorContext()
                     );
-
+                    
                     const itemId = this.getItemId(createdItem);
-                    this.router.navigate([this.getItemListRoute(), itemId], {
+                    this.router.navigate([this.getItemListRoute(), itemId], { 
                         queryParams: { edit: 'false' },
                         state: { itemName: this.getItemName(createdItem) }
                     });
@@ -170,17 +158,17 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
                 if (response) {
                     this.item = response;
                 }
-
+                
                 this.editMode = false;
                 this.isLoading = false;
                 this.onItemUpdated();
-
+                
                 const itemName = this.getItemName(this.item!);
                 this.notificationService.addError(
-                    `${this.getEntityName()} "${itemName}" updated successfully.`,
+                    `${this.getEntityName()} "${itemName}" updated successfully.`, 
                     this.getErrorContext()
                 );
-
+                
                 // Update browser state for breadcrumb
                 history.replaceState({ ...history.state, itemName: itemName }, '');
             },
@@ -209,13 +197,13 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
                 `load${entityName}`,
                 `retrieve${entityName}`
             ];
-
+            
             for (const methodName of possibleMethodNames) {
                 if (service[methodName]) {
                     return service[methodName](id);
                 }
             }
-
+            
             throw new Error(`No suitable get method found on service for ${entityName}. Available methods: ${Object.getOwnPropertyNames(Object.getPrototypeOf(service)).filter(name => typeof service[name] === 'function').join(', ')}`);
         }
     }
@@ -236,13 +224,13 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
                 `insert${entityName}`,
                 `save${entityName}`
             ];
-
+            
             for (const methodName of possibleMethodNames) {
                 if (service[methodName]) {
                     return service[methodName](this.item);
                 }
             }
-
+            
             throw new Error(`No suitable create method found on service for ${entityName}. Available methods: ${Object.getOwnPropertyNames(Object.getPrototypeOf(service)).filter(name => typeof service[name] === 'function').join(', ')}`);
         }
     }
@@ -263,13 +251,13 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
                 `edit${entityName}`,
                 `save${entityName}`
             ];
-
+            
             for (const methodName of possibleMethodNames) {
                 if (service[methodName]) {
                     return service[methodName](this.item);
                 }
             }
-
+            
             throw new Error(`No suitable update method found on service for ${entityName}. Available methods: ${Object.getOwnPropertyNames(Object.getPrototypeOf(service)).filter(name => typeof service[name] === 'function').join(', ')}`);
         }
     }
@@ -291,19 +279,19 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
                 `destroy${entityName}`,
                 `erase${entityName}`
             ];
-
+            
             for (const methodName of possibleMethodNames) {
                 if (service[methodName]) {
                     return service[methodName](id);
                 }
             }
-
+            
             throw new Error(`No suitable delete method found on service for ${entityName}. Available methods: ${Object.getOwnPropertyNames(Object.getPrototypeOf(service)).filter(name => typeof service[name] === 'function').join(', ')}`);
         }
     }
 
-    // Error handling methods with comprehensive HTTP status handling
-    protected handleLoadError(err: any): void {
+    // Error handling methods with comprehensive HTTP status handling - override base implementations for detail-specific messages
+    protected override handleLoadError(err: any): void {
         if (err.status === 404) {
             this.notificationService.addError(`${this.getEntityName()} not found.`, this.getErrorContext());
         } else if (err.status === 403) {
@@ -315,7 +303,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
         }
     }
 
-    protected handleCreateError(err: any): void {
+    protected override handleCreateError(err: any): void {
         if (err.status === 400) {
             this.notificationService.addError(`Invalid ${this.getEntityName().toLowerCase()} data. Please check your inputs.`, this.getErrorContext());
         } else if (err.status === 403) {
@@ -329,7 +317,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
         }
     }
 
-    protected handleUpdateError(err: any): void {
+    protected override handleUpdateError(err: any): void {
         if (err.status === 404) {
             this.notificationService.addError(`${this.getEntityName()} not found.`, this.getErrorContext());
         } else if (err.status === 403) {
@@ -345,7 +333,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
         }
     }
 
-    protected handleDeleteError(err: any): void {
+    protected override handleDeleteError(err: any): void {
         if (err.status === 404) {
             this.notificationService.addError(`${this.getEntityName()} not found or already deleted.`, this.getErrorContext());
         } else if (err.status === 403) {
@@ -369,8 +357,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
     }
 
     // Abstract methods for entity-specific information
-    protected abstract getEntityName(): string; // e.g., "Agent", "Model", "DataSource"
-    protected abstract getErrorContext(): string; // e.g., "Agent Detail", "Model Detail"
+    protected abstract override getEntityName(): string; // e.g., "Agent", "Model", "DataSource"
     protected abstract getItemId(item: T): string; // Get the ID field from the item
 
     // Existing methods
@@ -413,12 +400,12 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
         this.router.navigate(['../'], { relativeTo: this.route });
     }
 
-    protected handleError(error: any, operation: string): void {
+    protected override handleError(error: any, operation: string): void {
         console.error(`${operation} failed:`, error);
     }
 
-    protected generateId(): string {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    protected override generateId(): string {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             const r = Math.random() * 16 | 0;
             const v = c === 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);

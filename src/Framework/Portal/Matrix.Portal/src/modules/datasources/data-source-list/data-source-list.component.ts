@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject } from '@angular/core';
 import { DataSource } from '../../../datamodels/data-source.model';
 import { BaseListComponent } from '../../../shared/base-list.component';
-import { NotificationService } from '../../../services/notification.service';
 import { DataSourceService } from '../../../services/data-source.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-data-source-list',
@@ -15,53 +14,41 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
     selectedActive: string = '';
     selectedType: string = '';
 
-    constructor(private dataSourceService: DataSourceService) {
-        super();
+    private dataSourceService = inject(DataSourceService);
+
+    protected getEntityName(): string {
+        return 'Data Source';
     }
 
-    getEntityName(): string {
-        return 'DataSource';
+    protected getErrorContext(): string {
+        return 'Data Source List';
     }
 
-    getListContext(): string {
-        return 'DataSource List';
-    }
-
-    getDetailRoute(): string {
+    protected getDetailRoute(): string {
         return '/datasources';
     }
 
-    fetchItems(): void {
-        this.dataSourceService.getDataSources().subscribe({
-            next: (data: DataSource[]) => {
-                this.items = data;
-                this.applyFilter();
-                if (this.items.length === 0) {
-                    this.notificationService.addError('No data sources found.', 'Data Source List');
-                }
-            },
-            error: (err: any) => {
-                let message = 'Failed to load data sources.';
-                if (err) {
-                    if ([0, 502, 503, 504].includes(err.status)) {
-                        message = 'Cannot connect to data source service. Please check your network or server.';
-                    } else if (err.error && typeof err.error === 'string') {
-                        message = err.error;
-                    } else if (err.message) {
-                        message = err.message;
-                    }
-                }
-                console.error('Data source list loading error:', err);
-                this.notificationService.addError(message, 'Data Source List');
-            }
-        });
+    protected getItemId(dataSource: DataSource): string {
+        return dataSource.dataSourceUId;
     }
 
-    filterPredicate(dataSource: DataSource): boolean {
+    protected fetchItems(): void {
+        this.dataSourceService.getDataSources()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: DataSource[]) => {
+                    this.handleLoadSuccess(data);
+                },
+                error: (err: any) => {
+                    this.handleLoadError(err);
+                }
+            });
+    }
+
+    protected filterPredicate(dataSource: DataSource): boolean {
         const matchesName = dataSource.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
             (dataSource.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ?? false);
-        const matchesActive = this.selectedActive ?
-            (this.selectedActive === 'true' ? dataSource.isActive : !dataSource.isActive) : true;
+        const matchesActive = this.selectedActive ? dataSource.isActive.toString() === this.selectedActive : true;
         const matchesType = this.selectedType ? dataSource.type === this.selectedType : true;
         return matchesName && matchesActive && matchesType;
     }
@@ -85,40 +72,33 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
     }
 
     onAdd(): void {
-        this.router.navigate(['/datasources/add'], {
-            queryParams: { edit: 'true' }
-        });
+        this.navigateToAdd();
     }
 
     onEdit(dataSource: DataSource): void {
-        this.router.navigate(['/datasources', dataSource.dataSourceUId], {
-            queryParams: { edit: 'true' },
-            state: { itemName: dataSource.name }
-        });
+        this.navigateToEdit(dataSource.dataSourceUId);
     }
 
     onView(dataSource: DataSource): void {
-        this.router.navigate(['/datasources', dataSource.dataSourceUId], {
-            queryParams: { edit: 'false' },
-            state: { itemName: dataSource.name }
-        });
+        this.navigateToDetail(dataSource.dataSourceUId);
     }
 
     onSelect(dataSource: DataSource): void {
-        this.router.navigate(['/datasources', dataSource.dataSourceUId], {
-            state: { itemName: dataSource.name }
-        });
+        this.navigateToDetail(dataSource.dataSourceUId);
     }
 
     onDelete(dataSource: DataSource): void {
-        if (confirm(`Are you sure you want to delete data source "${dataSource.name}"?`)) {
-            // Simulate delete for now
-            this.notificationService.addError(`Data source "${dataSource.name}" deleted successfully.`, 'Data Source List');
-            this.fetchItems();
-        }
-    }
-
-    trackByFn(index: number, item: DataSource): string {
-        return item.dataSourceUId;
+        this.handleDelete(dataSource, () => {
+            this.dataSourceService.deleteDataSource(dataSource.dataSourceUId)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: () => {
+                        this.handleDeleteSuccess(dataSource.name);
+                    },
+                    error: (err: any) => {
+                        this.handleDeleteError(err);
+                    }
+                });
+        });
     }
 }

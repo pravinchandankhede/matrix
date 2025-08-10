@@ -9,20 +9,20 @@
                 <mat-icon>close</mat-icon> Cancel
             </button>
         </div>
-
+        
         <div class="detail-content two-pane-layout">
             <!-- Left Panel - Navigation -->
             <div class="left-panel">
                 <nav class="section-nav">
                     <ul>
-                        <li class="nav-item"
-                            [class.active]="activeSection === 'general'"
+                        <li class="nav-item" 
+                            [class.active]="activeSection === 'general'" 
                             (click)="setActiveSection('general')">
                             <mat-icon>info</mat-icon>
                             <span>General</span>
                         </li>
-                        <li class="nav-item"
-                            [class.active]="activeSection === 'audit'"
+                        <li class="nav-item" 
+                            [class.active]="activeSection === 'audit'" 
                             (click)="setActiveSection('audit')">
                             <mat-icon>history</mat-icon>
                             <span>Audit</span>
@@ -36,110 +36,110 @@
                 <div class="section-content">
                     <!-- Edit Mode -->
                     <form *ngIf="editMode; else viewMode" class="detail-form">
-                        <!-- Collection Information Section -->
-                        <div class="content-section" *ngIf="activeSection === 'general'">
-                            <h3>Collection Information</h3>
-                            <div class="form-grid">
-                                <div class="form-row">
-                                    <label>Collection UID:</label>
-                                    <input type="text" [(ngModel)]="item.dataSourceCollectionUId" name="dataSourceCollectionUId" />
-                                </div>
-                                <div class="form-row">
-                                    <label>Name:</label>
-                                    <input type="text" [(ngModel)]="item.name" name="name" />
-                                </div>
-                                <div class="form-row full-width">
-                                    <label>Description:</label>
-                                    <textarea [(ngModel)]="item.description" name="description" rows="3"></textarea>
-                                </div>
+                    <!-- Collection Information Section -->
+                    <div class="content-section" *ngIf="activeSection === 'general'">
+                        <h3>Collection Information</h3>
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label>Collection UID:</label>
+                                <input type="text" [(ngModel)]="item.dataSourceCollectionUId" name="dataSourceCollectionUId" />
+                            </div>
+                            <div class="form-row">
+                                <label>Name:</label>
+                                <input type="text" [(ngModel)]="item.name" name="name" />
+                            </div>
+                            <div class="form-row full-width">
+                                <label>Description:</label>
+                                <textarea [(ngModel)]="item.description" name="description" rows="3"></textarea>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Audit Information Section -->
-                        <div class="content-section" *ngIf="activeSection === 'audit'">
-                            <h3>Audit Information</h3>
-                            <div class="info-grid">
-                                <div class="info-row">
-                                    <label>Created By:</label>
-                                    <span>{{ item.createdBy }}</span>
-                                </div>
-                                <div class="info-row">
-                                    <label>Created Date:</label>
-                                    <span>{{ item.createdDate | date:'medium' }}</span>
-                                </div>
-                                <div class="info-row" *ngIf="item.modifiedBy">
-                                    <label>Modified By:</label>
-                                    <span>{{ item.modifiedBy }}</span>
-                                </div>
-                                <div class="info-row" *ngIf="item.modifiedDate">
-                                    <label>Modified Date:</label>
-                                    <span>{{ item.modifiedDate | date:'medium' }}</span>
-                                </div>
-                                <div class="info-row">
-                                    <label>Correlation UID:</label>
-                                    <span class="uid">{{ item.correlationUId }}</span>
-                                </div>
+                    <!-- Audit Information Section -->
+                    <div class="content-section" *ngIf="activeSection === 'audit'">
+                        <h3>Audit Information</h3>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <label>Created By:</label>
+                                <span>{{ item.createdBy }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Created Date:</label>
+                                <span>{{ item.createdDate | date:'medium' }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.modifiedBy">
+                                <label>Modified By:</label>
+                                <span>{{ item.modifiedBy }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.modifiedDate">
+                                <label>Modified Date:</label>
+                                <span>{{ item.modifiedDate | date:'medium' }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Correlation UID:</label>
+                                <span class="uid">{{ item.correlationUId }}</span>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-actions">
-                            <button type="button" class="btn-primary" (click)="onSave()">
-                                <mat-icon>save</mat-icon> Save
-                            </button>
-                            <button type="button" class="btn-secondary" (click)="onCancelEdit()">
-                                <mat-icon>cancel</mat-icon> Cancel
-                            </button>
-                        </div>
-                    </form>
-
-                    <!-- View Mode -->
-                    <ng-template #viewMode>
-                        <!-- Collection Information Section -->
-                        <div class="content-section" *ngIf="activeSection === 'general'">
-                            <h3>Collection Information</h3>
-                            <div class="info-grid">
-                                <div class="info-row">
-                                    <label>Collection UID:</label>
-                                    <span class="uid">{{ item.dataSourceCollectionUId }}</span>
-                                </div>
-                                <div class="info-row">
-                                    <label>Name:</label>
-                                    <span>{{ item.name }}</span>
-                                </div>
-                                <div class="info-row" *ngIf="item.description">
-                                    <label>Description:</label>
-                                    <span>{{ item.description }}</span>
-                                </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-primary" (click)="onSave()">
+                            <mat-icon>save</mat-icon> Save
+                        </button>
+                        <button type="button" class="btn-secondary" (click)="onCancelEdit()">
+                            <mat-icon>cancel</mat-icon> Cancel
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- View Mode -->
+                <ng-template #viewMode>
+                    <!-- Collection Information Section -->
+                    <div class="content-section" *ngIf="activeSection === 'general'">
+                        <h3>Collection Information</h3>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <label>Collection UID:</label>
+                                <span class="uid">{{ item.dataSourceCollectionUId }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Name:</label>
+                                <span>{{ item.name }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.description">
+                                <label>Description:</label>
+                                <span>{{ item.description }}</span>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Audit Information Section -->
-                        <div class="content-section" *ngIf="activeSection === 'audit'">
-                            <h3>Audit Information</h3>
-                            <div class="info-grid">
-                                <div class="info-row">
-                                    <label>Created By:</label>
-                                    <span>{{ item.createdBy }}</span>
-                                </div>
-                                <div class="info-row">
-                                    <label>Created Date:</label>
-                                    <span>{{ item.createdDate | date:'medium' }}</span>
-                                </div>
-                                <div class="info-row" *ngIf="item.modifiedBy">
-                                    <label>Modified By:</label>
-                                    <span>{{ item.modifiedBy }}</span>
-                                </div>
-                                <div class="info-row" *ngIf="item.modifiedDate">
-                                    <label>Modified Date:</label>
-                                    <span>{{ item.modifiedDate | date:'medium' }}</span>
-                                </div>
-                                <div class="info-row">
-                                    <label>Correlation UID:</label>
-                                    <span class="uid">{{ item.correlationUId }}</span>
-                                </div>
+                    <!-- Audit Information Section -->
+                    <div class="content-section" *ngIf="activeSection === 'audit'">
+                        <h3>Audit Information</h3>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <label>Created By:</label>
+                                <span>{{ item.createdBy }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Created Date:</label>
+                                <span>{{ item.createdDate | date:'medium' }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.modifiedBy">
+                                <label>Modified By:</label>
+                                <span>{{ item.modifiedBy }}</span>
+                            </div>
+                            <div class="info-row" *ngIf="item.modifiedDate">
+                                <label>Modified Date:</label>
+                                <span>{{ item.modifiedDate | date:'medium' }}</span>
+                            </div>
+                            <div class="info-row">
+                                <label>Correlation UID:</label>
+                                <span class="uid">{{ item.correlationUId }}</span>
                             </div>
                         </div>
-                    </ng-template>
+                    </div>
+                </ng-template>
                 </div>
             </div>
         </div>

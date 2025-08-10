@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -18,13 +18,11 @@ export class CollectionDetailComponent extends BaseDetailComponent<DataSourceCol
 
     collectionForm: FormGroup;
 
-    constructor(
-        private fb: FormBuilder,
-        private collectionService: DataSourceCollectionService,
-        protected override route: ActivatedRoute,
-        protected override router: Router
-    ) {
-        super(route, router);
+    private fb = inject(FormBuilder);
+    private collectionService = inject(DataSourceCollectionService);
+
+    constructor() {
+        super();
         this.collectionForm = this.createForm();
     }
 

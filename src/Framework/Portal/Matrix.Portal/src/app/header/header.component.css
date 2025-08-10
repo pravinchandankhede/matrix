@@ -29,44 +29,36 @@
     margin-right: 2rem;
 }
 
-    .header-actions .btn {
-        background: none;
-        border: none;
-        color: var(--primary);
-        font-size: 1.5rem;
-        padding: 0.25rem 0.5rem;
-        transition: background 0.2s;
-        border-radius: 50%;
-        position: relative;
-        cursor: pointer;
-    }
+.header-actions .btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-size: 1.5rem;
+    padding: 0.25rem 0.5rem;
+    transition: background 0.2s;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+}
 
-        .header-actions .btn:hover {
-            background: #f0f4ff;
-            color: var(--secondary);
-        }
+.header-actions .btn:hover {
+    background: #f0f4ff;
+    color: var(--secondary);
+}
 
 /* Notification Bell Styles */
 .notification-bell {
     position: relative;
 }
 
-    .notification-bell.has-notifications {
-        animation: bellShake 0.5s ease-in-out;
-    }
+.notification-bell.has-notifications {
+    animation: bellShake 0.5s ease-in-out;
+}
 
 @keyframes bellShake {
-    0%, 100% {
-        transform: rotate(0deg);
-    }
-
-    10%, 30%, 50%, 70%, 90% {
-        transform: rotate(-5deg);
-    }
-
-    20%, 40%, 60%, 80% {
-        transform: rotate(5deg);
-    }
+    0%, 100% { transform: rotate(0deg); }
+    10%, 30%, 50%, 70%, 90% { transform: rotate(-5deg); }
+    20%, 40%, 60%, 80% { transform: rotate(5deg); }
 }
 
 .notification-badge {
@@ -89,12 +81,11 @@
 }
 
 @keyframes badgePulse {
-    0%, 100% {
+    0%, 100% { 
         transform: scale(1);
         opacity: 1;
     }
-
-    50% {
+    50% { 
         transform: scale(1.1);
         opacity: 0.8;
     }
@@ -112,7 +103,7 @@
     .header-actions .btn:hover {
         background: rgba(59, 130, 246, 0.1);
     }
-
+    
     .notification-bell:active,
     .notification-bell:focus {
         background: rgba(59, 130, 246, 0.2);

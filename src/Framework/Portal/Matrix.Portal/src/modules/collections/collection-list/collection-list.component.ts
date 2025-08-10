@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DataSourceCollection } from '../../../datamodels/data-source-collection.model';
 import { BaseListComponent } from '../../../shared/base-list.component';
 import { DataSourceCollectionService } from '../../../services/data-source-collection.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-collection-list',
@@ -12,34 +13,38 @@ import { DataSourceCollectionService } from '../../../services/data-source-colle
 export class CollectionListComponent extends BaseListComponent<DataSourceCollection> {
     selectedCustom: string = '';
 
-    constructor(private collectionService: DataSourceCollectionService) {
-        super();
-    }
+    private collectionService = inject(DataSourceCollectionService);
 
-    getEntityName(): string {
+    protected getEntityName(): string {
         return 'Collection';
     }
 
-    getListContext(): string {
+    protected getErrorContext(): string {
         return 'Collection List';
     }
 
-    getDetailRoute(): string {
+    protected getDetailRoute(): string {
         return '/collections';
     }
 
-    fetchItems(): void {
-        this.collectionService.getDataSourceCollections().subscribe({
-            next: (data: DataSourceCollection[]) => {
-                this.handleLoadSuccess(data);
-            },
-            error: (err: any) => {
-                this.handleLoadError(err);
-            }
-        });
+    protected getItemId(collection: DataSourceCollection): string {
+        return collection.dataSourceCollectionUId;
     }
 
-    filterPredicate(collection: DataSourceCollection): boolean {
+    protected fetchItems(): void {
+        this.collectionService.getDataSourceCollections()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: DataSourceCollection[]) => {
+                    this.handleLoadSuccess(data);
+                },
+                error: (err: any) => {
+                    this.handleLoadError(err);
+                }
+            });
+    }
+
+    protected filterPredicate(collection: DataSourceCollection): boolean {
         const matchesName = collection.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
             collection.description.toLowerCase().includes(this.searchTerm.toLowerCase());
         return matchesName;
@@ -72,19 +77,25 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
 
     onDelete(collection: DataSourceCollection): void {
         this.handleDelete(collection, () => {
-            // TODO: Replace with actual service call when available
-            this.handleDeleteSuccess(collection.name);
+            this.collectionService.deleteDataSourceCollection(collection.dataSourceCollectionUId)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: () => {
+                        this.handleDeleteSuccess(collection.name);
+                    },
+                    error: (err: any) => {
+                        this.handleDeleteError(err);
+                    }
+                });
         });
     }
 
-    trackByFn(index: number, item: DataSourceCollection): string {
-        return item.dataSourceCollectionUId;
-    }
-
+    // Utility method for tracking data sources within collections
     trackDataSourceFn(index: number, item: any): string {
         return item.dataSourceUId || item.name || index.toString();
     }
 
+    // Helper method for displaying data source previews
     getDataSourcePreview(dataSources: any[]): string {
         const first = dataSources[0]?.name || '';
         if (dataSources.length === 1) {

@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject } from '@angular/core';
 import { Chunk } from '../../../datamodels/chunk.model';
-import { ChunkService } from '../../../services/chunk.service';
-import { NotificationService } from '../../../services/notification.service';
 import { BaseListComponent } from '../../../shared/base-list.component';
+import { ChunkService } from '../../../services/chunk.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-chunk-list',
@@ -15,54 +14,43 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
     selectedType: string = '';
     selectedSource: string = '';
 
-    constructor(private chunkService: ChunkService) {
-        super();
-    }
+    private chunkService = inject(ChunkService);
 
-    getEntityName(): string {
+    protected getEntityName(): string {
         return 'Chunk';
     }
 
-    getListContext(): string {
+    protected getErrorContext(): string {
         return 'Chunk List';
     }
 
-    getDetailRoute(): string {
+    protected getDetailRoute(): string {
         return '/chunks';
     }
 
-    fetchItems(): void {
-        this.chunkService.getChunks().subscribe({
-            next: (data: Chunk[]) => {
-                this.items = data;
-                this.applyFilter();
-                if (this.items.length === 0) {
-                    this.notificationService.addError('No chunks found.', 'Chunk List');
-                }
-            },
-            error: (err: any) => {
-                let message = 'Failed to load chunks.';
-                if (err) {
-                    if (err.status === 0 || err.status === 502 || err.status === 503 || err.status === 504) {
-                        message = 'Cannot connect to chunk service. Please check your network or server.';
-                    } else if (err.error && typeof err.error === 'string') {
-                        message = err.error;
-                    } else if (err.message) {
-                        message = err.message;
-                    }
-                }
-                console.error('Chunk list loading error:', err);
-                this.notificationService.addError(message, 'Chunk List');
-            }
-        });
+    protected getItemId(chunk: Chunk): string {
+        return chunk.chunkId;
     }
 
-    filterPredicate(chunk: Chunk): boolean {
-        const matchesText = chunk.text.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+    protected fetchItems(): void {
+        this.chunkService.getChunks()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: Chunk[]) => {
+                    this.handleLoadSuccess(data);
+                },
+                error: (err: any) => {
+                    this.handleLoadError(err);
+                }
+            });
+    }
+
+    protected filterPredicate(chunk: Chunk): boolean {
+        const matchesContent = chunk.text.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
             chunk.chunkId.toLowerCase().includes(this.searchTerm.toLowerCase());
         const matchesType = this.selectedType ? chunk.type === this.selectedType : true;
         const matchesSource = this.selectedSource ? chunk.chunkSource === this.selectedSource : true;
-        return matchesText && matchesType && matchesSource;
+        return matchesContent && matchesType && matchesSource;
     }
 
     onTypeFilterChange(type: string): void {
@@ -87,45 +75,41 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
         return [...new Set(this.items.map(chunk => chunk.chunkSource))].filter(Boolean);
     }
 
+    truncateText(text: string, maxLength: number): string {
+        if (text.length <= maxLength) {
+            return text;
+        }
+        return text.substring(0, maxLength) + '...';
+    }
+
     onAdd(): void {
-        this.router.navigate(['/chunks/add'], {
-            queryParams: { edit: 'true' }
-        });
+        this.navigateToAdd();
     }
 
     onEdit(chunk: Chunk): void {
-        this.router.navigate(['/chunks', chunk.chunkUId], {
-            queryParams: { edit: 'true' },
-            state: { itemName: chunk.text ? chunk.text.substring(0, 50) + (chunk.text.length > 50 ? '...' : '') : 'Chunk' }
-        });
+        this.navigateToEdit(chunk.chunkId);
     }
 
     onView(chunk: Chunk): void {
-        this.router.navigate(['/chunks', chunk.chunkUId], {
-            queryParams: { edit: 'false' },
-            state: { itemName: chunk.text ? chunk.text.substring(0, 50) + (chunk.text.length > 50 ? '...' : '') : 'Chunk' }
-        });
+        this.navigateToDetail(chunk.chunkId);
     }
 
     onSelect(chunk: Chunk): void {
-        this.router.navigate(['/chunks', chunk.chunkUId], {
-            state: { itemName: chunk.text ? chunk.text.substring(0, 50) + (chunk.text.length > 50 ? '...' : '') : 'Chunk' }
-        });
+        this.navigateToDetail(chunk.chunkId);
     }
 
     onDelete(chunk: Chunk): void {
-        if (confirm(`Are you sure you want to delete chunk "${chunk.chunkId}"?`)) {
-            // Simulate delete for now
-            this.notificationService.addError(`Chunk "${chunk.chunkId}" deleted successfully.`, 'Chunk List');
-            this.fetchItems();
-        }
-    }
-
-    trackByFn(index: number, item: Chunk): string {
-        return item.chunkUId;
-    }
-
-    truncateText(text: string, maxLength: number = 100): string {
-        return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+        this.handleDelete(chunk, () => {
+            this.chunkService.deleteChunk(chunk.chunkId)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: () => {
+                        this.handleDeleteSuccess(chunk.chunkId);
+                    },
+                    error: (err: any) => {
+                        this.handleDeleteError(err);
+                    }
+                });
+        });
     }
 }

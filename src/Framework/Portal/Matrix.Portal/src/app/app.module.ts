@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -25,7 +26,8 @@ import { NotificationPanelComponent } from './notification-panel/notification-pa
     BrowserModule,
       AppRoutingModule,
       HttpClientModule,
-      MatIconModule
+      MatIconModule,
+      CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

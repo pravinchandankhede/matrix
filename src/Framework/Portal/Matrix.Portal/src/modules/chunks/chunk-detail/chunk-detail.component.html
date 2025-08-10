@@ -9,20 +9,20 @@
                 <mat-icon>close</mat-icon> Cancel
             </button>
         </div>
-
+        
         <div class="detail-content two-pane-layout">
             <!-- Left Panel - Navigation -->
             <div class="left-panel">
                 <nav class="section-nav">
                     <ul>
-                        <li class="nav-item"
-                            [class.active]="activeSection === 'general'"
+                        <li class="nav-item" 
+                            [class.active]="activeSection === 'general'" 
                             (click)="setActiveSection('general')">
                             <mat-icon>info</mat-icon>
                             <span>General</span>
                         </li>
-                        <li class="nav-item"
-                            [class.active]="activeSection === 'audit'"
+                        <li class="nav-item" 
+                            [class.active]="activeSection === 'audit'" 
                             (click)="setActiveSection('audit')">
                             <mat-icon>description</mat-icon>
                             <span>Audit</span>
@@ -83,7 +83,7 @@
                             </button>
                         </div>
                     </form>
-
+                    
                     <!-- View Mode -->
                     <ng-template #viewMode>
                         <!-- Chunk Information Section -->

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Chunk } from '../../../datamodels/chunk.model';
@@ -17,13 +17,11 @@ export class ChunkDetailComponent extends BaseDetailComponent<Chunk> implements 
 
     chunkForm: FormGroup;
 
-    constructor(
-        private fb: FormBuilder,
-        private chunkService: ChunkService,
-        protected override route: ActivatedRoute,
-        protected override router: Router
-    ) {
-        super(route, router);
+    private fb = inject(FormBuilder);
+    private chunkService = inject(ChunkService);
+
+    constructor() {
+        super();
         this.chunkForm = this.createForm();
     }
 

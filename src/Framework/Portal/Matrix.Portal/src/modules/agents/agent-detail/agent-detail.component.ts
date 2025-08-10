@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Agent, Capability, Feature, Tool } from '../../../datamodels/agent.model';
@@ -14,16 +14,14 @@ import { BaseDetailComponent } from '../../../shared/base-detail.component';
 export class AgentDetailComponent extends BaseDetailComponent<Agent> implements AfterViewInit {
     // Navigation
     activeSection: string = 'general';
-    
+
     agentForm: FormGroup;
 
-    constructor(
-        private fb: FormBuilder,
-        protected override route: ActivatedRoute,
-        protected override router: Router,
-        private agentService: AgentService
-    ) {
-        super(route, router);
+    private fb = inject(FormBuilder);
+    private agentService = inject(AgentService);
+
+    constructor() {
+        super();
         this.agentForm = this.createForm();
     }
 
@@ -270,7 +268,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
 
     private getFormValidationErrors(form: FormGroup): string[] {
         const errors: string[] = [];
-        
+
         Object.keys(form.controls).forEach(key => {
             const control = form.get(key);
             if (control && !control.valid && (control.dirty || control.touched)) {
@@ -294,7 +292,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
                 }
             }
         });
-        
+
         return errors;
     }
 
@@ -306,7 +304,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
             'status': 'Status',
             'version': 'Version'
         };
-        
+
         return fieldNames[fieldName] || fieldName;
     }
 }

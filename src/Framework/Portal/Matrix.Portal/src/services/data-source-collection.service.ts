@@ -12,8 +12,6 @@ export class DataSourceCollectionService {
     constructor(private http: HttpClient) { }
 
     getDataSourceCollections(): Observable<DataSourceCollection[]> {
-        // For now, return mock data until API is available
-        //return of(this.getMockDataSourceCollections());
         return this.http.get<DataSourceCollection[]>(this.apiUrl);
     }
 

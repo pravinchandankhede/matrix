@@ -8,8 +8,8 @@ import { NotificationService, NotificationItem } from '../../services/notificati
     styleUrls: ['./notification-panel.component.css']
 })
 export class NotificationPanelComponent {
-
-    constructor(public notificationService: NotificationService) { }
+    
+    constructor(public notificationService: NotificationService) {}
 
     get isOpen(): boolean {
         return this.notificationService.isNotificationPanelOpen();
@@ -93,7 +93,7 @@ export class NotificationPanelComponent {
         const target = event.target as HTMLElement;
         const notificationPanel = target.closest('.notification-panel');
         const notificationBell = target.closest('.notification-bell');
-
+        
         // Close panel if clicking outside and not on the bell
         if (this.isOpen && !notificationPanel && !notificationBell) {
             this.closePanel();

@@ -9,39 +9,39 @@
                 <mat-icon>close</mat-icon> Cancel
             </button>
         </div>
-
+        
         <div class="detail-content two-pane-layout">
             <!-- Left Navigation Panel -->
             <div class="left-panel">
                 <nav class="section-nav">
                     <ul>
-                        <li class="nav-item"
-                            [class.active]="activeSection === 'general'"
+                        <li class="nav-item" 
+                            [class.active]="activeSection === 'general'" 
                             (click)="setActiveSection('general')">
                             <mat-icon>info</mat-icon>
                             <span>General</span>
                         </li>
-                        <li class="nav-item"
-                            [class.active]="activeSection === 'configuration'"
+                        <li class="nav-item" 
+                            [class.active]="activeSection === 'configuration'" 
                             (click)="setActiveSection('configuration')">
                             <mat-icon>settings</mat-icon>
                             <span>Configuration</span>
                         </li>
-                        <li class="nav-item"
-                            [class.active]="activeSection === 'connection'"
+                        <li class="nav-item" 
+                            [class.active]="activeSection === 'connection'" 
                             (click)="setActiveSection('connection')"
                             *ngIf="hasConnectionDetails()">
                             <mat-icon>link</mat-icon>
                             <span>Connection Details</span>
                         </li>
-                        <li class="nav-item"
-                            [class.active]="activeSection === 'security'"
+                        <li class="nav-item" 
+                            [class.active]="activeSection === 'security'" 
                             (click)="setActiveSection('security')">
                             <mat-icon>security</mat-icon>
                             <span>Security</span>
                         </li>
-                        <li class="nav-item"
-                            [class.active]="activeSection === 'audit'"
+                        <li class="nav-item" 
+                            [class.active]="activeSection === 'audit'" 
                             (click)="setActiveSection('audit')">
                             <mat-icon>description</mat-icon>
                             <span>Audit</span>
@@ -124,13 +124,15 @@
                         <!-- Connection Details Section -->
                         <div class="content-section" *ngIf="activeSection === 'connection' && hasConnectionDetails()">
                             <h3>Connection Details</h3>
-                            <app-structured-connection-details *ngIf="item.type === 'Structured'"
-                                                               [dataSource]="item"
-                                                               [mode]="'edit'">
+                            <app-structured-connection-details 
+                                *ngIf="item.type === 'Structured'" 
+                                [dataSource]="item"
+                                [mode]="'edit'">
                             </app-structured-connection-details>
-                            <app-vector-connection-details *ngIf="item.type === 'Vector'"
-                                                           [dataSource]="item"
-                                                           [mode]="'edit'">
+                            <app-vector-connection-details 
+                                *ngIf="item.type === 'Vector'" 
+                                [dataSource]="item"
+                                [mode]="'edit'">
                             </app-vector-connection-details>
                         </div>
 
@@ -179,7 +181,7 @@
                             </button>
                         </div>
                     </form>
-
+                    
                     <!-- View Mode -->
                     <ng-template #viewMode>
                         <!-- General Section -->
@@ -241,13 +243,15 @@
                         <!-- Connection Details Section -->
                         <div class="content-section" *ngIf="activeSection === 'connection' && hasConnectionDetails()">
                             <h3>Connection Details</h3>
-                            <app-structured-connection-details *ngIf="item.type === 'Structured'"
-                                                               [dataSource]="item"
-                                                               [mode]="'view'">
+                            <app-structured-connection-details 
+                                *ngIf="item.type === 'Structured'" 
+                                [dataSource]="item"
+                                [mode]="'view'">
                             </app-structured-connection-details>
-                            <app-vector-connection-details *ngIf="item.type === 'Vector'"
-                                                           [dataSource]="item"
-                                                           [mode]="'view'">
+                            <app-vector-connection-details 
+                                *ngIf="item.type === 'Vector'" 
+                                [dataSource]="item"
+                                [mode]="'view'">
                             </app-vector-connection-details>
                         </div>
 

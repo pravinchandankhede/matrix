@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, ViewEncapsulation, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '../../../datamodels/data-source.model';
@@ -23,13 +23,11 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> i
     authenticationTypes = Object.values(AuthenticationType);
     tagsString: string = '';
 
-    constructor(
-        private fb: FormBuilder,
-        private dataSourceService: DataSourceService,
-        protected override route: ActivatedRoute,
-        protected override router: Router
-    ) {
-        super(route, router);
+    private fb = inject(FormBuilder);
+    private dataSourceService = inject(DataSourceService);
+
+    constructor() {
+        super();
         this.dataSourceForm = this.createForm();
     }
 

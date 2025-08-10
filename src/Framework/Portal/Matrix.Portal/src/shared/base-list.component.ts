@@ -1,33 +1,23 @@
-import { OnInit, OnDestroy, Directive, inject } from '@angular/core';
+import { OnInit, Directive, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NotificationService } from '../services/notification.service';
+import { BaseComponent } from './base.component';
 
 @Directive()
-export abstract class BaseListComponent<T> implements OnInit, OnDestroy {
+export abstract class BaseListComponent<T> extends BaseComponent<T> implements OnInit {
     items: T[] = [];
     filteredItems: T[] = [];
     searchTerm: string = '';
     filterValue: any = null;
-    isLoading: boolean = false;
-
-    protected destroy$ = new Subject<void>();
-    protected notificationService = inject(NotificationService);
-    protected router = inject(Router);
-
-    abstract fetchItems(): void;
-    abstract filterPredicate(item: T): boolean;
-    abstract getEntityName(): string; // e.g., "Agent", "Model", etc.
-    abstract getListContext(): string; // e.g., "Agent List", "Model List", etc.
+    
+    // Abstract methods that must be implemented by derived classes
+    protected abstract fetchItems(): void;
+    protected abstract filterPredicate(item: T): boolean;
+    protected abstract getDetailRoute(): string; // Base route for navigation (e.g., '/agents')
+    protected abstract getItemId(item: T): string; // Primary key field for tracking
 
     ngOnInit(): void {
         this.loadItems();
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 
     loadItems(): void {
@@ -48,61 +38,29 @@ export abstract class BaseListComponent<T> implements OnInit, OnDestroy {
         this.filteredItems = this.items.filter(item => this.filterPredicate(item));
     }
 
-    // Common error handling for derived classes
-    protected handleLoadError(error: any): void {
-        this.isLoading = false;
-        let message = `Failed to load ${this.getEntityName().toLowerCase()}s.`;
-
-        if (error) {
-            if (error.status === 0 || error.status === 502 || error.status === 503 || error.status === 504) {
-                message = `Cannot connect to ${this.getEntityName().toLowerCase()} service. Please check your network or server.`;
-            } else if (error.error && typeof error.error === 'string') {
-                message = error.error;
-            } else if (error.message) {
-                message = error.message;
-            }
-        }
-
-        console.error(`${this.getEntityName()} list loading error:`, error);
-        this.notificationService.addError(message, this.getListContext());
-    }
-
-    // Common success handling for derived classes
-    protected handleLoadSuccess(data: T[]): void {
+    // Override base success handler for list-specific behavior
+    protected override handleLoadSuccess(data: T[]): void {
         this.isLoading = false;
         this.items = data;
         this.applyFilter();
-
+        
         if (this.items.length === 0) {
-            this.notificationService.addInfo(`No ${this.getEntityName().toLowerCase()}s found.`, this.getListContext());
+            this.notificationService.addInfo(`No ${this.getEntityName().toLowerCase()}s found.`, this.getErrorContext());
         }
     }
 
     // Common delete confirmation and handling
     protected handleDelete(item: any, deleteServiceCall: () => void): void {
-        if (confirm(`Are you sure you want to delete this ${this.getEntityName().toLowerCase()}?`)) {
+        const itemName = this.getEntityName().toLowerCase();
+        if (this.confirmDelete(itemName)) {
             deleteServiceCall();
         }
     }
 
-    // Common delete success handling
-    protected handleDeleteSuccess(itemName: string): void {
-        this.notificationService.addSuccess(`${this.getEntityName()} "${itemName}" deleted successfully.`, this.getListContext());
+    // Override base delete success handler for list-specific behavior
+    protected override handleDeleteSuccess(itemName: string): void {
+        super.handleDeleteSuccess(itemName);
         this.loadItems(); // Refresh the list
-    }
-
-    // Common delete error handling
-    protected handleDeleteError(error: any): void {
-        let message = `Failed to delete ${this.getEntityName().toLowerCase()}.`;
-
-        if (error && error.error && typeof error.error === 'string') {
-            message = error.error;
-        } else if (error && error.message) {
-            message = error.message;
-        }
-
-        console.error(`${this.getEntityName()} delete error:`, error);
-        this.notificationService.addError(message, this.getListContext());
     }
 
     // Common navigation methods
@@ -118,6 +76,8 @@ export abstract class BaseListComponent<T> implements OnInit, OnDestroy {
         this.router.navigate([this.getDetailRoute(), id], { queryParams: { edit: 'true' } });
     }
 
-    // Abstract method for getting the detail route
-    protected abstract getDetailRoute(): string;
+    // Track function for ngFor performance optimization
+    trackByFn(index: number, item: T): string {
+        return this.getItemId(item);
+    }
 }

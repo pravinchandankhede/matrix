@@ -6,24 +6,24 @@
                 <mat-icon>add_circle</mat-icon> Add Chunk
             </button>
         </div>
-
+        
         <div class="toolbar modern-toolbar">
             <div class="search-filter-group">
                 <div class="search-box">
                     <span class="material-icons">search</span>
                     <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search chunks...">
                 </div>
-
+                
                 <select (change)="onTypeFilterChange($any($event.target).value)">
                     <option value="">All Types</option>
                     <option *ngFor="let type of uniqueTypes" [value]="type">{{ type }}</option>
                 </select>
-
+                
                 <select (change)="onSourceFilterChange($any($event.target).value)">
                     <option value="">All Sources</option>
                     <option *ngFor="let source of uniqueSources" [value]="source">{{ source }}</option>
                 </select>
-
+                
                 <button class="filter-btn" (click)="onSearch()">
                     <span class="material-icons">filter_list</span> Filter
                 </button>
@@ -48,24 +48,24 @@
                             </button>
                         </div>
                     </div>
-
+                    
                     <div class="card-body" (click)="onSelect(chunk)">
                         <div class="info-row">
                             <span class="desc" [title]="chunk.text">{{ truncateText(chunk.text, 200) }}</span>
                         </div>
-
+                        
                         <div class="info-row">
-                            <span class="label">Type:</span>
+                            <span class="label">Type:</span> 
                             <span>{{ chunk.type }}</span>
-                            <span class="label" style="margin-left: 16px;">Source:</span>
+                            <span class="label" style="margin-left: 16px;">Source:</span> 
                             <span>{{ chunk.chunkSource }}</span>
                         </div>
-
+                        
                         <div class="info-row" *ngIf="chunk.chunkStrategy">
-                            <span class="label">Strategy:</span>
+                            <span class="label">Strategy:</span> 
                             <span>{{ chunk.chunkStrategy.strategyType }}</span>
                         </div>
-
+                        
                         <div class="audit-row">
                             <span class="audit-text">{{ chunk.createdBy }} • {{ chunk.createdDate | date:'MMM d, y' }}</span>
                         </div>
@@ -73,10 +73,10 @@
                 </div>
             </div>
         </ng-container>
-
+        
         <ng-template #noChunks>
             <div class="no-items-message">
-                <mat-icon>info</mat-icon>
+                <mat-icon>info</mat-icon> 
                 No chunks found. Click "Add Chunk" to create your first chunk.
             </div>
         </ng-template>

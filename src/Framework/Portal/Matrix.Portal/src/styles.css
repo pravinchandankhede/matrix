@@ -606,6 +606,7 @@ body {
     flex: 1;
 }
 
+/* Common info row styling - unified patterns */
 .info-row {
     display: flex;
     align-items: center;
@@ -627,7 +628,18 @@ body {
         margin-right: 0.5rem;
     }
 
-/* Common delete button styling for all list components */
+    .info-row .desc {
+        color: #666;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 220px;
+        display: inline-block;
+        vertical-align: bottom;
+        cursor: pointer;
+    }
+
+/* Common button styling for list components */
 .delete-icon-btn {
     background: rgba(220, 53, 69, 0.1);
     border: 1px solid rgba(220, 53, 69, 0.2);
@@ -669,14 +681,6 @@ body {
     font-style: italic;
 }
 
-/* Common badge container styling */
-.badge-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 4px;
-}
-
 /* Common audit row styling */
 .audit-row {
     margin-top: 16px;
@@ -699,28 +703,6 @@ body {
         content: "👤";
         font-size: 14px;
     }
-
-.info-row .desc {
-    color: #666;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 220px;
-    display: inline-block;
-    vertical-align: bottom;
-    cursor: pointer;
-}
-
-.info-row .endpoint {
-    color: #666;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
-    display: inline-block;
-    vertical-align: bottom;
-    cursor: pointer;
-}
 
 .date-row {
     display: flex;
@@ -870,11 +852,13 @@ body {
     color: #424242;
 }
 
+/* Common badge container styling - consolidated */
 .badge-container {
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem;
     align-items: center;
+    margin-top: 4px;
 }
 
 .no-tags {
@@ -1077,8 +1061,9 @@ body {
         min-width: auto;
     }
 
-/* Enhanced View Mode Styles */
-.content-section .info-grid {
+/* Enhanced View Mode Styles - consolidated info grids */
+.content-section .info-grid,
+.info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 20px;
@@ -1086,38 +1071,38 @@ body {
     box-sizing: border-box;
 }
 
-/* Enhanced Info Row Styles - Override existing global styles */
-.content-section .info-row,
-.info-grid .info-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 16px;
-    padding: 16px;
-    background: #f8fafc;
-    border-radius: 8px;
-}
-
-    .content-section .info-row label,
-    .info-grid .info-row label {
-        font-weight: 600;
-        color: #374151;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.025em;
-        min-width: 120px;
-        flex-shrink: 0;
+    /* Enhanced Info Row Styles - unified override patterns */
+    .content-section .info-row,
+    .info-grid .info-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        background: #f8fafc;
+        border-radius: 8px;
     }
 
-    .content-section .info-row span,
-    .info-grid .info-row span {
-        color: #1f2937;
-        font-size: 0.9rem;
-        line-height: 1.5;
-        flex: 1;
-    }
+        .content-section .info-row label,
+        .info-grid .info-row label {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            min-width: 120px;
+            flex-shrink: 0;
+        }
 
-/* Enhanced Button Styles */
+        .content-section .info-row span,
+        .info-grid .info-row span {
+            color: #1f2937;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+/* Enhanced Button Styles - consolidated */
 .btn-primary {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
     color: white;
@@ -1159,25 +1144,7 @@ body {
         color: #374151;
     }
 
-/* Override connection detail component styles to match design */
-.content-section app-structured-connection-details,
-.content-section app-vector-connection-details {
-    width: 100%;
-    display: block;
-}
-
-.form-actions {
-    display: flex;
-    gap: 16px;
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 1px solid #e5e7eb;
-    justify-content: flex-start;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* Enhanced status and specialty classes */
+/* Enhanced status and utility classes - consolidated */
 .status {
     padding: 4px 12px;
     border-radius: 20px;
@@ -1205,12 +1172,43 @@ body {
     color: #3730a3;
 }
 
-/* Override connection detail component styles in edit mode */
+.code-block {
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    color: #1f2937;
+    background: #f1f5f9;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    display: block;
+    margin-top: 4px;
+}
+
+/* Connection components and form actions - consolidated */
+.content-section app-structured-connection-details,
+.content-section app-vector-connection-details {
+    width: 100%;
+    display: block;
+}
+
 .detail-form app-structured-connection-details,
 .detail-form app-vector-connection-details {
     grid-column: 1 / -1;
     width: 100%;
     display: block;
+}
+
+.form-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 @media (max-width: 1024px) {

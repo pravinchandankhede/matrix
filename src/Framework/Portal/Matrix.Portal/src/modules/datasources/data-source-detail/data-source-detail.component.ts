@@ -61,7 +61,7 @@ export class DataSourceDetailComponent extends BaseDetailComponent<DataSource> i
     }
 
     getEntityName(): string {
-        return 'Data Source';
+        return 'DataSource';
     }
 
     getErrorContext(): string {

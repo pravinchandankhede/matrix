@@ -9,7 +9,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ShellComponent } from './shell/shell.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { ErrorPanelComponent } from './error-panel/error-panel.component';
+import { NotificationPanelComponent } from './notification-panel/notification-panel.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { ErrorPanelComponent } from './error-panel/error-panel.component';
         ProfileComponent,
         ShellComponent,
         BreadcrumbComponent,
-        ErrorPanelComponent
+        NotificationPanelComponent
   ],
   imports: [
     BrowserModule,

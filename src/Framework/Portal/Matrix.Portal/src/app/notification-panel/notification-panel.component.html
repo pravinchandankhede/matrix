@@ -1,0 +1,89 @@
+<div class="notification-panel" *ngIf="isOpen">
+    <div class="notification-header">
+        <div class="header-content">
+            <mat-icon>notifications</mat-icon>
+            <h3>Notifications</h3>
+            <span class="count" *ngIf="unreadCount > 0">({{ unreadCount }})</span>
+        </div>
+        <div class="header-actions">
+            <button class="icon-btn" title="Mark all as read" (click)="markAllAsRead()" *ngIf="unreadCount > 0">
+                <mat-icon>done_all</mat-icon>
+            </button>
+            <button class="icon-btn" title="Clear read" (click)="clearAllRead()">
+                <mat-icon>clear_all</mat-icon>
+            </button>
+            <button class="icon-btn" title="Close" (click)="closePanel()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="notification-content">
+        <div class="empty-state" *ngIf="notifications.length === 0">
+            <mat-icon class="empty-icon">notifications_none</mat-icon>
+            <h4>No notifications</h4>
+            <p>You're all caught up!</p>
+        </div>
+
+        <div class="notification-list" *ngIf="notifications.length > 0">
+            <div class="notification-item"
+                 *ngFor="let notification of notifications"
+                 [class.unread]="!notification.isRead"
+                 [class.error]="notification.errorType === 'error'"
+                 [class.warning]="notification.errorType === 'warning'"
+                 [class.info]="notification.errorType === 'info'"
+                 [class.success]="notification.errorType === 'success'"
+                 (click)="markAsRead(notification)">
+
+                <div class="notification-icon">
+                    <mat-icon [class]="notification.errorType">
+                        {{ getNotificationIcon(notification.errorType) }}
+                    </mat-icon>
+                </div>
+
+                <div class="notification-body">
+                    <div class="notification-header-row">
+                        <span class="notification-source" *ngIf="notification.source">
+                            {{ notification.source }}
+                        </span>
+                        <span class="notification-time">
+                            {{ getRelativeTime(notification.timestamp) }}
+                        </span>
+                    </div>
+
+                    <div class="notification-message">
+                        {{ notification.message }}
+                    </div>
+
+                    <div class="notification-details" *ngIf="notification.details">
+                        <span class="details-text">{{ notification.details }}</span>
+                    </div>
+
+                    <div class="notification-actions" *ngIf="notification.actionLabel">
+                        <button class="action-btn" (click)="executeAction(notification); $event.stopPropagation()">
+                            {{ notification.actionLabel }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="notification-controls">
+                    <button class="dismiss-btn"
+                            title="Dismiss"
+                            (click)="dismissNotification(notification); $event.stopPropagation()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification-footer" *ngIf="notifications.length > 0">
+        <button class="footer-btn" (click)="clearAll()">
+            <mat-icon>delete_sweep</mat-icon>
+            Clear All
+        </button>
+    </div>
+</div>
+
+<!-- Overlay -->
+<div class="notification-overlay" *ngIf="isOpen" (click)="closePanel()"></div>

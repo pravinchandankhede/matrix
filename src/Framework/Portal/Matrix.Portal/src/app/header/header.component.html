@@ -3,6 +3,15 @@
         <mat-icon>hub</mat-icon> Agentic Platform
     </div>
     <div class="header-actions">
+        <button class="btn notification-bell"
+                title="Notifications"
+                (click)="toggleNotifications()"
+                [class.has-notifications]="unreadNotificationCount > 0">
+            <mat-icon>notifications</mat-icon>
+            <span class="notification-badge" *ngIf="unreadNotificationCount > 0">
+                {{ unreadNotificationCount > 99 ? '99+' : unreadNotificationCount }}
+            </span>
+        </button>
         <button class="btn" title="Profile" (click)="profileClick.emit()"><mat-icon>account_circle</mat-icon></button>
         <button class="btn" title="Settings"><mat-icon>settings</mat-icon></button>
     </div>

@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { Agent } from '../../../datamodels/agent.model';
 import { AgentService } from '../../../services/agent.service';
-import { ErrorService } from '../../../services/error.service';
 import { BaseListComponent } from '../../../shared/base-list.component';
 
 @Component({
@@ -15,36 +13,29 @@ export class AgentListComponent extends BaseListComponent<Agent> {
     selectedStatus: string = '';
     selectedType: string = '';
 
-    constructor(
-        private router: Router,
-        private agentService: AgentService,
-        private errorService: ErrorService
-    ) {
+    constructor(private agentService: AgentService) {
         super();
+    }
+
+    getEntityName(): string {
+        return 'Agent';
+    }
+
+    getListContext(): string {
+        return 'Agent List';
+    }
+
+    getDetailRoute(): string {
+        return '/agents';
     }
 
     fetchItems(): void {
         this.agentService.getAgents().subscribe({
             next: (data: Agent[]) => {
-                this.items = data;
-                this.applyFilter();
-                if (this.items.length === 0) {
-                    this.errorService.addError('No agents found.', 'Agent List');
-                }
+                this.handleLoadSuccess(data);
             },
             error: (err: any) => {
-                let message = 'Failed to load agents.';
-                if (err) {
-                    if (err.status === 0 || err.status === 502 || err.status === 503 || err.status === 504) {
-                        message = 'Cannot connect to agent service. Please check your network or server.';
-                    } else if (err.error && typeof err.error === 'string') {
-                        message = err.error;
-                    } else if (err.message) {
-                        message = err.message;
-                    }
-                }
-                console.error('Agent list loading error:', err);
-                this.errorService.addError(message, 'Agent List');
+                this.handleLoadError(err);
             }
         });
     }
@@ -80,44 +71,32 @@ export class AgentListComponent extends BaseListComponent<Agent> {
     }
 
     onAdd(): void {
-        this.router.navigate(['/agents/add'], {
-            queryParams: { edit: 'true' }
-        });
+        this.navigateToAdd();
     }
 
     onEdit(agent: Agent): void {
-        this.router.navigate(['/agents', agent.agentUId], {
-            queryParams: { edit: 'true' },
-            state: { itemName: agent.name }
-        });
+        this.navigateToEdit(agent.agentUId);
     }
 
     onView(agent: Agent): void {
-        this.router.navigate(['/agents', agent.agentUId], {
-            queryParams: { edit: 'false' },
-            state: { itemName: agent.name }
-        });
+        this.navigateToDetail(agent.agentUId);
     }
 
     onSelect(agent: Agent): void {
-        this.router.navigate(['/agents', agent.agentUId], {
-            state: { itemName: agent.name }
-        });
+        this.navigateToDetail(agent.agentUId);
     }
 
     onDelete(agent: Agent): void {
-        if (confirm(`Are you sure you want to delete agent "${agent.name}"?`)) {
+        this.handleDelete(agent, () => {
             this.agentService.deleteAgent(agent.agentUId).subscribe({
                 next: () => {
-                    this.fetchItems();
-                    this.errorService.addError(`Agent "${agent.name}" deleted successfully.`, 'Agent List');
+                    this.handleDeleteSuccess(agent.name);
                 },
                 error: (err: any) => {
-                    console.error('Delete agent error:', err);
-                    this.errorService.addError('Failed to delete agent.', 'Agent List');
+                    this.handleDeleteError(err);
                 }
             });
-        }
+        });
     }
 
     trackByFn(index: number, item: Agent): string {

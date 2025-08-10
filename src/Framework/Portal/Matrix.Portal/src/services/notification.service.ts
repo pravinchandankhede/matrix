@@ -1,10 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 
-export interface ErrorItem {
+export interface NotificationItem {
     id: number;
     message: string;
     source?: string;
-    errorType: 'error' | 'warning' | 'info' | 'success';
+    notificationType: 'error' | 'warning' | 'info' | 'success';
     timestamp: Date;
     isRead: boolean;
     details?: string;
@@ -13,32 +13,32 @@ export interface ErrorItem {
 }
 
 @Injectable({ providedIn: 'root' })
-export class ErrorService {
-    errors = signal<ErrorItem[]>([]);
+export class NotificationService {
+    notifications = signal<NotificationItem[]>([]);
     isNotificationPanelOpen = signal(false);
     private nextId = 1;
 
     addMessage(
-        message: string,
-        errorType: 'error' | 'warning' | 'info' | 'success' = 'error',
+        message: string, 
+        notificationType: 'error' | 'warning' | 'info' | 'success' = 'error', 
         source?: string,
         details?: string,
         actionLabel?: string,
         actionCallback?: () => void
     ) {
-        const newError: ErrorItem = {
+        const newNotification: NotificationItem = {
             id: this.nextId++,
             message,
             source,
-            errorType,
+            notificationType,
             timestamp: new Date(),
             isRead: false,
             details,
             actionLabel,
             actionCallback
         };
-
-        this.errors.update((errors: ErrorItem[]) => [newError, ...errors]);
+        
+        this.notifications.update((notifications: NotificationItem[]) => [newNotification, ...notifications]);
     }
 
     addError(message: string, source?: string, details?: string, actionLabel?: string, actionCallback?: () => void) {
@@ -57,34 +57,34 @@ export class ErrorService {
         this.addMessage(message, 'success', source, details, actionLabel, actionCallback);
     }
 
-    dismissError(id: number) {
-        this.errors.update((errors: ErrorItem[]) => errors.filter((e: ErrorItem) => e.id !== id));
+    dismissNotification(id: number) {
+        this.notifications.update((notifications: NotificationItem[]) => notifications.filter((n: NotificationItem) => n.id !== id));
     }
 
     markAsRead(id: number) {
-        this.errors.update((errors: ErrorItem[]) =>
-            errors.map(error =>
-                error.id === id ? { ...error, isRead: true } : error
+        this.notifications.update((notifications: NotificationItem[]) => 
+            notifications.map(notification => 
+                notification.id === id ? { ...notification, isRead: true } : notification
             )
         );
     }
 
     markAllAsRead() {
-        this.errors.update((errors: ErrorItem[]) =>
-            errors.map(error => ({ ...error, isRead: true }))
+        this.notifications.update((notifications: NotificationItem[]) => 
+            notifications.map(notification => ({ ...notification, isRead: true }))
         );
     }
 
-    clearErrors() {
-        this.errors.set([]);
+    clearNotifications() {
+        this.notifications.set([]);
     }
 
-    clearReadErrors() {
-        this.errors.update((errors: ErrorItem[]) => errors.filter(error => !error.isRead));
+    clearReadNotifications() {
+        this.notifications.update((notifications: NotificationItem[]) => notifications.filter(notification => !notification.isRead));
     }
 
     getUnreadCount(): number {
-        return this.errors().filter(error => !error.isRead).length;
+        return this.notifications().filter(notification => !notification.isRead).length;
     }
 
     toggleNotificationPanel() {

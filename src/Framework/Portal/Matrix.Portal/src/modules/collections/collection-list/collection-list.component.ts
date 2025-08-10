@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { DataSourceCollection } from '../../../datamodels/data-source-collection.model';
 import { BaseListComponent } from '../../../shared/base-list.component';
-import { ErrorService } from '../../../services/error.service';
 import { DataSourceCollectionService } from '../../../services/data-source-collection.service';
 
 @Component({
@@ -14,34 +12,29 @@ import { DataSourceCollectionService } from '../../../services/data-source-colle
 export class CollectionListComponent extends BaseListComponent<DataSourceCollection> {
     selectedCustom: string = '';
 
-    constructor(
-        private router: Router,
-        private errorService: ErrorService,
-        private collectionService: DataSourceCollectionService
-    ) {
+    constructor(private collectionService: DataSourceCollectionService) {
         super();
+    }
+
+    getEntityName(): string {
+        return 'Collection';
+    }
+
+    getListContext(): string {
+        return 'Collection List';
+    }
+
+    getDetailRoute(): string {
+        return '/collections';
     }
 
     fetchItems(): void {
         this.collectionService.getDataSourceCollections().subscribe({
             next: (data: DataSourceCollection[]) => {
-                this.items = data;
-                this.applyFilter();
-                if (this.items.length === 0) {
-                    this.errorService.addError('No collections found.', 'Collection List');
-                }
+                this.handleLoadSuccess(data);
             },
             error: (err: any) => {
-                let message = 'Failed to load collections.';
-                if ([0, 502, 503, 504].includes(err.status)) {
-                    message = 'Cannot connect to collection service. Please check your network or server.';
-                } else if (err.error && typeof err.error === 'string') {
-                    message = err.error;
-                } else if (err.message) {
-                    message = err.message;
-                }
-                console.error('Collection list loading error:', err);
-                this.errorService.addError(message, 'Collection List');
+                this.handleLoadError(err);
             }
         });
     }
@@ -49,9 +42,7 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
     filterPredicate(collection: DataSourceCollection): boolean {
         const matchesName = collection.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
             collection.description.toLowerCase().includes(this.searchTerm.toLowerCase());
-        const matchesCustom = this.selectedCustom ?
-            (this.selectedCustom === 'true' ? collection.isCustom : !collection.isCustom) : true;
-        return matchesName && matchesCustom;
+        return matchesName;
     }
 
     onCustomFilterChange(custom: string): void {
@@ -64,37 +55,26 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
     }
 
     onAdd(): void {
-        this.router.navigate(['/collections/add'], {
-            queryParams: { edit: 'true' }
-        });
+        this.navigateToAdd();
     }
 
     onEdit(collection: DataSourceCollection): void {
-        this.router.navigate(['/collections', collection.dataSourceCollectionUId], {
-            queryParams: { edit: 'true' },
-            state: { itemName: collection.name }
-        });
+        this.navigateToEdit(collection.dataSourceCollectionUId);
     }
 
     onView(collection: DataSourceCollection): void {
-        this.router.navigate(['/collections', collection.dataSourceCollectionUId], {
-            queryParams: { edit: 'false' },
-            state: { itemName: collection.name }
-        });
+        this.navigateToDetail(collection.dataSourceCollectionUId);
     }
 
     onSelect(collection: DataSourceCollection): void {
-        this.router.navigate(['/collections', collection.dataSourceCollectionUId], {
-            state: { itemName: collection.name }
-        });
+        this.navigateToDetail(collection.dataSourceCollectionUId);
     }
 
     onDelete(collection: DataSourceCollection): void {
-        if (confirm(`Are you sure you want to delete collection "${collection.name}"?`)) {
-            // Simulate delete for now
-            this.errorService.addError(`Collection "${collection.name}" deleted successfully.`, 'Collection List');
-            this.fetchItems();
-        }
+        this.handleDelete(collection, () => {
+            // TODO: Replace with actual service call when available
+            this.handleDeleteSuccess(collection.name);
+        });
     }
 
     trackByFn(index: number, item: DataSourceCollection): string {

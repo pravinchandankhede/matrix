@@ -29,15 +29,15 @@
             <div class="notification-item"
                  *ngFor="let notification of notifications"
                  [class.unread]="!notification.isRead"
-                 [class.error]="notification.errorType === 'error'"
-                 [class.warning]="notification.errorType === 'warning'"
-                 [class.info]="notification.errorType === 'info'"
-                 [class.success]="notification.errorType === 'success'"
+                 [class.error]="notification.notificationType === 'error'"
+                 [class.warning]="notification.notificationType === 'warning'"
+                 [class.info]="notification.notificationType === 'info'"
+                 [class.success]="notification.notificationType === 'success'"
                  (click)="markAsRead(notification)">
 
                 <div class="notification-icon">
-                    <mat-icon [class]="notification.errorType">
-                        {{ getNotificationIcon(notification.errorType) }}
+                    <mat-icon [class]="notification.notificationType">
+                        {{ getNotificationIcon(notification.notificationType) }}
                     </mat-icon>
                 </div>
 

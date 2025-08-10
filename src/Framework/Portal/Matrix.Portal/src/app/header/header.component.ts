@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { ErrorService } from '../../services/error.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
     selector: 'app-header',
@@ -10,13 +10,13 @@ import { ErrorService } from '../../services/error.service';
 export class HeaderComponent {
     @Output() profileClick = new EventEmitter<void>();
 
-    constructor(public errorService: ErrorService) { }
+    constructor(public notificationService: NotificationService) { }
 
     get unreadNotificationCount(): number {
-        return this.errorService.getUnreadCount();
+        return this.notificationService.getUnreadCount();
     }
 
     toggleNotifications(): void {
-        this.errorService.toggleNotificationPanel();
+        this.notificationService.toggleNotificationPanel();
     }
 }

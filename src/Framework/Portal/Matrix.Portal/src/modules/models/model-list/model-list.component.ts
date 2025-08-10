@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { ModelService } from '../../../services/model.service';
 import { Model } from '../../../datamodels/model';
-import { Router } from '@angular/router';
 import { BaseListComponent } from '../../../shared/base-list.component';
-import { ErrorService } from '../../../services/error.service';
 
 @Component({
     selector: 'app-model-list',
@@ -16,36 +14,29 @@ export class ModelListComponent extends BaseListComponent<Model> {
     selectedProvider: string = '';
     selectedType: string = '';
 
-    constructor(
-        private modelService: ModelService,
-        private router: Router,
-        private errorService: ErrorService
-    ) {
+    constructor(private modelService: ModelService) {
         super();
+    }
+
+    getEntityName(): string {
+        return 'Model';
+    }
+
+    getListContext(): string {
+        return 'Model List';
+    }
+
+    getDetailRoute(): string {
+        return '/models';
     }
 
     fetchItems(): void {
         this.modelService.getModels().subscribe({
             next: (data: Model[]) => {
-                this.items = data;
-                this.applyFilter();
-                if (this.items.length === 0) {
-                    this.errorService.addError('No models found.', 'Model List');
-                }
+                this.handleLoadSuccess(data);
             },
             error: (err: any) => {
-                let message = 'Failed to load models.';
-                if (err) {
-                    if ([0, 502, 503, 504].includes(err.status)) {
-                        message = 'Cannot connect to model service. Please check your network or server.';
-                    } else if (err.error && typeof err.error === 'string') {
-                        message = err.error;
-                    } else if (err.message) {
-                        message = err.message;
-                    }
-                }
-                console.error('Model list loading error:', err);
-                this.errorService.addError(message, 'Model List');
+                this.handleLoadError(err);
             }
         });
     }
@@ -90,37 +81,26 @@ export class ModelListComponent extends BaseListComponent<Model> {
     }
 
     onAdd(): void {
-        this.router.navigate(['/models/add'], {
-            queryParams: { edit: 'true' }
-        });
+        this.navigateToAdd();
     }
 
     onEdit(model: Model): void {
-        this.router.navigate(['/models', model.modelUId], {
-            queryParams: { edit: 'true' },
-            state: { itemName: model.name }
-        });
+        this.navigateToEdit(model.modelUId);
     }
 
     onView(model: Model): void {
-        this.router.navigate(['/models', model.modelUId], {
-            queryParams: { edit: 'false' },
-            state: { itemName: model.name }
-        });
+        this.navigateToDetail(model.modelUId);
     }
 
     onSelect(model: Model): void {
-        this.router.navigate(['/models', model.modelUId], {
-            state: { itemName: model.name }
-        });
+        this.navigateToDetail(model.modelUId);
     }
 
     onDelete(model: Model): void {
-        if (confirm(`Are you sure you want to delete model "${model.name}"?`)) {
-            // Simulate delete for now
-            this.errorService.addError(`Model "${model.name}" deleted successfully.`, 'Model List');
-            this.fetchItems();
-        }
+        this.handleDelete(model, () => {
+            // Note: Update this when actual delete service method is available
+            this.handleDeleteSuccess(model.name);
+        });
     }
 
     trackByFn(index: number, item: Model): string {

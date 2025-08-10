@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataSource } from '../../../datamodels/data-source.model';
 import { BaseListComponent } from '../../../shared/base-list.component';
-import { ErrorService } from '../../../services/error.service';
+import { NotificationService } from '../../../services/notification.service';
 import { DataSourceService } from '../../../services/data-source.service';
 
 @Component({
@@ -15,12 +15,20 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
     selectedActive: string = '';
     selectedType: string = '';
 
-    constructor(
-        private router: Router,
-        private errorService: ErrorService,
-        private dataSourceService: DataSourceService
-    ) {
+    constructor(private dataSourceService: DataSourceService) {
         super();
+    }
+
+    getEntityName(): string {
+        return 'DataSource';
+    }
+
+    getListContext(): string {
+        return 'DataSource List';
+    }
+
+    getDetailRoute(): string {
+        return '/datasources';
     }
 
     fetchItems(): void {
@@ -29,7 +37,7 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
                 this.items = data;
                 this.applyFilter();
                 if (this.items.length === 0) {
-                    this.errorService.addError('No data sources found.', 'Data Source List');
+                    this.notificationService.addError('No data sources found.', 'Data Source List');
                 }
             },
             error: (err: any) => {
@@ -44,7 +52,7 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
                     }
                 }
                 console.error('Data source list loading error:', err);
-                this.errorService.addError(message, 'Data Source List');
+                this.notificationService.addError(message, 'Data Source List');
             }
         });
     }
@@ -105,7 +113,7 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
     onDelete(dataSource: DataSource): void {
         if (confirm(`Are you sure you want to delete data source "${dataSource.name}"?`)) {
             // Simulate delete for now
-            this.errorService.addError(`Data source "${dataSource.name}" deleted successfully.`, 'Data Source List');
+            this.notificationService.addError(`Data source "${dataSource.name}" deleted successfully.`, 'Data Source List');
             this.fetchItems();
         }
     }

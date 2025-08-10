@@ -2,7 +2,7 @@ import { OnInit, OnDestroy, Directive, Input, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ErrorService } from '../services/error.service';
+import { NotificationService } from '../services/notification.service';
 
 @Directive()
 export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
@@ -14,7 +14,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
     itemId: string | null = null;
 
     protected destroy$ = new Subject<void>();
-    protected errorService = inject(ErrorService);
+    protected notificationService = inject(NotificationService);
 
     constructor(
         protected route: ActivatedRoute,
@@ -72,7 +72,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
                     history.replaceState({ ...history.state, itemName: this.getItemName(item) }, '');
                 } else {
                     // HTTP 200 but no data - treat as not found
-                    this.errorService.addError(`${this.getEntityName()} not found.`, this.getErrorContext());
+                    this.notificationService.addError(`${this.getEntityName()} not found.`, this.getErrorContext());
                     this.isLoading = false;
                     this.router.navigate([this.getItemListRoute()]);
                 }
@@ -93,7 +93,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
         const validationErrors = this.validateItem();
         if (validationErrors.length > 0) {
             validationErrors.forEach(error => {
-                this.errorService.addError(error, this.getErrorContext());
+                this.notificationService.addError(error, this.getErrorContext());
             });
             return;
         }
@@ -114,7 +114,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
         this.isLoading = true;
         this.getDeleteItemObservable().subscribe({
             next: (response: any) => {
-                this.errorService.addError(
+                this.notificationService.addError(
                     `${this.getEntityName()} "${this.getItemName(this.item!)}" deleted successfully.`,
                     this.getErrorContext()
                 );
@@ -139,7 +139,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
                     this.editMode = false;
                     this.isLoading = false;
 
-                    this.errorService.addError(
+                    this.notificationService.addError(
                         `${this.getEntityName()} "${this.getItemName(createdItem)}" created successfully.`,
                         this.getErrorContext()
                     );
@@ -150,7 +150,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
                         state: { itemName: this.getItemName(createdItem) }
                     });
                 } else {
-                    this.errorService.addError(`${this.getEntityName()} created but no data returned from server.`, this.getErrorContext());
+                    this.notificationService.addError(`${this.getEntityName()} created but no data returned from server.`, this.getErrorContext());
                     this.isLoading = false;
                     this.router.navigate([this.getItemListRoute()]);
                 }
@@ -176,7 +176,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
                 this.onItemUpdated();
 
                 const itemName = this.getItemName(this.item!);
-                this.errorService.addError(
+                this.notificationService.addError(
                     `${this.getEntityName()} "${itemName}" updated successfully.`,
                     this.getErrorContext()
                 );
@@ -305,57 +305,57 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
     // Error handling methods with comprehensive HTTP status handling
     protected handleLoadError(err: any): void {
         if (err.status === 404) {
-            this.errorService.addError(`${this.getEntityName()} not found.`, this.getErrorContext());
+            this.notificationService.addError(`${this.getEntityName()} not found.`, this.getErrorContext());
         } else if (err.status === 403) {
-            this.errorService.addError(`You do not have permission to view this ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
+            this.notificationService.addError(`You do not have permission to view this ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
         } else if (err.status >= 500) {
-            this.errorService.addError(`Server error occurred while loading ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
+            this.notificationService.addError(`Server error occurred while loading ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
         } else {
-            this.errorService.addError(`Failed to load ${this.getEntityName().toLowerCase()} details.`, this.getErrorContext());
+            this.notificationService.addError(`Failed to load ${this.getEntityName().toLowerCase()} details.`, this.getErrorContext());
         }
     }
 
     protected handleCreateError(err: any): void {
         if (err.status === 400) {
-            this.errorService.addError(`Invalid ${this.getEntityName().toLowerCase()} data. Please check your inputs.`, this.getErrorContext());
+            this.notificationService.addError(`Invalid ${this.getEntityName().toLowerCase()} data. Please check your inputs.`, this.getErrorContext());
         } else if (err.status === 403) {
-            this.errorService.addError(`You do not have permission to create ${this.getEntityName().toLowerCase()}s.`, this.getErrorContext());
+            this.notificationService.addError(`You do not have permission to create ${this.getEntityName().toLowerCase()}s.`, this.getErrorContext());
         } else if (err.status === 409) {
-            this.errorService.addError(`A ${this.getEntityName().toLowerCase()} with this name already exists.`, this.getErrorContext());
+            this.notificationService.addError(`A ${this.getEntityName().toLowerCase()} with this name already exists.`, this.getErrorContext());
         } else if (err.status >= 500) {
-            this.errorService.addError(`Server error occurred while creating ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
+            this.notificationService.addError(`Server error occurred while creating ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
         } else {
-            this.errorService.addError(`Failed to create ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
+            this.notificationService.addError(`Failed to create ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
         }
     }
 
     protected handleUpdateError(err: any): void {
         if (err.status === 404) {
-            this.errorService.addError(`${this.getEntityName()} not found.`, this.getErrorContext());
+            this.notificationService.addError(`${this.getEntityName()} not found.`, this.getErrorContext());
         } else if (err.status === 403) {
-            this.errorService.addError(`You do not have permission to update this ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
+            this.notificationService.addError(`You do not have permission to update this ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
         } else if (err.status === 400) {
-            this.errorService.addError(`Invalid ${this.getEntityName().toLowerCase()} data. Please check your inputs.`, this.getErrorContext());
+            this.notificationService.addError(`Invalid ${this.getEntityName().toLowerCase()} data. Please check your inputs.`, this.getErrorContext());
         } else if (err.status === 409) {
-            this.errorService.addError(`${this.getEntityName()} has been modified by another user. Please refresh and try again.`, this.getErrorContext());
+            this.notificationService.addError(`${this.getEntityName()} has been modified by another user. Please refresh and try again.`, this.getErrorContext());
         } else if (err.status >= 500) {
-            this.errorService.addError(`Server error occurred while updating ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
+            this.notificationService.addError(`Server error occurred while updating ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
         } else {
-            this.errorService.addError(`Failed to update ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
+            this.notificationService.addError(`Failed to update ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
         }
     }
 
     protected handleDeleteError(err: any): void {
         if (err.status === 404) {
-            this.errorService.addError(`${this.getEntityName()} not found or already deleted.`, this.getErrorContext());
+            this.notificationService.addError(`${this.getEntityName()} not found or already deleted.`, this.getErrorContext());
         } else if (err.status === 403) {
-            this.errorService.addError(`You do not have permission to delete this ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
+            this.notificationService.addError(`You do not have permission to delete this ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
         } else if (err.status === 409) {
-            this.errorService.addError(`Cannot delete ${this.getEntityName().toLowerCase()}. It may be in use by other resources.`, this.getErrorContext());
+            this.notificationService.addError(`Cannot delete ${this.getEntityName().toLowerCase()}. It may be in use by other resources.`, this.getErrorContext());
         } else if (err.status >= 500) {
-            this.errorService.addError(`Server error occurred while deleting ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
+            this.notificationService.addError(`Server error occurred while deleting ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
         } else {
-            this.errorService.addError(`Failed to delete ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
+            this.notificationService.addError(`Failed to delete ${this.getEntityName().toLowerCase()}.`, this.getErrorContext());
         }
     }
 

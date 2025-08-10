@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { ErrorService, ErrorItem } from '../../services/error.service';
+import { NotificationService, NotificationItem } from '../../services/notification.service';
 
 @Component({
     selector: 'app-notification-panel',
@@ -9,18 +9,18 @@ import { ErrorService, ErrorItem } from '../../services/error.service';
 })
 export class NotificationPanelComponent {
 
-    constructor(public errorService: ErrorService) { }
+    constructor(public notificationService: NotificationService) { }
 
     get isOpen(): boolean {
-        return this.errorService.isNotificationPanelOpen();
+        return this.notificationService.isNotificationPanelOpen();
     }
 
-    get notifications(): ErrorItem[] {
-        return this.errorService.errors();
+    get notifications(): NotificationItem[] {
+        return this.notificationService.notifications();
     }
 
     get unreadCount(): number {
-        return this.errorService.getUnreadCount();
+        return this.notificationService.getUnreadCount();
     }
 
     closePanel(): void {
@@ -29,36 +29,36 @@ export class NotificationPanelComponent {
         if (panel) {
             panel.classList.add('closing');
             setTimeout(() => {
-                this.errorService.closeNotificationPanel();
+                this.notificationService.closeNotificationPanel();
             }, 200);
         } else {
-            this.errorService.closeNotificationPanel();
+            this.notificationService.closeNotificationPanel();
         }
     }
 
-    markAsRead(notification: ErrorItem): void {
+    markAsRead(notification: NotificationItem): void {
         if (!notification.isRead) {
-            this.errorService.markAsRead(notification.id);
+            this.notificationService.markAsRead(notification.id);
         }
     }
 
-    dismissNotification(notification: ErrorItem): void {
-        this.errorService.dismissError(notification.id);
+    dismissNotification(notification: NotificationItem): void {
+        this.notificationService.dismissNotification(notification.id);
     }
 
     markAllAsRead(): void {
-        this.errorService.markAllAsRead();
+        this.notificationService.markAllAsRead();
     }
 
     clearAllRead(): void {
-        this.errorService.clearReadErrors();
+        this.notificationService.clearReadNotifications();
     }
 
     clearAll(): void {
-        this.errorService.clearErrors();
+        this.notificationService.clearNotifications();
     }
 
-    executeAction(notification: ErrorItem): void {
+    executeAction(notification: NotificationItem): void {
         if (notification.actionCallback) {
             notification.actionCallback();
         }

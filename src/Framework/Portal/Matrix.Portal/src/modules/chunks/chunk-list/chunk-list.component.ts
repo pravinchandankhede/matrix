@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Chunk } from '../../../datamodels/chunk.model';
 import { ChunkService } from '../../../services/chunk.service';
-import { ErrorService } from '../../../services/error.service';
+import { NotificationService } from '../../../services/notification.service';
 import { BaseListComponent } from '../../../shared/base-list.component';
 
 @Component({
@@ -15,12 +15,20 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
     selectedType: string = '';
     selectedSource: string = '';
 
-    constructor(
-        private router: Router,
-        private chunkService: ChunkService,
-        private errorService: ErrorService
-    ) {
+    constructor(private chunkService: ChunkService) {
         super();
+    }
+
+    getEntityName(): string {
+        return 'Chunk';
+    }
+
+    getListContext(): string {
+        return 'Chunk List';
+    }
+
+    getDetailRoute(): string {
+        return '/chunks';
     }
 
     fetchItems(): void {
@@ -29,7 +37,7 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
                 this.items = data;
                 this.applyFilter();
                 if (this.items.length === 0) {
-                    this.errorService.addError('No chunks found.', 'Chunk List');
+                    this.notificationService.addError('No chunks found.', 'Chunk List');
                 }
             },
             error: (err: any) => {
@@ -44,7 +52,7 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
                     }
                 }
                 console.error('Chunk list loading error:', err);
-                this.errorService.addError(message, 'Chunk List');
+                this.notificationService.addError(message, 'Chunk List');
             }
         });
     }
@@ -108,7 +116,7 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
     onDelete(chunk: Chunk): void {
         if (confirm(`Are you sure you want to delete chunk "${chunk.chunkId}"?`)) {
             // Simulate delete for now
-            this.errorService.addError(`Chunk "${chunk.chunkId}" deleted successfully.`, 'Chunk List');
+            this.notificationService.addError(`Chunk "${chunk.chunkId}" deleted successfully.`, 'Chunk List');
             this.fetchItems();
         }
     }

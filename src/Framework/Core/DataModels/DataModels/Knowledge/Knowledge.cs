@@ -16,3 +16,4 @@ public class Knowledge
     public Chunk ChunkStrategy { get; set; } = null!;
 }
 
+

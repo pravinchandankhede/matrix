@@ -148,19 +148,19 @@
             },
             plugins: [
                 function (hook, vm) {
-                    hook.beforeEach(function (html) {
-                        // Add edit link to each page
-                        const editLink = `
-                      <div style="overflow: auto; margin-bottom: 20px;">
-                        <div style="float: right;">
-                          <a href="https://github.com/your-org/matrix-portal/edit/main/docs/${vm.route.file}" target="_blank" style="text-decoration: none;">
-                            📝 Edit this page
-                          </a>
-                        </div>
-                      </div>
-                    `;
-                        return editLink + html;
-                    });
+                    //hook.beforeEach(function (html) {
+                    //    // Add edit link to each page
+                    //    const editLink = `
+                    //  <div style="overflow: auto; margin-bottom: 20px;">
+                    //    <div style="float: right;">
+                    //      <a href="https://github.com/your-org/matrix-portal/edit/main/docs/${vm.route.file}" target="_blank" style="text-decoration: none;">
+                    //        📝 Edit this page
+                    //      </a>
+                    //    </div>
+                    //  </div>
+                    //`;
+                    //    return editLink + html;
+                    //});
 
                     hook.afterEach(function (html) {
                         // Add last updated timestamp

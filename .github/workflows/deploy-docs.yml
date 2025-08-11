@@ -3,10 +3,10 @@ name: Deploy Documentation to GitHub Pages
 on:
   push:
     branches: [ main ]
-    paths: [ 'docs/**' ]
+    paths: [ 'src/docs/**' ]
   pull_request:
     branches: [ main ]
-    paths: [ 'docs/**' ]
+    paths: [ 'src/docs/**' ]
 
 permissions:
   contents: read
@@ -38,17 +38,17 @@ jobs:
           
       - name: Lint documentation
         run: |
-          markdownlint docs/**/*.md --config .markdownlint.json || true
+          markdownlint src/docs/**/*.md --config .markdownlint.json || true
           
       - name: Build documentation
         run: |
           # Copy docs to build directory
           mkdir -p _site
-          cp -r docs/* _site/
+          cp -r src/docs/* _site/
           
           # Ensure index.html is in root
           if [ ! -f "_site/index.html" ]; then
-            cp docs/index.html _site/
+            cp src/docs/index.html _site/
           fi
           
       - name: Upload artifact

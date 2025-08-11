@@ -151,24 +151,24 @@
                     hook.beforeEach(function (html) {
                         // Add edit link to each page
                         const editLink = `
-                  <div style="overflow: auto; margin-bottom: 20px;">
-                    <div style="float: right;">
-                      <a href="https://github.com/your-org/matrix-portal/edit/main/docs/${vm.route.file}" target="_blank" style="text-decoration: none;">
-                        📝 Edit this page
-                      </a>
-                    </div>
-                  </div>
-                `;
+                      <div style="overflow: auto; margin-bottom: 20px;">
+                        <div style="float: right;">
+                          <a href="https://github.com/your-org/matrix-portal/edit/main/docs/${vm.route.file}" target="_blank" style="text-decoration: none;">
+                            📝 Edit this page
+                          </a>
+                        </div>
+                      </div>
+                    `;
                         return editLink + html;
                     });
 
                     hook.afterEach(function (html) {
                         // Add last updated timestamp
                         const lastUpdated = `
-                  <div style="border-top: 1px solid #eee; padding-top: 20px; margin-top: 40px; text-align: center; color: #666; font-size: 0.9em;">
-                    📅 Last updated: ${new Date().toLocaleDateString()}
-                  </div>
-                `;
+                      <div style="border-top: 1px solid #eee; padding-top: 20px; margin-top: 40px; text-align: center; color: #666; font-size: 0.9em;">
+                        📅 Last updated: ${new Date().toLocaleDateString()}
+                      </div>
+                    `;
                         return html + lastUpdated;
                     });
                 }
@@ -184,6 +184,7 @@
     <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-mermaid@latest/dist/docsify-mermaid.min.js"></script>
 
     <!-- Language highlighting -->
     <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>

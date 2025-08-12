@@ -28,8 +28,12 @@ export class AgentListComponent extends BaseListComponent<Agent> {
         return '/agents';
     }
 
-    protected getItemId(agent: Agent): string {
-        return agent.agentUId;
+    protected getItemId(item: Agent): string {
+        return item.agentUId;
+    }
+
+    protected getItemName(item: Agent): string {
+        return item.name || 'Unknown Agent';
     }
 
     protected fetchItems(): void {
@@ -80,15 +84,15 @@ export class AgentListComponent extends BaseListComponent<Agent> {
     }
 
     onEdit(agent: Agent): void {
-        this.navigateToEdit(agent.agentUId);
+        this.navigateToEdit(agent.agentUId, this.getItemName(agent));
     }
 
     onView(agent: Agent): void {
-        this.navigateToDetail(agent.agentUId);
+        this.navigateToDetail(agent.agentUId, this.getItemName(agent));
     }
 
     onSelect(agent: Agent): void {
-        this.navigateToDetail(agent.agentUId);
+        this.navigateToDetail(agent.agentUId, this.getItemName(agent));
     }
 
     onDelete(agent: Agent): void {

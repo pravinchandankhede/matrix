@@ -31,6 +31,10 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
         return collection.dataSourceCollectionUId;
     }
 
+    protected getItemName(collection: DataSourceCollection): string {
+        return collection.name || 'Unknown Collection';
+    }
+
     protected fetchItems(): void {
         this.collectionService.getDataSourceCollections()
             .pipe(takeUntil(this.destroy$))
@@ -64,15 +68,15 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
     }
 
     onEdit(collection: DataSourceCollection): void {
-        this.navigateToEdit(collection.dataSourceCollectionUId);
+        this.navigateToEdit(collection.dataSourceCollectionUId, this.getItemName(collection));
     }
 
     onView(collection: DataSourceCollection): void {
-        this.navigateToDetail(collection.dataSourceCollectionUId);
+        this.navigateToDetail(collection.dataSourceCollectionUId, this.getItemName(collection));
     }
 
     onSelect(collection: DataSourceCollection): void {
-        this.navigateToDetail(collection.dataSourceCollectionUId);
+        this.navigateToDetail(collection.dataSourceCollectionUId, this.getItemName(collection));
     }
 
     onDelete(collection: DataSourceCollection): void {

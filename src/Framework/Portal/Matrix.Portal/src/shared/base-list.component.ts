@@ -15,6 +15,7 @@ export abstract class BaseListComponent<T> extends BaseComponent<T> implements O
     protected abstract filterPredicate(item: T): boolean;
     protected abstract getDetailRoute(): string; // Base route for navigation (e.g., '/agents')
     protected abstract getItemId(item: T): string; // Primary key field for tracking
+    protected abstract getItemName(item: T): string; // Get display name for breadcrumbs
 
     ngOnInit(): void {
         this.loadItems();
@@ -64,16 +65,18 @@ export abstract class BaseListComponent<T> extends BaseComponent<T> implements O
     }
 
     // Common navigation methods
-    protected navigateToDetail(id: string): void {
-        this.router.navigate([this.getDetailRoute(), id]);
+    protected navigateToDetail(id: string, itemName?: string): void {
+        const state = itemName ? { itemName } : undefined;
+        this.router.navigate([this.getDetailRoute(), id], { state });
     }
 
     protected navigateToAdd(): void {
         this.router.navigate([this.getDetailRoute(), 'add']);
     }
 
-    protected navigateToEdit(id: string): void {
-        this.router.navigate([this.getDetailRoute(), id], { queryParams: { edit: 'true' } });
+    protected navigateToEdit(id: string, itemName?: string): void {
+        const state = itemName ? { itemName } : undefined;
+        this.router.navigate([this.getDetailRoute(), id], { queryParams: { edit: 'true' }, state });
     }
 
     // Track function for ngFor performance optimization

@@ -33,6 +33,10 @@ export class ModelListComponent extends BaseListComponent<Model> {
         return model.modelUId;
     }
 
+    protected getItemName(model: Model): string {
+        return model.name || 'Unknown Model';
+    }
+
     protected fetchItems(): void {
         this.modelService.getModels()
             .pipe(takeUntil(this.destroy$))
@@ -90,15 +94,15 @@ export class ModelListComponent extends BaseListComponent<Model> {
     }
 
     onEdit(model: Model): void {
-        this.navigateToEdit(model.modelUId);
+        this.navigateToEdit(model.modelUId, this.getItemName(model));
     }
 
     onView(model: Model): void {
-        this.navigateToDetail(model.modelUId);
+        this.navigateToDetail(model.modelUId, this.getItemName(model));
     }
 
     onSelect(model: Model): void {
-        this.navigateToDetail(model.modelUId);
+        this.navigateToDetail(model.modelUId, this.getItemName(model));
     }
 
     onDelete(model: Model): void {

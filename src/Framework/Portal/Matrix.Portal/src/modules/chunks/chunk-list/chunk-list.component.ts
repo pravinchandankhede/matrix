@@ -32,6 +32,10 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
         return chunk.chunkId;
     }
 
+    protected getItemName(chunk: Chunk): string {
+        return `Chunk ${chunk.chunkId.substring(0, 8)}...`;
+    }
+
     protected fetchItems(): void {
         this.chunkService.getChunks()
             .pipe(takeUntil(this.destroy$))
@@ -87,15 +91,15 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
     }
 
     onEdit(chunk: Chunk): void {
-        this.navigateToEdit(chunk.chunkId);
+        this.navigateToEdit(chunk.chunkId, this.getItemName(chunk));
     }
 
     onView(chunk: Chunk): void {
-        this.navigateToDetail(chunk.chunkId);
+        this.navigateToDetail(chunk.chunkId, this.getItemName(chunk));
     }
 
     onSelect(chunk: Chunk): void {
-        this.navigateToDetail(chunk.chunkId);
+        this.navigateToDetail(chunk.chunkId, this.getItemName(chunk));
     }
 
     onDelete(chunk: Chunk): void {

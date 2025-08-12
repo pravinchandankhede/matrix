@@ -32,6 +32,10 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
         return dataSource.dataSourceUId;
     }
 
+    protected getItemName(dataSource: DataSource): string {
+        return dataSource.name || 'Unknown Data Source';
+    }
+
     protected fetchItems(): void {
         this.dataSourceService.getDataSources()
             .pipe(takeUntil(this.destroy$))
@@ -76,15 +80,15 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
     }
 
     onEdit(dataSource: DataSource): void {
-        this.navigateToEdit(dataSource.dataSourceUId);
+        this.navigateToEdit(dataSource.dataSourceUId, this.getItemName(dataSource));
     }
 
     onView(dataSource: DataSource): void {
-        this.navigateToDetail(dataSource.dataSourceUId);
+        this.navigateToDetail(dataSource.dataSourceUId, this.getItemName(dataSource));
     }
 
     onSelect(dataSource: DataSource): void {
-        this.navigateToDetail(dataSource.dataSourceUId);
+        this.navigateToDetail(dataSource.dataSourceUId, this.getItemName(dataSource));
     }
 
     onDelete(dataSource: DataSource): void {

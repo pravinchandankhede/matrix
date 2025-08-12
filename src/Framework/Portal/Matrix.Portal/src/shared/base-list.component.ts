@@ -9,7 +9,7 @@ export abstract class BaseListComponent<T> extends BaseComponent<T> implements O
     filteredItems: T[] = [];
     searchTerm: string = '';
     filterValue: any = null;
-    
+
     // Abstract methods that must be implemented by derived classes
     protected abstract fetchItems(): void;
     protected abstract filterPredicate(item: T): boolean;
@@ -43,7 +43,7 @@ export abstract class BaseListComponent<T> extends BaseComponent<T> implements O
         this.isLoading = false;
         this.items = data;
         this.applyFilter();
-        
+
         if (this.items.length === 0) {
             this.notificationService.addInfo(`No ${this.getEntityName().toLowerCase()}s found.`, this.getErrorContext());
         }
@@ -77,7 +77,8 @@ export abstract class BaseListComponent<T> extends BaseComponent<T> implements O
     }
 
     // Track function for ngFor performance optimization
-    trackByFn(index: number, item: T): string {
+    trackByFn = (index: number, item: T): any => {
+        if (!item) return index;
         return this.getItemId(item);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Matrix.KnowledgeLayer.Interfaces;
 
-using Matrix.KnowledgeLayer.DataModels;
+using Matrix.DataModels.Knowledge;
 
 public interface IKnowledgeCollection
 {

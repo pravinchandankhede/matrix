@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\DataModels\DataModels\DataModels.csproj" />
+    <ProjectReference Include="..\KnowledgeLayer.Interfaces\KnowledgeLayer.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,6 +8,7 @@ using System;
 public class Knowledge
 {
     public Guid KnowledgeUId { get; set; }
+    public required String Name { get; set; }
     public required String Type { get; set; }
     public DataSourceCollection DataSourceCollection { get; set; } = null!;
     public Model Model { get; set; } = null!;

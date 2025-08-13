@@ -1,8 +1,9 @@
 ﻿namespace Matrix.DataModels.DataSources;
 
+using Matrix.DataModels.BaseModels;
 using System;
 
-public class StreamingAttributes : DataSourceAttributes
+public class StreamingDataSource : BaseModel
 {
     public required String BrokerUrl { get; set; }
     public required String TopicName { get; set; }

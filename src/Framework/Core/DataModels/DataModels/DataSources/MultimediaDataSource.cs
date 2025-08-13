@@ -1,9 +1,10 @@
 ﻿namespace Matrix.DataModels.DataSources;
 
+using Matrix.DataModels.BaseModels;
 using System;
 using System.Collections.Generic;
 
-public class MultimediaAttributes : DataSourceAttributes
+public class MultimediaDataSource : BaseModel
 {
     public required MediaType MediaType { get; set; }
     public Boolean? TranscriptionEnabled { get; set; }

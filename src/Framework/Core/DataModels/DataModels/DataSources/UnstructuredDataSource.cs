@@ -1,9 +1,10 @@
 ﻿namespace Matrix.DataModels.DataSources;
 
+using Matrix.DataModels.BaseModels;
 using System;
 using System.Collections.Generic;
 
-public class UnstructuredAttributes : DataSourceAttributes
+public class UnstructuredDataSource : BaseModel
 {
     public required StorageType StorageType { get; set; }
     public required String FilePathOrUrl { get; set; }

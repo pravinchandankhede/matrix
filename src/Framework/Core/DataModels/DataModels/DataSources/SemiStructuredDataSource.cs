@@ -1,9 +1,10 @@
-﻿namespace Matrix.DataModels.DataSources;
+namespace Matrix.DataModels.DataSources;
 
+using Matrix.DataModels.BaseModels;
 using System;
 using System.Collections.Generic;
 
-public class SemiStructuredAttributes : DataSourceAttributes
+public class SemiStructuredDataSource : BaseModel
 {
     public required String EndpointUrl { get; set; }
     public String? CollectionName { get; set; }

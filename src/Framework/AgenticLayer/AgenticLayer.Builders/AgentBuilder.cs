@@ -10,7 +10,7 @@ namespace Matrix.AgenticLayer.Builders;
 
 using Matrix.AgenticLayer.AgentApp;
 using Matrix.AgenticLayer.Interfaces;
-using Matrix.ModelLayer.DataModels;
+using Matrix.DataModels.Models;
 
 public class AgentBuilder : IAgentBuilder
 {

@@ -46,9 +46,9 @@ public class ModelRegistry
     /// </summary>
     /// <param name="name">The name of the Model.</param>
     /// <returns>The Model if found; otherwise, null.</returns>
-    public Model? GetModel(String name)
+    public Model? GetModel(Guid uId)
     {
-        Model? Model = _repository.GetModel(name);
+        Model? Model = _repository.GetModel(uId);
         return Model;
     }
 

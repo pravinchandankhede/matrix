@@ -11,11 +11,11 @@ using Matrix.AgenticLayer.AgentRegistry;
 using Matrix.AgenticLayer.BaseAgent;
 using Matrix.AgenticLayer.Interfaces;
 using Matrix.ModelLayer.DataLayer;
-using Matrix.ModelLayer.DataModels;
+using Matrix.DataModels.Models;
 
 public static class Program
 {
-    public static void Main(String[] args)
+    public static void Main()
     {
         var builder = AgentFactory.CreateBuilder()
             .ConfigureAgent("ExampleAgent", "SemanticKernel")

@@ -16,6 +16,12 @@ public class DataSource : BaseModel
     public required AuthenticationType AuthenticationType { get; set; }
     public StructuredDataSource? StructuredDataSource { get; set; } = null;
     public VectorDataSource? VectorDataSource { get; set; } = null;
+    public ExternalDataSource? ExternalDataSource { get; set; } = null;
+    public MultimediaDataSource? MultimediaDataSource { get; set; } = null;
+    public StreamingDataSource? StreamingDataSource { get; set; } = null;
+    public ProprietaryDataSource? ProprietaryDataSource { get; set; } = null;
+    public SemiStructuredDataSource? SemiStructuredDataSource { get; set; } = null;
+    public UnstructuredDataSource? UnstructuredDataSource { get; set; } = null;
 
     public Boolean IsCustom { get; set; }
 }

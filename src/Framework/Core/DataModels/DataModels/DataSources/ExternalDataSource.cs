@@ -1,9 +1,10 @@
-﻿namespace Matrix.DataModels.DataSources;
+namespace Matrix.DataModels.DataSources;
 
+using Matrix.DataModels.BaseModels;
 using System;
 using System.Collections.Generic;
 
-public class ExternalAttributes : DataSourceAttributes
+public class ExternalDataSource : BaseModel
 {
     public required String ApiEndpoint { get; set; }
     public required HttpMethod HttpMethod { get; set; }

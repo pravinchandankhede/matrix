@@ -1,7 +1,6 @@
 import { Component, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Agent, Capability, Feature, Tool } from '../../../datamodels/agent.model';
+import { Agent, Capability, Feature, Tool } from '../../../datamodels';
 import { AgentService } from '../../../services/agent.service';
 import { BaseDetailComponent } from '../../../shared/base-detail.component';
 
@@ -14,7 +13,7 @@ import { BaseDetailComponent } from '../../../shared/base-detail.component';
 export class AgentDetailComponent extends BaseDetailComponent<Agent> implements AfterViewInit {
     // Navigation
     activeSection: string = 'general';
-
+    
     agentForm: FormGroup;
 
     private fb = inject(FormBuilder);
@@ -64,7 +63,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
     }
 
     createNewItem(): Agent {
-        const newAgent = {
+        const newAgent: Agent = {
             agentUId: this.generateId(),
             name: '',
             description: '',
@@ -79,7 +78,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
             modifiedBy: 'System',
             modifiedDate: new Date(),
             correlationUId: this.generateId(),
-            rowVersion: undefined,
+            rowVersion: new Uint8Array(),
             metadata: []
         };
 
@@ -144,7 +143,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
     }
 
     // Lifecycle hooks
-    protected override onItemLoaded(item: Agent): void {
+    protected override onItemLoaded(_item: Agent): void {
         this.populateForm();
     }
 
@@ -188,7 +187,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
             modifiedBy: 'System',
             modifiedDate: new Date(),
             correlationUId: this.generateId(),
-            rowVersion: undefined,
+            rowVersion: new Uint8Array(),
             metadata: []
         };
         this.item.capabilities.push(newCapability);
@@ -206,14 +205,12 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
             featureUId: this.generateId(),
             name: '',
             description: '',
-            type: 'General',
-            configuration: {},
             createdBy: 'System',
             createdDate: new Date(),
             modifiedBy: 'System',
             modifiedDate: new Date(),
             correlationUId: this.generateId(),
-            rowVersion: undefined,
+            rowVersion: new Uint8Array(),
             metadata: []
         };
         this.item.features.push(newFeature);
@@ -232,13 +229,13 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
             name: '',
             description: '',
             type: 'General',
-            configuration: {},
+            version: '1.0.0',
             createdBy: 'System',
             createdDate: new Date(),
             modifiedBy: 'System',
             modifiedDate: new Date(),
             correlationUId: this.generateId(),
-            rowVersion: undefined,
+            rowVersion: new Uint8Array(),
             metadata: []
         };
         this.item.tools.push(newTool);
@@ -268,7 +265,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
 
     private getFormValidationErrors(form: FormGroup): string[] {
         const errors: string[] = [];
-
+        
         Object.keys(form.controls).forEach(key => {
             const control = form.get(key);
             if (control && !control.valid && (control.dirty || control.touched)) {
@@ -292,7 +289,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
                 }
             }
         });
-
+        
         return errors;
     }
 
@@ -304,7 +301,7 @@ export class AgentDetailComponent extends BaseDetailComponent<Agent> implements 
             'status': 'Status',
             'version': 'Version'
         };
-
+        
         return fieldNames[fieldName] || fieldName;
     }
 }

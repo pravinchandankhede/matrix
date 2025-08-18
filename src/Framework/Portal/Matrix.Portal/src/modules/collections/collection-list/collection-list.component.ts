@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DataSourceCollection } from '../../../datamodels/data-source-collection.model';
+import { DataSourceCollection } from '../../../datamodels';
 import { BaseListComponent } from '../../../shared/base-list.component';
 import { DataSourceCollectionService } from '../../../services/data-source-collection.service';
 import { takeUntil } from 'rxjs/operators';
@@ -50,7 +50,7 @@ export class CollectionListComponent extends BaseListComponent<DataSourceCollect
 
     protected filterPredicate(collection: DataSourceCollection): boolean {
         const matchesName = collection.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-            collection.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+                           collection.description.toLowerCase().includes(this.searchTerm.toLowerCase());
         return matchesName;
     }
 

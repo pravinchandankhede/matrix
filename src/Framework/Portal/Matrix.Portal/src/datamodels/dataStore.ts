@@ -1,11 +1,12 @@
-import { CustomizableModel } from './base.model';
+import { BaseModel } from './base.model';
 
-export interface DataStore extends CustomizableModel {
-  DataStoreUId: string;
-  Type: string; // Type of the data store (e.g., SQL, NoSQL, FileSystem)
-}
-
-// TODO: Define DataStore model based on C# source if available
-export interface DataStore {
-  [key: string]: any;
+/**
+ * Data store interface for managing data storage entities
+ * This interface may need to be updated when the corresponding C# model is available
+ */
+export interface DataStore extends BaseModel {
+  dataStoreUId: string;
+  type: string; // Type of the data store (e.g., SQL, NoSQL, FileSystem)
+  isCustom: boolean;
+  owner: string;
 }

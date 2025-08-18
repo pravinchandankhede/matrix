@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Agent } from '../datamodels/agent.model';
+import { Agent, AgentRequest, AgentResponse } from '../datamodels';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
@@ -27,5 +27,22 @@ export class AgentService {
 
     deleteAgent(id: string): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    }
+
+    // New methods for agent interaction
+    sendQuery(agentId: string, request: AgentRequest): Observable<AgentResponse> {
+        return this.http.post<AgentResponse>(`${this.apiUrl}/${agentId}/query`, request);
+    }
+
+    getAgentCapabilities(agentId: string): Observable<Agent['capabilities']> {
+        return this.http.get<Agent['capabilities']>(`${this.apiUrl}/${agentId}/capabilities`);
+    }
+
+    getAgentFeatures(agentId: string): Observable<Agent['features']> {
+        return this.http.get<Agent['features']>(`${this.apiUrl}/${agentId}/features`);
+    }
+
+    getAgentTools(agentId: string): Observable<Agent['tools']> {
+        return this.http.get<Agent['tools']>(`${this.apiUrl}/${agentId}/tools`);
     }
 }

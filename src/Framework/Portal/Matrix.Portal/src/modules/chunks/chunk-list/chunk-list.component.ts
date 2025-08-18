@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Chunk } from '../../../datamodels/chunk.model';
+import { Chunk } from '../../../datamodels';
 import { BaseListComponent } from '../../../shared/base-list.component';
 import { ChunkService } from '../../../services/chunk.service';
 import { takeUntil } from 'rxjs/operators';
@@ -51,7 +51,7 @@ export class ChunkListComponent extends BaseListComponent<Chunk> {
 
     protected filterPredicate(chunk: Chunk): boolean {
         const matchesContent = chunk.text.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-            chunk.chunkId.toLowerCase().includes(this.searchTerm.toLowerCase());
+                              chunk.chunkId.toLowerCase().includes(this.searchTerm.toLowerCase());
         const matchesType = this.selectedType ? chunk.type === this.selectedType : true;
         const matchesSource = this.selectedSource ? chunk.chunkSource === this.selectedSource : true;
         return matchesContent && matchesType && matchesSource;

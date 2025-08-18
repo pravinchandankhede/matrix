@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Agent } from '../../../datamodels/agent.model';
+import { Agent } from '../../../datamodels';
 import { AgentService } from '../../../services/agent.service';
 import { BaseListComponent } from '../../../shared/base-list.component';
 import { takeUntil } from 'rxjs/operators';
@@ -51,7 +51,7 @@ export class AgentListComponent extends BaseListComponent<Agent> {
 
     protected filterPredicate(agent: Agent): boolean {
         const matchesName = agent.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-            agent.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+                           agent.description.toLowerCase().includes(this.searchTerm.toLowerCase());
         const matchesStatus = this.selectedStatus ? agent.status === this.selectedStatus : true;
         const matchesType = this.selectedType ? agent.type === this.selectedType : true;
         return matchesName && matchesStatus && matchesType;

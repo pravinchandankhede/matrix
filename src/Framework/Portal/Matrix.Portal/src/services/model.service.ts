@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Model } from '../datamodels/model';
+import { Model } from '../datamodels';
 
 @Injectable({
     providedIn: 'root'
@@ -29,5 +29,30 @@ export class ModelService {
 
     deleteModel(id: string): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    }
+
+    // Enhanced model operations
+    getModelsByProvider(provider: string): Observable<Model[]> {
+        return this.http.get<Model[]>(`${this.apiUrl}/provider/${provider}`);
+    }
+
+    getModelsByType(type: string): Observable<Model[]> {
+        return this.http.get<Model[]>(`${this.apiUrl}/type/${type}`);
+    }
+
+    getEnabledModels(): Observable<Model[]> {
+        return this.http.get<Model[]>(`${this.apiUrl}/enabled`);
+    }
+
+    testModelConnection(modelId: string): Observable<{ success: boolean; message: string; latency?: number }> {
+        return this.http.post<{ success: boolean; message: string; latency?: number }>(`${this.apiUrl}/${modelId}/test`, {});
+    }
+
+    toggleModelStatus(modelId: string, enabled: boolean): Observable<Model> {
+        return this.http.patch<Model>(`${this.apiUrl}/${modelId}/status`, { isEnabled: enabled });
+    }
+
+    getModelMetrics(modelId: string): Observable<{ usage: number; errors: number; averageLatency: number }> {
+        return this.http.get<{ usage: number; errors: number; averageLatency: number }>(`${this.apiUrl}/${modelId}/metrics`);
     }
 }

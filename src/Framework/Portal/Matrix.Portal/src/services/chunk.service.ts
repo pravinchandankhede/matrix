@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Chunk } from '../datamodels/chunk.model';
+import { Chunk, ChunkStrategy } from '../datamodels';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
@@ -27,5 +27,38 @@ export class ChunkService {
 
     deleteChunk(id: string): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    }
+
+    // Enhanced chunk operations
+    getChunksBySource(sourceId: string): Observable<Chunk[]> {
+        return this.http.get<Chunk[]>(`${this.apiUrl}/source/${sourceId}`);
+    }
+
+    getChunksByType(type: string): Observable<Chunk[]> {
+        return this.http.get<Chunk[]>(`${this.apiUrl}/type/${type}`);
+    }
+
+    getChunkStrategies(): Observable<ChunkStrategy[]> {
+        return this.http.get<ChunkStrategy[]>(`${this.apiUrl}/strategies`);
+    }
+
+    getChunkStrategy(id: string): Observable<ChunkStrategy> {
+        return this.http.get<ChunkStrategy>(`${this.apiUrl}/strategies/${id}`);
+    }
+
+    createChunkStrategy(strategy: ChunkStrategy): Observable<ChunkStrategy> {
+        return this.http.post<ChunkStrategy>(`${this.apiUrl}/strategies`, strategy);
+    }
+
+    updateChunkStrategy(strategy: ChunkStrategy): Observable<ChunkStrategy> {
+        return this.http.put<ChunkStrategy>(`${this.apiUrl}/strategies/${strategy.chunkStrategyUId}`, strategy);
+    }
+
+    deleteChunkStrategy(id: string): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/strategies/${id}`);
+    }
+
+    searchChunks(query: string): Observable<Chunk[]> {
+        return this.http.get<Chunk[]>(`${this.apiUrl}/search?q=${encodeURIComponent(query)}`);
     }
 }

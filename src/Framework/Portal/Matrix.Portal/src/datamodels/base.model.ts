@@ -1,11 +1,16 @@
 /**
+ * Metadata interface for storing key-value pairs
+ */
+export interface Metadata extends BaseModel {
+  metadataUId: string;
+  name: string;
+  value: string;
+}
+
+/**
  * Base interface containing common audit fields and properties
  * that are shared across all domain models.
  */
-export interface Metadata {
-  [key: string]: any;
-}
-
 export interface BaseModel {
   /** User or system that created this entity */
   createdBy: string;
@@ -23,7 +28,7 @@ export interface BaseModel {
   correlationUId: string; // Guid as string
   
   /** Version number for optimistic concurrency control */
-  rowVersion?: Uint8Array;
+  rowVersion: Uint8Array;
   
   /** Additional metadata as key-value pairs */
   metadata: Metadata[];
@@ -117,32 +122,4 @@ export enum DistanceMetric {
   Cosine = 'Cosine',
   Euclidean = 'Euclidean',
   DotProduct = 'DotProduct',
-}
-
-/**
- * Interfaces for related models
- */
-export interface ExternalAttributes {
-  apiEndpoint: string;
-  httpMethod: HttpMethod;
-  headers: Record<string, any>;
-  queryParams: Record<string, any>;
-  rateLimitPerMinute?: number;
-}
-
-export interface StructuredDataSource extends BaseModel {
-  host: string;
-  port: number;
-  databaseName: string;
-  schema?: string;
-  tableList: string[];
-  queryTemplate?: string;
-}
-
-export interface VectorDataSource extends BaseModel {
-  vectorDbType: VectorDbType;
-  indexName: string;
-  embeddingModel: string;
-  dimension: number;
-  distanceMetric: DistanceMetric;
 }

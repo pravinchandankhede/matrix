@@ -1,10 +1,19 @@
 import { BaseModel } from './base.model';
 
-export interface ChunkStrategy {
-  strategyType: string;
-  parameters: { [key: string]: any };
+/**
+ * Chunk strategy interface for defining chunking strategies
+ */
+export interface ChunkStrategy extends BaseModel {
+  chunkStrategyUId: string;
+  name: string;
+  description: string;
+  parameters?: string;
+  type: string;
 }
 
+/**
+ * Chunk interface representing data chunks
+ */
 export interface Chunk extends BaseModel {
   chunkUId: string;
   chunkId: string;
@@ -12,6 +21,5 @@ export interface Chunk extends BaseModel {
   type: string;
   chunkSource: string;
   chunkSourceId: string;
-  correlationUId: string;
   chunkStrategy?: ChunkStrategy;
 }

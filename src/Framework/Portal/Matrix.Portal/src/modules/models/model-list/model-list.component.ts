@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ModelService } from '../../../services/model.service';
-import { Model } from '../../../datamodels/model';
+import { Model } from '../../../datamodels';
 import { BaseListComponent } from '../../../shared/base-list.component';
 import { takeUntil } from 'rxjs/operators';
 
@@ -52,12 +52,12 @@ export class ModelListComponent extends BaseListComponent<Model> {
 
     protected filterPredicate(model: Model): boolean {
         const matchesName = model.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-            (model.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ?? false);
-        const matchesEnabled = this.selectedEnabled ?
+                           (model.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ?? false);
+        const matchesEnabled = this.selectedEnabled ? 
             (this.selectedEnabled === 'true' ? model.isEnabled : !model.isEnabled) : true;
-        const matchesProvider = this.selectedProvider ?
+        const matchesProvider = this.selectedProvider ? 
             (model.provider?.toLowerCase() === this.selectedProvider.toLowerCase()) : true;
-        const matchesType = this.selectedType ?
+        const matchesType = this.selectedType ? 
             (model.type?.toLowerCase() === this.selectedType.toLowerCase()) : true;
         return matchesName && matchesEnabled && matchesProvider && matchesType;
     }

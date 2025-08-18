@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DataSource } from '../../../datamodels/data-source.model';
+import { DataSource } from '../../../datamodels';
 import { BaseListComponent } from '../../../shared/base-list.component';
 import { DataSourceService } from '../../../services/data-source.service';
 import { takeUntil } from 'rxjs/operators';
@@ -51,7 +51,7 @@ export class DataSourceListComponent extends BaseListComponent<DataSource> {
 
     protected filterPredicate(dataSource: DataSource): boolean {
         const matchesName = dataSource.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-            (dataSource.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ?? false);
+                           (dataSource.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ?? false);
         const matchesActive = this.selectedActive ? dataSource.isActive.toString() === this.selectedActive : true;
         const matchesType = this.selectedType ? dataSource.type === this.selectedType : true;
         return matchesName && matchesActive && matchesType;

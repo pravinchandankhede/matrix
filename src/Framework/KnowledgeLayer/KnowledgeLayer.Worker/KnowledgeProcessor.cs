@@ -3,8 +3,10 @@
 using Matrix.ChunkEngine.Interfaces;
 using Matrix.ChunkEngine.Worker.Strategies;
 using Matrix.DataModels.Chunks;
+using Matrix.DataModels.Knowledge;
 using Matrix.DataSourceLayer.DataLayer;
 using Matrix.DataSourceLayer.Interfaces;
+using Matrix.EmbeddingEngine.Interfaces;
 using Matrix.KnowledgeLayer.Interfaces;
 
 public class KnowledgeProcessor
@@ -13,16 +15,19 @@ public class KnowledgeProcessor
     private readonly IDataSourceRepository _dataSourceRepository;
     private readonly DataSourceManager _dataSourceManager;
     private readonly IChunkProcessor _chunkProcessor;
+    private readonly IEmbedProcessor _embedProcessor;
 
     public KnowledgeProcessor(IKnowledgeRepository knowledgeRepository,
             IDataSourceRepository dataSourceRepository,
             DataSourceManager dataSourceManager,
-            IChunkProcessor chunkProcessor)
+            IChunkProcessor chunkProcessor,
+            IEmbedProcessor embedProcessor)
     {
         this._knowledgeRepository = knowledgeRepository;
         this._dataSourceRepository = dataSourceRepository;
         this._dataSourceManager = dataSourceManager;
         this._chunkProcessor = chunkProcessor;
+        this._embedProcessor = embedProcessor;
     }
 
     public void ProcessKnowledge()
@@ -37,36 +42,41 @@ public class KnowledgeProcessor
         //for each chunk, generte embeddings
         //for each embedding, store it in the knowledge base using vector DB.
 
-        var knowledgeItems = _knowledgeRepository.GetAllKnowledge();
-        foreach (var item in knowledgeItems)
+        IEnumerable<DataModels.Knowledge.Knowledge> knowledgeItems = _knowledgeRepository.GetAllKnowledge();
+        foreach (DataModels.Knowledge.Knowledge item in knowledgeItems)
         {
-            var dataSourceCollection = item.DataSourceCollection;
+            DataModels.DataSources.DataSourceCollection dataSourceCollection = item.DataSourceCollection;
 
-            foreach (var dataSource in dataSourceCollection.DataSources)
+            foreach (DataModels.DataSources.DataSource dataSource in dataSourceCollection.DataSources)
             {
                 // Fetch data from the data source
                 Console.WriteLine($"Fetching data from {dataSource.Name}...");
 
-                var documents = this._dataSourceManager.Load(dataSource);
-
-                var chunkStrategy = new FixedSizeStrategy();
+                List<Document> documents = this._dataSourceManager.Load(dataSource);
+                FixedSizeStrategy chunkStrategy = new FixedSizeStrategy();
 
                 // Process each data item
-                foreach (var document in documents)
+                foreach (Document document in documents)
                 {
                     // Chunk the data item
-                    var chunks =_chunkProcessor.GetChunks(document, chunkStrategy);
+                    IEnumerable<Chunk> chunks = _chunkProcessor.GetChunks(document, chunkStrategy);
 
-                    foreach (var chunk in chunks)
+                    foreach (Chunk chunk in chunks)
                     {
                         // Generate embeddings for each chunk
-                        var embedding = GenerateEmbedding(chunk);
+                        var embeddings = _embedProcessor.GetEmbeddings(chunk.Text);
+
                         // Store the embedding in the knowledge base
                         _knowledgeRepository.AddKnowledge(new Knowledge
                         {
-                            DataSource = dataSource,
-                            Chunk = chunk,
-                            Embedding = embedding
+                            KnowledgeUId = Guid.NewGuid(),
+                            Name = item.Name,
+                            Type = item.Type,
+                            DataSourceCollection = dataSourceCollection,
+                            Model = item.Model,
+                            Status = "Processed",
+                            OutputDataSource = item.OutputDataSource,
+                            ChunkStrategy = item.ChunkStrategy
                         });
                     }
                 }

@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\ChunkEngine\ChunkEngine.Worker\ChunkEngine.Worker.csproj" />
     <ProjectReference Include="..\..\DataSourceLayer\DataSourceLayer.DataLayer\DataSourceLayer.DataLayer.csproj" />
     <ProjectReference Include="..\..\DataSourceLayer\DataSourceLayer.Interfaces\DataSourceLayer.Interfaces.csproj" />
+    <ProjectReference Include="..\..\EmbeddingEngine\EmbeddingEngine.Interfaces\EmbeddingEngine.Interfaces.csproj" />
     <ProjectReference Include="..\KnowledgeLayer.Interfaces\KnowledgeLayer.Interfaces.csproj" />
   </ItemGroup>
 

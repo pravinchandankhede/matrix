@@ -4,5 +4,5 @@ using Matrix.DataModels.Chunks;
 
 public interface IChunkStrategy
 {
-    IEnumerable<Chunk> ProcessDocument(IDocument document);
+    IEnumerable<Chunk> ProcessDocument(Document document);
 }

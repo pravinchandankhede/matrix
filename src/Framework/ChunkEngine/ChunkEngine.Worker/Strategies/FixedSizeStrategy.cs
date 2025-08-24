@@ -4,11 +4,11 @@ using Matrix.ChunkEngine.Interfaces;
 using Matrix.DataModels.Chunks;
 using System.Collections.Generic;
 
-internal class FixedSizeStrategy : IChunkStrategy
+public class FixedSizeStrategy : IChunkStrategy
 {
-    public IEnumerable<Chunk> ProcessDocument(IDocument document)
+    public IEnumerable<Chunk> ProcessDocument(Document document)
     {
-        String text = document.GetText();
+        String text = document.DocumentText;
 
         Int32 chunkSize = 1000;
         List<Chunk> chunks = new List<Chunk>();
@@ -24,7 +24,7 @@ internal class FixedSizeStrategy : IChunkStrategy
                 EndIndex = i + chunkText.Length - 1
             };
             //TODO - Add chunk to repository.
-            //chunks.Add(chunk);
+            chunks.Add(chunk);
         }
 
         return chunks;

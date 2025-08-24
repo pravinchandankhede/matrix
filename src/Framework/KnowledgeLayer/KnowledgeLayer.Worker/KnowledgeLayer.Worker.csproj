@@ -8,4 +8,12 @@
     <RootNamespace>Matrix.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\ChunkEngine\ChunkEngine.Interfaces\ChunkEngine.Interfaces.csproj" />
+    <ProjectReference Include="..\..\ChunkEngine\ChunkEngine.Worker\ChunkEngine.Worker.csproj" />
+    <ProjectReference Include="..\..\DataSourceLayer\DataSourceLayer.DataLayer\DataSourceLayer.DataLayer.csproj" />
+    <ProjectReference Include="..\..\DataSourceLayer\DataSourceLayer.Interfaces\DataSourceLayer.Interfaces.csproj" />
+    <ProjectReference Include="..\KnowledgeLayer.Interfaces\KnowledgeLayer.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>

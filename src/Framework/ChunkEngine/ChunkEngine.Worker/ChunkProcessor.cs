@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 internal class ChunkProcessor : IChunkProcessor
 {
-    public IEnumerable<Chunk> GetChunks(IDocument document, IChunkStrategy chunkStrategy)
+    public IEnumerable<Chunk> GetChunks(Document document, IChunkStrategy chunkStrategy)
     {
         return chunkStrategy.ProcessDocument(document);
     }

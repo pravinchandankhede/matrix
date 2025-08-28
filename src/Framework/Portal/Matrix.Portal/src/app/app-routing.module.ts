@@ -15,6 +15,11 @@ const routes: Routes = [
             import('../modules/agents/agents.module').then(m => m.AgentsModule)
     },
     {
+        path: 'knowledge',
+        loadChildren: () =>
+            import('../modules/knowledge/knowledge.module').then(m => m.KnowledgeModule)
+    },
+    {
         path: 'collections',
         loadChildren: () =>
             import('../modules/collections/collections.module').then(m => m.CollectionsModule)

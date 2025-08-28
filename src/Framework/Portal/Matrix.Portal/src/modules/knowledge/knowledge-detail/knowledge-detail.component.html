@@ -1,0 +1,282 @@
+<div class="detail-container" *ngIf="item">
+    <!-- Loading indicator -->
+    <div *ngIf="isLoading" class="loading-overlay">
+        <mat-icon class="spinner">hourglass_empty</mat-icon>
+        <span>{{ isNew ? 'Creating knowledge...' : 'Loading...' }}</span>
+    </div>
+
+    <div class="section-wrapper modern-theme-bg">
+        <div class="detail-header">
+            <h2><mat-icon>psychology</mat-icon> {{ item.name || 'New Knowledge' }}</h2>
+            <button class="edit-btn" (click)="onEdit()" *ngIf="!editMode">
+                <mat-icon>edit</mat-icon> Edit
+            </button>
+            <button class="edit-btn" (click)="onCancelEdit()" *ngIf="editMode">
+                <mat-icon>close</mat-icon> Cancel
+            </button>
+        </div>
+
+        <div class="detail-content two-pane-layout">
+            <!-- Left Navigation Panel -->
+            <div class="left-panel">
+                <nav class="section-nav">
+                    <ul>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'general'"
+                            (click)="setActiveSection('general')">
+                            <mat-icon>info</mat-icon>
+                            <span>General</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'datasources'"
+                            (click)="setActiveSection('datasources')">
+                            <mat-icon>source</mat-icon>
+                            <span>Data Sources</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'model'"
+                            (click)="setActiveSection('model')">
+                            <mat-icon>model_training</mat-icon>
+                            <span>Model</span>
+                        </li>
+                        <li class="nav-item"
+                            [class.active]="activeSection === 'audit'"
+                            (click)="setActiveSection('audit')">
+                            <mat-icon>history</mat-icon>
+                            <span>Audit</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Right Content Panel -->
+            <div class="right-panel">
+                <div class="section-content">
+                    <!-- Edit Mode -->
+                    <div *ngIf="editMode; else viewMode" class="detail-form">
+                        <!-- Basic Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'general'">
+                            <form [formGroup]="knowledgeForm" (ngSubmit)="onSave()">
+                                <h3>General Information</h3>
+                                <div class="form-grid">
+                                    <div class="form-row">
+                                        <label>Knowledge UID:</label>
+                                        <input type="text" [value]="item.knowledgeUId" readonly />
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Name: <span class="required">*</span></label>
+                                        <input type="text" formControlName="name" placeholder="Enter knowledge name" />
+                                        <div *ngIf="knowledgeForm.get('name')?.invalid && (knowledgeForm.get('name')?.dirty || knowledgeForm.get('name')?.touched)" class="field-error">
+                                            <span *ngIf="knowledgeForm.get('name')?.errors?.['required']">Knowledge name is required.</span>
+                                            <span *ngIf="knowledgeForm.get('name')?.errors?.['minlength']">Knowledge name must be at least 2 characters long.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-row full-width">
+                                        <label>Description:</label>
+                                        <textarea formControlName="description" placeholder="Enter knowledge description" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Type: <span class="required">*</span></label>
+                                        <select formControlName="type">
+                                            <option value="">Select type</option>
+                                            <option value="Document">Document</option>
+                                            <option value="Database">Database</option>
+                                            <option value="API">API</option>
+                                            <option value="Web">Web</option>
+                                            <option value="Custom">Custom</option>
+                                        </select>
+                                        <div *ngIf="knowledgeForm.get('type')?.invalid && (knowledgeForm.get('type')?.dirty || knowledgeForm.get('type')?.touched)" class="field-error">
+                                            <span *ngIf="knowledgeForm.get('type')?.errors?.['required']">Knowledge type is required.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Status:</label>
+                                        <select formControlName="status">
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                            <option value="Processing">Processing</option>
+                                            <option value="Error">Error</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Version:</label>
+                                        <input type="text" formControlName="version" placeholder="Enter version" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Data Sources Section -->
+                        <div class="content-section" *ngIf="activeSection === 'datasources'">
+                            <h3>Data Sources</h3>
+                            <div class="info-section">
+                                <div class="form-row">
+                                    <label>Data Source Collection:</label>
+                                    <select [(ngModel)]="item.dataSourceCollection" name="dataSourceCollection">
+                                        <option value="">Select data source collection</option>
+                                        <!-- Options would be populated from service -->
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label>Output Data Source:</label>
+                                    <select [(ngModel)]="item.outputDataSource" name="outputDataSource">
+                                        <option value="">Select output data source</option>
+                                        <!-- Options would be populated from service -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Model Section -->
+                        <div class="content-section" *ngIf="activeSection === 'model'">
+                            <h3>Model Configuration</h3>
+                            <div class="info-section">
+                                <div class="form-row">
+                                    <label>Model:</label>
+                                    <select [(ngModel)]="item.model" name="model">
+                                        <option value="">Select model</option>
+                                        <!-- Options would be populated from service -->
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label>Chunk Strategy:</label>
+                                    <select [(ngModel)]="item.chunkStrategy" name="chunkStrategy">
+                                        <option value="">Select chunk strategy</option>
+                                        <!-- Options would be populated from service -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Audit Section -->
+                        <div class="content-section" *ngIf="activeSection === 'audit'">
+                            <h3>Audit Information</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Created By:</label>
+                                    <span>{{ item.createdBy }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Created Date:</label>
+                                    <span>{{ item.createdDate | date:'medium' }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedBy">
+                                    <label>Modified By:</label>
+                                    <span>{{ item.modifiedBy }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedDate">
+                                    <label>Modified Date:</label>
+                                    <span>{{ item.modifiedDate | date:'medium' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- View Mode -->
+                    <ng-template #viewMode>
+                        <!-- Basic Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'general'">
+                            <h3>General Information</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Knowledge UID:</label>
+                                    <span>{{ item.knowledgeUId }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Name:</label>
+                                    <span>{{ item.name }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Description:</label>
+                                    <span>{{ item.description }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Type:</label>
+                                    <span>{{ item.type }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Status:</label>
+                                    <span class="status-badge" [ngClass]="item.status.toLowerCase()">{{ item.status }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Version:</label>
+                                    <span>{{ item.version }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Data Sources Section -->
+                        <div class="content-section" *ngIf="activeSection === 'datasources'">
+                            <h3>Data Sources</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Data Source Collection:</label>
+                                    <span>{{ item.dataSourceCollection?.name || 'Not configured' }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Output Data Source:</label>
+                                    <span>{{ item.outputDataSource?.name || 'Not configured' }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Model Section -->
+                        <div class="content-section" *ngIf="activeSection === 'model'">
+                            <h3>Model Configuration</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Model:</label>
+                                    <span>{{ item.model?.name || 'Not configured' }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Chunk Strategy:</label>
+                                    <span>{{ item.chunkStrategy?.chunkStrategy?.name || item.chunkStrategy?.chunkId || 'Not configured' }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Audit Information Section -->
+                        <div class="content-section" *ngIf="activeSection === 'audit'">
+                            <h3>Audit Information</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <label>Created By:</label>
+                                    <span>{{ item.createdBy }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Created Date:</label>
+                                    <span>{{ item.createdDate | date:'medium' }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedBy">
+                                    <label>Modified By:</label>
+                                    <span>{{ item.modifiedBy }}</span>
+                                </div>
+                                <div class="info-row" *ngIf="item.modifiedDate">
+                                    <label>Modified Date:</label>
+                                    <span>{{ item.modifiedDate | date:'medium' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-bar" *ngIf="editMode">
+            <button class="save-btn" (click)="onSave()" [disabled]="!knowledgeForm.valid">
+                <mat-icon>save</mat-icon> Save Knowledge
+            </button>
+            <button class="cancel-btn" (click)="onCancelEdit()">
+                <mat-icon>close</mat-icon> Cancel
+            </button>
+        </div>
+
+        <!-- Navigation Back Button -->
+        <div class="nav-actions">
+            <button class="back-btn" (click)="goBack()">
+                <mat-icon>arrow_back</mat-icon> Back to Knowledge List
+            </button>
+        </div>
+    </div>
+</div>

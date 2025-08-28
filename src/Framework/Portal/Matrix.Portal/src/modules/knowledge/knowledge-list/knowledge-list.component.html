@@ -1,0 +1,86 @@
+<div class="list-container">
+    <div class="section-wrapper modern-theme-bg">
+        <div class="list-header">
+            <h2><mat-icon>psychology</mat-icon> Knowledge</h2>
+            <button class="add-btn" (click)="onAdd()">
+                <mat-icon>add_circle</mat-icon> Add Knowledge
+            </button>
+        </div>
+
+        <div class="toolbar modern-toolbar">
+            <div class="search-filter-group">
+                <div class="search-box">
+                    <span class="material-icons">search</span>
+                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search knowledge...">
+                </div>
+
+                <select (change)="onStatusFilterChange($any($event.target).value)">
+                    <option value="">All Statuses</option>
+                    <option *ngFor="let status of uniqueStatuses" [value]="status">{{ status }}</option>
+                </select>
+
+                <select (change)="onTypeFilterChange($any($event.target).value)">
+                    <option value="">All Types</option>
+                    <option *ngFor="let type of uniqueTypes" [value]="type">{{ type }}</option>
+                </select>
+
+                <button class="filter-btn" (click)="onSearch()">
+                    <span class="material-icons">filter_list</span> Filter
+                </button>
+            </div>
+        </div>
+
+        <ng-container *ngIf="filteredKnowledge.length > 0; else noKnowledge">
+            <div class="card-grid">
+                <div class="card" *ngFor="let knowledge of filteredKnowledge; trackBy: trackByFn">
+                    <div class="card-header">
+                        <span class="card-name">{{ knowledge.name }}</span>
+                        <div class="card-actions">
+                            <span class="status-badge" [ngClass]="knowledge.status.toLowerCase()">{{ knowledge.status }}</span>
+                            <button class="edit-icon-btn" (click)="onEdit(knowledge); $event.stopPropagation()" title="Edit">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button class="view-icon-btn" (click)="onView(knowledge); $event.stopPropagation()" title="View">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                            <button class="delete-icon-btn" (click)="onDelete(knowledge); $event.stopPropagation()" title="Delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body" (click)="onSelect(knowledge)">
+                        <div class="info-row" *ngIf="knowledge.description">
+                            <span class="desc" [title]="knowledge.description">{{ knowledge.description }}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="label">Type:</span>
+                            <span>{{ knowledge.type }}</span>
+                            <span class="label" *ngIf="knowledge.version" style="margin-left: 16px;">Version:</span>
+                            <span *ngIf="knowledge.version">{{ knowledge.version }}</span>
+                        </div>
+
+                        <div class="info-row" *ngIf="knowledge.model">
+                            <span class="label">Model:</span>
+                            <span>{{ knowledge.model.name }}</span>
+                            <span class="label" *ngIf="knowledge.dataSourceCollection" style="margin-left: 16px;">Data Sources:</span>
+                            <span *ngIf="knowledge.dataSourceCollection">{{ knowledge.dataSourceCollection.name }}</span>
+                        </div>
+
+                        <div class="audit-row">
+                            <span class="audit-text">{{ knowledge.createdBy }} • {{ knowledge.createdDate | date:'MMM d, y' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #noKnowledge>
+            <div class="no-items-message">
+                <mat-icon>info</mat-icon>
+                No knowledge items found. Click "Add Knowledge" to create your first knowledge item.
+            </div>
+        </ng-template>
+    </div>
+</div>

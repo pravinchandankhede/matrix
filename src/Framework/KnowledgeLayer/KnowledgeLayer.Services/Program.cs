@@ -37,7 +37,7 @@ public class Program
         builder.Services.AddSingleton<IChunkProcessor, ChunkProcessor>();
         builder.Services.AddSingleton<IEmbedProcessor, EmbedProcessor>();
         builder.Services.AddSingleton<KnowledgeProcessor>();
-        builder.Services.AddHostedService<KnowledgeBackgroundService>();
+        //builder.Services.AddHostedService<KnowledgeBackgroundService>();
 
         WebApplication app = builder.Build();
 

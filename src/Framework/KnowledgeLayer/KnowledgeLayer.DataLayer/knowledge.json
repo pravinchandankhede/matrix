@@ -1,0 +1,38 @@
+[
+  {
+    "KnowledgeUId": "e7b8a1c2-1d2f-4b3a-9c1e-123456789abc",
+    "Name": "Sample Knowledge 1",
+    "Type": "Document",
+    "DataSourceCollection": {
+      "Name": "Collection 1"
+    },
+    "Model": {
+      "Name": "Model 1"
+    },
+    "Status": "Active",
+    "OutputDataSource": {
+      "Name": "OutputDS"
+    },
+    "ChunkStrategy": {
+      "Name": "DefaultChunk"
+    }
+  },
+  {
+    "KnowledgeUId": "f8c9b2d3-2e3f-5c4b-0d2f-234567890bcd",
+    "Name": "Sample Knowledge 2",
+    "Type": "Image",
+    "DataSourceCollection": {
+      "Name": "Collection 2"
+    },
+    "Model": {
+      "Name": "Model 2"
+    },
+    "Status": "Inactive",
+    "OutputDataSource": {
+      "Name": "OutputDS2"
+    },
+    "ChunkStrategy": {
+      "Name": "AdvancedChunk"
+    }
+  }
+]

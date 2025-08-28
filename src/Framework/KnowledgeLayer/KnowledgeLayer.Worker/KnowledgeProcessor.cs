@@ -80,6 +80,8 @@ public class KnowledgeProcessor
                         });
                     }
                 }
+
+                //_knowledgeRepository.Save();
             }
         }
     }

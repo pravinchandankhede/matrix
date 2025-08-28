@@ -124,6 +124,80 @@
                                         <!-- Options would be populated from service -->
                                     </select>
                                 </div>
+
+                                <!-- Data Sources List -->
+                                <div class="data-sources-list" *ngIf="item.dataSourceCollection?.dataSources && item.dataSourceCollection.dataSources.length > 0">
+                                    <h4>Included Data Sources ({{ item.dataSourceCollection.dataSources.length }})</h4>
+                                    <div class="data-source-cards">
+                                        <div class="data-source-card" *ngFor="let dataSource of item.dataSourceCollection.dataSources; trackBy: trackByDataSourceId">
+                                            <div class="data-source-header">
+                                                <div class="data-source-name">
+                                                    <mat-icon>{{ getDataSourceIcon(dataSource.type) }}</mat-icon>
+                                                    <span>{{ dataSource.name }}</span>
+                                                </div>
+                                                <span class="status-badge" [ngClass]="dataSource.isActive ? 'active' : 'inactive'">
+                                                    {{ dataSource.isActive ? 'Active' : 'Inactive' }}
+                                                </span>
+                                            </div>
+                                            <div class="data-source-details">
+                                                <div class="detail-row">
+                                                    <span class="label">Type:</span>
+                                                    <span>{{ dataSource.type }} - {{ dataSource.subType }}</span>
+                                                </div>
+                                                <div class="detail-row" *ngIf="dataSource.description">
+                                                    <span class="label">Description:</span>
+                                                    <span>{{ dataSource.description }}</span>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="label">Access:</span>
+                                                    <span>{{ dataSource.accessMode }} ({{ dataSource.authenticationType }})</span>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="label">Owner:</span>
+                                                    <span>{{ dataSource.owner }}</span>
+                                                </div>
+
+                                                <!-- Type-specific details -->
+                                                <div class="type-specific-details">
+                                                    <!-- Structured Data Source Details -->
+                                                    <div *ngIf="dataSource.structuredDataSource" class="specific-detail">
+                                                        <span class="label">Database:</span>
+                                                        <span>{{ dataSource.structuredDataSource.databaseName }} on {{ dataSource.structuredDataSource.host }}:{{ dataSource.structuredDataSource.port }}</span>
+                                                    </div>
+
+                                                    <!-- Vector Data Source Details -->
+                                                    <div *ngIf="dataSource.vectorDataSource" class="specific-detail">
+                                                        <span class="label">Vector DB:</span>
+                                                        <span>{{ dataSource.vectorDataSource.vectorDbType }} - {{ dataSource.vectorDataSource.indexName }} ({{ dataSource.vectorDataSource.dimension }}D)</span>
+                                                    </div>
+
+                                                    <!-- External Data Source Details -->
+                                                    <div *ngIf="dataSource.externalDataSource" class="specific-detail">
+                                                        <span class="label">API:</span>
+                                                        <span>{{ dataSource.externalDataSource.httpMethod }} {{ dataSource.externalDataSource.apiEndpoint }}</span>
+                                                    </div>
+
+                                                    <!-- Unstructured Data Source Details -->
+                                                    <div *ngIf="dataSource.unstructuredDataSource" class="specific-detail">
+                                                        <span class="label">Storage:</span>
+                                                        <span>{{ dataSource.unstructuredDataSource.storageType }} - {{ dataSource.unstructuredDataSource.fileTypes.join(', ') }}</span>
+                                                    </div>
+
+                                                    <!-- Streaming Data Source Details -->
+                                                    <div *ngIf="dataSource.streamingDataSource" class="specific-detail">
+                                                        <span class="label">Stream:</span>
+                                                        <span>{{ dataSource.streamingDataSource.topicName }} ({{ dataSource.streamingDataSource.messageFormat }})</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="no-data-sources" *ngIf="!item.dataSourceCollection?.dataSources || item.dataSourceCollection.dataSources.length === 0">
+                                    <mat-icon>info</mat-icon>
+                                    <p>No data sources configured in the selected collection.</p>
+                                </div>
                             </div>
                         </div>
 
@@ -218,6 +292,80 @@
                                     <span>{{ item.outputDataSource?.name || 'Not configured' }}</span>
                                 </div>
                             </div>
+
+                            <!-- Data Sources List -->
+                            <div class="data-sources-list" *ngIf="item.dataSourceCollection?.dataSources && item.dataSourceCollection.dataSources.length > 0">
+                                <h4>Included Data Sources ({{ item.dataSourceCollection.dataSources.length }})</h4>
+                                <div class="data-source-cards">
+                                    <div class="data-source-card" *ngFor="let dataSource of item.dataSourceCollection.dataSources; trackBy: trackByDataSourceId">
+                                        <div class="data-source-header">
+                                            <div class="data-source-name">
+                                                <mat-icon>{{ getDataSourceIcon(dataSource.type) }}</mat-icon>
+                                                <span>{{ dataSource.name }}</span>
+                                            </div>
+                                            <span class="status-badge" [ngClass]="dataSource.isActive ? 'active' : 'inactive'">
+                                                {{ dataSource.isActive ? 'Active' : 'Inactive' }}
+                                            </span>
+                                        </div>
+                                        <div class="data-source-details">
+                                            <div class="detail-row">
+                                                <span class="label">Type:</span>
+                                                <span>{{ dataSource.type }} - {{ dataSource.subType }}</span>
+                                            </div>
+                                            <div class="detail-row" *ngIf="dataSource.description">
+                                                <span class="label">Description:</span>
+                                                <span>{{ dataSource.description }}</span>
+                                            </div>
+                                            <div class="detail-row">
+                                                <span class="label">Access:</span>
+                                                <span>{{ dataSource.accessMode }} ({{ dataSource.authenticationType }})</span>
+                                            </div>
+                                            <div class="detail-row">
+                                                <span class="label">Owner:</span>
+                                                <span>{{ dataSource.owner }}</span>
+                                            </div>
+
+                                            <!-- Type-specific details -->
+                                            <div class="type-specific-details">
+                                                <!-- Structured Data Source Details -->
+                                                <div *ngIf="dataSource.structuredDataSource" class="specific-detail">
+                                                    <span class="label">Database:</span>
+                                                    <span>{{ dataSource.structuredDataSource.databaseName }} on {{ dataSource.structuredDataSource.host }}:{{ dataSource.structuredDataSource.port }}</span>
+                                                </div>
+
+                                                <!-- Vector Data Source Details -->
+                                                <div *ngIf="dataSource.vectorDataSource" class="specific-detail">
+                                                    <span class="label">Vector DB:</span>
+                                                    <span>{{ dataSource.vectorDataSource.vectorDbType }} - {{ dataSource.vectorDataSource.indexName }} ({{ dataSource.vectorDataSource.dimension }}D)</span>
+                                                </div>
+
+                                                <!-- External Data Source Details -->
+                                                <div *ngIf="dataSource.externalDataSource" class="specific-detail">
+                                                    <span class="label">API:</span>
+                                                    <span>{{ dataSource.externalDataSource.httpMethod }} {{ dataSource.externalDataSource.apiEndpoint }}</span>
+                                                </div>
+
+                                                <!-- Unstructured Data Source Details -->
+                                                <div *ngIf="dataSource.unstructuredDataSource" class="specific-detail">
+                                                    <span class="label">Storage:</span>
+                                                    <span>{{ dataSource.unstructuredDataSource.storageType }} - {{ dataSource.unstructuredDataSource.fileTypes.join(', ') }}</span>
+                                                </div>
+
+                                                <!-- Streaming Data Source Details -->
+                                                <div *ngIf="dataSource.streamingDataSource" class="specific-detail">
+                                                    <span class="label">Stream:</span>
+                                                    <span>{{ dataSource.streamingDataSource.topicName }} ({{ dataSource.streamingDataSource.messageFormat }})</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="no-data-sources" *ngIf="!item.dataSourceCollection?.dataSources || item.dataSourceCollection.dataSources.length === 0">
+                                <mat-icon>info</mat-icon>
+                                <p>No data sources configured in the selected collection.</p>
+                            </div>
                         </div>
 
                         <!-- Model Section -->
@@ -263,19 +411,17 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="action-bar" *ngIf="editMode">
-            <button class="save-btn" (click)="onSave()" [disabled]="!knowledgeForm.valid">
-                <mat-icon>save</mat-icon> Save Knowledge
+        <div class="form-actions" *ngIf="editMode">
+            <button type="button" class="btn-primary" (click)="onSave()" [disabled]="isLoading">
+                <mat-icon *ngIf="!isLoading">save</mat-icon>
+                <mat-icon *ngIf="isLoading" class="spinner">hourglass_empty</mat-icon>
+                {{ isLoading ? 'Saving...' : (isNew ? 'Create' : 'Save') }}
             </button>
-            <button class="cancel-btn" (click)="onCancelEdit()">
-                <mat-icon>close</mat-icon> Cancel
+            <button *ngIf="!isNew && item?.knowledgeUId" type="button" class="btn-secondary" (click)="onDelete()" [disabled]="isLoading">
+                <mat-icon>delete</mat-icon> Delete
             </button>
-        </div>
-
-        <!-- Navigation Back Button -->
-        <div class="nav-actions">
-            <button class="back-btn" (click)="goBack()">
-                <mat-icon>arrow_back</mat-icon> Back to Knowledge List
+            <button type="button" class="btn-secondary" (click)="goBack()" [disabled]="isLoading">
+                <mat-icon>arrow_back</mat-icon> Back to Knowledge
             </button>
         </div>
     </div>

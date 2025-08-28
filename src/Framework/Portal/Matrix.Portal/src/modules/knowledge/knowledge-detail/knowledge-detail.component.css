@@ -1,3 +1,107 @@
 /* Knowledge-specific styles - only unique overrides */
 
+/* Data Sources Section Styles */
+.data-sources-list {
+    margin-top: 24px;
+}
+
+    .data-sources-list h4 {
+        margin-bottom: 16px;
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+.data-source-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.data-source-card {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    background: var(--surface-color);
+    transition: box-shadow 0.2s ease;
+}
+
+    .data-source-card:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+.data-source-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.data-source-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+    .data-source-name mat-icon {
+        color: var(--primary-color);
+    }
+
+.data-source-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+    .detail-row .label {
+        font-weight: 500;
+        color: var(--text-secondary);
+        min-width: 80px;
+        flex-shrink: 0;
+    }
+
+.type-specific-details {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-light);
+}
+
+.specific-detail {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-bottom: 4px;
+    font-size: 0.9em;
+}
+
+    .specific-detail .label {
+        font-weight: 500;
+        color: var(--text-secondary);
+        min-width: 80px;
+        flex-shrink: 0;
+    }
+
+.no-data-sources {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 24px;
+    text-align: center;
+    color: var(--text-secondary);
+    background: var(--surface-light);
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+    .no-data-sources mat-icon {
+        color: var(--text-secondary);
+    }
+
 /* Any knowledge-specific styling can go here if needed */

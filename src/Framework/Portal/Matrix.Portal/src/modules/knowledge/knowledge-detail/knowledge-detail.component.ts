@@ -175,6 +175,25 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
         this.activeSection = section;
     }
 
+    // Data source helper methods
+    trackByDataSourceId(index: number, dataSource: any): string {
+        return dataSource.dataSourceUId;
+    }
+
+    getDataSourceIcon(type: string): string {
+        const iconMap: { [key: string]: string } = {
+            'Structured': 'storage',
+            'Vector': 'scatter_plot',
+            'External': 'api',
+            'Multimedia': 'perm_media',
+            'Streaming': 'stream',
+            'Proprietary': 'business',
+            'SemiStructured': 'description',
+            'Unstructured': 'folder_open'
+        };
+        return iconMap[type] || 'source';
+    }
+
     // Form validation helper methods
     private markFormGroupTouched(formGroup: FormGroup): void {
         Object.keys(formGroup.controls).forEach(key => {

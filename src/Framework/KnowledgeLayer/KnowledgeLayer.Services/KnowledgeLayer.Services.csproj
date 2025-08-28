@@ -13,8 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\EmbeddingEngine\EmbeddingEngine.Worker\EmbeddingEngine.Worker.csproj" />
     <ProjectReference Include="..\KnowledgeLayer.DataLayer\KnowledgeLayer.DataLayer.csproj" />
     <ProjectReference Include="..\KnowledgeLayer.Interfaces\KnowledgeLayer.Interfaces.csproj" />
+    <ProjectReference Include="..\KnowledgeLayer.Worker\KnowledgeLayer.Worker.csproj" />
   </ItemGroup>
 
 </Project>

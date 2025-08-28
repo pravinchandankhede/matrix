@@ -1,19 +1,25 @@
-
 namespace KnowledgeLayer.Services;
 
+using Matrix.ChunkEngine.Interfaces;
+using Matrix.ChunkEngine.Worker;
+using Matrix.DataSourceLayer.DataLayer;
+using Matrix.DataSourceLayer.Interfaces;
+using Matrix.EmbeddingEngine.Interfaces;
+using Matrix.EmbeddingEngine.Worker;
 using Matrix.KnowledgeLayer.DataLayer;
 using Matrix.KnowledgeLayer.Interfaces;
+using Matrix.KnowledgeLayer.Worker;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static void Main(String[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-       
+
         builder.Services.AddControllers()
             .AddJsonOptions(options =>
             {
@@ -26,8 +32,14 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddSingleton<IKnowledgeRepository, KnowledgeRepository>();
-        
-        var app = builder.Build();
+        builder.Services.AddSingleton<IDataSourceRepository, DataSourceRepository>();
+        builder.Services.AddSingleton<DataSourceManager>();
+        builder.Services.AddSingleton<IChunkProcessor, ChunkProcessor>();
+        builder.Services.AddSingleton<IEmbedProcessor, EmbedProcessor>();
+        builder.Services.AddSingleton<KnowledgeProcessor>();
+        builder.Services.AddHostedService<KnowledgeBackgroundService>();
+
+        WebApplication app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

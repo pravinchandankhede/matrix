@@ -1,7 +1,13 @@
 ﻿namespace Matrix.EmbeddingEngine.Worker;
 
+using Matrix.DataModels.Embeddings;
 using Matrix.EmbeddingEngine.Interfaces;
+using System.Collections.Generic;
 
-internal class EmbedProcessor : IEmbedProcessor
+public class EmbedProcessor : IEmbedProcessor
 {
+    public IEnumerable<Embedding> GetEmbeddings(String text)
+    {
+        throw new NotImplementedException();
+    }
 }

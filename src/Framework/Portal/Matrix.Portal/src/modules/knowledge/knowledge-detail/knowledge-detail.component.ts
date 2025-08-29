@@ -8,6 +8,27 @@ import { ChunkService } from '../../../services/chunk.service';
 import { BaseDetailComponent } from '../../../shared/base-detail.component';
 import { takeUntil } from 'rxjs/operators';
 
+// Indexing interfaces
+interface IndexingRun {
+    runId: string;
+    startTime: Date;
+    endTime?: Date;
+    status: 'Running' | 'Successful' | 'Failed' | 'Cancelled';
+    documentsProcessed: number;
+    totalDocuments: number;
+    errorCount: number;
+    hasLogs: boolean;
+    errorMessage?: string;
+}
+
+interface IndexingStatus {
+    status: string;
+    lastRun: Date | null;
+    duration: string | null;
+    documentsIndexed: number;
+    errorCount: number;
+}
+
 @Component({
     selector: 'app-knowledge-detail',
     standalone: false,
@@ -32,6 +53,21 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
     availableChunkStrategies: Chunk[] = [];
     availableDataSourceCollections: DataSourceCollection[] = [];
 
+    // Indexing properties
+    isIndexingRunning: boolean = false;
+    indexingProgress: number = 0;
+    currentIndexingStep: string = '';
+    indexingHistory: IndexingRun[] = [];
+    filteredIndexingHistory: IndexingRun[] = [];
+    indexingHistoryFilter: string = 'all';
+    lastIndexingStatus: IndexingStatus = {
+        status: 'Never Run',
+        lastRun: null,
+        duration: null,
+        documentsIndexed: 0,
+        errorCount: 0
+    };
+
     constructor() {
         super();
         this.knowledgeForm = this.createForm();
@@ -42,6 +78,7 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
         this.loadAvailableDataSources();
         this.loadAvailableChunkStrategies();
         this.loadAvailableDataSourceCollections();
+        this.loadIndexingHistory();
     }
 
     ngAfterViewInit(): void {
@@ -318,5 +355,264 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
         };
 
         return fieldNames[fieldName] || fieldName;
+    }
+
+    // Indexing methods
+    getOverallIndexingStatus(): string {
+        return this.lastIndexingStatus.status.toLowerCase().replace(' ', '-');
+    }
+
+    getIndexingStatusIcon(): string {
+        const statusIcons: { [key: string]: string } = {
+            'Never Run': 'info',
+            'Successful': 'check_circle',
+            'Failed': 'error',
+            'Running': 'hourglass_empty',
+            'Cancelled': 'cancel'
+        };
+        return statusIcons[this.lastIndexingStatus.status] || 'info';
+    }
+
+    getIndexingStatusText(): string {
+        return this.lastIndexingStatus.status;
+    }
+
+    getLastIndexingRun(): string {
+        if (!this.lastIndexingStatus.lastRun) {
+            return 'Never';
+        }
+        return this.formatRelativeTime(this.lastIndexingStatus.lastRun);
+    }
+
+    getLastIndexingDuration(): string {
+        return this.lastIndexingStatus.duration || 'N/A';
+    }
+
+    getIndexedDocumentsCount(): string {
+        return this.lastIndexingStatus.documentsIndexed.toString();
+    }
+
+    hasIndexingHistory(): boolean {
+        return this.indexingHistory && this.indexingHistory.length > 0;
+    }
+
+    runIndexing(): void {
+        if (this.isIndexingRunning) return;
+
+        this.isIndexingRunning = true;
+        this.indexingProgress = 0;
+        this.currentIndexingStep = 'Initializing indexing process...';
+
+        // Create new run record
+        const newRun: IndexingRun = {
+            runId: this.generateRunId(),
+            startTime: new Date(),
+            status: 'Running',
+            documentsProcessed: 0,
+            totalDocuments: 100, // This would come from actual data
+            errorCount: 0,
+            hasLogs: true
+        };
+
+        this.indexingHistory.unshift(newRun);
+        this.filterIndexingHistory();
+
+        // Simulate indexing progress
+        this.simulateIndexingProgress(newRun);
+    }
+
+    private simulateIndexingProgress(run: IndexingRun): void {
+        const steps = [
+            'Connecting to data sources...',
+            'Analyzing document structure...',
+            'Processing documents...',
+            'Building search index...',
+            'Optimizing index...',
+            'Finalizing indexing...'
+        ];
+
+        let stepIndex = 0;
+        const progressInterval = setInterval(() => {
+            this.indexingProgress += Math.random() * 15 + 5; // Random progress between 5-20%
+
+            if (stepIndex < steps.length) {
+                this.currentIndexingStep = steps[stepIndex];
+                stepIndex++;
+            }
+
+            run.documentsProcessed = Math.floor((this.indexingProgress / 100) * run.totalDocuments);
+
+            if (this.indexingProgress >= 100) {
+                this.indexingProgress = 100;
+                this.currentIndexingStep = 'Indexing completed successfully!';
+
+                // Complete the run
+                run.endTime = new Date();
+                run.status = 'Successful';
+                run.documentsProcessed = run.totalDocuments;
+
+                // Update last status
+                this.lastIndexingStatus = {
+                    status: 'Successful',
+                    lastRun: run.endTime,
+                    duration: this.calculateDuration(run.startTime, run.endTime),
+                    documentsIndexed: run.documentsProcessed,
+                    errorCount: 0
+                };
+
+                this.isIndexingRunning = false;
+                this.filterIndexingHistory();
+                clearInterval(progressInterval);
+            }
+        }, 1000);
+    }
+
+    refreshIndexingStatus(): void {
+        this.loadIndexingHistory();
+        // In a real implementation, this would refresh from the service
+    }
+
+    viewIndexingLogs(): void {
+        // In a real implementation, this would open a logs dialog or navigate to logs page
+        console.log('View indexing logs');
+    }
+
+    loadIndexingHistory(): void {
+        // In a real implementation, this would load from a service
+        // For now, we'll keep the existing history or initialize with sample data
+        if (this.indexingHistory.length === 0) {
+            this.initializeSampleIndexingHistory();
+        }
+        this.filterIndexingHistory();
+    }
+
+    private initializeSampleIndexingHistory(): void {
+        const sampleHistory: IndexingRun[] = [
+            {
+                runId: 'IDX-001',
+                startTime: new Date(Date.now() - 86400000), // 1 day ago
+                endTime: new Date(Date.now() - 86400000 + 300000), // 5 minutes duration
+                status: 'Successful',
+                documentsProcessed: 150,
+                totalDocuments: 150,
+                errorCount: 0,
+                hasLogs: true
+            },
+            {
+                runId: 'IDX-002',
+                startTime: new Date(Date.now() - 172800000), // 2 days ago
+                endTime: new Date(Date.now() - 172800000 + 180000), // 3 minutes duration
+                status: 'Failed',
+                documentsProcessed: 75,
+                totalDocuments: 120,
+                errorCount: 5,
+                hasLogs: true,
+                errorMessage: 'Connection timeout to data source'
+            }
+        ];
+
+        this.indexingHistory = sampleHistory;
+
+        // Set last status from most recent run
+        if (sampleHistory.length > 0) {
+            const lastRun = sampleHistory[0];
+            this.lastIndexingStatus = {
+                status: lastRun.status,
+                lastRun: lastRun.endTime || lastRun.startTime,
+                duration: this.calculateDuration(lastRun.startTime, lastRun.endTime),
+                documentsIndexed: lastRun.documentsProcessed,
+                errorCount: lastRun.errorCount
+            };
+        }
+    }
+
+    filterIndexingHistory(): void {
+        if (!this.indexingHistory) {
+            this.filteredIndexingHistory = [];
+            return;
+        }
+
+        switch (this.indexingHistoryFilter) {
+            case 'successful':
+                this.filteredIndexingHistory = this.indexingHistory.filter(run => run.status === 'Successful');
+                break;
+            case 'failed':
+                this.filteredIndexingHistory = this.indexingHistory.filter(run => run.status === 'Failed');
+                break;
+            case 'running':
+                this.filteredIndexingHistory = this.indexingHistory.filter(run => run.status === 'Running');
+                break;
+            default:
+                this.filteredIndexingHistory = [...this.indexingHistory];
+        }
+    }
+
+    trackByRunId(index: number, run: IndexingRun): string {
+        return run.runId;
+    }
+
+    calculateDuration(startTime: Date, endTime?: Date): string {
+        if (!endTime) return 'Running...';
+
+        const durationMs = endTime.getTime() - startTime.getTime();
+        const minutes = Math.floor(durationMs / 60000);
+        const seconds = Math.floor((durationMs % 60000) / 1000);
+
+        if (minutes > 0) {
+            return `${minutes}m ${seconds}s`;
+        } else {
+            return `${seconds}s`;
+        }
+    }
+
+    getRunStatusIcon(status: string): string {
+        const statusIcons: { [key: string]: string } = {
+            'Successful': 'check_circle',
+            'Failed': 'error',
+            'Running': 'hourglass_empty',
+            'Cancelled': 'cancel'
+        };
+        return statusIcons[status] || 'info';
+    }
+
+    viewRunDetails(run: IndexingRun): void {
+        // In a real implementation, this would open a details dialog
+        console.log('View run details:', run);
+    }
+
+    downloadRunLogs(run: IndexingRun): void {
+        // In a real implementation, this would download the log file
+        console.log('Download logs for run:', run.runId);
+    }
+
+    retryIndexing(run: IndexingRun): void {
+        // In a real implementation, this would retry the specific failed run
+        console.log('Retry indexing for run:', run.runId);
+        this.runIndexing(); // For now, just start a new run
+    }
+
+    private generateRunId(): string {
+        const timestamp = Date.now().toString(36);
+        const random = Math.random().toString(36).substring(2, 8);
+        return `IDX-${timestamp}-${random}`.toUpperCase();
+    }
+
+    private formatRelativeTime(date: Date): string {
+        const now = new Date();
+        const diff = now.getTime() - date.getTime();
+
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+
+        if (days > 0) {
+            return `${days} day${days > 1 ? 's' : ''} ago`;
+        } else if (hours > 0) {
+            return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+        } else if (minutes > 0) {
+            return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+        } else {
+            return 'Just now';
+        }
     }
 }

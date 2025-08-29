@@ -372,3 +372,366 @@
 }
 
 /* Any knowledge-specific styling can go here if needed */
+
+/* Indexing Section Styles */
+.indexing-overview {
+    margin-bottom: 32px;
+}
+
+.status-overview h4 {
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.status-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.status-card {
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    background: var(--background-light);
+    transition: all 0.2s ease;
+}
+
+    .status-card:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+
+.overall-status.successful {
+    border-color: #10b981;
+    background: #ecfdf5;
+}
+
+.overall-status.failed {
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+.overall-status.running {
+    border-color: #f59e0b;
+    background: #fffbeb;
+}
+
+.overall-status.never-run {
+    border-color: #6b7280;
+    background: #f9fafb;
+}
+
+.status-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+    .status-header mat-icon {
+        font-size: 20px;
+        color: var(--primary-color);
+    }
+
+.overall-status.successful .status-header mat-icon {
+    color: #10b981;
+}
+
+.overall-status.failed .status-header mat-icon {
+    color: #ef4444;
+}
+
+.overall-status.running .status-header mat-icon {
+    color: #f59e0b;
+}
+
+.status-header h5 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.status-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.indexing-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+    .indexing-actions .btn-primary,
+    .indexing-actions .btn-secondary {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+/* Progress Section */
+.indexing-progress {
+    margin-bottom: 32px;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--background-light);
+}
+
+    .indexing-progress h4 {
+        margin-bottom: 16px;
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 80px;
+    text-align: right;
+}
+
+.progress-details p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* History Section */
+.indexing-history {
+    margin-top: 32px;
+}
+
+    .indexing-history h4 {
+        margin-bottom: 16px;
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+.history-controls {
+    margin-bottom: 20px;
+}
+
+.filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+    .filter-controls select {
+        padding: 8px 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        background: var(--background-color);
+        color: var(--text-primary);
+    }
+
+.btn-secondary.small {
+    padding: 6px 12px;
+    font-size: 0.9em;
+}
+
+/* History Grid */
+.history-grid {
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--background-color);
+}
+
+.grid-header {
+    display: grid;
+    grid-template-columns: 120px 140px 140px 100px 120px 120px 80px 120px;
+    background: var(--background-light);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.grid-row {
+    display: grid;
+    grid-template-columns: 120px 140px 140px 100px 120px 120px 80px 120px;
+    border-bottom: 1px solid var(--border-light);
+    transition: background-color 0.2s ease;
+}
+
+    .grid-row:hover {
+        background: var(--background-light);
+    }
+
+    .grid-row:last-child {
+        border-bottom: none;
+    }
+
+.grid-column,
+.grid-cell {
+    padding: 12px 8px;
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.grid-column {
+    font-weight: 600;
+    background: var(--background-light);
+    border-right: 1px solid var(--border-light);
+}
+
+.grid-cell {
+    border-right: 1px solid var(--border-light);
+}
+
+    .grid-column:last-child,
+    .grid-cell:last-child {
+        border-right: none;
+    }
+
+.run-id {
+    font-family: monospace;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+    .status-badge mat-icon {
+        font-size: 16px;
+    }
+
+    .status-badge.successful {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .status-badge.failed {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    .status-badge.running {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .status-badge.cancelled {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+.error-count {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+    .error-count.has-errors {
+        color: #dc2626;
+        font-weight: 700;
+    }
+
+.action-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+.btn-icon {
+    padding: 4px;
+    border: none;
+    background: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .btn-icon:hover {
+        background: var(--background-light);
+        color: var(--primary-color);
+    }
+
+    .btn-icon mat-icon {
+        font-size: 16px;
+    }
+
+/* No History Message */
+.no-history {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+    .no-history mat-icon {
+        font-size: 48px;
+        color: var(--text-light);
+        margin-bottom: 16px;
+    }
+
+    .no-history p {
+        margin: 0;
+        font-size: 1.1em;
+    }
+
+/* Responsive design for grid */
+@media (max-width: 1200px) {
+    .grid-header,
+    .grid-row {
+        grid-template-columns: 100px 120px 120px 80px 100px 100px 60px 100px;
+    }
+
+    .grid-column,
+    .grid-cell {
+        padding: 8px 6px;
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 768px) {
+    .status-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .history-grid {
+        overflow-x: auto;
+    }
+
+    .grid-header,
+    .grid-row {
+        min-width: 800px;
+    }
+}

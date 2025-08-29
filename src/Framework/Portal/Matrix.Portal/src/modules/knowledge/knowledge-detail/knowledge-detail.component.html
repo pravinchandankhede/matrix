@@ -46,6 +46,12 @@
                             <span>Configuration</span>
                         </li>
                         <li class="nav-item"
+                            [class.active]="activeSection === 'indexing'"
+                            (click)="setActiveSection('indexing')">
+                            <mat-icon>search</mat-icon>
+                            <span>Indexing</span>
+                        </li>
+                        <li class="nav-item"
                             [class.active]="activeSection === 'audit'"
                             (click)="setActiveSection('audit')">
                             <mat-icon>history</mat-icon>
@@ -350,6 +356,163 @@
                             </div>
                         </div>
 
+                        <!-- Indexing Section -->
+                        <div class="content-section" *ngIf="activeSection === 'indexing'">
+                            <h3>Knowledge Indexing</h3>
+
+                            <!-- Overall Status -->
+                            <div class="indexing-overview">
+                                <div class="status-overview">
+                                    <h4>Indexing Status</h4>
+                                    <div class="status-cards">
+                                        <div class="status-card overall-status" [ngClass]="getOverallIndexingStatus()">
+                                            <div class="status-header">
+                                                <mat-icon>{{ getIndexingStatusIcon() }}</mat-icon>
+                                                <h5>Overall Status</h5>
+                                            </div>
+                                            <div class="status-value">{{ getIndexingStatusText() }}</div>
+                                        </div>
+
+                                        <div class="status-card">
+                                            <div class="status-header">
+                                                <mat-icon>schedule</mat-icon>
+                                                <h5>Last Run</h5>
+                                            </div>
+                                            <div class="status-value">{{ getLastIndexingRun() }}</div>
+                                        </div>
+
+                                        <div class="status-card">
+                                            <div class="status-header">
+                                                <mat-icon>timer</mat-icon>
+                                                <h5>Duration</h5>
+                                            </div>
+                                            <div class="status-value">{{ getLastIndexingDuration() }}</div>
+                                        </div>
+
+                                        <div class="status-card">
+                                            <div class="status-header">
+                                                <mat-icon>description</mat-icon>
+                                                <h5>Documents Indexed</h5>
+                                            </div>
+                                            <div class="status-value">{{ getIndexedDocumentsCount() }}</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="indexing-actions">
+                                        <button type="button" class="btn-primary" (click)="runIndexing()" [disabled]="isIndexingRunning">
+                                            <mat-icon *ngIf="!isIndexingRunning">play_arrow</mat-icon>
+                                            <mat-icon *ngIf="isIndexingRunning" class="spinner">hourglass_empty</mat-icon>
+                                            {{ isIndexingRunning ? 'Running...' : 'Run Indexing' }}
+                                        </button>
+                                        <button type="button" class="btn-secondary" (click)="refreshIndexingStatus()" [disabled]="isIndexingRunning">
+                                            <mat-icon>refresh</mat-icon>
+                                            Refresh Status
+                                        </button>
+                                        <button type="button" class="btn-secondary" (click)="viewIndexingLogs()" *ngIf="hasIndexingHistory()">
+                                            <mat-icon>description</mat-icon>
+                                            View Logs
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Progress Bar (if running) -->
+                            <div class="indexing-progress" *ngIf="isIndexingRunning">
+                                <h4>Indexing Progress</h4>
+                                <div class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" [style.width.%]="indexingProgress"></div>
+                                    </div>
+                                    <span class="progress-text">{{ indexingProgress }}% Complete</span>
+                                </div>
+                                <div class="progress-details">
+                                    <p>{{ currentIndexingStep }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Indexing History -->
+                            <div class="indexing-history">
+                                <h4>Indexing History</h4>
+                                <div class="history-controls">
+                                    <div class="filter-controls">
+                                        <select [(ngModel)]="indexingHistoryFilter" name="historyFilter" (ngModelChange)="filterIndexingHistory()">
+                                            <option value="all">All Runs</option>
+                                            <option value="successful">Successful</option>
+                                            <option value="failed">Failed</option>
+                                            <option value="running">Running</option>
+                                        </select>
+                                        <button type="button" class="btn-secondary small" (click)="loadIndexingHistory()">
+                                            <mat-icon>refresh</mat-icon>
+                                            Refresh
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- History Grid -->
+                                <div class="history-grid" *ngIf="indexingHistory && indexingHistory.length > 0">
+                                    <div class="grid-header">
+                                        <div class="grid-column">Run ID</div>
+                                        <div class="grid-column">Start Time</div>
+                                        <div class="grid-column">End Time</div>
+                                        <div class="grid-column">Duration</div>
+                                        <div class="grid-column">Status</div>
+                                        <div class="grid-column">Documents</div>
+                                        <div class="grid-column">Errors</div>
+                                        <div class="grid-column">Actions</div>
+                                    </div>
+
+                                    <div class="grid-row" *ngFor="let run of filteredIndexingHistory; trackBy: trackByRunId">
+                                        <div class="grid-cell">
+                                            <span class="run-id">{{ run.runId }}</span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span>{{ run.startTime | date:'short' }}</span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span>{{ run.endTime ? (run.endTime | date:'short') : '-' }}</span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span>{{ calculateDuration(run.startTime, run.endTime) }}</span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span class="status-badge" [ngClass]="run.status.toLowerCase()">
+                                                <mat-icon>{{ getRunStatusIcon(run.status) }}</mat-icon>
+                                                {{ run.status }}
+                                            </span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span>{{ run.documentsProcessed || 0 }} / {{ run.totalDocuments || 0 }}</span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span class="error-count" [ngClass]="{ 'has-errors': run.errorCount > 0 }">
+                                                {{ run.errorCount || 0 }}
+                                            </span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <div class="action-buttons">
+                                                <button type="button" class="btn-icon" (click)="viewRunDetails(run)" title="View Details">
+                                                    <mat-icon>visibility</mat-icon>
+                                                </button>
+                                                <button type="button" class="btn-icon" (click)="downloadRunLogs(run)" title="Download Logs" *ngIf="run.hasLogs">
+                                                    <mat-icon>download</mat-icon>
+                                                </button>
+                                                <button type="button" class="btn-icon" (click)="retryIndexing(run)" title="Retry" *ngIf="run.status === 'Failed'">
+                                                    <mat-icon>replay</mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- No History -->
+                                <div class="no-history" *ngIf="!indexingHistory || indexingHistory.length === 0">
+                                    <mat-icon>info</mat-icon>
+                                    <p>No indexing history available. Click "Run Indexing" to start the first indexing process.</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Audit Section -->
                         <div class="content-section" *ngIf="activeSection === 'audit'">
                             <h3>Audit Information</h3>
@@ -560,6 +723,143 @@
                                         <span class="label">Strategy:</span>
                                         <span>{{ item.chunkStrategy.chunkStrategy.name }} - {{ item.chunkStrategy.chunkStrategy.description }}</span>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Indexing Section -->
+                        <div class="content-section" *ngIf="activeSection === 'indexing'">
+                            <h3>Knowledge Indexing</h3>
+
+                            <!-- Overall Status -->
+                            <div class="indexing-overview">
+                                <div class="status-overview">
+                                    <h4>Indexing Status</h4>
+                                    <div class="status-cards">
+                                        <div class="status-card overall-status" [ngClass]="getOverallIndexingStatus()">
+                                            <div class="status-header">
+                                                <mat-icon>{{ getIndexingStatusIcon() }}</mat-icon>
+                                                <h5>Overall Status</h5>
+                                            </div>
+                                            <div class="status-value">{{ getIndexingStatusText() }}</div>
+                                        </div>
+
+                                        <div class="status-card">
+                                            <div class="status-header">
+                                                <mat-icon>schedule</mat-icon>
+                                                <h5>Last Run</h5>
+                                            </div>
+                                            <div class="status-value">{{ getLastIndexingRun() }}</div>
+                                        </div>
+
+                                        <div class="status-card">
+                                            <div class="status-header">
+                                                <mat-icon>timer</mat-icon>
+                                                <h5>Duration</h5>
+                                            </div>
+                                            <div class="status-value">{{ getLastIndexingDuration() }}</div>
+                                        </div>
+
+                                        <div class="status-card">
+                                            <div class="status-header">
+                                                <mat-icon>description</mat-icon>
+                                                <h5>Documents Indexed</h5>
+                                            </div>
+                                            <div class="status-value">{{ getIndexedDocumentsCount() }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Progress Bar (if running) -->
+                            <div class="indexing-progress" *ngIf="isIndexingRunning">
+                                <h4>Indexing Progress</h4>
+                                <div class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" [style.width.%]="indexingProgress"></div>
+                                    </div>
+                                    <span class="progress-text">{{ indexingProgress }}% Complete</span>
+                                </div>
+                                <div class="progress-details">
+                                    <p>{{ currentIndexingStep }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Indexing History -->
+                            <div class="indexing-history">
+                                <h4>Indexing History</h4>
+                                <div class="history-controls">
+                                    <div class="filter-controls">
+                                        <select [(ngModel)]="indexingHistoryFilter" name="historyFilter" (ngModelChange)="filterIndexingHistory()">
+                                            <option value="all">All Runs</option>
+                                            <option value="successful">Successful</option>
+                                            <option value="failed">Failed</option>
+                                            <option value="running">Running</option>
+                                        </select>
+                                        <button type="button" class="btn-secondary small" (click)="loadIndexingHistory()">
+                                            <mat-icon>refresh</mat-icon>
+                                            Refresh
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- History Grid -->
+                                <div class="history-grid" *ngIf="indexingHistory && indexingHistory.length > 0">
+                                    <div class="grid-header">
+                                        <div class="grid-column">Run ID</div>
+                                        <div class="grid-column">Start Time</div>
+                                        <div class="grid-column">End Time</div>
+                                        <div class="grid-column">Duration</div>
+                                        <div class="grid-column">Status</div>
+                                        <div class="grid-column">Documents</div>
+                                        <div class="grid-column">Errors</div>
+                                        <div class="grid-column">Actions</div>
+                                    </div>
+
+                                    <div class="grid-row" *ngFor="let run of filteredIndexingHistory; trackBy: trackByRunId">
+                                        <div class="grid-cell">
+                                            <span class="run-id">{{ run.runId }}</span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span>{{ run.startTime | date:'short' }}</span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span>{{ run.endTime ? (run.endTime | date:'short') : '-' }}</span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span>{{ calculateDuration(run.startTime, run.endTime) }}</span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span class="status-badge" [ngClass]="run.status.toLowerCase()">
+                                                <mat-icon>{{ getRunStatusIcon(run.status) }}</mat-icon>
+                                                {{ run.status }}
+                                            </span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span>{{ run.documentsProcessed || 0 }} / {{ run.totalDocuments || 0 }}</span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <span class="error-count" [ngClass]="{ 'has-errors': run.errorCount > 0 }">
+                                                {{ run.errorCount || 0 }}
+                                            </span>
+                                        </div>
+                                        <div class="grid-cell">
+                                            <div class="action-buttons">
+                                                <button type="button" class="btn-icon" (click)="viewRunDetails(run)" title="View Details">
+                                                    <mat-icon>visibility</mat-icon>
+                                                </button>
+                                                <button type="button" class="btn-icon" (click)="downloadRunLogs(run)" title="Download Logs" *ngIf="run.hasLogs">
+                                                    <mat-icon>download</mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- No History -->
+                                <div class="no-history" *ngIf="!indexingHistory || indexingHistory.length === 0">
+                                    <mat-icon>info</mat-icon>
+                                    <p>No indexing history available.</p>
                                 </div>
                             </div>
                         </div>

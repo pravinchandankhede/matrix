@@ -118,9 +118,11 @@
                             <div class="info-section">
                                 <div class="form-row">
                                     <label>Data Source Collection:</label>
-                                    <select [(ngModel)]="item.dataSourceCollection" name="dataSourceCollection">
+                                    <select [(ngModel)]="item.dataSourceCollection" name="dataSourceCollection" (ngModelChange)="onDataSourceCollectionChange()">
                                         <option value="">Select data source collection</option>
-                                        <!-- Options would be populated from service -->
+                                        <option *ngFor="let collection of availableDataSourceCollections" [ngValue]="collection">
+                                            {{ collection.name }} ({{ collection.dataSources?.length || 0 }} sources)
+                                        </option>
                                     </select>
                                 </div>
 

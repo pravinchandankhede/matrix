@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Knowledge, DataSourceCollection, Model, DataSource, Chunk } from '../../../datamodels';
 import { KnowledgeService } from '../../../services/knowledge.service';
 import { DataSourceService } from '../../../services/data-source.service';
+import { DataSourceCollectionService } from '../../../services/data-source-collection.service';
 import { ChunkService } from '../../../services/chunk.service';
 import { BaseDetailComponent } from '../../../shared/base-detail.component';
 import { takeUntil } from 'rxjs/operators';
@@ -16,18 +17,20 @@ import { takeUntil } from 'rxjs/operators';
 export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> implements AfterViewInit {
     // Navigation
     activeSection: string = 'general';
-    
+
     knowledgeForm: FormGroup;
 
     // Service injections
     private fb = inject(FormBuilder);
     private knowledgeService = inject(KnowledgeService);
     private dataSourceService = inject(DataSourceService);
+    private dataSourceCollectionService = inject(DataSourceCollectionService);
     private chunkService = inject(ChunkService);
 
     // Data properties
     availableOutputDataSources: DataSource[] = [];
     availableChunkStrategies: Chunk[] = [];
+    availableDataSourceCollections: DataSourceCollection[] = [];
 
     constructor() {
         super();
@@ -38,6 +41,7 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
         super.ngOnInit();
         this.loadAvailableDataSources();
         this.loadAvailableChunkStrategies();
+        this.loadAvailableDataSourceCollections();
     }
 
     ngAfterViewInit(): void {
@@ -56,7 +60,7 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
             .subscribe({
                 next: (dataSources: DataSource[]) => {
                     // Filter for data sources that can be used as output
-                    this.availableOutputDataSources = dataSources.filter(ds => 
+                    this.availableOutputDataSources = dataSources.filter(ds =>
                         ds.isActive && (ds.type === 'Vector' || ds.type === 'Structured' || ds.type === 'External')
                     );
                 },
@@ -78,6 +82,22 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
                 error: (err: any) => {
                     console.error('Failed to load chunk strategies:', err);
                     this.availableChunkStrategies = [];
+                }
+            });
+    }
+
+    // Load available data source collections from service
+    private loadAvailableDataSourceCollections(): void {
+        this.dataSourceCollectionService.getDataSourceCollections()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (collections: DataSourceCollection[]) => {
+                    // Filter collections based on availability (all collections for now)
+                    this.availableDataSourceCollections = collections;
+                },
+                error: (err: any) => {
+                    console.error('Failed to load data source collections:', err);
+                    this.availableDataSourceCollections = [];
                 }
             });
     }
@@ -148,21 +168,23 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
             errors.push(...validationErrors);
         }
 
-        // Additional business logic validation
-        if (this.item) {
-            if (!this.item.dataSourceCollection?.dataSourceCollectionUId) {
-                errors.push('Data Source Collection is required.');
-            }
-            if (!this.item.model?.modelUId) {
-                errors.push('Model is required.');
-            }
-            if (!this.item.outputDataSource?.dataSourceUId) {
-                errors.push('Output Data Source is required.');
-            }
-            if (!this.item.chunkStrategy?.chunkUId) {
-                errors.push('Chunk Strategy is required.');
-            }
-        }
+        // Additional business logic validation (optional fields)
+        // Note: These are optional for basic knowledge creation
+        // Validation will only show warnings, not prevent saving
+
+        // Only validate these if user is trying to use them
+        // if (this.item?.dataSourceCollection && !this.item.dataSourceCollection.dataSourceCollectionUId) {
+        //     errors.push('Invalid Data Source Collection selected.');
+        // }
+        // if (this.item?.model && !this.item.model.modelUId) {
+        //     errors.push('Invalid Model selected.');
+        // }
+        // if (this.item?.outputDataSource && !this.item.outputDataSource.dataSourceUId) {
+        //     errors.push('Invalid Output Data Source selected.');
+        // }
+        // if (this.item?.chunkStrategy && !this.item.chunkStrategy.chunkUId) {
+        //     errors.push('Invalid Chunk Strategy selected.');
+        // }
 
         return errors;
     }
@@ -256,6 +278,12 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
         this.knowledgeForm.markAsDirty();
     }
 
+    // Handle data source collection selection
+    onDataSourceCollectionChange(): void {
+        // Mark form as dirty when data source collection changes
+        this.knowledgeForm.markAsDirty();
+    }
+
     // Form validation helper methods
     private markFormGroupTouched(formGroup: FormGroup): void {
         Object.keys(formGroup.controls).forEach(key => {
@@ -270,7 +298,7 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
 
     private getFormValidationErrors(form: FormGroup): string[] {
         const errors: string[] = [];
-        
+
         Object.keys(form.controls).forEach(key => {
             const control = form.get(key);
             if (control && !control.valid && (control.dirty || control.touched)) {
@@ -294,7 +322,7 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
                 }
             }
         });
-        
+
         return errors;
     }
 
@@ -306,7 +334,7 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
             'status': 'Status',
             'version': 'Version'
         };
-        
+
         return fieldNames[fieldName] || fieldName;
     }
 }

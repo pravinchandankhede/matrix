@@ -2,7 +2,10 @@ import { Component, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Knowledge, DataSourceCollection, Model, DataSource, Chunk } from '../../../datamodels';
 import { KnowledgeService } from '../../../services/knowledge.service';
+import { DataSourceService } from '../../../services/data-source.service';
+import { ChunkService } from '../../../services/chunk.service';
 import { BaseDetailComponent } from '../../../shared/base-detail.component';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-knowledge-detail',
@@ -13,11 +16,18 @@ import { BaseDetailComponent } from '../../../shared/base-detail.component';
 export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> implements AfterViewInit {
     // Navigation
     activeSection: string = 'general';
-
+    
     knowledgeForm: FormGroup;
 
+    // Service injections
     private fb = inject(FormBuilder);
     private knowledgeService = inject(KnowledgeService);
+    private dataSourceService = inject(DataSourceService);
+    private chunkService = inject(ChunkService);
+
+    // Data properties
+    availableOutputDataSources: DataSource[] = [];
+    availableChunkStrategies: Chunk[] = [];
 
     constructor() {
         super();
@@ -26,6 +36,8 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
 
     override ngOnInit(): void {
         super.ngOnInit();
+        this.loadAvailableDataSources();
+        this.loadAvailableChunkStrategies();
     }
 
     ngAfterViewInit(): void {
@@ -35,6 +47,39 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
                 this.populateForm();
             }
         });
+    }
+
+    // Load available data sources from service
+    private loadAvailableDataSources(): void {
+        this.dataSourceService.getDataSources()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (dataSources: DataSource[]) => {
+                    // Filter for data sources that can be used as output
+                    this.availableOutputDataSources = dataSources.filter(ds => 
+                        ds.isActive && (ds.type === 'Vector' || ds.type === 'Structured' || ds.type === 'External')
+                    );
+                },
+                error: (err: any) => {
+                    console.error('Failed to load data sources:', err);
+                    this.availableOutputDataSources = [];
+                }
+            });
+    }
+
+    // Load available chunk strategies from service
+    private loadAvailableChunkStrategies(): void {
+        this.chunkService.getChunks()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (chunks: Chunk[]) => {
+                    this.availableChunkStrategies = chunks;
+                },
+                error: (err: any) => {
+                    console.error('Failed to load chunk strategies:', err);
+                    this.availableChunkStrategies = [];
+                }
+            });
     }
 
     // Base class implementations
@@ -180,6 +225,10 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
         return dataSource.dataSourceUId;
     }
 
+    trackByChunkId(index: number, chunk: any): string {
+        return chunk.chunkUId;
+    }
+
     getDataSourceIcon(type: string): string {
         const iconMap: { [key: string]: string } = {
             'Structured': 'storage',
@@ -192,6 +241,19 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
             'Unstructured': 'folder_open'
         };
         return iconMap[type] || 'source';
+    }
+
+    // Configuration selection methods
+    selectOutputDataSource(dataSource: any): void {
+        this.item!.outputDataSource = dataSource;
+        // Mark form as dirty for change detection
+        this.knowledgeForm.markAsDirty();
+    }
+
+    selectChunkStrategy(chunk: any): void {
+        this.item!.chunkStrategy = chunk;
+        // Mark form as dirty for change detection
+        this.knowledgeForm.markAsDirty();
     }
 
     // Form validation helper methods
@@ -208,7 +270,7 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
 
     private getFormValidationErrors(form: FormGroup): string[] {
         const errors: string[] = [];
-
+        
         Object.keys(form.controls).forEach(key => {
             const control = form.get(key);
             if (control && !control.valid && (control.dirty || control.touched)) {
@@ -232,7 +294,7 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
                 }
             }
         });
-
+        
         return errors;
     }
 
@@ -244,7 +306,7 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
             'status': 'Status',
             'version': 'Version'
         };
-
+        
         return fieldNames[fieldName] || fieldName;
     }
 }

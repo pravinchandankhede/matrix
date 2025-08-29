@@ -218,63 +218,116 @@
                         <div class="content-section" *ngIf="activeSection === 'configuration'">
                             <h3>Processing Configuration</h3>
                             <div class="info-section">
-                                <div class="form-row">
-                                    <label>Output Data Source:</label>
-                                    <select [(ngModel)]="item.outputDataSource" name="outputDataSource">
-                                        <option value="">Select output data source</option>
-                                        <!-- Options would be populated from service -->
-                                    </select>
-                                </div>
-                                <div class="form-row">
-                                    <label>Chunk Strategy:</label>
-                                    <select [(ngModel)]="item.chunkStrategy" name="chunkStrategy">
-                                        <option value="">Select chunk strategy</option>
-                                        <!-- Options would be populated from service -->
-                                    </select>
-                                </div>
 
-                                <!-- Output Data Source Details -->
-                                <div class="config-details" *ngIf="item.outputDataSource">
-                                    <h4>Output Data Source Details</h4>
-                                    <div class="detail-card">
-                                        <div class="detail-row">
-                                            <span class="label">Name:</span>
-                                            <span>{{ item.outputDataSource.name }}</span>
-                                        </div>
-                                        <div class="detail-row">
-                                            <span class="label">Type:</span>
-                                            <span>{{ item.outputDataSource.type }} - {{ item.outputDataSource.subType }}</span>
-                                        </div>
-                                        <div class="detail-row" *ngIf="item.outputDataSource.description">
-                                            <span class="label">Description:</span>
-                                            <span>{{ item.outputDataSource.description }}</span>
-                                        </div>
-                                        <div class="detail-row">
-                                            <span class="label">Owner:</span>
-                                            <span>{{ item.outputDataSource.owner }}</span>
+                                <!-- Output Data Source Selection -->
+                                <div class="config-subsection">
+                                    <h4>Output Data Source</h4>
+
+                                    <!-- Available Output Data Sources List -->
+                                    <div class="available-items-list">
+                                        <h5>Select Output Data Source</h5>
+                                        <div class="item-selection-cards">
+                                            <!-- Placeholder for available data sources - would be populated from service -->
+                                            <div class="selection-card"
+                                                 *ngFor="let dataSource of availableOutputDataSources; trackBy: trackByDataSourceId"
+                                                 [class.selected]="item.outputDataSource?.dataSourceUId === dataSource.dataSourceUId"
+                                                 (click)="selectOutputDataSource(dataSource)">
+                                                <div class="selection-header">
+                                                    <div class="selection-name">
+                                                        <mat-icon>{{ getDataSourceIcon(dataSource.type) }}</mat-icon>
+                                                        <span>{{ dataSource.name }}</span>
+                                                    </div>
+                                                    <span class="status-badge" [ngClass]="dataSource.isActive ? 'active' : 'inactive'">
+                                                        {{ dataSource.isActive ? 'Active' : 'Inactive' }}
+                                                    </span>
+                                                </div>
+                                                <div class="selection-details">
+                                                    <div class="detail-row">
+                                                        <span class="label">Type:</span>
+                                                        <span>{{ dataSource.type }} - {{ dataSource.subType }}</span>
+                                                    </div>
+                                                    <div class="detail-row" *ngIf="dataSource.description">
+                                                        <span class="label">Description:</span>
+                                                        <span>{{ dataSource.description }}</span>
+                                                    </div>
+                                                    <div class="detail-row">
+                                                        <span class="label">Owner:</span>
+                                                        <span>{{ dataSource.owner }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- No data sources available -->
+                                            <div class="no-items-available" *ngIf="!availableOutputDataSources || availableOutputDataSources.length === 0">
+                                                <mat-icon>info</mat-icon>
+                                                <p>No output data sources available. Please configure data sources first.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Chunk Strategy Details -->
-                                <div class="config-details" *ngIf="item.chunkStrategy">
-                                    <h4>Chunk Strategy Details</h4>
-                                    <div class="detail-card">
-                                        <div class="detail-row">
-                                            <span class="label">Chunk ID:</span>
-                                            <span>{{ item.chunkStrategy.chunkId }}</span>
+                                <!-- Chunk Strategy Selection -->
+                                <div class="config-subsection">
+                                    <h4>Chunk Strategy</h4>
+
+                                    <!-- Available Chunk Strategies List -->
+                                    <div class="available-items-list">
+                                        <h5>Select Chunk Strategy</h5>
+                                        <div class="item-selection-cards">
+                                            <!-- Placeholder for available chunk strategies - would be populated from service -->
+                                            <div class="selection-card"
+                                                 *ngFor="let chunk of availableChunkStrategies; trackBy: trackByChunkId"
+                                                 [class.selected]="item.chunkStrategy?.chunkUId === chunk.chunkUId"
+                                                 (click)="selectChunkStrategy(chunk)">
+                                                <div class="selection-header">
+                                                    <div class="selection-name">
+                                                        <mat-icon>view_module</mat-icon>
+                                                        <span>{{ chunk.chunkId }}</span>
+                                                    </div>
+                                                    <span class="type-badge">{{ chunk.type }}</span>
+                                                </div>
+                                                <div class="selection-details">
+                                                    <div class="detail-row">
+                                                        <span class="label">Source:</span>
+                                                        <span>{{ chunk.chunkSource }}</span>
+                                                    </div>
+                                                    <div class="detail-row" *ngIf="chunk.chunkStrategy">
+                                                        <span class="label">Strategy:</span>
+                                                        <span>{{ chunk.chunkStrategy.name }}</span>
+                                                    </div>
+                                                    <div class="detail-row" *ngIf="chunk.text">
+                                                        <span class="label">Preview:</span>
+                                                        <span class="text-preview">{{ chunk.text | slice:0:100 }}{{ chunk.text.length > 100 ? '...' : '' }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- No chunk strategies available -->
+                                            <div class="no-items-available" *ngIf="!availableChunkStrategies || availableChunkStrategies.length === 0">
+                                                <mat-icon>info</mat-icon>
+                                                <p>No chunk strategies available. Please configure chunk strategies first.</p>
+                                            </div>
                                         </div>
-                                        <div class="detail-row">
-                                            <span class="label">Type:</span>
-                                            <span>{{ item.chunkStrategy.type }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Current Selection Summary -->
+                                <div class="current-selection-summary" *ngIf="item.outputDataSource || item.chunkStrategy">
+                                    <h4>Current Configuration Summary</h4>
+                                    <div class="summary-card">
+                                        <div class="summary-row" *ngIf="item.outputDataSource">
+                                            <mat-icon>output</mat-icon>
+                                            <div class="summary-content">
+                                                <span class="summary-label">Output Data Source:</span>
+                                                <span class="summary-value">{{ item.outputDataSource.name }} ({{ item.outputDataSource.type }})</span>
+                                            </div>
                                         </div>
-                                        <div class="detail-row">
-                                            <span class="label">Source:</span>
-                                            <span>{{ item.chunkStrategy.chunkSource }}</span>
-                                        </div>
-                                        <div class="detail-row" *ngIf="item.chunkStrategy.chunkStrategy">
-                                            <span class="label">Strategy:</span>
-                                            <span>{{ item.chunkStrategy.chunkStrategy.name }} - {{ item.chunkStrategy.chunkStrategy.description }}</span>
+                                        <div class="summary-row" *ngIf="item.chunkStrategy">
+                                            <mat-icon>view_module</mat-icon>
+                                            <div class="summary-content">
+                                                <span class="summary-label">Chunk Strategy:</span>
+                                                <span class="summary-value">{{ item.chunkStrategy.chunkId }} ({{ item.chunkStrategy.type }})</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

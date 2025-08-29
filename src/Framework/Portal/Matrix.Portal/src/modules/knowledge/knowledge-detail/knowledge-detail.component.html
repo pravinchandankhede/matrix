@@ -60,6 +60,20 @@
                 <div class="section-content">
                     <!-- Edit Mode -->
                     <div *ngIf="editMode; else viewMode" class="detail-form">
+                        <!-- Validation Error Summary -->
+                        <div class="validation-summary" *ngIf="knowledgeForm.invalid && (knowledgeForm.touched || knowledgeForm.dirty)">
+                            <h4><mat-icon>error</mat-icon> Please fix the following errors:</h4>
+                            <ul>
+                                <li *ngIf="knowledgeForm.get('name')?.invalid && (knowledgeForm.get('name')?.touched || knowledgeForm.get('name')?.dirty)">
+                                    <span *ngIf="knowledgeForm.get('name')?.errors?.['required']">Knowledge name is required</span>
+                                    <span *ngIf="knowledgeForm.get('name')?.errors?.['minlength']">Knowledge name must be at least 2 characters long</span>
+                                </li>
+                                <li *ngIf="knowledgeForm.get('type')?.invalid && (knowledgeForm.get('type')?.touched || knowledgeForm.get('type')?.dirty)">
+                                    <span *ngIf="knowledgeForm.get('type')?.errors?.['required']">Knowledge type is required</span>
+                                </li>
+                            </ul>
+                        </div>
+
                         <!-- Basic Information Section -->
                         <div class="content-section" *ngIf="activeSection === 'general'">
                             <form [formGroup]="knowledgeForm" (ngSubmit)="onSave()">

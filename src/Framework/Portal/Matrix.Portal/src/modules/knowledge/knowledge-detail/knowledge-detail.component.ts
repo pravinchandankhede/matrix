@@ -168,24 +168,6 @@ export class KnowledgeDetailComponent extends BaseDetailComponent<Knowledge> imp
             errors.push(...validationErrors);
         }
 
-        // Additional business logic validation (optional fields)
-        // Note: These are optional for basic knowledge creation
-        // Validation will only show warnings, not prevent saving
-
-        // Only validate these if user is trying to use them
-        // if (this.item?.dataSourceCollection && !this.item.dataSourceCollection.dataSourceCollectionUId) {
-        //     errors.push('Invalid Data Source Collection selected.');
-        // }
-        // if (this.item?.model && !this.item.model.modelUId) {
-        //     errors.push('Invalid Model selected.');
-        // }
-        // if (this.item?.outputDataSource && !this.item.outputDataSource.dataSourceUId) {
-        //     errors.push('Invalid Output Data Source selected.');
-        // }
-        // if (this.item?.chunkStrategy && !this.item.chunkStrategy.chunkUId) {
-        //     errors.push('Invalid Chunk Strategy selected.');
-        // }
-
         return errors;
     }
 

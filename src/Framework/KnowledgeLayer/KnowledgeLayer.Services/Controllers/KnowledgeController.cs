@@ -41,4 +41,16 @@ public class KnowledgeController : ControllerBase
         Knowledge knowledge = _knowledgeRepository.GetKnowledgeById(id);
         return knowledge != null ? Ok(knowledge) : NotFound();
     }
+
+    // PUT api/<AgentsController>/5
+    [HttpPut("{id}")]
+    public IActionResult Put(Guid id, [FromBody] Knowledge knowledge)
+    {
+        if (knowledge == null || knowledge.KnowledgeUId != id)
+        {
+            return BadRequest();
+        }
+        _knowledgeRepository.UpdateKnowledge(knowledge);
+        return NoContent();
+    }
 }

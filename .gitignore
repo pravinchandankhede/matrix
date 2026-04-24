@@ -65,3 +65,4 @@ nunit-*.xml
 /src/Framework/Portal/Matrix.Portal/package-lock.json
 /src/matrix.slnLaunch.user
 /src/Framework/DataSourceLayer/DataSourceLayer.Services/DataSourceLayer.Services.csproj.user
+src/Framework/Portal/Matrix.Portal/obj/Debug//package.g.props
